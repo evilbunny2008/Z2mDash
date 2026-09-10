@@ -778,6 +778,10 @@ private fun ClusterCard(
 
     Surface(
         modifier = modifier
+            .onGloballyPositioned { coordinates ->
+                Log.d("Z2mDash-LayoutDebug", "ClusterCard '$name': measured width=${coordinates.size.width}px " +
+                    "(given tileWidth=$tileWidth columns=$columns)")
+            }
             .alpha(if (isDraggingCluster) 0.5f else 1f)
             .then(
                 if (isClusterDropTarget) {
