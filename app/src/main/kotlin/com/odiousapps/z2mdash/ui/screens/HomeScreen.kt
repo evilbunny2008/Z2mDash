@@ -2,6 +2,7 @@ package com.odiousapps.z2mdash.ui.screens
 
 import android.text.format.DateUtils
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -83,6 +84,7 @@ import java.util.UUID
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) {
     val context = LocalContext.current
@@ -244,10 +246,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     }
                 )
             }
-            items(config.groups, key = { it.id }) { group ->
+            config.groups.forEach { group ->
                 val isDraggingThisGroup = draggedGroupId == group.id
                 val isDropTargetGroup = draggedGroupId != null && draggedGroupId != group.id &&
                     draggedToGroupId == group.id
+                // Sticky so the group's own name/controls stay reachable
+                // (and orientable - which group's content you're currently
+                // looking at) while scrolled deep into a long group's
+                // clusters, rather than the header itself scrolling away
+                // entirely. Wrapped in an opaque Surface since stickyHeader
+                // itself is just a pinning mechanism - without an explicit
+                // background, content scrolling underneath would otherwise
+                // show through the pinned header.
+                stickyHeader(key = "${group.id}_header") {
+                Surface(color = MaterialTheme.colorScheme.background, tonalElevation = 2.dp) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                         .onGloballyPositioned { coordinates ->
@@ -337,8 +349,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             Icon(Icons.Default.Delete, contentDescription = "Delete ${group.name}")
                         }
                     }
+                } // Column
+                } // Surface
+                } // stickyHeader
 
-                    if (!group.collapsed) {
+                if (!group.collapsed) {
+                    item(key = "${group.id}_content") {
                         // Panels sharing a non-blank clusterName render together in one
                         // card; panels with a blank clusterName stay as standalone tiles,
                         // each getting its own unique bucket so they don't merge together.
@@ -475,7 +491,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     isClusterDropTarget = draggedClusterKey != null &&
                                                         draggedClusterKey != name &&
                                                         draggedToClusterKey == name,
-                                                    modifier = Modifier.onGloballyPositioned { coordinates ->
+                                                    modifier = Modifier.width(clusterCardWidth)
+                                                        .onGloballyPositioned { coordinates ->
                                                         val topLeft = coordinates.positionInWindow()
                                                         clusterCenters[name] = Offset(
                                                             topLeft.x + coordinates.size.width / 2f,
@@ -552,7 +569,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 }
                             }
                         }
-                    }
+                    } // item
                 }
             }
         }
