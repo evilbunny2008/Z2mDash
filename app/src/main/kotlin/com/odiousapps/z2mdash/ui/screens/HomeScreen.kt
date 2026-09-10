@@ -199,6 +199,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val proportionalWidth = (referenceWidthDp - groupHorizontalPadding - gapsBetweenColumns) / columnsPerRow
         minOf(proportionalWidth, 110.dp)
     }
+    Log.d("Z2mDash-LayoutDebug", "screenWidthDp=$screenWidthDp screenHeightDp=$screenHeightDp " +
+        "standaloneTileWidth=$standaloneTileWidth columnsPerRow=$columnsPerRow")
 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -422,6 +424,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         val clusterCardWidth = standaloneTileWidth * columnsPerRow + 8.dp * (columnsPerRow - 1)
                         val availableRowWidth = screenWidthDp - 24.dp
                         val packedRows = remember(orderedClusters, standaloneTileWidth, availableRowWidth) {
+                            Log.d("Z2mDash-LayoutDebug", "packedRows recompute: group=${group.name} " +
+                                "clusterCardWidth=$clusterCardWidth availableRowWidth=$availableRowWidth " +
+                                "clusterCount=${orderedClusters.size}")
                             val rows = mutableListOf<MutableList<List<Panel>>>()
                             var currentRow = mutableListOf<List<Panel>>()
                             var usedWidth = 0.dp
@@ -440,8 +445,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 if (currentRow.isNotEmpty()) usedWidth += 8.dp
                                 currentRow.add(panelsInCluster)
                                 usedWidth += itemWidth
+                                Log.d("Z2mDash-LayoutDebug", "  cluster='${panelsInCluster.first().clusterName}' " +
+                                    "itemWidth=$itemWidth usedWidth=$usedWidth rowIndex=${rows.size}")
                             }
                             if (currentRow.isNotEmpty()) rows.add(currentRow)
+                            Log.d("Z2mDash-LayoutDebug", "packedRows result: ${rows.size} rows, " +
+                                "sizes=${rows.map { it.size }}")
                             rows
                         }
 
