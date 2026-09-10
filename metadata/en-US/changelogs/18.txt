@@ -1,0 +1,3 @@
+- Group headers now stay pinned at the top while scrolling through a long group's clusters
+- Sensor data over an hour old now shows in red with a warning icon, so stale readings are easy to spot
+- Fixed a layout bug in landscape where clusters wouldn't pack side-by-side correctly
