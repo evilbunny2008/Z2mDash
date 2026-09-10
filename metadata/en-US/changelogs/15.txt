@@ -1,1 +1,1 @@
-- No user-facing changes - a build configuration fix, removing an unnecessary metadata block from the package for F-Droid compatibility.
+No user-facing changes - a build configuration fix, removing an unnecessary metadata block from the package for F-Droid compatibility.

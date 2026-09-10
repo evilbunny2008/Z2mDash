@@ -2,6 +2,12 @@ package com.odiousapps.z2mdash.ui.screens
 
 import android.text.format.DateUtils
 import android.util.Log
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -82,6 +88,7 @@ import java.util.UUID
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) {
     val context = LocalContext.current
@@ -238,10 +245,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     }
                 )
             }
-            items(config.groups, key = { it.id }) { group ->
+            config.groups.forEach { group ->
                 val isDraggingThisGroup = draggedGroupId == group.id
                 val isDropTargetGroup = draggedGroupId != null && draggedGroupId != group.id &&
                     draggedToGroupId == group.id
+                // Sticky so the group's own name/controls stay reachable
+                // (and orientable - which group's content you're currently
+                // looking at) while scrolled deep into a long group's
+                // clusters, rather than the header itself scrolling away
+                // entirely. Wrapped in an opaque Surface since stickyHeader
+                // itself is just a pinning mechanism - without an explicit
+                // background, content scrolling underneath would otherwise
+                // show through the pinned header.
+                stickyHeader(key = "${group.id}_header") {
+                Surface(color = MaterialTheme.colorScheme.background, tonalElevation = 2.dp) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                         .onGloballyPositioned { coordinates ->
@@ -331,8 +348,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             Icon(Icons.Default.Delete, contentDescription = "Delete ${group.name}")
                         }
                     }
+                } // Column
+                } // Surface
+                } // stickyHeader
 
-                    if (!group.collapsed) {
+                if (!group.collapsed) {
+                    item(key = "${group.id}_content") {
                         // Panels sharing a non-blank clusterName render together in one
                         // card; panels with a blank clusterName stay as standalone tiles,
                         // each getting its own unique bucket so they don't merge together.
@@ -546,7 +567,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 }
                             }
                         }
-                    }
+                    } // item
                 }
             }
         }
@@ -708,7 +729,7 @@ private fun ClusterCard(
     isDraggingCluster: Boolean = false,
     isClusterDropTarget: Boolean = false
 ) {
-    val ageText = remember(panels, payloads, timestamps, nowMillis) {
+    val (ageText, isStale) = remember(panels, payloads, timestamps, nowMillis) {
         fun topicFor(panel: Panel): String? = when (panel) {
             is Panel.Sensor -> panel.topic
             is Panel.Toggle -> panel.stateTopic.takeIf { it.isNotBlank() }
@@ -743,9 +764,25 @@ private fun ClusterCard(
         }
 
         latestTimestamp?.let {
-            DateUtils.getRelativeTimeSpanString(it, nowMillis, DateUtils.SECOND_IN_MILLIS).toString()
-        }
+            val text = DateUtils.getRelativeTimeSpanString(it, nowMillis, DateUtils.SECOND_IN_MILLIS).toString()
+            val stale = (nowMillis - it) > 60 * 60 * 1000L // more than 1 hour
+            text to stale
+        } ?: (null to false)
     }
+
+    // Always runs, regardless of isStale - animateFloat can't be called
+    // conditionally (Compose requires the same composable calls every
+    // recomposition), so the animation itself is unconditional; only
+    // whether its value actually gets applied below is conditional.
+    val staleBlinkAlpha by rememberInfiniteTransition(label = "staleBlink").animateFloat(
+        initialValue = 1f,
+        targetValue = 0.3f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 800),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "staleBlinkAlpha"
+    )
 
     // Drag-to-reorder state, local to this one cluster card. Long-press
     // directly on a tile starts the drag (via detectDragGesturesAfterLongPress
@@ -917,7 +954,11 @@ private fun ClusterCard(
                     Text(
                         " \u2022 $ageText",
                         style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (isStale) {
+                            MaterialTheme.colorScheme.error.copy(alpha = staleBlinkAlpha)
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
                     )
                 }
                 IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {

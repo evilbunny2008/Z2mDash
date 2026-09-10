@@ -19,11 +19,6 @@ android {
     compileSdk {
         version = release(37)
     }
-
-    buildFeatures {
-        buildConfig = true
-    }
-
     // Disables the "Dependency metadata" signing block AGP embeds by
     // default for Google Play Console's own dependency tracking. This has
     // to live directly in source (not just an F-Droid prebuild step),
@@ -147,7 +142,7 @@ dependencies {
     implementation("androidx.compose.animation:animation")
     debugImplementation("androidx.compose.ui:ui-tooling")
 
-    implementation("androidx.navigation:navigation-compose:2.10.0")
+    implementation("androidx.navigation:navigation-compose:2.10.1")
 
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")

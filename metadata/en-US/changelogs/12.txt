@@ -1,1 +1,1 @@
-- No user-facing app changes - store listing description update and version housekeeping only.
+No user-facing app changes - store listing description update and version housekeeping only.

@@ -1,1 +1,1 @@
-- No user-facing changes - license file update and metadata housekeeping only.
+No user-facing changes - license file update and metadata housekeeping only.
