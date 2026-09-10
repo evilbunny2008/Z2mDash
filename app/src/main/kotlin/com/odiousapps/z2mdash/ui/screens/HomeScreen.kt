@@ -60,9 +60,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
@@ -183,10 +182,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // keeps clusters a consistent, comfortable size on any device, so the
     // manual row-packing below (see packedRows) can fit as many side-by-side
     // as actually fit, rather than relying on FlowRow's own wrapping logic.
-    val windowInfo = LocalWindowInfo.current
-    val density = LocalDensity.current
-    val screenWidthDp = with(density) { windowInfo.containerSize.width.toDp() }
-    val screenHeightDp = with(density) { windowInfo.containerSize.height.toDp() }
+    // LocalConfiguration (not LocalWindowInfo) is the officially-recommended
+    // choice specifically for pure-Android apps - LocalWindowInfo.containerSize
+    // was primarily designed for Compose Multiplatform, where
+    // LocalConfiguration isn't available on non-Android targets, and has real
+    // documented discrepancies/reliability quirks in various Android contexts
+    // that LocalConfiguration doesn't share.
+    val configuration = LocalConfiguration.current
+    val screenWidthDp = configuration.screenWidthDp.dp
+    val screenHeightDp = configuration.screenHeightDp.dp
     val columnsPerRow = 3
     val standaloneTileWidth = run {
         val referenceWidthDp = minOf(screenWidthDp, screenHeightDp)
