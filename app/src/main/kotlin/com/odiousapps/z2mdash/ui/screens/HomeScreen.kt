@@ -2,12 +2,6 @@ package com.odiousapps.z2mdash.ui.screens
 
 import android.text.format.DateUtils
 import android.util.Log
-import androidx.compose.animation.animateColor
-import androidx.compose.animation.core.RepeatMode
-import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.infiniteRepeatable
-import androidx.compose.animation.core.rememberInfiniteTransition
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -773,23 +767,6 @@ private fun ClusterCard(
         } ?: (null to false)
     }
 
-    // Always runs, regardless of isStale - animateColor can't be called
-    // conditionally (Compose requires the same composable calls every
-    // recomposition), so the animation itself is unconditional; only
-    // whether its value actually gets applied below is conditional.
-    // Toggles between two fully-solid colors rather than fading a single
-    // color's alpha - a genuine flash between "looks normal" and "looks
-    // alarmed" reads as far more noticeable than a fade toward faint.
-    val staleBlinkColor by rememberInfiniteTransition(label = "staleBlink").animateColor(
-        initialValue = MaterialTheme.colorScheme.error,
-        targetValue = MaterialTheme.colorScheme.onSurfaceVariant,
-        animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 600),
-            repeatMode = RepeatMode.Reverse
-        ),
-        label = "staleBlinkColor"
-    )
-
     // Drag-to-reorder state, local to this one cluster card. Long-press
     // directly on a tile starts the drag (via detectDragGesturesAfterLongPress
     // on each tile's own modifier chain, ahead of that tile's plain
@@ -818,7 +795,7 @@ private fun ClusterCard(
                 if (isClusterDropTarget) {
                     Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
                 } else if (isStale) {
-                    Modifier.border(2.dp, staleBlinkColor, RoundedCornerShape(12.dp))
+                    Modifier.border(2.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(12.dp))
                 } else {
                     Modifier
                 }
@@ -966,14 +943,14 @@ private fun ClusterCard(
                         } else {
                             MaterialTheme.typography.labelSmall
                         },
-                        color = if (isStale) staleBlinkColor else MaterialTheme.colorScheme.onSurfaceVariant
+                        color = if (isStale) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (isStale) {
                         Spacer(Modifier.width(2.dp))
                         Icon(
                             Icons.Default.Warning,
                             contentDescription = "Data is more than an hour old",
-                            tint = staleBlinkColor,
+                            tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(14.dp)
                         )
                     }
