@@ -2,6 +2,7 @@ package com.odiousapps.z2mdash.ui.screens
 
 import android.text.format.DateUtils
 import android.util.Log
+import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -61,6 +63,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalContext
@@ -770,18 +773,21 @@ private fun ClusterCard(
         } ?: (null to false)
     }
 
-    // Always runs, regardless of isStale - animateFloat can't be called
+    // Always runs, regardless of isStale - animateColor can't be called
     // conditionally (Compose requires the same composable calls every
     // recomposition), so the animation itself is unconditional; only
     // whether its value actually gets applied below is conditional.
-    val staleBlinkAlpha by rememberInfiniteTransition(label = "staleBlink").animateFloat(
-        initialValue = 1f,
-        targetValue = 0.3f,
+    // Toggles between two fully-solid colors rather than fading a single
+    // color's alpha - a genuine flash between "looks normal" and "looks
+    // alarmed" reads as far more noticeable than a fade toward faint.
+    val staleBlinkColor by rememberInfiniteTransition(label = "staleBlink").animateColor(
+        initialValue = MaterialTheme.colorScheme.error,
+        targetValue = MaterialTheme.colorScheme.onSurfaceVariant,
         animationSpec = infiniteRepeatable(
-            animation = tween(durationMillis = 800),
+            animation = tween(durationMillis = 600),
             repeatMode = RepeatMode.Reverse
         ),
-        label = "staleBlinkAlpha"
+        label = "staleBlinkColor"
     )
 
     // Drag-to-reorder state, local to this one cluster card. Long-press
@@ -811,6 +817,8 @@ private fun ClusterCard(
             .then(
                 if (isClusterDropTarget) {
                     Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
+                } else if (isStale) {
+                    Modifier.border(2.dp, staleBlinkColor, RoundedCornerShape(12.dp))
                 } else {
                     Modifier
                 }
@@ -953,13 +961,22 @@ private fun ClusterCard(
                 if (ageText != null) {
                     Text(
                         " \u2022 $ageText",
-                        style = MaterialTheme.typography.labelSmall,
-                        color = if (isStale) {
-                            MaterialTheme.colorScheme.error.copy(alpha = staleBlinkAlpha)
+                        style = if (isStale) {
+                            MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold)
                         } else {
-                            MaterialTheme.colorScheme.onSurfaceVariant
-                        }
+                            MaterialTheme.typography.labelSmall
+                        },
+                        color = if (isStale) staleBlinkColor else MaterialTheme.colorScheme.onSurfaceVariant
                     )
+                    if (isStale) {
+                        Spacer(Modifier.width(2.dp))
+                        Icon(
+                            Icons.Default.Warning,
+                            contentDescription = "Data is more than an hour old",
+                            tint = staleBlinkColor,
+                            modifier = Modifier.size(14.dp)
+                        )
+                    }
                 }
                 IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
                     Icon(
