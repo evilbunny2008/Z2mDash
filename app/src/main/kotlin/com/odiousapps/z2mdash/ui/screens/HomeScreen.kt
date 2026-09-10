@@ -946,12 +946,12 @@ private fun ClusterCard(
                         color = if (isStale) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     if (isStale) {
-                        Spacer(Modifier.width(2.dp))
+                        Spacer(Modifier.width(4.dp))
                         Icon(
                             Icons.Default.Warning,
                             contentDescription = "Data is more than an hour old",
                             tint = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.size(14.dp)
+                            modifier = Modifier.size(20.dp)
                         )
                     }
                 }
