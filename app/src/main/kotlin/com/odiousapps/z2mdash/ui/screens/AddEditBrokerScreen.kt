@@ -21,7 +21,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
-import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
@@ -56,7 +55,7 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.MqttProtocol
-import com.odiousapps.z2mdash.ui.components.CredentialShareDialog
+import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -81,7 +80,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     var pickerUnavailable by remember { mutableStateOf(false) }
     var showPassword by remember { mutableStateOf(false) }
     var protocolExpanded by remember { mutableStateOf(false) }
-    var showShareDialog by remember { mutableStateOf(false) }
+    var showImportDialog by remember { mutableStateOf(false) }
 
     val certPickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
@@ -101,15 +100,6 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    // Only for an already-saved broker - sharing an unsaved,
-                    // possibly-still-blank draft wouldn't make sense.
-                    if (existing != null) {
-                        IconButton(onClick = { showShareDialog = true }) {
-                            Icon(Icons.Default.Share, contentDescription = "Share ${existing.name}'s credentials")
-                        }
                     }
                 }
             )
@@ -133,6 +123,13 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
+            if (existing == null) {
+                OutlinedButton(
+                    onClick = { showImportDialog = true },
+                    modifier = Modifier.fillMaxWidth()
+                ) { Text("Import via code") }
+                Spacer(Modifier.height(16.dp))
+            }
             OutlinedTextField(
                 value = broker.name,
                 onValueChange = { broker = broker.copy(name = it) },
@@ -373,8 +370,22 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
         )
     }
 
-    if (showShareDialog && existing != null) {
-        CredentialShareDialog(broker = existing, onDismiss = { showShareDialog = false })
+    if (showImportDialog) {
+        CredentialImportDialog(
+            onImported = { fields ->
+                val username = fields["Username"]
+                val password = fields["Password"]
+                broker = broker.copy(
+                    host = fields["Hostname"].orEmpty(),
+                    protocol = importedProtocol(fields["Protocol"]) ?: broker.protocol,
+                    authEnabled = !username.isNullOrBlank() || !password.isNullOrBlank(),
+                    username = username.orEmpty(),
+                    password = password.orEmpty()
+                )
+                showImportDialog = false
+            },
+            onDismiss = { showImportDialog = false }
+        )
     }
 }
 
@@ -383,6 +394,22 @@ private fun protocolLabel(protocol: MqttProtocol): String = when (protocol) {
     MqttProtocol.SSL -> "SSL - Secure Sockets Layer"
     MqttProtocol.WS -> "WS - Web Sockets"
     MqttProtocol.WSS -> "WSS - Web Sockets Secure"
+}
+
+/**
+ * Maps a credential import's "Protocol" field (the standard MQTT scheme
+ * names - MQTT/MQTTS/WS/WSS, matching how brokers themselves are
+ * usually documented) onto this app's own MqttProtocol enum (named
+ * after the underlying transport instead - TCP/SSL/WS/WSS). Null for a
+ * missing or unrecognised value, so the caller can fall back to
+ * whatever the broker draft already had rather than silently resetting it.
+ */
+private fun importedProtocol(value: String?): MqttProtocol? = when (value?.trim()?.uppercase()) {
+    "MQTT" -> MqttProtocol.TCP
+    "MQTTS" -> MqttProtocol.SSL
+    "WS" -> MqttProtocol.WS
+    "WSS" -> MqttProtocol.WSS
+    else -> null
 }
 
 private fun defaultPortFor(protocol: MqttProtocol): Int = when (protocol) {

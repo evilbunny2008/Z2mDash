@@ -133,14 +133,15 @@ class DeviceAutoConfigManager(
         val trackedKeys = config.autoConfiguredDevices.map { "${it.brokerId}|${it.appConfigTopic}" }.toSet()
         val pendingKeys = config.pendingAutoConfigDevices.map { "${it.brokerId}|${it.appConfigTopic}" }.toSet()
         val ignoredKeys = config.ignoredAppConfigTopics.toSet()
-        val brokerIds = config.brokers.map { it.id }.toSet()
+        val brokersById = config.brokers.associateBy { it.id }
 
         payloads.forEach { (compositeKey, payload) ->
             val separatorIndex = compositeKey.indexOf('|')
             if (separatorIndex < 0) return@forEach
             val brokerId = compositeKey.substring(0, separatorIndex)
             val topic = compositeKey.substring(separatorIndex + 1)
-            if (brokerId !in brokerIds || !topic.endsWith("/app")) return@forEach
+            val broker = brokersById[brokerId] ?: return@forEach
+            if (!topic.endsWith("/app")) return@forEach
 
             val key = "$brokerId|$topic"
             if (key in trackedKeys || key in pendingKeys || key in ignoredKeys) return@forEach
@@ -148,6 +149,11 @@ class DeviceAutoConfigManager(
             val deviceConfig = SensorDiscovery.parseDeviceAppConfig(payload) ?: return@forEach
             val sensorTopic = topic.removeSuffix("/app")
             val deviceName = deviceConfig.name.ifBlank { sensorTopic.substringAfterLast("/") }
+
+            if (broker.autoAcceptDiscoveredDevices) {
+                autoAcceptDevice(brokerId, sensorTopic, topic, payload, deviceConfig, payloads)
+                return@forEach
+            }
 
             configRepository.addPendingAutoConfigDevice(
                 PendingAutoConfigDevice(
@@ -159,6 +165,65 @@ class DeviceAutoConfigManager(
             )
             notifyNewDeviceFound(deviceName)
         }
+    }
+
+    /**
+     * Same end result as a user tapping "Add" on the Home screen's pending-
+     * device banner (see HomeScreen.kt's addPendingDevice) - built straight
+     * from the discovered payload rather than going through the
+     * pendingAutoConfigDevices detour first, for a broker whose
+     * autoAcceptDiscoveredDevices is on (e.g. set via a credential import's
+     * "AutoAccept" field - see CredentialImportDialog). Falls back to the
+     * group the device declares, or the first existing group, or a new
+     * "Discovered Sensors" group - same fallback order as the manual path,
+     * so a broker with this on doesn't behave differently once a device
+     * does land somewhere.
+     */
+    private fun autoAcceptDevice(
+        brokerId: String,
+        sensorTopic: String,
+        appConfigTopic: String,
+        appConfigPayload: String,
+        deviceConfig: SensorDiscovery.DeviceAppConfig,
+        payloads: Map<String, String>
+    ) {
+        val sensorPayload = payloads["$brokerId|$sensorTopic"]
+        val sensorFieldKeys = sensorPayload?.let { SensorDiscovery.fieldKeysOf(it) } ?: emptySet()
+
+        val newPanels = SensorDiscovery.buildPanels(
+            brokerId = brokerId,
+            sensorTopic = sensorTopic,
+            sensorFieldKeys = sensorFieldKeys,
+            appConfigTopic = appConfigTopic,
+            appConfigPayload = appConfigPayload,
+            deviceConfig = deviceConfig
+        )
+        if (newPanels.isEmpty()) return
+
+        val config = configRepository.config.value
+        val targetGroupId = deviceConfig.group?.let { name ->
+            config.groups.find { it.name.equals(name, ignoreCase = true) }?.id
+                ?: UUID.randomUUID().toString().also { id ->
+                    configRepository.upsertGroup(PanelGroup(id = id, name = name))
+                }
+        } ?: config.groups.firstOrNull()?.id
+            ?: UUID.randomUUID().toString().also { id ->
+                configRepository.upsertGroup(PanelGroup(id = id, name = "Discovered Sensors"))
+            }
+
+        val device = AutoConfiguredDevice(
+            brokerId = brokerId,
+            sensorTopic = sensorTopic,
+            appConfigTopic = appConfigTopic,
+            lastAppliedPayload = appConfigPayload,
+            createdPanelIds = newPanels.map { it.id }
+        )
+        configRepository.applyDeviceAutoConfig(
+            oldPanelIds = emptySet(),
+            updatedDevice = device,
+            targetGroupId = targetGroupId,
+            newPanels = newPanels
+        )
     }
 
     private fun resolveTargetGroupId(declaredGroupName: String?, device: AutoConfiguredDevice): String? {
