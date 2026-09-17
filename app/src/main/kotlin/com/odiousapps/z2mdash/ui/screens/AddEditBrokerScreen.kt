@@ -403,6 +403,51 @@ private fun protocolLabel(protocol: MqttProtocol): String = when (protocol) {
 }
 
 /**
+ * Applies a credential import's fields onto [current] - every field
+ * beyond "Hostname" itself (already guaranteed present by
+ * CredentialImportDialog before this is ever called) is optional and
+ * falls back to whatever [current] already had when missing or
+ * unparsable, so a preset only needs to specify the settings that
+ * actually differ from this app's own defaults rather than all of them.
+ * Field names mirror the Broker properties they map to one-for-one
+ * (PascalCase, since that's how they're typed as plain "Key: Value"
+ * lines on mx3launcher.odiousapps.com/manage_credentials.php) - keep
+ * this in sync with that page's own hint text and the website's README
+ * if any of these names or the Broker shape itself ever changes.
+ */
+private fun applyImportedFields(current: Broker, fields: Map<String, String>): Broker {
+    val username = fields["Username"]
+    val password = fields["Password"]
+    return current.copy(
+        name = importedString(fields["Name"]) ?: current.name,
+        host = fields["Hostname"] ?: current.host,
+        protocol = importedProtocol(fields["Protocol"]) ?: current.protocol,
+        port = importedInt(fields["Port"]) ?: current.port,
+        authEnabled = importedBoolean(fields["AuthEnabled"])
+            ?: (!username.isNullOrBlank() || !password.isNullOrBlank() || current.authEnabled),
+        username = importedString(username) ?: current.username,
+        password = importedString(password) ?: current.password,
+        selfSignedCert = importedBoolean(fields["SelfSignedCert"]) ?: current.selfSignedCert,
+        selfSignedCertBase64 = importedString(fields["SelfSignedCertBase64"]) ?: current.selfSignedCertBase64,
+        webSocketPath = importedString(fields["WebSocketPath"]) ?: current.webSocketPath,
+        clientId = importedString(fields["ClientId"]) ?: current.clientId,
+        cleanSession = importedBoolean(fields["CleanSession"]) ?: current.cleanSession,
+        keepAliveSeconds = importedInt(fields["KeepAliveSeconds"]) ?: current.keepAliveSeconds,
+        connectionTimeoutSeconds = importedInt(fields["ConnectionTimeoutSeconds"]) ?: current.connectionTimeoutSeconds,
+        autoConnect = importedBoolean(fields["AutoConnect"]) ?: current.autoConnect,
+        showReconnectionStatus = importedBoolean(fields["ShowReconnectionStatus"]) ?: current.showReconnectionStatus,
+        baseTopic = importedString(fields["BaseTopic"]) ?: current.baseTopic,
+        autoAcceptDiscoveredDevices = importedBoolean(fields["AutoAccept"]) ?: current.autoAcceptDiscoveredDevices
+    )
+}
+
+/** Null for a missing/blank field, so the caller can fall back to the existing value. */
+private fun importedString(value: String?): String? = value?.trim()?.takeIf { it.isNotEmpty() }
+
+/** Null for a missing/unparsable field, so the caller can fall back to the existing value. */
+private fun importedInt(value: String?): Int? = value?.trim()?.toIntOrNull()
+
+/**
  * Maps a credential import's "Protocol" field (the standard MQTT scheme
  * names - MQTT/MQTTS/WS/WSS, matching how brokers themselves are
  * usually documented) onto this app's own MqttProtocol enum (named
@@ -418,7 +463,7 @@ private fun importedProtocol(value: String?): MqttProtocol? = when (value?.trim(
     else -> null
 }
 
-/** Null for a missing/unrecognised "AutoAccept" field, so the caller can fall back to the existing value. */
+/** Null for a missing/unrecognised boolean field, so the caller can fall back to the existing value. */
 private fun importedBoolean(value: String?): Boolean? = when (value?.trim()?.lowercase()) {
     "true", "yes", "1" -> true
     "false", "no", "0" -> false
