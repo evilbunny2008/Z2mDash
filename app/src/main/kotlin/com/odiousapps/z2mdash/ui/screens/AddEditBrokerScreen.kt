@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
@@ -55,6 +56,7 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.MqttProtocol
+import com.odiousapps.z2mdash.ui.components.CredentialShareDialog
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -79,6 +81,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     var pickerUnavailable by remember { mutableStateOf(false) }
     var showPassword by remember { mutableStateOf(false) }
     var protocolExpanded by remember { mutableStateOf(false) }
+    var showShareDialog by remember { mutableStateOf(false) }
 
     val certPickerLauncher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let {
@@ -98,6 +101,15 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                    }
+                },
+                actions = {
+                    // Only for an already-saved broker - sharing an unsaved,
+                    // possibly-still-blank draft wouldn't make sense.
+                    if (existing != null) {
+                        IconButton(onClick = { showShareDialog = true }) {
+                            Icon(Icons.Default.Share, contentDescription = "Share ${existing.name}'s credentials")
+                        }
                     }
                 }
             )
@@ -359,6 +371,10 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
             }
         )
+    }
+
+    if (showShareDialog && existing != null) {
+        CredentialShareDialog(broker = existing, onDismiss = { showShareDialog = false })
     }
 }
 

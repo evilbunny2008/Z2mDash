@@ -157,4 +157,9 @@ dependencies {
     implementation("io.netty:netty-transport:4.1.133.Final")
     implementation("io.netty:netty-buffer:4.1.133.Final")
     implementation("io.netty:netty-resolver:4.1.133.Final")
+
+    // QR generation for sharing a broker's credentials via MX3Launcher's
+    // credential relay (see data/CredentialShareClient.kt) - same library
+    // and version MX3Launcher's own app already uses for its TV-pairing QR.
+    implementation("com.google.zxing:core:3.5.4")
 }
