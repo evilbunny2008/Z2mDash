@@ -1,0 +1,1 @@
+- Added a "Blink Stale Data Indicator" setting - the red "last seen" warning on old sensor data can now pulse (default) or stay a static color, your choice

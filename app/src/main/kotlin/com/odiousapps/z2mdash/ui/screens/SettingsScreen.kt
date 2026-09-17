@@ -58,6 +58,21 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
+                    headlineContent = { Text("Blink Stale Data Indicator") },
+                    supportingContent = { Text("Pulse the red \"last seen\" warning on clusters over an hour old, instead of a static color") },
+                    leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },
+                    trailingContent = {
+                        Switch(
+                            checked = config.staleDataBlinkEnabled,
+                            onCheckedChange = { enabled ->
+                                app.configRepository.update { it.copy(staleDataBlinkEnabled = enabled) }
+                            }
+                        )
+                    }
+                )
+            }
+            item {
+                ListItem(
                     headlineContent = { Text("Alarm/Alert") },
                     supportingContent = { Text("Smoke alerts, sound, and a test notification") },
                     leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },

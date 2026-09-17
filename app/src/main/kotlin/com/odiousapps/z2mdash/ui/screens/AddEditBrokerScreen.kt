@@ -21,6 +21,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -64,6 +65,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     val config by app.configRepository.config.collectAsState()
 
     val existing = remember(brokerId, config) { config.brokers.find { it.id == brokerId } }
+    var showDeleteConfirm by remember { mutableStateOf(false) }
     var broker by remember(existing) {
         mutableStateOf(
             existing ?: Broker(
@@ -332,16 +334,31 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
             if (existing != null) {
                 Spacer(Modifier.height(24.dp))
                 OutlinedButton(
-                    onClick = {
-                        app.configRepository.deleteBroker(existing.id)
-                        navController.popBackStack()
-                    },
+                    onClick = { showDeleteConfirm = true },
                     modifier = Modifier.fillMaxWidth()
                 ) { Text("Delete broker") }
             }
 
             Spacer(Modifier.height(32.dp))
         }
+    }
+
+    if (showDeleteConfirm && existing != null) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("Delete broker?") },
+            text = { Text("This removes \"${existing.name}\" and disconnects from it. Panels linked to it will stop updating.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    app.configRepository.deleteBroker(existing.id)
+                    showDeleteConfirm = false
+                    navController.popBackStack()
+                }) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+            }
+        )
     }
 }
 

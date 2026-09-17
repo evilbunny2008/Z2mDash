@@ -3,6 +3,11 @@ package com.odiousapps.z2mdash.ui.screens
 import android.text.format.DateUtils
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.animation.animateColor
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
@@ -731,6 +736,21 @@ private fun ClusterCard(
     isDraggingCluster: Boolean = false,
     isClusterDropTarget: Boolean = false
 ) {
+    val config by app.configRepository.config.collectAsState()
+    // Always runs, regardless of staleBlinkEnabled/isStale - animateColor
+    // can't be called conditionally (Compose requires the same composable
+    // calls every recomposition), so the animation itself is unconditional;
+    // only whether its value actually gets used below (vs a flat static
+    // color) is conditional, per the Blink Stale Data Indicator setting.
+    val staleBlinkColor by rememberInfiniteTransition(label = "staleBlink").animateColor(
+        initialValue = MaterialTheme.colorScheme.error,
+        targetValue = MaterialTheme.colorScheme.onSurfaceVariant,
+        animationSpec = infiniteRepeatable(
+            animation = tween(durationMillis = 600),
+            repeatMode = RepeatMode.Reverse
+        ),
+        label = "staleBlinkColor"
+    )
     val (ageText, isStale) = remember(panels, payloads, timestamps, nowMillis) {
         fun topicFor(panel: Panel): String? = when (panel) {
             is Panel.Sensor -> panel.topic
@@ -792,19 +812,20 @@ private fun ClusterCard(
     var dragOffsetY by remember { mutableFloatStateOf(0f) }
     var tileWidthPx by remember { mutableFloatStateOf(0f) }
     var tileHeightPx by remember { mutableFloatStateOf(0f) }
+    val staleIndicatorColor = if (isStale) {
+        if (config.staleDataBlinkEnabled) staleBlinkColor else MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.onSurfaceVariant
+    }
 
     Surface(
         modifier = modifier
-            .onGloballyPositioned { coordinates ->
-                Log.d("Z2mDash-LayoutDebug", "ClusterCard '$name': measured width=${coordinates.size.width}px " +
-                    "(given tileWidth=$tileWidth columns=$columns)")
-            }
             .alpha(if (isDraggingCluster) 0.5f else 1f)
             .then(
                 if (isClusterDropTarget) {
                     Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
                 } else if (isStale) {
-                    Modifier.border(2.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(12.dp))
+                    Modifier.border(2.dp, staleIndicatorColor, RoundedCornerShape(12.dp))
                 } else {
                     Modifier
                 }
@@ -952,14 +973,14 @@ private fun ClusterCard(
                         } else {
                             MaterialTheme.typography.labelSmall
                         },
-                        color = if (isStale) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                        color = staleIndicatorColor
                     )
                     if (isStale) {
                         Spacer(Modifier.width(4.dp))
                         Icon(
                             Icons.Default.Warning,
                             contentDescription = "Data is more than an hour old",
-                            tint = MaterialTheme.colorScheme.error,
+                            tint = staleIndicatorColor,
                             modifier = Modifier.size(20.dp)
                         )
                     }

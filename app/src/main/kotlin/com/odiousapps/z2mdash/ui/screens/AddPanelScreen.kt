@@ -14,6 +14,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -30,6 +31,7 @@ import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -57,6 +59,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
         panelId?.let { id -> config.groups.find { it.id == groupId }?.panels?.find { it.id == id } }
     }
     val isEditing = existing != null
+    var showDeleteConfirm by remember { mutableStateOf(false) }
 
     var panelType by remember(existing) {
         mutableStateOf(
@@ -432,15 +435,30 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                 if (existing != null) {
                     Spacer(Modifier.height(24.dp))
                     OutlinedButton(
-                        onClick = {
-                            app.configRepository.removePanel(groupId, existing.id)
-                            navController.popBackStack()
-                        },
+                        onClick = { showDeleteConfirm = true },
                         modifier = Modifier.fillMaxWidth()
                     ) { Text("Delete panel") }
                 }
             }
             Spacer(Modifier.height(32.dp))
         }
+    }
+
+    if (showDeleteConfirm && existing != null) {
+        AlertDialog(
+            onDismissRequest = { showDeleteConfirm = false },
+            title = { Text("Delete panel?") },
+            text = { Text("This removes \"${existing.label}\" from the dashboard.") },
+            confirmButton = {
+                TextButton(onClick = {
+                    app.configRepository.removePanel(groupId, existing.id)
+                    showDeleteConfirm = false
+                    navController.popBackStack()
+                }) { Text("Delete") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+            }
+        )
     }
 }
