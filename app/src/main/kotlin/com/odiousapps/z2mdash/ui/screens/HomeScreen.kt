@@ -1007,6 +1007,7 @@ private fun PanelTile(
     navController: NavController,
     modifier: Modifier = Modifier
 ) {
+    val config by app.configRepository.config.collectAsState()
     when (panel) {
         is Panel.Sensor -> {
             val raw = payloads["${panel.brokerId}|${panel.topic}"]
@@ -1057,6 +1058,7 @@ private fun PanelTile(
                 unit = panel.unit,
                 alert = alert,
                 label = panel.label,
+                blinkEnabled = config.staleDataBlinkEnabled,
                 iconTint = if (isPresenceField && isPresent) MaterialTheme.colorScheme.primary else null,
                 onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") }
             )

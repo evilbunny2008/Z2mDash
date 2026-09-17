@@ -58,8 +58,8 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Blink Stale Data Indicator") },
-                    supportingContent = { Text("Pulse the red \"last seen\" warning on clusters over an hour old, instead of a static color") },
+                    headlineContent = { Text("Blink Warnings") },
+                    supportingContent = { Text("Pulse the stale-data \"last seen\" warning and out-of-range sensor tiles, instead of a static color") },
                     leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },
                     trailingContent = {
                         Switch(

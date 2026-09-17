@@ -72,6 +72,12 @@ fun SensorTile(
     unit: String,
     label: String,
     alert: SensorAlert = SensorAlert.NONE,
+    // When false, an out-of-range alert still shows as a solid color (same
+    // as SensorAlert.IN_RANGE's static green) rather than pulsing between
+    // it and the surface color - governed by the same Blink Stale Data
+    // Indicator setting that also controls the cluster-level stale-data
+    // blink, so turning blinking off stops it everywhere, not just one place.
+    blinkEnabled: Boolean = true,
     // Only meaningful for TileIcon.PRESENCE - tints the icon to make an
     // active "someone's here" state visually stand out, rather than needing
     // a second, separate icon glyph for the "clear" state.
@@ -85,7 +91,7 @@ fun SensorTile(
     }
 
     val backgroundColor = when {
-        flashingAlertColor != null -> {
+        flashingAlertColor != null && blinkEnabled -> {
             val infiniteTransition = rememberInfiniteTransition(label = "sensorAlert")
             val flashFraction = infiniteTransition.animateFloat(
                 initialValue = 0f,
@@ -98,6 +104,7 @@ fun SensorTile(
             ).value
             lerp(MaterialTheme.colorScheme.surfaceVariant, flashingAlertColor, flashFraction)
         }
+        flashingAlertColor != null -> flashingAlertColor
         alert == SensorAlert.IN_RANGE -> AlertGreen
         else -> MaterialTheme.colorScheme.surfaceVariant
     }
