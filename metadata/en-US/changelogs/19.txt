@@ -1,1 +1,3 @@
 - Added a "Blink Warnings" setting for out-of-range sensor tile alerts (moisture, humidity, etc.) - pulse (default) or stay a static color, your choice. The "last seen" stale-data indicator stays a flat color regardless, since blinking there wasn't noticeable enough to be worth it
+- Fixed a race condition where dragging to reorder clusters or panels within a group could revert after a drag or two, especially with the app running on more than one phone against the same broker
+- Reordering clusters/panels now properly syncs across every phone connected to the same broker, instead of only applying on the phone you dragged on

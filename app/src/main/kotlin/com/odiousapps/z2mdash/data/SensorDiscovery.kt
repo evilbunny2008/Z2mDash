@@ -342,6 +342,28 @@ object SensorDiscovery {
      * value. Pure function: callers decide where the resulting panels
      * actually get stored.
      */
+    /**
+     * Combines a device's [groupOrder] (its cluster's rank among the other
+     * clusters/panels in the group) with [within] (a field/control's position
+     * inside that one cluster, e.g. from panel_order or a control's own
+     * order) into a single absolute Panel.displayOrder - scaling groupOrder
+     * up so it dominates, the same way ConfigRepository.reorderClustersInGroup
+     * spaces clusters 1000 apart locally. Both are optional on the wire
+     * ([within] in particular is almost always absent, since most panels
+     * never need their own explicit position): with neither set, there's
+     * nothing to order by at all, so the panel falls in after everything
+     * that IS ordered, same as an ordinary unordered panel always has.
+     * [fallbackWithin] (normally the field's own declaration index) keeps
+     * same-cluster panels distinct from each other when [within] is absent,
+     * rather than every field in the cluster colliding on the bare groupOrder
+     * value - which would lose their relative order and, worse, make a
+     * cluster indistinguishable in rank from one at groupOrder 0.
+     */
+    private fun composedDisplayOrder(groupOrder: Int?, within: Int?, fallbackWithin: Int): Int {
+        if (groupOrder == null && within == null) return Int.MAX_VALUE
+        return (groupOrder ?: 0) * 1000 + (within ?: fallbackWithin)
+    }
+
     fun buildPanels(
         brokerId: String,
         sensorTopic: String,
@@ -393,12 +415,16 @@ object SensorDiscovery {
                 idealMinPath = rangeBase?.let { deviceConfig.rangePairs[it]!!.first } ?: "min",
                 idealMaxPath = rangeBase?.let { deviceConfig.rangePairs[it]!!.second } ?: "max",
                 clusterName = clusterName,
-                displayOrder = deviceConfig.panelOrders.getOrNull(index) ?: deviceConfig.groupOrder ?: Int.MAX_VALUE,
+                displayOrder = composedDisplayOrder(deviceConfig.groupOrder, deviceConfig.panelOrders.getOrNull(index), index),
                 decimals = deviceConfig.panelDecimals.getOrNull(index) ?: suggestedDecimals(field)
             )
         }
 
-        val controlPanels: List<Panel> = deviceConfig.controls.map { control ->
+        val controlPanels: List<Panel> = deviceConfig.controls.mapIndexed { controlIndex, control ->
+            // Sensor panels are always built before controls regardless of
+            // array position (see ControlConfig.order's doc), so a control
+            // with no explicit order falls in right after them by default.
+            val fallbackWithin = sensorPanels.size + controlIndex
             if (control.momentary) {
                 Panel.Button(
                     id = java.util.UUID.randomUUID().toString(),
@@ -407,7 +433,7 @@ object SensorDiscovery {
                     commandTopic = control.commandTopic,
                     payload = control.onPayload,
                     clusterName = control.cluster?.takeIf { it.isNotBlank() } ?: deviceClusterName,
-                    displayOrder = control.order ?: deviceConfig.groupOrder ?: Int.MAX_VALUE
+                    displayOrder = composedDisplayOrder(deviceConfig.groupOrder, control.order, fallbackWithin)
                 )
             } else {
                 Panel.Toggle(
@@ -420,7 +446,7 @@ object SensorDiscovery {
                     stateTopic = control.stateTopic ?: "",
                     stateJsonPath = control.stateField ?: "",
                     clusterName = control.cluster?.takeIf { it.isNotBlank() } ?: deviceClusterName,
-                    displayOrder = control.order ?: deviceConfig.groupOrder ?: Int.MAX_VALUE
+                    displayOrder = composedDisplayOrder(deviceConfig.groupOrder, control.order, fallbackWithin)
                 )
             }
         }
