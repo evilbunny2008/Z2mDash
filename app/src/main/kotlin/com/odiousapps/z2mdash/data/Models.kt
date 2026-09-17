@@ -211,5 +211,13 @@ data class AppConfig(
     // regardless of this setting. When false, an out-of-range tile still
     // shows its warning color, just static rather than pulsing. Defaults
     // to on.
-    val staleDataBlinkEnabled: Boolean = true
+    val staleDataBlinkEnabled: Boolean = true,
+    // Caps each tile's (and so each 3-wide cluster card's) width on the Home
+    // screen - the actual width used is whichever is smaller, this or what
+    // would otherwise evenly fill the screen at 3 tiles per row, so raising
+    // this past a phone's own proportional width just makes tiles fill the
+    // screen, while lowering it keeps them more compact than the screen
+    // alone would. 110 was this app's original hardcoded constant - kept as
+    // the default so nobody's layout changes just from upgrading.
+    val tileWidthDp: Int = 110
 )

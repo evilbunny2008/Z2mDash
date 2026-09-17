@@ -109,7 +109,20 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 onClick = {
                     if (broker.host.isNotBlank()) {
                         app.configRepository.upsertBroker(broker)
-                        navController.popBackStack()
+                        // Reached via WelcomeScreen's "Add a Broker" (shown only
+                        // when there were no brokers at all) - a plain single-
+                        // level pop would land back on Welcome, which has no
+                        // logic of its own to skip itself now that a broker
+                        // exists, leaving the user to tap back a second time
+                        // before Home actually appeared. Popping welcome off
+                        // too goes straight there instead. Any other entry
+                        // point (e.g. the Brokers list) still gets a normal
+                        // single-level pop, back to wherever it came from.
+                        if (navController.previousBackStackEntry?.destination?.route == "welcome") {
+                            navController.popBackStack("welcome", inclusive = true)
+                        } else {
+                            navController.popBackStack()
+                        }
                     }
                 },
                 enabled = broker.host.isNotBlank(),

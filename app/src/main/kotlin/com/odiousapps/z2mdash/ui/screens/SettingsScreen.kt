@@ -1,7 +1,9 @@
 package com.odiousapps.z2mdash.ui.screens
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,12 +12,14 @@ import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Storage
+import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Sync
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -87,6 +91,28 @@ fun SettingsScreen(navController: NavController) {
                             }
                         )
                     }
+                )
+            }
+            item {
+                ListItem(
+                    headlineContent = { Text("Tile & Cluster Width") },
+                    supportingContent = {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                "How wide tiles (and so cluster cards, 3 tiles wide) can grow, up to " +
+                                    "filling the screen - currently ${config.tileWidthDp}dp"
+                            )
+                            Slider(
+                                value = config.tileWidthDp.toFloat(),
+                                onValueChange = { newValue ->
+                                    app.configRepository.update { it.copy(tileWidthDp = newValue.toInt()) }
+                                },
+                                valueRange = 80f..200f,
+                                steps = 11 // 10dp increments from 80 to 200
+                            )
+                        }
+                    },
+                    leadingContent = { Icon(Icons.Default.Straighten, contentDescription = null) }
                 )
             }
             item {

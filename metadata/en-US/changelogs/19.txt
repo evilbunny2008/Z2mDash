@@ -5,3 +5,5 @@
 - Added an "Auto-Accept Discovered Devices" setting per broker, to skip the accept/ignore prompt for newly-seen devices and add their group/clusters/panels immediately
 - Fixed deleting a broker leaving its panels and tracked devices behind - re-adding that broker afterwards (by hand or via import) could double up every cluster instead of just reconnecting to the same one
 - Added a "Clean Up Orphaned Data" option in Settings (only shown when there's something to clean) to remove any panels left over from a broker deleted before the above fix
+- Fixed tapping "Done" on the very first broker (added from the "no brokers configured" welcome screen) landing back on that welcome screen instead of Home, needing an extra tap back to actually see your dashboard
+- Added a "Tile & Cluster Width" slider in Settings, so tiles/clusters can be widened to fill the screen instead of stopping at a fixed 110dp

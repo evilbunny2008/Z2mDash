@@ -197,7 +197,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val groupHorizontalPadding = 12.dp * 2
         val gapsBetweenColumns = 8.dp * (columnsPerRow - 1)
         val proportionalWidth = (referenceWidthDp - groupHorizontalPadding - gapsBetweenColumns) / columnsPerRow
-        minOf(proportionalWidth, 110.dp)
+        minOf(proportionalWidth, config.tileWidthDp.dp)
     }
 
     Scaffold(
