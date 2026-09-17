@@ -281,6 +281,42 @@ class ConfigRepository(private val context: Context) {
         cfg.copy(groups = groupsWithNewPanels, autoConfiguredDevices = updatedDevices)
     }
 
+    /**
+     * Records that [payload] (stamped with [orderVersion]) is already reflected
+     * in the app's own state for one auto-configured device, without rebuilding
+     * its panels. Used right after the app itself publishes a retained
+     * "<topic>/app" update (e.g. a cluster/panel drag reorder writing a new
+     * group_order/panel_order) - since every broker is subscribed to "#", that
+     * publish echoes straight back to DeviceAutoConfigManager, which would
+     * otherwise treat it as a config update to reconcile. Pre-marking the
+     * payload as applied here means that exact echo is recognised as already up
+     * to date and skipped; recording [orderVersion] as this device's new
+     * lastKnownOrderVersion also means any later payload with an
+     * older/missing order_version (a stale retained redelivery, e.g. from a
+     * reconnect, or another phone sharing this broker that hasn't caught up
+     * yet) is recognised as stale and ignored rather than clobbering this
+     * reorder - while a genuinely newer order_version still gets adopted. See
+     * DeviceAutoConfigManager.reconcileKnownDevices.
+     */
+    fun markAutoConfiguredDevicePayloadApplied(
+        brokerId: String,
+        appConfigTopic: String,
+        payload: String,
+        orderVersion: Long
+    ) = update { cfg ->
+            val updatedDevices = cfg.autoConfiguredDevices.map { device ->
+                if (device.brokerId == brokerId && device.appConfigTopic == appConfigTopic) {
+                    device.copy(
+                        lastAppliedPayload = payload,
+                        lastKnownOrderVersion = maxOf(device.lastKnownOrderVersion, orderVersion)
+                    )
+                } else {
+                    device
+                }
+            }
+            cfg.copy(autoConfiguredDevices = updatedDevices)
+        }
+
     /** Adds a newly-seen "<topic>/app" to the pending list, if not already there. */
     fun addPendingAutoConfigDevice(device: PendingAutoConfigDevice) = update { cfg ->
         val exists = cfg.pendingAutoConfigDevices.any {

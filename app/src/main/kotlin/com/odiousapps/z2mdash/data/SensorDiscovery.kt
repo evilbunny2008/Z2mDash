@@ -9,6 +9,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
+import kotlinx.serialization.json.longOrNull
 
 /**
  * Turns a raw bag of "topic -> last payload" (as gathered by subscribing a
@@ -73,7 +74,18 @@ object SensorDiscovery {
         val panelDecimals: List<Int?> = emptyList(),
         // Optional. Toggle/command panels (blinds, plugs, anything with an
         // on/off-style command) declared alongside the sensor fields above.
-        val controls: List<ControlConfig> = emptyList()
+        val controls: List<ControlConfig> = emptyList(),
+        // Optional. Epoch-millis timestamp of when [groupOrder]/[panelOrders]
+        // (and controls' own per-item order) were last intentionally set - the
+        // app stamps this itself whenever a cluster/panel drag-reorder writes a
+        // new order back to this payload. Lets DeviceAutoConfigManager tell a
+        // genuinely newer order (e.g. pushed moments ago from another phone
+        // sharing this broker) apart from a stale retained redelivery of an
+        // older payload, so reconciling doesn't clobber a more recent reorder
+        // with an out-of-date one. Missing on payloads no app has ever written
+        // an order to (e.g. a hand-authored one) - treated as "no order
+        // authority", so the order already applied locally is left alone.
+        val orderVersion: Long? = null
     )
 
     /** One toggle-style control declared in a device's "/app" payload's "controls" array. */
@@ -126,12 +138,21 @@ object SensorDiscovery {
      * (keyed by sensor field name, matching a "panels" array entry, or by
      * control label, matching a "controls" array entry's "label"). Everything
      * else in the payload (name, group, labels, on/off payloads, etc.) passes
-     * through completely unchanged. Returns null if the payload isn't a JSON
-     * object, so a manual reorder of auto-configured panels can push its new
-     * order back to the device's own retained config without ever having to
+     * through completely unchanged. Also stamps "order_version" with
+     * [orderVersion] (an epoch-millis publish time) so that if this same
+     * broker is shared by more than one phone running this app, each one can
+     * tell this genuinely-newer order apart from a stale retained redelivery
+     * of an older payload when reconciling - see AutoConfiguredDevice.
+     * lastKnownOrderVersion. Returns null if the payload isn't a JSON object,
+     * so a manual reorder of auto-configured panels can push its new order
+     * back to the device's own retained config without ever having to
      * reconstruct the rest of that config from scratch.
      */
-    fun updateOrderingInAppPayload(currentPayload: String, orderByFieldOrLabel: Map<String, Int>): String? = try {
+    fun updateOrderingInAppPayload(
+        currentPayload: String,
+        orderByFieldOrLabel: Map<String, Int>,
+        orderVersion: Long
+    ): String? = try {
         val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
         if (obj == null) {
             null
@@ -163,6 +184,7 @@ object SensorDiscovery {
                 mutableFields["controls"] = JsonArray(updatedControls)
             }
 
+            mutableFields["order_version"] = JsonPrimitive(orderVersion)
             Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
         }
     } catch (_: Exception) {
@@ -170,21 +192,23 @@ object SensorDiscovery {
     }
 
     /**
-     * Rewrites a device's "/app" payload with just its "group_order" field
-     * updated - everything else (name, group, labels, panels, controls,
-     * etc.) passes through completely unchanged. Used when a cluster
-     * reorder shifts a device's relative position among its siblings within
-     * the same group, so the retained config a device's own firmware/script
-     * might later republish doesn't quietly revert the new arrangement.
-     * Returns null if the payload isn't a JSON object.
+     * Rewrites a device's "/app" payload with its "group_order" field updated
+     * (and "order_version" stamped to [orderVersion], an epoch-millis publish
+     * time - see updateOrderingInAppPayload's doc for why) - everything else
+     * (name, group, labels, panels, controls, etc.) passes through completely
+     * unchanged. Used when a cluster reorder shifts a device's relative
+     * position among its siblings within the same group, so a stale retained
+     * redelivery of this topic's older payload doesn't quietly revert the new
+     * arrangement. Returns null if the payload isn't a JSON object.
      */
-    fun updateGroupOrderInAppPayload(currentPayload: String, newGroupOrder: Int): String? = try {
+    fun updateGroupOrderInAppPayload(currentPayload: String, newGroupOrder: Int, orderVersion: Long): String? = try {
         val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
         if (obj == null) {
             null
         } else {
             val mutableFields = obj.toMutableMap()
             mutableFields["group_order"] = JsonPrimitive(newGroupOrder)
+            mutableFields["order_version"] = JsonPrimitive(orderVersion)
             Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
         }
     } catch (_: Exception) {
@@ -213,6 +237,7 @@ object SensorDiscovery {
             val panelOrders = panelOrdersArray?.map { (it as? JsonPrimitive)?.intOrNull } ?: emptyList()
             val panelDecimalsArray = obj["panel_decimals"] as? JsonArray
             val panelDecimals = panelDecimalsArray?.map { (it as? JsonPrimitive)?.intOrNull } ?: emptyList()
+            val orderVersion = (obj["order_version"] as? JsonPrimitive)?.longOrNull
             val numericKeys = obj.entries
                 .filter { (_, v) -> (v as? JsonPrimitive)?.doubleOrNull != null }
                 .map { it.key }
@@ -232,7 +257,8 @@ object SensorDiscovery {
                 panelClusters = panelClusters,
                 panelOrders = panelOrders,
                 panelDecimals = panelDecimals,
-                controls = controls
+                controls = controls,
+                orderVersion = orderVersion
             )
         }
     } catch (_: Exception) {

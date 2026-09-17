@@ -130,7 +130,19 @@ data class AutoConfiguredDevice(
     val lastAppliedPayload: String,
     // IDs of the panels this device currently owns, so a reconfigure can
     // cleanly remove the old set before adding the new one.
-    val createdPanelIds: List<String> = emptyList()
+    val createdPanelIds: List<String> = emptyList(),
+    // Highest "order_version" (a publish-time epoch-millis stamp) this phone
+    // has adopted for this device's group_order/panel_order - lets multiple
+    // phones sharing the same broker do last-writer-wins on cluster/panel
+    // drag-reorder instead of a race: reconciling this device's payload only
+    // adopts its group_order/panel_order for panels that already exist here
+    // when the incoming order_version is strictly newer than this. Without
+    // it, a stale retained redelivery of an older payload (e.g. from a
+    // reconnect, or another phone's now-superseded state) would silently
+    // undo a more recent reorder. Defaults to 0 so any versioned payload
+    // (every payload this app itself has ever published an order update to)
+    // is adopted the first time a phone sees it.
+    val lastKnownOrderVersion: Long = 0L
 )
 
 /**

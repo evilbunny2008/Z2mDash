@@ -670,8 +670,17 @@ private fun pushOrderUpdateIfAutoConfigured(
         key to index
     }.toMap()
 
-    val updatedPayload = SensorDiscovery.updateOrderingInAppPayload(currentPayload, orderByFieldOrLabel) ?: return
+    val orderVersion = System.currentTimeMillis()
+    val updatedPayload = SensorDiscovery.updateOrderingInAppPayload(currentPayload, orderByFieldOrLabel, orderVersion)
+        ?: return
     app.connectionManager.publish(device.brokerId, device.appConfigTopic, updatedPayload, retain = true)
+    // See the matching comment in pushGroupOrderUpdatesForClusters below - without
+    // this, the "#"-subscribed echo of our own publish (or a stale retained
+    // redelivery on any phone sharing this broker) could race
+    // DeviceAutoConfigManager into re-reconciling this exact change right back.
+    app.configRepository.markAutoConfiguredDevicePayloadApplied(
+        device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
+    )
 }
 
 /**
@@ -694,15 +703,35 @@ private fun pushGroupOrderUpdatesForClusters(
     val config = app.configRepository.config.value
     val payloads = app.connectionManager.latestPayloads.value
     val panelsByCluster = groupPanels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+    // One shared timestamp for every cluster this single drag touches, so a
+    // phone reconciling any of them later treats the whole batch as one
+    // logical write rather than racing itself between clusters.
+    val orderVersion = System.currentTimeMillis()
 
     orderedClusterKeys.forEachIndexed { index, clusterKey ->
         val clusterPanelIds = panelsByCluster[clusterKey]?.map { it.id }?.toSet() ?: return@forEachIndexed
         val device = config.autoConfiguredDevices.find { it.createdPanelIds.any { id -> id in clusterPanelIds } }
             ?: return@forEachIndexed
         val currentPayload = payloads["${device.brokerId}|${device.appConfigTopic}"] ?: return@forEachIndexed
-        val updatedPayload = SensorDiscovery.updateGroupOrderInAppPayload(currentPayload, index + 1)
+        val updatedPayload = SensorDiscovery.updateGroupOrderInAppPayload(currentPayload, index + 1, orderVersion)
             ?: return@forEachIndexed
         app.connectionManager.publish(device.brokerId, device.appConfigTopic, updatedPayload, retain = true)
+        // Since every broker is subscribed to "#", that publish echoes straight back
+        // to DeviceAutoConfigManager, which would otherwise see the payload change
+        // and reconcile it - normally fine (that's how another phone sharing this
+        // broker picks up the new order), but a *stale* retained redelivery of an
+        // older payload (e.g. from a reconnect, or another phone that hasn't caught
+        // up yet) could just as easily land here and clobber this fresher reorder.
+        // Pre-marking the payload as applied, with this order_version, means:
+        // this exact echo is recognised as already up to date and skipped, and any
+        // later payload with an older/missing order_version is recognised as stale
+        // and ignored - while a genuinely newer order_version (a real subsequent
+        // reorder, from this phone or another one) still gets adopted normally. See
+        // DeviceAutoConfigManager.reconcileKnownDevices/AutoConfiguredDevice.
+        // lastKnownOrderVersion.
+        app.configRepository.markAutoConfiguredDevicePayloadApplied(
+            device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
+        )
     }
 }
 
