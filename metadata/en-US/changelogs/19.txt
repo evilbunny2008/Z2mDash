@@ -3,3 +3,5 @@
 - Reordering clusters/panels now properly syncs across every phone connected to the same broker, instead of only applying on the phone you dragged on
 - Added "Import via code" on the Add Broker screen: shows a code/QR that lets you securely receive a saved broker's settings from mx3launcher.odiousapps.com, instead of typing them by hand - only the hostname is required, everything else (protocol, port, auth, base topic, and more) is optional and defaults to the app's own normal defaults
 - Added an "Auto-Accept Discovered Devices" setting per broker, to skip the accept/ignore prompt for newly-seen devices and add their group/clusters/panels immediately
+- Fixed deleting a broker leaving its panels and tracked devices behind - re-adding that broker afterwards (by hand or via import) could double up every cluster instead of just reconnecting to the same one
+- Added a "Clean Up Orphaned Data" option in Settings (only shown when there's something to clean) to remove any panels left over from a broker deleted before the above fix

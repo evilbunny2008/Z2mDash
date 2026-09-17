@@ -85,11 +85,52 @@ class ConfigRepository(private val context: Context) {
         // clear both so the Home screen doesn't keep showing stale "add/ignore"
         // banners (or silently remembering a dismissal) for a broker that no longer exists.
         val prefix = "$id|"
+        // A deleted broker takes its own panels and auto-config tracking with
+        // it too - without this, they'd linger tagged with a brokerId nothing
+        // references any more. That used to bite hardest on exactly the
+        // sequence that looks most natural (delete a broker, then re-add it,
+        // whether by hand or via a credential import): the new broker gets a
+        // fresh random id, so every "<topic>/app" looks brand new again and
+        // gets rebuilt right alongside the still-present orphaned originals -
+        // every cluster ending up with double the tiles it should have.
+        val updatedGroups = cfg.groups.map { g -> g.copy(panels = g.panels.filterNot { it.brokerId == id }) }
         cfg.copy(
             brokers = cfg.brokers.filterNot { it.id == id },
+            groups = updatedGroups,
+            autoConfiguredDevices = cfg.autoConfiguredDevices.filterNot { it.brokerId == id },
             pendingAutoConfigDevices = cfg.pendingAutoConfigDevices.filterNot { it.brokerId == id },
             ignoredAppConfigTopics = cfg.ignoredAppConfigTopics.filterNot { it.startsWith(prefix) }
         )
+    }
+
+    /**
+     * Removes any panel/auto-config tracking left tagged with a brokerId
+     * that no longer matches any configured broker - a broker deleted
+     * before this cleanup was added to deleteBroker() itself left exactly
+     * this behind (see that function's own comment). Safe to call any
+     * time; a no-op if there's nothing orphaned. Returns how many panels
+     * were removed, so a caller can show what it actually did.
+     */
+    fun pruneOrphanedBrokerData(): Int {
+        var removedCount = 0
+        update { cfg ->
+            // Reset on every invocation, not just the first - update()'s
+            // underlying StateFlow.update retries this transform on a
+            // concurrent write, and without resetting, a retry would double
+            // (or more) count rather than reflect just the call that actually won.
+            removedCount = 0
+            val brokerIds = cfg.brokers.map { it.id }.toSet()
+            val updatedGroups = cfg.groups.map { g ->
+                val kept = g.panels.filter { it.brokerId in brokerIds }
+                removedCount += g.panels.size - kept.size
+                g.copy(panels = kept)
+            }
+            cfg.copy(
+                groups = updatedGroups,
+                autoConfiguredDevices = cfg.autoConfiguredDevices.filter { it.brokerId in brokerIds }
+            )
+        }
+        return removedCount
     }
 
     fun upsertGroup(group: PanelGroup) = update { cfg ->
