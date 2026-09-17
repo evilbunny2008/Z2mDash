@@ -1,1 +1,1 @@
-- Added a "Blink Warnings" setting, covering both the "last seen" stale-data indicator and out-of-range sensor tile alerts - pulse (default) or stay a static color, your choice
+- Added a "Blink Warnings" setting for out-of-range sensor tile alerts (moisture, humidity, etc.) - pulse (default) or stay a static color, your choice. The "last seen" stale-data indicator stays a flat color regardless, since blinking there wasn't noticeable enough to be worth it

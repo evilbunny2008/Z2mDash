@@ -59,7 +59,7 @@ fun SettingsScreen(navController: NavController) {
             item {
                 ListItem(
                     headlineContent = { Text("Blink Warnings") },
-                    supportingContent = { Text("Pulse the stale-data \"last seen\" warning and out-of-range sensor tiles, instead of a static color") },
+                    supportingContent = { Text("Pulse out-of-range sensor tile alerts, instead of a static color") },
                     leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },
                     trailingContent = {
                         Switch(

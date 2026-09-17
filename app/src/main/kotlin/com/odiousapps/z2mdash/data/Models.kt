@@ -182,10 +182,13 @@ data class AppConfig(
     // access to the app's own private storage could already read those, so
     // this doesn't meaningfully change the app's existing threat model.
     val rememberedExportPassword: String? = null,
-    // Governs two separate warning indicators: the red "stale data" text/
-    // icon/border on a cluster (last update over an hour ago), and the red/
-    // blue flash on an individual sensor tile whose value has drifted
-    // outside its configured ideal range. When false, both still show their
-    // warning color, just static rather than pulsing. Defaults to on.
+    // Governs the red/blue flash on an individual sensor tile whose value
+    // has drifted outside its configured ideal range. The stale-data
+    // indicator on cluster cards is deliberately NOT controlled by this -
+    // it was previously blink-capable too, but was found not noticeable
+    // enough to be worth the flicker and is now always a flat static color
+    // regardless of this setting. When false, an out-of-range tile still
+    // shows its warning color, just static rather than pulsing. Defaults
+    // to on.
     val staleDataBlinkEnabled: Boolean = true
 )
