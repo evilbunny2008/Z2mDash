@@ -29,7 +29,16 @@ data class Broker(
     // Scopes the app's automatic "#" discovery/watch subscription to
     // "<baseTopic>/#" instead of the entire broker - most people only ever
     // want their Zigbee2MQTT namespace, not every topic on a shared broker.
-    val baseTopic: String = "zigbee2mqtt"
+    val baseTopic: String = "zigbee2mqtt",
+    // When on, a newly-seen "<topic>/app" on this broker gets its
+    // group/clusters/panels created immediately (DeviceAutoConfigManager),
+    // same as tapping "Add" on the Home screen's pending-device banner -
+    // instead of the default of prompting for each one. Off by default so
+    // an unfamiliar broker's traffic doesn't populate the dashboard without
+    // asking first; worth turning on for a broker you already trust to only
+    // publish "/app" configs you want. Settable via a credential import's
+    // "AutoAccept" field - see CredentialImportDialog.
+    val autoAcceptDiscoveredDevices: Boolean = false
 )
 
 @Serializable

@@ -338,6 +338,20 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                         onCheckedChange = { broker = broker.copy(showReconnectionStatus = it) }
                     )
                 }
+                Spacer(Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Auto-Accept Discovered Devices")
+                        Text(
+                            "Add a newly-seen device's group/clusters/panels immediately, instead of prompting to accept each one",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    Switch(
+                        checked = broker.autoAcceptDiscoveredDevices,
+                        onCheckedChange = { broker = broker.copy(autoAcceptDiscoveredDevices = it) }
+                    )
+                }
             }
 
             if (existing != null) {
@@ -373,15 +387,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     if (showImportDialog) {
         CredentialImportDialog(
             onImported = { fields ->
-                val username = fields["Username"]
-                val password = fields["Password"]
-                broker = broker.copy(
-                    host = fields["Hostname"].orEmpty(),
-                    protocol = importedProtocol(fields["Protocol"]) ?: broker.protocol,
-                    authEnabled = !username.isNullOrBlank() || !password.isNullOrBlank(),
-                    username = username.orEmpty(),
-                    password = password.orEmpty()
-                )
+                broker = applyImportedFields(broker, fields)
                 showImportDialog = false
             },
             onDismiss = { showImportDialog = false }
@@ -409,6 +415,13 @@ private fun importedProtocol(value: String?): MqttProtocol? = when (value?.trim(
     "MQTTS" -> MqttProtocol.SSL
     "WS" -> MqttProtocol.WS
     "WSS" -> MqttProtocol.WSS
+    else -> null
+}
+
+/** Null for a missing/unrecognised "AutoAccept" field, so the caller can fall back to the existing value. */
+private fun importedBoolean(value: String?): Boolean? = when (value?.trim()?.lowercase()) {
+    "true", "yes", "1" -> true
+    "false", "no", "0" -> false
     else -> null
 }
 
