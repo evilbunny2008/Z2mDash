@@ -14,6 +14,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.Key
@@ -67,13 +68,50 @@ fun Modifier.onDpadSelect(onClick: () -> Unit): Modifier = onPreviewKeyEvent { e
     }
 }
 
+/**
+ * Escape hatch for a focused single-line text field on TV. Handles two separate, both-confirmed
+ * gaps:
+ *
+ * 1. Back: forces focus to clear (see the `force = true` comment below). This alone isn't enough
+ *    on its own, though - when the on-screen keyboard is actually showing, Android's IME consumes
+ *    the FIRST Back press itself to dismiss the keyboard, and that press never even reaches this
+ *    handler; it only takes effect on a second, separate Back press once the keyboard is already
+ *    gone. That's an OS-level behavior this modifier can't intercept earlier than this.
+ * 2. Up/Down: moves focus directly, unconditionally, on the very first press - a single-line text
+ *    field has no legitimate use for vertical cursor movement, so there's no ambiguity to worry
+ *    about here (unlike Left/Right, which Compose's own built-in TV text field handling already
+ *    uses to move the cursor before eventually handing off focus once it reaches the field's
+ *    edge). Added as a deterministic, always-works alternative after a report that focus could
+ *    still feel "stuck" with no reliable way out even after the Back fix above - Up/Down doesn't
+ *    depend on the IME's own Back-consuming behavior at all, so it works the same whether the
+ *    keyboard is currently showing or not.
+ */
 fun Modifier.clearFocusOnBack(): Modifier = composed {
     val focusManager = LocalFocusManager.current
     onPreviewKeyEvent { event ->
-        if (event.type == KeyEventType.KeyDown && event.key == Key.Back) {
-            focusManager.clearFocus()
+        if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+        when (event.key) {
+            Key.Back -> {
+                // force = true is not optional here - FocusManager.clearFocus()'s own docs say a
+                // text field with an active IME action can specifically refuse to give up focus
+                // unless forced (to let the user finish that action first). Without it,
+                // clearFocus() was a silent no-op exactly whenever the on-screen keyboard had
+                // actually been used, which is the one time this modifier's whole reason for
+                // existing actually matters - confirmed as the cause of a real "focus is stuck on
+                // this text field, no D-pad button does anything" report on-device.
+                focusManager.clearFocus(force = true)
+                false
+            }
+            Key.DirectionUp -> {
+                focusManager.moveFocus(FocusDirection.Up)
+                true
+            }
+            Key.DirectionDown -> {
+                focusManager.moveFocus(FocusDirection.Down)
+                true
+            }
+            else -> false
         }
-        false
     }
 }
 
