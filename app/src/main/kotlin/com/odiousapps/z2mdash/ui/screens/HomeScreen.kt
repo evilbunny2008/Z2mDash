@@ -1064,21 +1064,35 @@ private fun ClusterCard(
                 // that's momentarily far too narrow for it. This doesn't fix whatever causes the
                 // width itself to collapse, but it does mean that if it ever happens again the
                 // name just truncates with "…" instead of turning into that vertical artifact.
+                // Floored well above tileScale's own range (which can go well under 0.5 at the
+                // smallest tile width) - a cluster's caption is a heading read once for the whole
+                // row of tiles below it, not per-tile decoration, so it shouldn't shrink as
+                // aggressively as the tiles themselves do before it stops being legible. Still
+                // shrinks some at small tile widths, just not all the way down with them.
+                val captionScale = tileScale.coerceAtLeast(0.85f)
                 Text(
                     name,
-                    style = MaterialTheme.typography.titleSmall,
+                    // Scaled the same way (fontSize AND lineHeight, not just fontSize - see
+                    // SensorTile's own comment on why lineHeight can't be left out) as every
+                    // tile's own text, so the cluster caption shrinks right along with its tiles
+                    // instead of staying phone-sized above a much smaller row of them.
+                    style = MaterialTheme.typography.titleSmall.copy(
+                        fontSize = MaterialTheme.typography.titleSmall.fontSize * captionScale,
+                        lineHeight = MaterialTheme.typography.titleSmall.lineHeight * captionScale
+                    ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = false
                 )
                 if (ageText != null) {
+                    val ageTextStyle = MaterialTheme.typography.labelSmall.copy(
+                        fontSize = MaterialTheme.typography.labelSmall.fontSize * captionScale,
+                        lineHeight = MaterialTheme.typography.labelSmall.lineHeight * captionScale,
+                        fontWeight = if (isStale) FontWeight.Bold else MaterialTheme.typography.labelSmall.fontWeight
+                    )
                     Text(
                         " \u2022 $ageText",
-                        style = if (isStale) {
-                            MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold)
-                        } else {
-                            MaterialTheme.typography.labelSmall
-                        },
+                        style = ageTextStyle,
                         color = staleIndicatorColor
                     )
                     if (isStale) {
