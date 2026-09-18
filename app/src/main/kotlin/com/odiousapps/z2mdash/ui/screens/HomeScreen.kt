@@ -30,6 +30,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -38,6 +39,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -72,10 +74,12 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.AppConfig
 import com.odiousapps.z2mdash.data.AutoConfiguredDevice
+import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
+import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
@@ -117,10 +121,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val targetGroupId = scrollToGroupId ?: return@LaunchedEffect
         val groupIndex = config.groups.indexOfFirst { it.id == targetGroupId }
         if (groupIndex >= 0) {
-            // Pending-device banners occupy LazyColumn items ahead of the
-            // groups, so the target index needs to account for however many
-            // are currently showing.
-            listState.requestScrollToItem(config.pendingAutoConfigDevices.size + groupIndex)
+            // The permit-join banner (one per broker) and pending-device banners
+            // both occupy LazyColumn items ahead of the groups, so the target
+            // index needs to account for however many are currently showing.
+            listState.requestScrollToItem(config.brokers.size + config.pendingAutoConfigDevices.size + groupIndex)
         }
         backStackEntry.savedStateHandle.set<String?>("scrollToGroupId", null)
     }
@@ -254,6 +258,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             // doesn't reserve space for itself otherwise.
             contentPadding = PaddingValues(bottom = 96.dp)
         ) {
+            items(config.brokers, key = { "permitJoin_${it.id}" }) { broker ->
+                PermitJoinItem(
+                    app = app,
+                    broker = broker,
+                    showBrokerName = config.brokers.size > 1,
+                    payloadsState = payloadsState,
+                    nowMillisState = nowMillisState
+                )
+            }
             items(config.pendingAutoConfigDevices, key = { "${it.brokerId}|${it.appConfigTopic}" }) { pending ->
                 PendingDeviceBanner(
                     pending = pending,
@@ -1277,6 +1290,72 @@ private fun addPendingDevice(
 
 /** A dismissible card prompting the user to accept or ignore a newly-detected auto-config device. */
 @Composable
+/**
+ * One broker's own item in HomeScreen's LazyColumn - does its own narrowly-scoped
+ * derivedStateOf read of payloadsState/nowMillisState (same reasoning as ClusterCard/PanelTile
+ * below), so the once-a-second countdown tick only recomposes this one row instead of the whole
+ * screen.
+ */
+@Composable
+private fun PermitJoinItem(
+    app: Z2mDashApplication,
+    broker: Broker,
+    showBrokerName: Boolean,
+    payloadsState: State<Map<String, String>>,
+    nowMillisState: State<Long>
+) {
+    val baseTopicNormalized = remember(broker.baseTopic) { PermitJoin.normalizedBaseTopic(broker.baseTopic) }
+    val status by remember(broker.id, baseTopicNormalized) {
+        derivedStateOf { PermitJoin.status(payloadsState.value, broker.id, baseTopicNormalized, nowMillisState.value) }
+    }
+    PermitJoinBanner(
+        brokerName = broker.name,
+        showBrokerName = showBrokerName,
+        status = status,
+        onToggle = { enabled ->
+            val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
+            app.connectionManager.publish(broker.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
+        }
+    )
+}
+
+@Composable
+private fun PermitJoinBanner(
+    brokerName: String,
+    showBrokerName: Boolean,
+    status: PermitJoin.Status,
+    onToggle: (Boolean) -> Unit
+) {
+    Surface(
+        modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
+        shape = RoundedCornerShape(12.dp),
+        tonalElevation = 2.dp
+    ) {
+        Row(
+            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Icon(Icons.Default.WifiTethering, contentDescription = null)
+            Spacer(Modifier.width(12.dp))
+            Column(Modifier.weight(1f)) {
+                Text(
+                    if (showBrokerName) "Permit Join – $brokerName" else "Permit Join",
+                    style = MaterialTheme.typography.titleSmall
+                )
+                Text(
+                    if (status.isOn) {
+                        "Open for ${PermitJoin.formatRemaining(status.remainingSeconds)} more"
+                    } else {
+                        "Off – new Zigbee devices can't join"
+                    },
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
+            Switch(checked = status.isOn, onCheckedChange = onToggle)
+        }
+    }
+}
+
 private fun PendingDeviceBanner(
     pending: PendingAutoConfigDevice,
     onAdd: () -> Unit,

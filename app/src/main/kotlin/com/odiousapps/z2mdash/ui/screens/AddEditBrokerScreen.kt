@@ -39,6 +39,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,17 +55,16 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Broker
-import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.MqttProtocol
+import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
-import kotlinx.serialization.json.put
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -386,7 +386,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 var nowMillis by remember { mutableStateOf(System.currentTimeMillis()) }
                 LaunchedEffect(Unit) {
                     while (true) {
-                        delay(1_000)
+                        delay(1_000L)
                         nowMillis = System.currentTimeMillis()
                     }
                 }
