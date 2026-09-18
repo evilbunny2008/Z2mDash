@@ -42,12 +42,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -122,18 +123,32 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         }
         backStackEntry.savedStateHandle.set<String?>("scrollToGroupId", null)
     }
-    val payloads by app.connectionManager.latestPayloads.collectAsState()
-    val timestamps by app.connectionManager.latestPayloadTimestamps.collectAsState()
+    // Deliberately NOT unwrapped via "by" here - HomeScreen's own composable body never reads
+    // .value directly, only passes the State object itself down to PanelTile/ClusterCard, each of
+    // which does its own narrowly-scoped derivedStateOf read (see PanelTile/ClusterCard below).
+    // Reading .value at this level (the old "by ...collectAsState()" pattern) would subscribe
+    // HomeScreen's entire composable scope - and by extension every tile's call site inside it -
+    // to EVERY incoming MQTT message on EVERY topic, since latestPayloads is one big shared map
+    // whose identity changes on every single message: with the previous pattern, one temperature
+    // sensor reporting recomposed literally every tile on the whole dashboard, not just its own.
+    val payloadsState = app.connectionManager.latestPayloads.collectAsState()
+    val timestampsState = app.connectionManager.latestPayloadTimestamps.collectAsState()
 
     // Ticks every second so "N seconds ago" counts up smoothly and resets the
     // moment a fresh MQTT message (or last_seen field) actually arrives - the
     // ageText computation below always re-derives from whichever timestamp is
     // most recent, so a new message naturally overrides a stale running count.
-    var nowMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    //
+    // Kept as a State object (not unwrapped via "by" here) for the same reason as
+    // payloadsState/timestampsState above - passed down as-is so each ClusterCard's own
+    // derivedStateOf can read .value itself, rather than HomeScreen's own recomposition scope
+    // (and everything under it) re-running every single second regardless of whether any
+    // cluster's displayed age text actually changed that second.
+    val nowMillisState = remember { mutableStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
         while (true) {
             delay(1_000.milliseconds)
-            nowMillis = System.currentTimeMillis()
+            nowMillisState.value = System.currentTimeMillis()
         }
     }
 
@@ -200,6 +215,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val proportionalWidth = (referenceWidthDp - groupHorizontalPadding - gapsBetweenColumns) / columnsPerRow
         minOf(proportionalWidth, config.tileWidthDp.dp)
     }
+    // Scales each tile's text/icon/height/padding proportionally to how wide it's actually
+    // rendering (not just the raw slider setting - this tracks standaloneTileWidth itself, so it
+    // stays correct even when the proportional cap above kicks in on a narrow screen). 110dp -
+    // AppConfig.tileWidthDp's own default - is the baseline that maps to scale=1f (today's normal
+    // phone/tablet sizing); a tile shrunk for TV (more tiles need to fit on screen, and reading
+    // distance makes full phone-sized text unnecessary there) scales everything down together
+    // instead of keeping phone-sized text/icons packed into a visibly smaller box.
+    val tileScale = standaloneTileWidth / 110.dp
 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -234,7 +257,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 PendingDeviceBanner(
                     pending = pending,
                     onAdd = {
-                        addPendingDevice(app, config, payloads, pending)
+                        addPendingDevice(app, config, payloadsState.value, pending)
                         // Both actions mean the user has already handled this
                         // prompt via the in-app banner, so the matching system
                         // notification (posted with the same deviceName-based
@@ -420,7 +443,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         // FlowRow's own wrapping - computed directly against each item's
                         // known width, so multiple clusters land on the same row whenever
                         // they actually fit, on any screen size or orientation.
-                        val clusterCardWidth = standaloneTileWidth * columnsPerRow + 8.dp * (columnsPerRow - 1)
+                        // + 16.dp accounts for ClusterCard's own Modifier.padding(8.dp) around its
+                        // Row of tiles (8dp each side) - without it, this card width matched the
+                        // Row's own content width exactly, leaving no room for that padding once
+                        // laid out inside it. The Row still claimed its full (unpadded) width
+                        // regardless, so it silently overflowed the card by 16dp and got clipped
+                        // on the right by the card's rounded-corner shape - cutting into the
+                        // rightmost (3rd) column's tile specifically, while columns 1-2 stayed
+                        // fully visible.
+                        val clusterCardWidth = standaloneTileWidth * columnsPerRow + 8.dp * (columnsPerRow - 1) + 16.dp
                         val availableRowWidth = screenWidthDp - 24.dp
                         val packedRows = remember(orderedClusters, standaloneTileWidth, availableRowWidth) {
                             val rows = mutableListOf<MutableList<List<Panel>>>()
@@ -464,9 +495,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 PanelTile(
                                                     panel = panelsInCluster.first(),
                                                     groupId = group.id,
-                                                    payloads = payloads,
+                                                    payloadsState = payloadsState,
                                                     app = app,
                                                     navController = navController,
+                                                    tileScale = tileScale,
                                                     modifier = Modifier.width(standaloneTileWidth)
                                                 )
                                             } else {
@@ -474,13 +506,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     name = name,
                                                     panels = panelsInCluster,
                                                     groupId = group.id,
-                                                    payloads = payloads,
-                                                    timestamps = timestamps,
-                                                    nowMillis = nowMillis,
+                                                    payloadsState = payloadsState,
+                                                    timestampsState = timestampsState,
+                                                    nowMillisState = nowMillisState,
                                                     app = app,
                                                     navController = navController,
                                                     columns = columnsPerRow,
                                                     tileWidth = standaloneTileWidth,
+                                                    tileScale = tileScale,
                                                     onDelete = {
                                                         pendingClusterDelete = PendingClusterDelete(
                                                             groupId = group.id,
@@ -744,13 +777,14 @@ private fun ClusterCard(
     name: String,
     panels: List<Panel>,
     groupId: String,
-    payloads: Map<String, String>,
-    timestamps: Map<String, Long>,
-    nowMillis: Long,
+    payloadsState: State<Map<String, String>>,
+    timestampsState: State<Map<String, Long>>,
+    nowMillisState: State<Long>,
     app: Z2mDashApplication,
     navController: NavController,
     columns: Int,
     tileWidth: Dp,
+    tileScale: Float,
     onDelete: () -> Unit,
     // Cross-cluster drag-to-reorder state/gesture-handling lives one level up
     // (in the group section, which can see every cluster at once) and gets
@@ -762,46 +796,60 @@ private fun ClusterCard(
     isDraggingCluster: Boolean = false,
     isClusterDropTarget: Boolean = false
 ) {
-    val (ageText, isStale) = remember(panels, payloads, timestamps, nowMillis) {
-        fun topicFor(panel: Panel): String? = when (panel) {
-            is Panel.Sensor -> panel.topic
-            is Panel.Toggle -> panel.stateTopic.takeIf { it.isNotBlank() }
-            // No meaningful state to track age from - a momentary command has
-            // nothing to have "last reported" a value for.
-            is Panel.Button -> null
-        }
+    // A single long-lived derivedStateOf (not recreated every recomposition, since panels is the
+    // only remember() key - payloads/timestamps/now are all read from their State objects inside
+    // the lambda itself) so its own equality check can actually do its job: this cluster's
+    // ageText/isStale only propagates a recomposition to whatever reads it below when the
+    // COMPUTED result changes - not on every unrelated topic's MQTT message elsewhere on the
+    // dashboard, and not on every single nowMillisState tick when the relative-time string
+    // happens to read the same as last second (e.g. "2 hours ago" doesn't change every second).
+    val ageState = remember(panels) {
+        derivedStateOf {
+            fun topicFor(panel: Panel): String? = when (panel) {
+                is Panel.Sensor -> panel.topic
+                is Panel.Toggle -> panel.stateTopic.takeIf { it.isNotBlank() }
+                // No meaningful state to track age from - a momentary command has
+                // nothing to have "last reported" a value for.
+                is Panel.Button -> null
+            }
 
-        // Prefer the device's own reported time (Zigbee2MQTT's "last_seen" field)
-        // over our app's receipt time - it reflects when the device itself last
-        // reported in, not just when this app instance happened to receive a
-        // message (which can be bumped by things unrelated to real freshness,
-        // like a broker redelivering a retained message on resubscribe).
-        val deviceReportedTimestamps = panels.mapNotNull { panel ->
-            val topic = topicFor(panel) ?: return@mapNotNull null
-            payloads["${panel.brokerId}|$topic"]
-                ?.let { JsonPath.extract(it, "last_seen") }
-                ?.let { JsonPath.parseIso8601(it) }
-        }
+            val payloads = payloadsState.value
+            val timestamps = timestampsState.value
+            val nowMillis = nowMillisState.value
 
-        // Only fall back to receipt time if NONE of this cluster's panels have a
-        // genuine last_seen anywhere - otherwise a config-only topic without one
-        // (like the device's own "/app" topic) could drag the cluster's displayed
-        // freshness down just because its unrelated topic happened to update.
-        val latestTimestamp = if (deviceReportedTimestamps.isNotEmpty()) {
-            deviceReportedTimestamps.max()
-        } else {
-            panels.mapNotNull { panel ->
+            // Prefer the device's own reported time (Zigbee2MQTT's "last_seen" field)
+            // over our app's receipt time - it reflects when the device itself last
+            // reported in, not just when this app instance happened to receive a
+            // message (which can be bumped by things unrelated to real freshness,
+            // like a broker redelivering a retained message on resubscribe).
+            val deviceReportedTimestamps = panels.mapNotNull { panel ->
                 val topic = topicFor(panel) ?: return@mapNotNull null
-                timestamps["${panel.brokerId}|$topic"]
-            }.maxOrNull()
-        }
+                payloads["${panel.brokerId}|$topic"]
+                    ?.let { JsonPath.extract(it, "last_seen") }
+                    ?.let { JsonPath.parseIso8601(it) }
+            }
 
-        latestTimestamp?.let {
-            val text = DateUtils.getRelativeTimeSpanString(it, nowMillis, DateUtils.SECOND_IN_MILLIS).toString()
-            val stale = (nowMillis - it) > 60 * 60 * 1000L // more than 1 hour
-            text to stale
-        } ?: (null to false)
+            // Only fall back to receipt time if NONE of this cluster's panels have a
+            // genuine last_seen anywhere - otherwise a config-only topic without one
+            // (like the device's own "/app" topic) could drag the cluster's displayed
+            // freshness down just because its unrelated topic happened to update.
+            val latestTimestamp = if (deviceReportedTimestamps.isNotEmpty()) {
+                deviceReportedTimestamps.max()
+            } else {
+                panels.mapNotNull { panel ->
+                    val topic = topicFor(panel) ?: return@mapNotNull null
+                    timestamps["${panel.brokerId}|$topic"]
+                }.maxOrNull()
+            }
+
+            latestTimestamp?.let {
+                val text = DateUtils.getRelativeTimeSpanString(it, nowMillis, DateUtils.SECOND_IN_MILLIS).toString()
+                val stale = (nowMillis - it) > 60 * 60 * 1000L // more than 1 hour
+                text to stale
+            } ?: (null to false)
+        }
     }
+    val (ageText, isStale) = ageState.value
 
     // Drag-to-reorder state, local to this one cluster card. Long-press
     // directly on a tile starts the drag (via detectDragGesturesAfterLongPress
@@ -876,9 +924,10 @@ private fun ClusterCard(
                             PanelTile(
                                 panel = panel,
                                 groupId = groupId,
-                                payloads = payloads,
+                                payloadsState = payloadsState,
                                 app = app,
                                 navController = navController,
+                                tileScale = tileScale,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .alpha(if (isDragging) 0.5f else 1f)
@@ -1008,83 +1057,108 @@ private fun ClusterCard(
     }
 }
 
+/** Output of [PanelTile]'s derived-state computation for a [Panel.Sensor] - see its own comment. */
+private data class SensorTileDerived(
+    val value: String,
+    val alert: SensorAlert,
+    val isPresenceField: Boolean,
+    val isPresent: Boolean
+)
+
 /** Renders a single Sensor or Toggle tile, wired up to its live payload and edit/toggle actions. */
 @Composable
 private fun PanelTile(
     panel: Panel,
     groupId: String,
-    payloads: Map<String, String>,
+    payloadsState: State<Map<String, String>>,
     app: Z2mDashApplication,
     navController: NavController,
+    tileScale: Float = 1f,
     modifier: Modifier = Modifier
 ) {
     val config by app.configRepository.config.collectAsState()
     when (panel) {
         is Panel.Sensor -> {
-            val raw = payloads["${panel.brokerId}|${panel.topic}"]
-            val extracted = raw?.let { JsonPath.extract(it, panel.jsonPath) }
-            // Zigbee2MQTT uses "occupancy" for PIR-based motion sensors and
-            // "presence" for mmWave/radar-based ones - both mean the same
-            // thing here (is someone currently detected), so both are
-            // treated identically rather than needing the user to know
-            // which convention their specific device uses.
-            val isPresenceField = panel.jsonPath.equals("occupancy", ignoreCase = true) ||
-                panel.jsonPath.equals("presence", ignoreCase = true)
-            val isPresent = extracted?.equals("true", ignoreCase = true) == true
-            // Only reformat genuinely numeric values - a non-numeric extracted
-            // value (e.g. a text state like "online") passes through as-is,
-            // since rounding only makes sense for actual measurements.
-            // Presence/occupancy fields get their own dedicated label instead
-            // of a raw "true"/"false", with the icon itself carrying the
-            // detected-or-not state visually.
-            val value = when {
-                isPresenceField -> if (extracted != null) { if (isPresent) "Detected" else "Clear" } else "--"
-                extracted != null -> extracted.toDoubleOrNull()?.let { num -> "%.${panel.decimals}f".format(num) } ?: extracted
-                else -> "--"
-            }
-            val alert = if (panel.idealRangeTopic.isBlank()) {
-                SensorAlert.NONE
-            } else {
-                // Deliberately reparses the original extracted text, not the
-                // now-rounded display value - comparing against a rounded
-                // number could misclassify a borderline reading (e.g. a true
-                // 45.4 rounding to "45" and appearing further from a 45.5
-                // threshold than it actually is).
-                val numericValue = extracted?.toDoubleOrNull()
-                val idealRaw = payloads["${panel.brokerId}|${panel.idealRangeTopic}"]
-                val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
-                val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
-                when {
-                    numericValue == null -> SensorAlert.NONE
-                    min != null && numericValue < min -> SensorAlert.BELOW_MIN
-                    max != null && numericValue > max -> SensorAlert.ABOVE_MAX
-                    min != null || max != null -> SensorAlert.IN_RANGE
-                    else -> SensorAlert.NONE
+            // A single long-lived derivedStateOf, same reasoning as ClusterCard's ageState above -
+            // this tile only actually recomposes when ITS OWN computed value/alert/presence changes,
+            // not on every MQTT message for every other topic on the dashboard (which is what
+            // reading payloadsState.value directly and unconditionally, as this used to, caused).
+            val derived by remember(panel) {
+                derivedStateOf {
+                    val payloads = payloadsState.value
+                    val raw = payloads["${panel.brokerId}|${panel.topic}"]
+                    val extracted = raw?.let { JsonPath.extract(it, panel.jsonPath) }
+                    // Zigbee2MQTT uses "occupancy" for PIR-based motion sensors and
+                    // "presence" for mmWave/radar-based ones - both mean the same
+                    // thing here (is someone currently detected), so both are
+                    // treated identically rather than needing the user to know
+                    // which convention their specific device uses.
+                    val isPresenceField = panel.jsonPath.equals("occupancy", ignoreCase = true) ||
+                        panel.jsonPath.equals("presence", ignoreCase = true)
+                    val isPresent = extracted?.equals("true", ignoreCase = true) == true
+                    // Only reformat genuinely numeric values - a non-numeric extracted
+                    // value (e.g. a text state like "online") passes through as-is,
+                    // since rounding only makes sense for actual measurements.
+                    // Presence/occupancy fields get their own dedicated label instead
+                    // of a raw "true"/"false", with the icon itself carrying the
+                    // detected-or-not state visually.
+                    val value = when {
+                        isPresenceField -> if (extracted != null) { if (isPresent) "Detected" else "Clear" } else "--"
+                        extracted != null -> extracted.toDoubleOrNull()?.let { num -> "%.${panel.decimals}f".format(num) } ?: extracted
+                        else -> "--"
+                    }
+                    val alert = if (panel.idealRangeTopic.isBlank()) {
+                        SensorAlert.NONE
+                    } else {
+                        // Deliberately reparses the original extracted text, not the
+                        // now-rounded display value - comparing against a rounded
+                        // number could misclassify a borderline reading (e.g. a true
+                        // 45.4 rounding to "45" and appearing further from a 45.5
+                        // threshold than it actually is).
+                        val numericValue = extracted?.toDoubleOrNull()
+                        val idealRaw = payloads["${panel.brokerId}|${panel.idealRangeTopic}"]
+                        val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
+                        val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
+                        when {
+                            numericValue == null -> SensorAlert.NONE
+                            min != null && numericValue < min -> SensorAlert.BELOW_MIN
+                            max != null && numericValue > max -> SensorAlert.ABOVE_MAX
+                            min != null || max != null -> SensorAlert.IN_RANGE
+                            else -> SensorAlert.NONE
+                        }
+                    }
+                    SensorTileDerived(value, alert, isPresenceField, isPresent)
                 }
             }
             SensorTile(
                 modifier = modifier,
                 icon = panel.icon,
-                value = value,
+                value = derived.value,
                 unit = panel.unit,
-                alert = alert,
+                alert = derived.alert,
                 label = panel.label,
                 blinkEnabled = config.staleDataBlinkEnabled,
-                iconTint = if (isPresenceField && isPresent) MaterialTheme.colorScheme.primary else null,
+                iconTint = if (derived.isPresenceField && derived.isPresent) MaterialTheme.colorScheme.primary else null,
+                scale = tileScale,
                 onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") }
             )
         }
 
         is Panel.Toggle -> {
-            val statePayload = payloads["${panel.brokerId}|${panel.stateTopic}"]
-            val resolvedState = statePayload?.let { JsonPath.extract(it, panel.stateJsonPath) }
-            // onPayload might be a whole JSON command like {"state":"OPEN"}, not
-            // just the bare value the state topic reports back - pull the same
-            // field back out of it (via the same stateJsonPath) to get a fair
-            // comparison. Falls back to the raw onPayload string for simple
-            // non-JSON commands like a bare "ON", where extraction fails.
-            val expectedOnValue = JsonPath.extract(panel.onPayload, panel.stateJsonPath) ?: panel.onPayload
-            val isOn = resolvedState != null && resolvedState.equals(expectedOnValue, ignoreCase = true)
+            // Same derivedStateOf reasoning as the Sensor branch above.
+            val isOn by remember(panel) {
+                derivedStateOf {
+                    val statePayload = payloadsState.value["${panel.brokerId}|${panel.stateTopic}"]
+                    val resolvedState = statePayload?.let { JsonPath.extract(it, panel.stateJsonPath) }
+                    // onPayload might be a whole JSON command like {"state":"OPEN"}, not
+                    // just the bare value the state topic reports back - pull the same
+                    // field back out of it (via the same stateJsonPath) to get a fair
+                    // comparison. Falls back to the raw onPayload string for simple
+                    // non-JSON commands like a bare "ON", where extraction fails.
+                    val expectedOnValue = JsonPath.extract(panel.onPayload, panel.stateJsonPath) ?: panel.onPayload
+                    resolvedState != null && resolvedState.equals(expectedOnValue, ignoreCase = true)
+                }
+            }
             ToggleTile(
                 modifier = modifier,
                 icon = panel.icon,
@@ -1097,6 +1171,7 @@ private fun PanelTile(
                         if (isOn) panel.offPayload else panel.onPayload
                     )
                 },
+                scale = tileScale,
                 onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") }
             )
         }
@@ -1107,6 +1182,7 @@ private fun PanelTile(
                 icon = panel.icon,
                 label = panel.label,
                 onPress = { app.connectionManager.publish(panel.brokerId, panel.commandTopic, panel.payload) },
+                scale = tileScale,
                 onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") }
             )
         }

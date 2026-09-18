@@ -210,4 +210,21 @@ class MqttConnectionManager(
             connect()
         }
     }
+
+    /**
+     * Disconnects every currently-known broker without forgetting them (unlike [applyConfig]'s
+     * own removal path, `connections`/`brokerById` are left populated) - a later [applyConfig]
+     * call (e.g. when the app returns to the foreground) reconnects and fully re-subscribes each
+     * one from scratch, since [MqttConnection.disconnect] clears its own subscribed-topics set
+     * and [MqttConnection.connect] is a no-op once already connected, making that resume-time
+     * call always safe regardless of whether this was actually invoked first.
+     *
+     * Used when the app is backgrounded and the user has "Background Work" turned off - without
+     * this, connections established in [com.odiousapps.z2mdash.Z2mDashApplication.onCreate] run
+     * for as long as the process happens to survive regardless of that setting, since nothing
+     * else in the app ever tears them down on its own.
+     */
+    fun disconnectAll() {
+        connections.values.forEach { it.disconnect() }
+    }
 }

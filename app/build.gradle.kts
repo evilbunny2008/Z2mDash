@@ -127,6 +127,10 @@ dependencies {
     implementation("androidx.core:core-ktx:1.19.0")
     implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
+    // ProcessLifecycleOwner - drives connect/disconnect off whether the app as a whole (not just
+    // one Activity) is actually foregrounded, so e.g. an Activity recreation on rotation doesn't
+    // get mistaken for the app being backgrounded. See Z2mDashApplication's lifecycle observer.
+    implementation("androidx.lifecycle:lifecycle-process:2.11.0")
 
     // XML theme resources (Theme.Material3.*) used by AndroidManifest, separate from
     // the Compose Material3 Kotlin artefact below.
