@@ -457,7 +457,8 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth().toggleableRow(permitJoinStatus.isOn, onPermitJoinToggle)
+                        modifier = Modifier.fillMaxWidth()
+                            .toggleableRow(permitJoinStatus.isOn, onCheckedChange = onPermitJoinToggle)
                     ) {
                         Column(Modifier.weight(1f)) {
                             Text("Permit Join", style = MaterialTheme.typography.titleMedium)

@@ -140,8 +140,16 @@ fun SensorTile(
             Spacer(Modifier.height(8.dp * scale))
             Text(
                 if (unit.isNotBlank()) "$value$unit" else value,
+                // lineHeight scaled right alongside fontSize - Material3's default typography
+                // styles specify an explicit lineHeight, which doesn't shrink on its own just
+                // because fontSize did. Left unscaled, each line of text kept reserving its
+                // original, full-size vertical space regardless of how small the tile actually
+                // shrank the glyphs themselves - confirmed via on-device measurement (a value
+                // text's own box was ~25dp tall at a scale where the font itself was only ~12sp)
+                // as the real source of a reported "spare space" complaint at small tile sizes.
                 style = MaterialTheme.typography.titleLarge.copy(
-                    fontSize = MaterialTheme.typography.titleLarge.fontSize * scale
+                    fontSize = MaterialTheme.typography.titleLarge.fontSize * scale,
+                    lineHeight = MaterialTheme.typography.titleLarge.lineHeight * scale
                 ),
                 textAlign = TextAlign.Center,
                 maxLines = 1,
@@ -156,7 +164,8 @@ fun SensorTile(
             Text(
                 label,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * scale
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * scale,
+                    lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * scale
                 ),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
@@ -211,7 +220,8 @@ fun ToggleTile(
             Text(
                 label,
                 style = MaterialTheme.typography.bodyMedium.copy(
-                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * scale
+                    fontSize = MaterialTheme.typography.bodyMedium.fontSize * scale,
+                    lineHeight = MaterialTheme.typography.bodyMedium.lineHeight * scale
                 ),
                 fontWeight = FontWeight.Medium,
                 textAlign = TextAlign.Center,
