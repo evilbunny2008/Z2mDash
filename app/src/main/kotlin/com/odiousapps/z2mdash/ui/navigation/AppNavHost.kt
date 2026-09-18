@@ -1,5 +1,7 @@
 package com.odiousapps.z2mdash.ui.navigation
 
+import androidx.compose.foundation.focusGroup
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
@@ -17,13 +19,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -61,6 +62,16 @@ private val bottomTabs = listOf(
     BottomTab("terminal", "Terminal", Icons.Default.Terminal),
     BottomTab("settings", "Settings", Icons.Default.Settings)
 )
+
+/**
+ * Set by [TvNavShell] on the FocusRequester attached to its content area (see that function's own
+ * comment) - lets [AppNavGraph] request focus specifically INTO the content area on navigating to
+ * a non-tab screen, rather than [androidx.compose.ui.focus.FocusManager.moveFocus] searching the
+ * whole composition from "nothing focused," which - confirmed on-device - could land back on the
+ * rail's own Home item (the very first focusable node in the whole tree, since the rail is
+ * composed before the content) instead of anything on the screen just navigated to.
+ */
+private val LocalTvContentFocusRequester = staticCompositionLocalOf<FocusRequester?> { null }
 
 @Composable
 fun AppNavHost() {
@@ -149,6 +160,12 @@ private fun TvNavShell(
         // moving focus right from here into the content area.
         val homeItemFocusRequester = remember { FocusRequester() }
         LaunchedEffect(Unit) { homeItemFocusRequester.requestFocus() }
+        // Given to AppNavGraph via LocalTvContentFocusRequester so it can request focus directly
+        // into this content area (via requestFocus()'s default Enter direction, which finds the
+        // first eligible focusable descendant of a focusGroup()) when landing on a non-tab route,
+        // rather than searching the whole composition from "nothing focused" - see that
+        // CompositionLocal's own comment for the confirmed bug this replaces.
+        val contentFocusRequester = remember { FocusRequester() }
         NavigationDrawer(
             drawerState = rememberDrawerState(DrawerValue.Closed),
             drawerContent = {
@@ -185,7 +202,11 @@ private fun TvNavShell(
                 }
             }
         ) {
-            content(Modifier)
+            CompositionLocalProvider(LocalTvContentFocusRequester provides contentFocusRequester) {
+                Box(Modifier.focusRequester(contentFocusRequester).focusGroup()) {
+                    content(Modifier)
+                }
+            }
         }
     }
 }
@@ -204,15 +225,20 @@ private fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
     // screen (Brokers, Add/Edit Broker, Discover, etc.) that isn't one of the 3 rail
     // destinations: confirmed on-device that without this, landing on a fresh screen left
     // nothing focused at all, so D-pad input was completely inert there too - not just "won't
-    // scroll," genuinely unusable. moveFocus(Next) from a "nothing focused" state falls back to
-    // focusing the first focusable element in composition order (typically the screen's own
-    // Back button), which is a sensible landing spot for any screen this general fix can't know
-    // the specifics of. Skipped for the 3 rail destinations themselves, which already get a more
-    // deliberate initial focus (the Home rail item) from TvNavShell above - this effect would
-    // otherwise race that one and could steal focus back off the rail.
+    // scroll," genuinely unusable. Requests focus directly into the content area (via
+    // LocalTvContentFocusRequester - see its own comment) rather than
+    // focusManager.moveFocus(FocusDirection.Next), which used to do this: moveFocus() searches
+    // the WHOLE composition from "nothing focused," and confirmed on-device, that could land back
+    // on the rail's own Home item - the very first focusable node in the whole tree, since the
+    // rail is composed before the content - instead of anything on the screen just navigated to
+    // (e.g. tapping "Alarm/Alert" from Settings landed focus back on the Home rail icon, which
+    // then visibly expanded, rather than on the Alarm/Alert screen's own Back button).
+    // Skipped for the 3 rail destinations themselves, which already get a more deliberate initial
+    // focus (the Home rail item) from TvNavShell above - this effect would otherwise race that
+    // one and could steal focus back off the rail.
     val isTv = LocalIsTv.current
     if (isTv) {
-        val focusManager = LocalFocusManager.current
+        val contentFocusRequester = LocalTvContentFocusRequester.current
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
         LaunchedEffect(backStackEntry?.id) {
@@ -224,7 +250,7 @@ private fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
             // the cause of a real "Home is shown as selected, but the remote acts like Terminal
             // has focus" report right after a cold start.
             if (currentRoute != null && bottomTabs.none { it.route == currentRoute }) {
-                focusManager.moveFocus(FocusDirection.Next)
+                contentFocusRequester?.requestFocus()
             }
         }
     }

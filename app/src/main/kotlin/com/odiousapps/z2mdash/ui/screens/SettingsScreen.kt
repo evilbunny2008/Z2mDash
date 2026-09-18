@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
+import com.odiousapps.z2mdash.ui.tv.horizontalSliderDpadFocusNav
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
 @Composable
@@ -110,7 +111,8 @@ fun SettingsScreen(navController: NavController) {
                                     app.configRepository.update { it.copy(tileWidthDp = newValue.toInt()) }
                                 },
                                 valueRange = minTileWidthDp..200f,
-                                steps = ((200f - minTileWidthDp) / 10f).toInt() - 1 // 10dp increments
+                                steps = ((200f - minTileWidthDp) / 10f).toInt() - 1, // 10dp increments
+                                modifier = Modifier.horizontalSliderDpadFocusNav()
                             )
                         }
                     },

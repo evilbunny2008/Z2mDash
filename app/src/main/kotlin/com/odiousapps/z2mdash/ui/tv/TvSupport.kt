@@ -78,6 +78,36 @@ fun Modifier.blockDirectionDown(): Modifier = onPreviewKeyEvent { event ->
     event.type == KeyEventType.KeyDown && event.key == Key.DirectionDown
 }
 
+/**
+ * Compose Material3's own [androidx.compose.material3.Slider] deliberately treats Up/Down as
+ * synonyms for Right/Left (its own accessibility/D-pad design, for a vertically-oriented slider
+ * elsewhere), adjusting the slider's value instead of doing nothing - confirmed on-device as a
+ * real inconsistency for a HORIZONTAL slider specifically: every other focusable element in this
+ * app treats Up/Down as "move to the next/previous element" (see [clearFocusOnBack]), but a
+ * focused Slider intercepted them for its own value instead, with no way to simply move past it.
+ * Intercepted here in preview (before the Slider's own internal onKeyEvent handler ever sees it -
+ * same strategy as [onDpadSelect]/[blockDirectionDown] for other components' own key handling) so
+ * Up/Down consistently move focus away from a horizontal Slider instead, leaving Left/Right (its
+ * own natural, expected axis) as the only way to actually change its value.
+ */
+fun Modifier.horizontalSliderDpadFocusNav(): Modifier = composed {
+    val focusManager = LocalFocusManager.current
+    onPreviewKeyEvent { event ->
+        if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+        when (event.key) {
+            Key.DirectionUp -> {
+                focusManager.moveFocus(FocusDirection.Up)
+                true
+            }
+            Key.DirectionDown -> {
+                focusManager.moveFocus(FocusDirection.Down)
+                true
+            }
+            else -> false
+        }
+    }
+}
+
 fun Modifier.onDpadSelect(onClick: () -> Unit): Modifier = onPreviewKeyEvent { event ->
     if (event.type == KeyEventType.KeyDown && event.key == Key.DirectionCenter) {
         onClick()
