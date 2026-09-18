@@ -380,21 +380,18 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
             if (existing != null) {
                 // "<baseTopic>/#" is already subscribed continuously for every
                 // configured broker (see MqttConnectionManager.applyConfig), so
-                // the response topic's retained/live payload is already flowing
-                // into latestPayloads without needing a subscription of its own
-                // here - this section only needs to publish the request and read
-                // that payload back.
-                val baseTopicNormalized = remember(broker.baseTopic) {
-                    broker.baseTopic.trim().trim('/').ifBlank { "zigbee2mqtt" }
+                // bridge/info's retained/live payload is already flowing into
+                // latestPayloads without needing a subscription of its own here.
+                val baseTopicNormalized = remember(broker.baseTopic) { PermitJoin.normalizedBaseTopic(broker.baseTopic) }
+                var nowMillis by remember { mutableStateOf(System.currentTimeMillis()) }
+                LaunchedEffect(Unit) {
+                    while (true) {
+                        delay(1_000)
+                        nowMillis = System.currentTimeMillis()
+                    }
                 }
-                val permitJoinRequestTopic = "$baseTopicNormalized/bridge/request/permit_join"
-                val permitJoinResponseTopic = "$baseTopicNormalized/bridge/response/permit_join"
-                val permitJoinOn = remember(latestPayloads, existing.id, permitJoinResponseTopic) {
-                    // Zigbee2MQTT nests the response's "time" under "data", e.g.
-                    // {"data":{"time":254},"status":"ok"} - not a top-level field.
-                    val payload = latestPayloads["${existing.id}|$permitJoinResponseTopic"]
-                    val remainingSeconds = payload?.let { JsonPath.extract(it, "data.time") }?.toIntOrNull() ?: 0
-                    remainingSeconds > 0
+                val permitJoinStatus = remember(latestPayloads, existing.id, baseTopicNormalized, nowMillis) {
+                    PermitJoin.status(latestPayloads, existing.id, baseTopicNormalized, nowMillis)
                 }
                 // Zigbee2MQTT also retains its whole device list on "<baseTopic>/bridge/devices" -
                 // already flowing into latestPayloads for the same reason permit_join's own
@@ -423,18 +420,19 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     Column(Modifier.weight(1f)) {
                         Text("Permit Join", style = MaterialTheme.typography.titleMedium)
                         Text(
-                            "Allow new Zigbee devices to join this network for a few minutes",
+                            if (permitJoinStatus.isOn) {
+                                "Open for ${PermitJoin.formatRemaining(permitJoinStatus.remainingSeconds)} more"
+                            } else {
+                                "Allow new Zigbee devices to join this network for a few minutes"
+                            },
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
                     Switch(
-                        checked = permitJoinOn,
+                        checked = permitJoinStatus.isOn,
                         onCheckedChange = { enabled ->
-                            val payload = buildJsonObject {
-                                if (broker.permitJoinDevice.isNotBlank()) put("device", broker.permitJoinDevice.trim())
-                                put("time", if (enabled) 254 else 0)
-                            }.toString()
-                            app.connectionManager.publish(existing.id, permitJoinRequestTopic, payload)
+                            val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
+                            app.connectionManager.publish(existing.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
                         }
                     )
                 }
