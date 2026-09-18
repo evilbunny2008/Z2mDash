@@ -38,7 +38,14 @@ data class Broker(
     // asking first; worth turning on for a broker you already trust to only
     // publish "/app" configs you want. Settable via a credential import's
     // "AutoAccept" field - see CredentialImportDialog.
-    val autoAcceptDiscoveredDevices: Boolean = false
+    val autoAcceptDiscoveredDevices: Boolean = false,
+    // Friendly name last used for the "Permit Join" toggle's optional "device"
+    // field (see AddEditBrokerScreen) - e.g. a specific router's name to extend
+    // joining through, or "Coordinator" for just the coordinator. Blank permits
+    // joining via every router and the coordinator at once. Remembered per broker
+    // purely as a convenience so it doesn't need retyping every time; carries no
+    // meaning on its own until a toggle press actually publishes it.
+    val permitJoinDevice: String = ""
 )
 
 @Serializable

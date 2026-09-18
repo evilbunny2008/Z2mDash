@@ -54,9 +54,17 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Broker
+import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.MqttProtocol
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonPrimitive
+import kotlinx.serialization.json.put
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,6 +73,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     val app = LocalContext.current.applicationContext as Z2mDashApplication
     val context = LocalContext.current
     val config by app.configRepository.config.collectAsState()
+    val latestPayloads by app.connectionManager.latestPayloads.collectAsState()
 
     val existing = remember(brokerId, config) { config.brokers.find { it.id == brokerId } }
     var showDeleteConfirm by remember { mutableStateOf(false) }
@@ -369,6 +378,111 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
             }
 
             if (existing != null) {
+                // "<baseTopic>/#" is already subscribed continuously for every
+                // configured broker (see MqttConnectionManager.applyConfig), so
+                // the response topic's retained/live payload is already flowing
+                // into latestPayloads without needing a subscription of its own
+                // here - this section only needs to publish the request and read
+                // that payload back.
+                val baseTopicNormalized = remember(broker.baseTopic) {
+                    broker.baseTopic.trim().trim('/').ifBlank { "zigbee2mqtt" }
+                }
+                val permitJoinRequestTopic = "$baseTopicNormalized/bridge/request/permit_join"
+                val permitJoinResponseTopic = "$baseTopicNormalized/bridge/response/permit_join"
+                val permitJoinOn = remember(latestPayloads, existing.id, permitJoinResponseTopic) {
+                    // Zigbee2MQTT nests the response's "time" under "data", e.g.
+                    // {"data":{"time":254},"status":"ok"} - not a top-level field.
+                    val payload = latestPayloads["${existing.id}|$permitJoinResponseTopic"]
+                    val remainingSeconds = payload?.let { JsonPath.extract(it, "data.time") }?.toIntOrNull() ?: 0
+                    remainingSeconds > 0
+                }
+                // Zigbee2MQTT also retains its whole device list on "<baseTopic>/bridge/devices" -
+                // already flowing into latestPayloads for the same reason permit_join's own
+                // response is. Only routers/the coordinator can actually be targeted by permit_join's
+                // "device" field (end devices don't route child joins), so end devices are filtered
+                // out of the suggestion list rather than just listing every known device.
+                val routerFriendlyNames = remember(latestPayloads, existing.id, baseTopicNormalized) {
+                    val devicesPayload = latestPayloads["${existing.id}|$baseTopicNormalized/bridge/devices"]
+                    devicesPayload?.let { raw ->
+                        try {
+                            Json.parseToJsonElement(raw).jsonArray.mapNotNull { element ->
+                                val obj = element as? JsonObject ?: return@mapNotNull null
+                                val type = obj["type"]?.jsonPrimitive?.contentOrNull
+                                if (type == "Router" || type == "Coordinator") {
+                                    obj["friendly_name"]?.jsonPrimitive?.contentOrNull
+                                } else null
+                            }.sorted()
+                        } catch (_: Exception) {
+                            emptyList()
+                        }
+                    } ?: emptyList()
+                }
+
+                Spacer(Modifier.height(24.dp))
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.weight(1f)) {
+                        Text("Permit Join", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            "Allow new Zigbee devices to join this network for a few minutes",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    Switch(
+                        checked = permitJoinOn,
+                        onCheckedChange = { enabled ->
+                            val payload = buildJsonObject {
+                                if (broker.permitJoinDevice.isNotBlank()) put("device", broker.permitJoinDevice.trim())
+                                put("time", if (enabled) 254 else 0)
+                            }.toString()
+                            app.connectionManager.publish(existing.id, permitJoinRequestTopic, payload)
+                        }
+                    )
+                }
+                Spacer(Modifier.height(8.dp))
+                var permitJoinDeviceExpanded by remember { mutableStateOf(false) }
+                val filteredRouterNames = remember(routerFriendlyNames, broker.permitJoinDevice) {
+                    routerFriendlyNames.filter { it.contains(broker.permitJoinDevice, ignoreCase = true) }
+                }
+                ExposedDropdownMenuBox(
+                    expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
+                    onExpandedChange = { permitJoinDeviceExpanded = it }
+                ) {
+                    OutlinedTextField(
+                        value = broker.permitJoinDevice,
+                        onValueChange = {
+                            broker = broker.copy(permitJoinDevice = it)
+                            permitJoinDeviceExpanded = true
+                        },
+                        label = { Text("Permit join via (optional)") },
+                        placeholder = { Text("Blank = whole network") },
+                        trailingIcon = if (routerFriendlyNames.isNotEmpty()) {
+                            { ExposedDropdownMenuDefaults.TrailingIcon(expanded = permitJoinDeviceExpanded) }
+                        } else null,
+                        modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
+                    )
+                    ExposedDropdownMenu(
+                        expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
+                        onDismissRequest = { permitJoinDeviceExpanded = false }
+                    ) {
+                        filteredRouterNames.forEach { name ->
+                            DropdownMenuItem(
+                                text = { Text(name) },
+                                onClick = {
+                                    broker = broker.copy(permitJoinDevice = name)
+                                    permitJoinDeviceExpanded = false
+                                }
+                            )
+                        }
+                    }
+                }
+                Text(
+                    "Friendly name of a specific router to extend joining through, or \"Coordinator\" for " +
+                        "just the coordinator. Leave blank to permit joining via every router and the " +
+                        "coordinator at once.",
+                    style = MaterialTheme.typography.bodySmall
+                )
+
                 Spacer(Modifier.height(24.dp))
                 OutlinedButton(
                     onClick = { showDeleteConfirm = true },
