@@ -17,10 +17,30 @@ import kotlinx.serialization.json.contentOrNull
  * so the UI can show a "--" placeholder instead of crashing.
  */
 object JsonPath {
+    // Bounded cache of raw payload string -> its parsed JsonElement tree. extract() is called
+    // many times against the exact same still-current payload string - once per field a panel
+    // reads from it, and, since a cluster's "updated N ago" text re-derives every second off a
+    // ticker, potentially once per second for as long as that payload stays the most recent one.
+    // Re-parsing identical JSON from scratch on every one of those calls was a real, continuous
+    // source of GC pressure - confirmed on an underpowered TV device via `adb logcat`, where the
+    // app was triggering a full concurrent-copying GC (freeing anywhere from ~100k to over a
+    // million objects each time) roughly once a second, indefinitely, long after startup had
+    // finished - not just a one-off cold-start cost. Bounded rather than an ever-growing map,
+    // since payload strings churn over a session; synchronized since this can be read from both
+    // Compose's main thread and any background coroutine that also calls extract() (e.g.
+    // DeviceAutoConfigManager), and LinkedHashMap itself isn't thread-safe.
+    private const val PARSE_CACHE_MAX_SIZE = 300
+    private val parseCache = object : LinkedHashMap<String, JsonElement>(PARSE_CACHE_MAX_SIZE, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, JsonElement>?): Boolean =
+            size > PARSE_CACHE_MAX_SIZE
+    }
+
     fun extract(rawPayload: String, path: String): String? {
         if (path.isBlank()) return rawPayload.trim()
         return try {
-            var element: JsonElement = Json.parseToJsonElement(rawPayload)
+            var element: JsonElement = synchronized(parseCache) {
+                parseCache[rawPayload] ?: Json.parseToJsonElement(rawPayload).also { parseCache[rawPayload] = it }
+            }
             for (segment in path.split(".")) {
                 val obj = element as? JsonObject ?: return null
                 element = obj[segment] ?: return null

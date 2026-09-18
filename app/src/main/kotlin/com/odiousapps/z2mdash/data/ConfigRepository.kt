@@ -1,11 +1,17 @@
 package com.odiousapps.z2mdash.data
 
 import android.content.Context
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.io.File
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
  * Persists the whole app configuration (brokers, groups, panels) as a single
@@ -13,7 +19,7 @@ import java.io.File
  * format for "Configuration Backup" / "Configuration Recovery" in Settings -
  * it's just JSON you own, no proprietary/encrypted format, no lock-in.
  */
-class ConfigRepository(private val context: Context) {
+class ConfigRepository(private val context: Context, private val scope: CoroutineScope) {
 
     private val file: File get() = File(context.filesDir, "config.json")
     private val json = Json {
@@ -62,15 +68,36 @@ class ConfigRepository(private val context: Context) {
     }
 
     private fun persist(config: AppConfig) {
-        file.writeText(json.encodeToString(AppConfig.serializer(), config))
+        try {
+            file.writeText(json.encodeToString(AppConfig.serializer(), config))
+        } catch (_: Exception) {
+            // Best-effort - fine to silently skip a write if it fails; _config (what the UI
+            // actually reads) is already up to date in memory regardless, same as the payload
+            // cache's own save() already treats a failed write as non-fatal.
+        }
+    }
+
+    // Debounced and off the main thread - schedulePersist() used to call persist() synchronously,
+    // inline, on whatever thread called update() (almost always the main thread, since every
+    // caller is a UI event handler). That's a full JSON-encode-and-write of the *entire* config
+    // on every single edit - not just occasional ones like renaming a group, but also anything
+    // that fires update() repeatedly in a burst, like dragging the "Tile & Cluster Width" slider
+    // (Slider.onValueChange fires continuously while dragging, not just on release) or a
+    // cluster/panel drag-reorder. Reading _config.value fresh inside the delayed job (rather than
+    // capturing the transformed value at call time) also means a rapid burst of update() calls
+    // coalesces into one write of the final state instead of one write per call.
+    private var persistJob: Job? = null
+    private fun schedulePersist() {
+        persistJob?.cancel()
+        persistJob = scope.launch(Dispatchers.IO) {
+            delay(500.milliseconds)
+            persist(_config.value)
+        }
     }
 
     fun update(transform: (AppConfig) -> AppConfig) {
-        _config.update { current ->
-            val next = transform(current)
-            persist(next)
-            next
-        }
+        _config.update(transform)
+        schedulePersist()
     }
 
     fun upsertBroker(broker: Broker) = update { cfg ->

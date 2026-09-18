@@ -18,6 +18,9 @@ import kotlin.time.Duration.Companion.milliseconds
 /** Cap on how many recent messages the Terminal tab keeps around, oldest dropped first. */
 private const val MAX_LOGGED_MESSAGES = 300
 
+/** See createConnection()'s own comment on why incoming messages are batched at all. */
+private val BATCH_INTERVAL_MS = 200.milliseconds
+
 /** One entry in the Terminal tab's rolling message log. */
 data class LoggedMessage(val brokerId: String, val topic: String, val payload: String, val timestamp: Long)
 
@@ -35,18 +38,34 @@ class MqttConnectionManager(
     private val connections = mutableMapOf<String, MqttConnection>()
     private val brokerById = mutableMapOf<String, Broker>()
 
-    // Seeded from disk so the dashboard has correct, already-varied "updated N
-    // ago" data to show immediately on launch, before any MQTT traffic (even
-    // retained messages) has arrived this session.
-    private val cachedOnStartup = payloadCacheRepository.load()
-
-    private val _latestPayloads = MutableStateFlow(cachedOnStartup.mapValues { it.value.payload })
+    private val _latestPayloads = MutableStateFlow<Map<String, String>>(emptyMap())
     val latestPayloads: StateFlow<Map<String, String>> = _latestPayloads
 
     // When (device time, i.e. System.currentTimeMillis() at receipt) each topic's
     // latest payload arrived - used to show "updated 2 hours ago" on the dashboard.
-    private val _latestPayloadTimestamps = MutableStateFlow(cachedOnStartup.mapValues { it.value.timestamp })
+    private val _latestPayloadTimestamps = MutableStateFlow<Map<String, Long>>(emptyMap())
     val latestPayloadTimestamps: StateFlow<Map<String, Long>> = _latestPayloadTimestamps
+
+    init {
+        // Seeded from disk so the dashboard has correct, already-varied "updated N ago" data to
+        // show, before any MQTT traffic (even retained messages) has arrived this session -
+        // without it, every topic would show completely blank until fresh data trickles in.
+        // Loaded on a background dispatcher rather than the old synchronous call in this
+        // constructor (which ran on whatever thread constructs this class - the main thread,
+        // during Application.onCreate()): payloadCacheRepository.load() is real file I/O plus
+        // JSON parsing of every topic's full payload string, and for a household with a lot of
+        // devices that accumulated cache is large enough to block the main thread long enough to
+        // skip hundreds of frames at cold start. The brief window before this completes just
+        // shows those topics the same way a topic that genuinely hasn't reported yet this
+        // session would, rather than freezing the whole UI until the read finishes.
+        scope.launch(Dispatchers.IO) {
+            val cached = payloadCacheRepository.load()
+            if (cached.isNotEmpty()) {
+                _latestPayloads.update { it + cached.mapValues { entry -> entry.value.payload } }
+                _latestPayloadTimestamps.update { it + cached.mapValues { entry -> entry.value.timestamp } }
+            }
+        }
+    }
 
     private val _connectionStates = MutableStateFlow<Map<String, ConnectionState>>(emptyMap())
     val connectionStates: StateFlow<Map<String, ConnectionState>> = _connectionStates
@@ -166,6 +185,42 @@ class MqttConnectionManager(
             }
         }
         scope.launch(Dispatchers.Default) {
+            // Buffered and flushed in small batches rather than applying each message to the
+            // three StateFlows below immediately - confirmed on an underpowered TV device via
+            // `adb logcat`, with a household-sized broker's worth of real traffic (busy enough to
+            // cycle the 300-message Terminal log every couple of seconds), that doing this per
+            // message was a real, continuous source of GC pressure: _latestPayloads and
+            // _latestPayloadTimestamps are immutable maps, so `it + (key to value)` allocates a
+            // full copy of *every* tracked topic (100+ for a household this size) on every single
+            // incoming message, and _messageLog does the same for up to 300 entries *twice* once
+            // it's at its cap (once for `log + entry`, again for `takeLast`). A burst of N
+            // messages arriving within BATCH_INTERVAL_MS of each other now costs one copy of each
+            // collection instead of N - the UI still updates well within what anyone would
+            // perceive as "live" (a fraction of a second of added latency at most).
+            val pendingPayloadUpdates = mutableMapOf<String, String>()
+            val pendingPayloadRemovals = mutableSetOf<String>()
+            val pendingTimestamps = mutableMapOf<String, Long>()
+            val pendingLogEntries = mutableListOf<LoggedMessage>()
+            var flushJob: Job? = null
+
+            fun flush() {
+                if (pendingPayloadUpdates.isNotEmpty() || pendingPayloadRemovals.isNotEmpty()) {
+                    _latestPayloads.update { (it - pendingPayloadRemovals) + pendingPayloadUpdates }
+                    _latestPayloadTimestamps.update { (it - pendingPayloadRemovals) + pendingTimestamps }
+                    pendingPayloadUpdates.clear()
+                    pendingPayloadRemovals.clear()
+                    pendingTimestamps.clear()
+                }
+                if (pendingLogEntries.isNotEmpty()) {
+                    _messageLog.update { log ->
+                        val updated = log + pendingLogEntries
+                        if (updated.size > MAX_LOGGED_MESSAGES) updated.takeLast(MAX_LOGGED_MESSAGES) else updated
+                    }
+                    pendingLogEntries.clear()
+                }
+                schedulePersist()
+            }
+
             conn.messages.collect { msg ->
                 val key = keyFor(broker.id, msg.topic)
                 val now = System.currentTimeMillis()
@@ -175,17 +230,22 @@ class MqttConnectionManager(
                     // our own state entirely rather than storing a blank value,
                     // so e.g. a deleted MQTT backup actually disappears from
                     // the restore list instead of lingering as an empty entry.
-                    _latestPayloads.update { it - key }
-                    _latestPayloadTimestamps.update { it - key }
+                    pendingPayloadUpdates.remove(key)
+                    pendingTimestamps.remove(key)
+                    pendingPayloadRemovals += key
                 } else {
-                    _latestPayloads.update { it + (key to msg.payload) }
-                    _latestPayloadTimestamps.update { it + (key to now) }
+                    pendingPayloadRemovals -= key
+                    pendingPayloadUpdates[key] = msg.payload
+                    pendingTimestamps[key] = now
                 }
-                _messageLog.update { log ->
-                    val updated = log + LoggedMessage(broker.id, msg.topic, msg.payload, now)
-                    if (updated.size > MAX_LOGGED_MESSAGES) updated.takeLast(MAX_LOGGED_MESSAGES) else updated
+                pendingLogEntries += LoggedMessage(broker.id, msg.topic, msg.payload, now)
+
+                if (flushJob?.isActive != true) {
+                    flushJob = scope.launch(Dispatchers.Default) {
+                        delay(BATCH_INTERVAL_MS)
+                        flush()
+                    }
                 }
-                schedulePersist()
             }
         }
         return conn

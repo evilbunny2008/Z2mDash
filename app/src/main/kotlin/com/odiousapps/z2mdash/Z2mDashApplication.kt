@@ -28,7 +28,7 @@ class Z2mDashApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-        configRepository = ConfigRepository(this)
+        configRepository = ConfigRepository(this, appScope)
         val payloadCacheRepository = PayloadCacheRepository(this)
         connectionManager = MqttConnectionManager(appScope, payloadCacheRepository)
         deviceAutoConfigManager = DeviceAutoConfigManager(this, configRepository, connectionManager)
