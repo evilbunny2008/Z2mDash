@@ -49,6 +49,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -61,6 +63,7 @@ import com.odiousapps.z2mdash.data.MqttProtocol
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -460,6 +463,12 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     val filteredRouterNames = remember(routerFriendlyNames, broker.permitJoinDevice) {
                         routerFriendlyNames.filter { it.contains(broker.permitJoinDevice, ignoreCase = true) }
                     }
+                    // Lets Down (see clearFocusOnBack's onDirectionDown below) jump straight into
+                    // the open suggestion list instead of its usual "escape this field" behavior -
+                    // without an explicit target to request focus onto, there was no reliable way
+                    // to actually reach the list with a D-pad at all (confirmed on-device: nothing
+                    // inside the popup ever received focus on its own when it opened).
+                    val firstSuggestionFocusRequester = remember { FocusRequester() }
                     ExposedDropdownMenuBox(
                         expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
                         onExpandedChange = { permitJoinDeviceExpanded = it }
@@ -475,20 +484,40 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                             trailingIcon = if (routerFriendlyNames.isNotEmpty()) {
                                 { ExposedDropdownMenuDefaults.TrailingIcon(expanded = permitJoinDeviceExpanded) }
                             } else null,
-                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                            modifier = Modifier.fillMaxWidth()
+                                .clearFocusOnBack(
+                                    onDirectionDown = {
+                                        if (permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty()) {
+                                            firstSuggestionFocusRequester.requestFocus()
+                                            true
+                                        } else {
+                                            false
+                                        }
+                                    }
+                                )
                                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
                         )
                         ExposedDropdownMenu(
                             expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
                             onDismissRequest = { permitJoinDeviceExpanded = false }
                         ) {
-                            filteredRouterNames.forEach { name ->
+                            filteredRouterNames.forEachIndexed { index, name ->
+                                val onNameClick = {
+                                    broker = broker.copy(permitJoinDevice = name)
+                                    permitJoinDeviceExpanded = false
+                                }
                                 DropdownMenuItem(
                                     text = { Text(name) },
-                                    onClick = {
-                                        broker = broker.copy(permitJoinDevice = name)
-                                        permitJoinDeviceExpanded = false
-                                    }
+                                    onClick = onNameClick,
+                                    modifier = Modifier
+                                        .onDpadSelect(onNameClick)
+                                        .then(
+                                            if (index == 0) {
+                                                Modifier.focusRequester(firstSuggestionFocusRequester)
+                                            } else {
+                                                Modifier
+                                            }
+                                        )
                                 )
                             }
                         }

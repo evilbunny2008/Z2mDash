@@ -85,8 +85,14 @@ fun Modifier.onDpadSelect(onClick: () -> Unit): Modifier = onPreviewKeyEvent { e
  *    still feel "stuck" with no reliable way out even after the Back fix above - Up/Down doesn't
  *    depend on the IME's own Back-consuming behavior at all, so it works the same whether the
  *    keyboard is currently showing or not.
+ *
+ * @param onDirectionDown Lets a caller override what Down does instead of the default "move
+ *   focus to the next element" - e.g. an autocomplete field (see AddEditBrokerScreen's "Permit
+ *   join via") needs Down to enter its own open suggestion list instead, while still typing
+ *   should keep focus in the field. Returning `true` means "handled, don't also move focus
+ *   normally"; `false` (or omitting this entirely) keeps the default behavior.
  */
-fun Modifier.clearFocusOnBack(): Modifier = composed {
+fun Modifier.clearFocusOnBack(onDirectionDown: (() -> Boolean)? = null): Modifier = composed {
     val focusManager = LocalFocusManager.current
     onPreviewKeyEvent { event ->
         if (event.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
@@ -107,7 +113,9 @@ fun Modifier.clearFocusOnBack(): Modifier = composed {
                 true
             }
             Key.DirectionDown -> {
-                focusManager.moveFocus(FocusDirection.Down)
+                if (onDirectionDown?.invoke() != true) {
+                    focusManager.moveFocus(FocusDirection.Down)
+                }
                 true
             }
             else -> false
