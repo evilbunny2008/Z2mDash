@@ -4,6 +4,7 @@ import android.app.UiModeManager
 import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.border
+import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
@@ -23,6 +24,7 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
 import androidx.tv.material3.ColorScheme as TvColorScheme
 
@@ -122,6 +124,27 @@ fun Modifier.clearFocusOnBack(onDirectionDown: (() -> Boolean)? = null): Modifie
         }
     }
 }
+
+/**
+ * Makes a whole "label + Switch" settings row a single click/focus target, instead of only the
+ * Switch itself being interactive - the officially recommended Material pattern for this exact
+ * layout (a row with a Switch at the end), and also fixes a real, confirmed-on-device TV
+ * navigation gap: Compose's directional focus search reliably jumped straight past a lone,
+ * narrow, right-aligned Switch when moving Up/Down between the full-width rows above and below
+ * it, making that Switch completely unreachable by D-pad - pressing Up/Down from either
+ * neighboring row landed on the OTHER neighbor every time, skipping the row in between entirely.
+ * Wrapped around the row's own Modifier, this replaces that narrow target with the whole row
+ * (full-width, matching its neighbors), which the focus-search heuristic finds reliably.
+ *
+ * The Switch inside such a row should be passed `onCheckedChange = null` (decorative only, purely
+ * reflecting `checked`) so there's exactly one click/focus target for the row, not two competing
+ * ones.
+ */
+fun Modifier.toggleableRow(
+    checked: Boolean,
+    enabled: Boolean = true,
+    onCheckedChange: (Boolean) -> Unit
+): Modifier = toggleable(value = checked, enabled = enabled, onValueChange = onCheckedChange, role = Role.Switch)
 
 /**
  * Maps this app's own Material3 color scheme (light/dark/dynamic - see Z2mDashTheme) onto

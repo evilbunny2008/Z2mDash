@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
+import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
 @Composable
 fun SettingsScreen(navController: NavController) {
@@ -69,13 +70,9 @@ fun SettingsScreen(navController: NavController) {
                     headlineContent = { Text("Background Work") },
                     supportingContent = { Text("Keep broker connections alive when the app is closed") },
                     leadingContent = { Icon(Icons.Default.Sync, contentDescription = null) },
-                    trailingContent = {
-                        Switch(
-                            checked = config.backgroundWorkEnabled,
-                            onCheckedChange = { enabled ->
-                                app.configRepository.update { it.copy(backgroundWorkEnabled = enabled) }
-                            }
-                        )
+                    trailingContent = { Switch(checked = config.backgroundWorkEnabled, onCheckedChange = null) },
+                    modifier = Modifier.toggleableRow(config.backgroundWorkEnabled) { enabled ->
+                        app.configRepository.update { it.copy(backgroundWorkEnabled = enabled) }
                     }
                 )
             }
@@ -84,13 +81,9 @@ fun SettingsScreen(navController: NavController) {
                     headlineContent = { Text("Blink Warnings") },
                     supportingContent = { Text("Pulse out-of-range sensor tile alerts, instead of a static color") },
                     leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },
-                    trailingContent = {
-                        Switch(
-                            checked = config.staleDataBlinkEnabled,
-                            onCheckedChange = { enabled ->
-                                app.configRepository.update { it.copy(staleDataBlinkEnabled = enabled) }
-                            }
-                        )
+                    trailingContent = { Switch(checked = config.staleDataBlinkEnabled, onCheckedChange = null) },
+                    modifier = Modifier.toggleableRow(config.staleDataBlinkEnabled) { enabled ->
+                        app.configRepository.update { it.copy(staleDataBlinkEnabled = enabled) }
                     }
                 )
             }

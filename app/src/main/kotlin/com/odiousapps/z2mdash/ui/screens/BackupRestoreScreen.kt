@@ -50,6 +50,7 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -190,12 +191,8 @@ fun BackupRestoreScreen(navController: NavController) {
                     ListItem(
                         headlineContent = { Text("Encrypt Backup") },
                         supportingContent = { Text("Protect the exported file with a password you choose") },
-                        trailingContent = {
-                            Switch(
-                                checked = encryptEnabled,
-                                onCheckedChange = { encryptEnabled = it }
-                            )
-                        }
+                        trailingContent = { Switch(checked = encryptEnabled, onCheckedChange = null) },
+                        modifier = Modifier.toggleableRow(encryptEnabled) { encryptEnabled = it }
                     )
                     Spacer(Modifier.height(8.dp))
                     ListItem(

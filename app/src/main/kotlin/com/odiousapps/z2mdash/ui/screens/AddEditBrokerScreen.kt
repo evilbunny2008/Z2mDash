@@ -64,6 +64,7 @@ import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
+import com.odiousapps.z2mdash.ui.tv.toggleableRow
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
@@ -242,15 +243,16 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
 
             if (broker.protocol == MqttProtocol.SSL || broker.protocol == MqttProtocol.WSS) {
                 Spacer(Modifier.height(16.dp))
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                        .toggleableRow(broker.selfSignedCert) { broker = broker.copy(selfSignedCert = it) }
+                ) {
                     Column(Modifier.weight(1f)) {
                         Text("This broker uses self-signed SSL/TLS certificate.")
                         Text("Use at your own risk.", style = MaterialTheme.typography.bodySmall)
                     }
-                    Switch(
-                        checked = broker.selfSignedCert,
-                        onCheckedChange = { broker = broker.copy(selfSignedCert = it) }
-                    )
+                    Switch(checked = broker.selfSignedCert, onCheckedChange = null)
                 }
                 if (broker.selfSignedCert) {
                     TextButton(onClick = {
@@ -273,12 +275,13 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             }
 
             Spacer(Modifier.height(16.dp))
-            Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+                    .toggleableRow(broker.authEnabled) { broker = broker.copy(authEnabled = it) }
+            ) {
                 Text("Authentication", modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
-                Switch(
-                    checked = broker.authEnabled,
-                    onCheckedChange = { broker = broker.copy(authEnabled = it) }
-                )
+                Switch(checked = broker.authEnabled, onCheckedChange = null)
             }
             if (broker.authEnabled) {
                 Spacer(Modifier.height(8.dp))
@@ -321,7 +324,11 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Spacer(Modifier.height(16.dp))
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                        .toggleableRow(broker.cleanSession) { broker = broker.copy(cleanSession = it) }
+                ) {
                     Column(Modifier.weight(1f)) {
                         Text("Clean Session")
                         Text(
@@ -329,7 +336,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
-                    Switch(checked = broker.cleanSession, onCheckedChange = { broker = broker.copy(cleanSession = it) })
+                    Switch(checked = broker.cleanSession, onCheckedChange = null)
                 }
                 Spacer(Modifier.height(16.dp))
                 OutlinedTextField(
@@ -356,23 +363,32 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(16.dp))
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                        .toggleableRow(broker.autoConnect) { broker = broker.copy(autoConnect = it) }
+                ) {
                     Text("Auto Connect", modifier = Modifier.weight(1f))
-                    Switch(checked = broker.autoConnect, onCheckedChange = { broker = broker.copy(autoConnect = it) })
+                    Switch(checked = broker.autoConnect, onCheckedChange = null)
                 }
                 Spacer(Modifier.height(8.dp))
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                        .toggleableRow(broker.showReconnectionStatus) { broker = broker.copy(showReconnectionStatus = it) }
+                ) {
                     Column(Modifier.weight(1f)) {
                         Text("Show Reconnection Status")
                         Text("Show reconnection notifications on main screen", style = MaterialTheme.typography.bodySmall)
                     }
-                    Switch(
-                        checked = broker.showReconnectionStatus,
-                        onCheckedChange = { broker = broker.copy(showReconnectionStatus = it) }
-                    )
+                    Switch(checked = broker.showReconnectionStatus, onCheckedChange = null)
                 }
                 Spacer(Modifier.height(8.dp))
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                        .toggleableRow(broker.autoAcceptDiscoveredDevices) { broker = broker.copy(autoAcceptDiscoveredDevices = it) }
+                ) {
                     Column(Modifier.weight(1f)) {
                         Text("Auto-Accept Discovered Devices")
                         Text(
@@ -380,10 +396,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
-                    Switch(
-                        checked = broker.autoAcceptDiscoveredDevices,
-                        onCheckedChange = { broker = broker.copy(autoAcceptDiscoveredDevices = it) }
-                    )
+                    Switch(checked = broker.autoAcceptDiscoveredDevices, onCheckedChange = null)
                 }
             }
 
@@ -437,7 +450,15 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
 
                 Spacer(Modifier.height(24.dp))
                 Column(modifier = Modifier.bringIntoViewRequester(permitJoinSectionRequester)) {
-                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    val onPermitJoinToggle = { enabled: Boolean ->
+                        app.configRepository.updatePermitJoinDevice(existing.id, broker.permitJoinDevice)
+                        val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
+                        app.connectionManager.publish(existing.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
+                    }
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth().toggleableRow(permitJoinStatus.isOn, onPermitJoinToggle)
+                    ) {
                         Column(Modifier.weight(1f)) {
                             Text("Permit Join", style = MaterialTheme.typography.titleMedium)
                             Text(
@@ -449,14 +470,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                                 style = MaterialTheme.typography.bodySmall
                             )
                         }
-                        Switch(
-                            checked = permitJoinStatus.isOn,
-                            onCheckedChange = { enabled ->
-                                app.configRepository.updatePermitJoinDevice(existing.id, broker.permitJoinDevice)
-                                val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
-                                app.connectionManager.publish(existing.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
-                            }
-                        )
+                        Switch(checked = permitJoinStatus.isOn, onCheckedChange = null)
                     }
                     Spacer(Modifier.height(8.dp))
                     var permitJoinDeviceExpanded by remember { mutableStateOf(false) }

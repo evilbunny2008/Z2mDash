@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
+import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,13 +54,9 @@ fun AlertSettingsScreen(navController: NavController) {
             ListItem(
                 headlineContent = { Text("Smoke Alerts") },
                 supportingContent = { Text("Notify if any device reports smoke detected") },
-                trailingContent = {
-                    Switch(
-                        checked = config.smokeAlertsEnabled,
-                        onCheckedChange = { enabled ->
-                            app.configRepository.update { it.copy(smokeAlertsEnabled = enabled) }
-                        }
-                    )
+                trailingContent = { Switch(checked = config.smokeAlertsEnabled, onCheckedChange = null) },
+                modifier = Modifier.toggleableRow(config.smokeAlertsEnabled) { enabled ->
+                    app.configRepository.update { it.copy(smokeAlertsEnabled = enabled) }
                 }
             )
             ListItem(
@@ -69,10 +66,14 @@ fun AlertSettingsScreen(navController: NavController) {
                     Switch(
                         checked = config.smokeAlertSoundEnabled,
                         enabled = config.smokeAlertsEnabled,
-                        onCheckedChange = { enabled ->
-                            app.configRepository.update { it.copy(smokeAlertSoundEnabled = enabled) }
-                        }
+                        onCheckedChange = null
                     )
+                },
+                modifier = Modifier.toggleableRow(
+                    config.smokeAlertSoundEnabled,
+                    enabled = config.smokeAlertsEnabled
+                ) { enabled ->
+                    app.configRepository.update { it.copy(smokeAlertSoundEnabled = enabled) }
                 }
             )
             Column(
