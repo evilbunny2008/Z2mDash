@@ -184,7 +184,19 @@ class MqttConnectionManager(
                 _connectionStates.update { it + (broker.id to state) }
             }
         }
-        scope.launch(Dispatchers.Default) {
+        // Confined to a single thread - not just Dispatchers.Default, which is a pool of several -
+        // since both the message-collecting loop below AND every delayed flush() it schedules
+        // touch the same plain (non-thread-safe) mutable buffers. Confirmed via a real crash on
+        // real hardware: with those two running as separate coroutines on plain Dispatchers.Default,
+        // the pool is free to run them concurrently on two different threads, so flush() could be
+        // mid-iteration over pendingPayloadUpdates (inside Map.plus, building the batched update)
+        // at the exact moment the collect loop mutated it from a fresh message on another thread -
+        // a textbook ConcurrentModificationException, which is exactly what a busy broker's real
+        // traffic triggered here. limitedParallelism(1) gives a dispatcher backed by the same pool
+        // but which only ever runs one task from it at a time, so everything below is effectively
+        // single-threaded and race-free without needing explicit locking.
+        val messageProcessingDispatcher = Dispatchers.Default.limitedParallelism(1)
+        scope.launch(messageProcessingDispatcher) {
             // Buffered and flushed in small batches rather than applying each message to the
             // three StateFlows below immediately - confirmed on an underpowered TV device via
             // `adb logcat`, with a household-sized broker's worth of real traffic (busy enough to
@@ -241,7 +253,7 @@ class MqttConnectionManager(
                 pendingLogEntries += LoggedMessage(broker.id, msg.topic, msg.payload, now)
 
                 if (flushJob?.isActive != true) {
-                    flushJob = scope.launch(Dispatchers.Default) {
+                    flushJob = scope.launch(messageProcessingDispatcher) {
                         delay(BATCH_INTERVAL_MS)
                         flush()
                     }

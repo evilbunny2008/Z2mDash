@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
+import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 
 @Composable
 fun SettingsScreen(navController: NavController) {
@@ -102,13 +103,21 @@ fun SettingsScreen(navController: NavController) {
                                 "How wide tiles (and so cluster cards, 3 tiles wide) can grow, up to " +
                                     "filling the screen - currently ${config.tileWidthDp}dp"
                             )
+                            // TVs can go noticeably narrower than phones/tablets before it looks
+                            // cramped: there's no finger to size a touch target for, the tile
+                            // scaling this width now also drives (see HomeScreen's tileScale)
+                            // shrinks font/icon/height right along with it, and a big screen
+                            // viewed from further away can comfortably read smaller text anyway -
+                            // so more, smaller tiles fitting on screen at once is a net win there
+                            // in a way it wouldn't be on a phone.
+                            val minTileWidthDp = if (LocalIsTv.current) 40f else 80f
                             Slider(
                                 value = config.tileWidthDp.toFloat(),
                                 onValueChange = { newValue ->
                                     app.configRepository.update { it.copy(tileWidthDp = newValue.toInt()) }
                                 },
-                                valueRange = 80f..200f,
-                                steps = 11 // 10dp increments from 80 to 200
+                                valueRange = minTileWidthDp..200f,
+                                steps = ((200f - minTileWidthDp) / 10f).toInt() - 1 // 10dp increments
                             )
                         }
                     },
