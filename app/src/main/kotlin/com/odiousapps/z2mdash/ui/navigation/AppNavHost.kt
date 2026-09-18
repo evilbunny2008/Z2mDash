@@ -102,9 +102,22 @@ private fun PhoneNavShell(
 /**
  * TV shell: a persistent side rail instead of a bottom bar - reaching the bottom edge of the
  * screen with a D-pad is a much worse fit for a 10-foot remote experience than a rail that's
- * already adjacent to wherever focus currently sits. Only shown on the same 3 main tab
- * destinations as the phone bottom bar; sub-screens (broker edit, add panel, etc.) render full
- * screen either way, exactly like the phone shell's bottomBar omission.
+ * already adjacent to wherever focus currently sits.
+ *
+ * Always wraps `content` in the exact same NavigationDrawer, on every route, rather than only
+ * doing so for the 3 main tab destinations and calling `content(Modifier)` directly (bypassing
+ * the drawer entirely) everywhere else. That conditional-bypass version was a real, confirmed
+ * bug: `content` ultimately composes the whole NavHost, and calling it from two different
+ * positions in the tree (sometimes as a direct child of this function, sometimes nested inside
+ * NavigationDrawer's own content lambda) meant Compose treated it as a *different* composable
+ * every time a route crossed between "is a main tab" and "isn't" - disposing and recreating the
+ * entire NavHost, along with every destination's own rememberSaveable-backed state. The
+ * user-visible symptom: opening a panel from Home and pressing Back landed back on Home with its
+ * scroll position reset to the top, because HomeScreen's LazyListState never actually survived
+ * the round trip. Keeping the wrapping structure identical on every route - the rail is simply
+ * always present, including on sub-screens like broker/panel editors - fixes that by construction,
+ * and doubles as a reasonably common TV pattern in its own right (a persistent nav rail everywhere,
+ * not just top-level screens).
  */
 @Composable
 private fun TvNavShell(
@@ -112,10 +125,6 @@ private fun TvNavShell(
     currentRoute: String?,
     content: @Composable (Modifier) -> Unit
 ) {
-    if (!bottomTabs.any { it.route == currentRoute }) {
-        content(Modifier)
-        return
-    }
     // tv-material's own components (NavigationDrawerItem included) source their default colors
     // from androidx.tv.material3's OWN theme, a separate CompositionLocal from this app's usual
     // androidx.compose.material3.MaterialTheme - without this wrapper, unselected items rendered

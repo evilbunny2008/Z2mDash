@@ -59,6 +59,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
@@ -1024,7 +1025,21 @@ private fun ClusterCard(
                 // reaches the gesture detector at all.
                 modifier = captionRowModifier.fillMaxWidth()
             ) {
-                Text(name, style = MaterialTheme.typography.titleSmall)
+                // maxLines/overflow/softWrap=false are a deliberate safety net, not just cosmetic:
+                // confirmed on-device (via `adb shell uiautomator dump`) that this Text could end
+                // up wrapping one character per line into a tall, narrow vertical strip that looked
+                // like a scrollbar - a device/cluster name with no line cap at all, laid out in
+                // whatever width the Row happens to receive, has no defence against a width
+                // that's momentarily far too narrow for it. This doesn't fix whatever causes the
+                // width itself to collapse, but it does mean that if it ever happens again the
+                // name just truncates with "…" instead of turning into that vertical artifact.
+                Text(
+                    name,
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    softWrap = false
+                )
                 if (ageText != null) {
                     Text(
                         " \u2022 $ageText",
