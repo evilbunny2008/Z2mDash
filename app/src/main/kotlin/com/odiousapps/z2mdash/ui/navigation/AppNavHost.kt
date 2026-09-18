@@ -49,6 +49,7 @@ import com.odiousapps.z2mdash.ui.screens.SettingsScreen
 import com.odiousapps.z2mdash.ui.screens.TerminalScreen
 import com.odiousapps.z2mdash.ui.screens.WelcomeScreen
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
+import com.odiousapps.z2mdash.ui.tv.blockDirectionDown
 import com.odiousapps.z2mdash.ui.tv.isTelevision
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toTvColorScheme
@@ -176,6 +177,7 @@ private fun TvNavShell(
                             modifier = Modifier
                                 .onDpadSelect(onTabClick)
                                 .then(if (index == 0) Modifier.focusRequester(homeItemFocusRequester) else Modifier)
+                                .then(if (index == bottomTabs.lastIndex) Modifier.blockDirectionDown() else Modifier)
                         ) {
                             androidx.tv.material3.Text(tab.label)
                         }

@@ -5,8 +5,10 @@ import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.selection.toggleable
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -61,6 +63,21 @@ val LocalIsTv = staticCompositionLocalOf { false }
  * deliberately left alone here (returns false) since that key already reaches the component's own
  * working handler; only DirectionCenter needs this supplement.
  */
+/**
+ * Swallows Down so it never reaches whatever's underneath - for the LAST item in the TV nav
+ * rail (see AppNavHost's TvNavShell), where there's nothing below it for focus to move to.
+ * Confirmed on-device as a genuinely serious bug, not just a cosmetic dead end: pressing Down on
+ * that last item didn't just fail to move focus (which would be harmless) - it lost focus
+ * entirely, with literally no combination of further button presses able to get it back short of
+ * force-closing and reopening the app. Whatever inside NavigationDrawer/its underlying ListItem
+ * does with an unhandled Down at that boundary, intercepting it here in preview (before that
+ * component ever sees it) sidesteps it outright, the same strategy [onDpadSelect] already uses
+ * for a different gap in the same component.
+ */
+fun Modifier.blockDirectionDown(): Modifier = onPreviewKeyEvent { event ->
+    event.type == KeyEventType.KeyDown && event.key == Key.DirectionDown
+}
+
 fun Modifier.onDpadSelect(onClick: () -> Unit): Modifier = onPreviewKeyEvent { event ->
     if (event.type == KeyEventType.KeyDown && event.key == Key.DirectionCenter) {
         onClick()
@@ -123,6 +140,33 @@ fun Modifier.clearFocusOnBack(onDirectionDown: (() -> Boolean)? = null): Modifie
             else -> false
         }
     }
+}
+
+/**
+ * On TV, prevents a text field from popping up the on-screen keyboard the instant it merely
+ * *gains focus* while D-pad-navigating through a screen - a real, confirmed-on-device annoyance,
+ * since every field passed on the way to some other destination (e.g. Up/Down-ing past several
+ * fields to reach a Switch further down) briefly summoned the keyboard, needing a Back press
+ * (with its own OS-level quirk - see clearFocusOnBack's own comment) just to get rid of it again.
+ *
+ * Uses Compose Foundation's own `KeyboardOptions.showKeyboardOnFocus` (added for exactly this
+ * TV/D-pad scenario) rather than anything hand-rolled: `false` stops focus ALONE from showing the
+ * keyboard, but a genuine tap still does (untouched, `fromTap` bypasses this check inside
+ * BasicTextField), and - critically - so does pressing DPAD_CENTER/OK on an already-focused field,
+ * which Compose's own built-in key handling maps straight to `KeyCommand.CENTER` ->
+ * `keyboardController.show()` regardless of this setting (see KeyMapping.kt /
+ * TextFieldKeyEventHandler.kt). That's exactly the desired behavior: OK explicitly summons the
+ * keyboard, merely landing on the field while passing through does not.
+ *
+ * Deliberately gated on [LocalIsTv] rather than applied everywhere: on phone/tablet, this same
+ * setting would also suppress the keyboard reappearing when moving between fields via the IME's
+ * own "Next" action (that transition is a focus change too, not a tap) - a real regression for
+ * touch/keyboard users that TV's remote-only input simply doesn't have to weigh against.
+ */
+@Composable
+fun tvAwareKeyboardOptions(base: KeyboardOptions = KeyboardOptions.Default): KeyboardOptions {
+    if (!LocalIsTv.current) return base
+    return base.copy(showKeyboardOnFocus = false)
 }
 
 /**
