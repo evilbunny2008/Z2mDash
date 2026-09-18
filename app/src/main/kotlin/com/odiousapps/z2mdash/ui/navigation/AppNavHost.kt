@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -50,6 +51,7 @@ import com.odiousapps.z2mdash.ui.screens.WelcomeScreen
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 import com.odiousapps.z2mdash.ui.tv.isTelevision
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
+import com.odiousapps.z2mdash.ui.tv.toTvColorScheme
 
 private data class BottomTab(val route: String, val label: String, val icon: ImageVector)
 
@@ -132,7 +134,12 @@ private fun TvNavShell(
     // androidx.compose.material3.MaterialTheme - without this wrapper, unselected items rendered
     // with no visible color at all on real hardware (confirmed on-device: only the currently
     // selected tab's icon was showing; the other two were present but effectively invisible).
-    androidx.tv.material3.MaterialTheme {
+    // Explicitly fed this app's OWN current color scheme (light/dark/dynamic - see
+    // toTvColorScheme()'s own comment) rather than left on tv-material3's default tokens -
+    // confirmed on-device (TV set to system dark mode) that leaving it on the default produced
+    // near-illegible dark-on-dark rail text, since tv-material3's own default has no idea what
+    // theme the rest of the app is actually in.
+    androidx.tv.material3.MaterialTheme(colorScheme = MaterialTheme.colorScheme.toTvColorScheme()) {
         // The first NavigationDrawerItem is given focus as soon as this shell appears, because
         // Compose does NOT automatically focus anything on its own when a D-pad key first
         // arrives with nothing focused yet (confirmed on-device: without this, every D-pad press
@@ -153,12 +160,24 @@ private fun TvNavShell(
                         NavigationDrawerItem(
                             selected = currentRoute == tab.route,
                             onClick = onTabClick,
-                            leadingContent = { Icon(tab.icon, contentDescription = tab.label) },
+                            // Deliberately tv-material3's own Icon/Text here, NOT the
+                            // androidx.compose.material3 ones this file otherwise uses (see
+                            // PhoneNavShell below) - NavigationDrawerItem only ever adjusts ITS
+                            // OWN library's LocalContentColor for selected/focused/unselected
+                            // contrast. The compose-material3 versions read a completely
+                            // different, unrelated LocalContentColor, so they were silently
+                            // falling back to the app's outer theme's plain onSurface color
+                            // regardless of this item's actual state - the real cause of the
+                            // confirmed on-device dark-on-dark illegibility, independent of (and
+                            // in addition to) the ColorScheme mismatch fixed above.
+                            leadingContent = {
+                                androidx.tv.material3.Icon(tab.icon, contentDescription = tab.label)
+                            },
                             modifier = Modifier
                                 .onDpadSelect(onTabClick)
                                 .then(if (index == 0) Modifier.focusRequester(homeItemFocusRequester) else Modifier)
                         ) {
-                            Text(tab.label)
+                            androidx.tv.material3.Text(tab.label)
                         }
                     }
                 }

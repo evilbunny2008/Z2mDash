@@ -4,6 +4,7 @@ import android.app.UiModeManager
 import android.content.Context
 import android.content.res.Configuration
 import androidx.compose.foundation.border
+import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +23,7 @@ import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
+import androidx.tv.material3.ColorScheme as TvColorScheme
 
 /** True when running on an actual Android TV device, false for phones/tablets. */
 fun isTelevision(context: Context): Boolean {
@@ -74,6 +76,47 @@ fun Modifier.clearFocusOnBack(): Modifier = composed {
         false
     }
 }
+
+/**
+ * Maps this app's own Material3 color scheme (light/dark/dynamic - see Z2mDashTheme) onto
+ * tv-material3's own, unrelated ColorScheme type, so the TV nav rail's colors actually track the
+ * app's current theme instead of tv-material3's own baked-in default tokens. Confirmed on-device
+ * (TV set to system dark mode): without this, `androidx.tv.material3.MaterialTheme { ... }`'s
+ * default colors had nothing to do with the app's real (dark) theme, and combined with a separate
+ * bug where the rail's own icon/label used the WRONG library's Text/Icon (see AppNavHost.kt),
+ * rendered as close to illegible dark-on-dark.
+ */
+fun ColorScheme.toTvColorScheme(): TvColorScheme = TvColorScheme(
+    primary = primary,
+    onPrimary = onPrimary,
+    primaryContainer = primaryContainer,
+    onPrimaryContainer = onPrimaryContainer,
+    inversePrimary = inversePrimary,
+    secondary = secondary,
+    onSecondary = onSecondary,
+    secondaryContainer = secondaryContainer,
+    onSecondaryContainer = onSecondaryContainer,
+    tertiary = tertiary,
+    onTertiary = onTertiary,
+    tertiaryContainer = tertiaryContainer,
+    onTertiaryContainer = onTertiaryContainer,
+    background = background,
+    onBackground = onBackground,
+    surface = surface,
+    onSurface = onSurface,
+    surfaceVariant = surfaceVariant,
+    onSurfaceVariant = onSurfaceVariant,
+    surfaceTint = surfaceTint,
+    inverseSurface = inverseSurface,
+    inverseOnSurface = inverseOnSurface,
+    error = error,
+    onError = onError,
+    errorContainer = errorContainer,
+    onErrorContainer = onErrorContainer,
+    border = outline,
+    borderVariant = outlineVariant,
+    scrim = scrim,
+)
 
 /**
  * A visible "focus is here" ring, applied to a container that either is itself clickable/focusable
