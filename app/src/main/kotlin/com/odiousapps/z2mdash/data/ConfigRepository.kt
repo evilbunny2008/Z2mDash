@@ -107,6 +107,15 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         cfg.copy(brokers = newList)
     }
 
+    // Persisted independently of upsertBroker/"Done" so the "Permit Join" toggle (on both the
+    // broker edit screen and HomeScreen's own banner) remembers the last device actually used the
+    // moment it's used - flipping that switch is a real, meaningful action on its own, and
+    // shouldn't need the whole edit screen's "Done" button pressed afterwards to be remembered,
+    // nor should using it accidentally persist any of that screen's other still-unsaved edits.
+    fun updatePermitJoinDevice(brokerId: String, device: String) = update { cfg ->
+        cfg.copy(brokers = cfg.brokers.map { if (it.id == brokerId) it.copy(permitJoinDevice = device) else it })
+    }
+
     fun deleteBroker(id: String) = update { cfg ->
         // Pending/ignored device prompts are scoped to a broker - once it's gone,
         // clear both so the Home screen doesn't keep showing stale "add/ignore"

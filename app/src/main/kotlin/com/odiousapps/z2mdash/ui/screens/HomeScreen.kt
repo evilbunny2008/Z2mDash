@@ -261,6 +261,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             items(config.brokers, key = { "permitJoin_${it.id}" }) { broker ->
                 PermitJoinItem(
                     app = app,
+                    navController = navController,
                     broker = broker,
                     showBrokerName = config.brokers.size > 1,
                     payloadsState = payloadsState,
@@ -1288,8 +1289,6 @@ private fun addPendingDevice(
     }
 }
 
-/** A dismissible card prompting the user to accept or ignore a newly-detected auto-config device. */
-@Composable
 /**
  * One broker's own item in HomeScreen's LazyColumn - does its own narrowly-scoped
  * derivedStateOf read of payloadsState/nowMillisState (same reasoning as ClusterCard/PanelTile
@@ -1299,6 +1298,7 @@ private fun addPendingDevice(
 @Composable
 private fun PermitJoinItem(
     app: Z2mDashApplication,
+    navController: NavController,
     broker: Broker,
     showBrokerName: Boolean,
     payloadsState: State<Map<String, String>>,
@@ -1315,7 +1315,11 @@ private fun PermitJoinItem(
         onToggle = { enabled ->
             val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
             app.connectionManager.publish(broker.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
-        }
+        },
+        // Deep-links straight to this broker's own "Permit Join" section (rather than just the
+        // top of its whole edit screen) - e.g. to change which router it's scoped to, or check
+        // on it, without hunting back through a long scrolling form to find that section again.
+        onInfoClick = { navController.navigate("broker/${broker.id}?focus=permitJoin") }
     )
 }
 
@@ -1324,7 +1328,8 @@ private fun PermitJoinBanner(
     brokerName: String,
     showBrokerName: Boolean,
     status: PermitJoin.Status,
-    onToggle: (Boolean) -> Unit
+    onToggle: (Boolean) -> Unit,
+    onInfoClick: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
@@ -1337,7 +1342,9 @@ private fun PermitJoinBanner(
         ) {
             Icon(Icons.Default.WifiTethering, contentDescription = null)
             Spacer(Modifier.width(12.dp))
-            Column(Modifier.weight(1f)) {
+            Column(
+                modifier = Modifier.weight(1f).clickable(onClick = onInfoClick)
+            ) {
                 Text(
                     if (showBrokerName) "Permit Join – $brokerName" else "Permit Join",
                     style = MaterialTheme.typography.titleSmall
@@ -1356,6 +1363,8 @@ private fun PermitJoinBanner(
     }
 }
 
+/** A dismissible card prompting the user to accept or ignore a newly-detected auto-config device. */
+@Composable
 private fun PendingDeviceBanner(
     pending: PendingAutoConfigDevice,
     onAdd: () -> Unit,

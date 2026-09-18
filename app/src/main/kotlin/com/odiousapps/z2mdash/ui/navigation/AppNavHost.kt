@@ -25,10 +25,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import androidx.tv.material3.DrawerValue
 import androidx.tv.material3.NavigationDrawer
 import androidx.tv.material3.NavigationDrawerItem
@@ -214,9 +216,23 @@ private fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
             DiscoverScreen(navController, initialBrokerId = entry.arguments?.getString("brokerId"))
         }
         composable("mqttBackup") { MqttBackupScreen(navController) }
-        composable("broker/{brokerId}") { entry ->
+        composable(
+            // "?focus={focus}" is an optional query segment - every existing "broker/$id"
+            // navigation call (without it) still matches this route unchanged. Lets a caller
+            // like HomeScreen's own Permit Join banner deep-link straight to that section of
+            // this screen instead of just landing at the top of a long scrolling form.
+            route = "broker/{brokerId}?focus={focus}",
+            arguments = listOf(
+                navArgument("focus") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) { entry ->
             val id = entry.arguments?.getString("brokerId")
-            AddEditBrokerScreen(navController, if (id == "new") null else id)
+            val focus = entry.arguments?.getString("focus")
+            AddEditBrokerScreen(navController, if (id == "new") null else id, focus)
         }
         composable("addGroup") { AddGroupScreen(navController) }
         composable("group/{groupId}/panel/{panelId}") { entry ->

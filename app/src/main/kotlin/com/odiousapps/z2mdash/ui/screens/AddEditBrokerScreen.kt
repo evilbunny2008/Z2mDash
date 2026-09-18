@@ -14,6 +14,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -69,7 +71,7 @@ import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
+fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSection: String? = null) {
     val app = LocalContext.current.applicationContext as Z2mDashApplication
     val context = LocalContext.current
     val config by app.configRepository.config.collectAsState()
@@ -77,7 +79,12 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
 
     val existing = remember(brokerId, config) { config.brokers.find { it.id == brokerId } }
     var showDeleteConfirm by remember { mutableStateOf(false) }
-    var broker by remember(existing) {
+    // Keyed on brokerId (not "existing" itself) so a config change elsewhere - including this
+    // screen's own updatePermitJoinDevice() call below, the moment the "Permit Join" switch is
+    // used - doesn't reset this screen's still-unsaved edits back to whatever's on disk. Only
+    // actually navigating to a different broker (or from "new" to a freshly-saved one) should
+    // reinitialize this state.
+    var broker by remember(brokerId) {
         mutableStateOf(
             existing ?: Broker(
                 id = UUID.randomUUID().toString(),
@@ -415,71 +422,84 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     } ?: emptyList()
                 }
 
-                Spacer(Modifier.height(24.dp))
-                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-                    Column(Modifier.weight(1f)) {
-                        Text("Permit Join", style = MaterialTheme.typography.titleMedium)
-                        Text(
-                            if (permitJoinStatus.isOn) {
-                                "Open for ${PermitJoin.formatRemaining(permitJoinStatus.remainingSeconds)} more"
-                            } else {
-                                "Allow new Zigbee devices to join this network for a few minutes"
-                            },
-                            style = MaterialTheme.typography.bodySmall
-                        )
+                // Lets HomeScreen's own Permit Join banner deep-link straight here (via the
+                // "focus" nav argument) instead of the user having to scroll a long form to find
+                // it again themselves every time.
+                val permitJoinSectionRequester = remember { BringIntoViewRequester() }
+                LaunchedEffect(focusSection) {
+                    if (focusSection == "permitJoin") {
+                        permitJoinSectionRequester.bringIntoView()
                     }
-                    Switch(
-                        checked = permitJoinStatus.isOn,
-                        onCheckedChange = { enabled ->
-                            val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
-                            app.connectionManager.publish(existing.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
-                        }
-                    )
                 }
-                Spacer(Modifier.height(8.dp))
-                var permitJoinDeviceExpanded by remember { mutableStateOf(false) }
-                val filteredRouterNames = remember(routerFriendlyNames, broker.permitJoinDevice) {
-                    routerFriendlyNames.filter { it.contains(broker.permitJoinDevice, ignoreCase = true) }
-                }
-                ExposedDropdownMenuBox(
-                    expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
-                    onExpandedChange = { permitJoinDeviceExpanded = it }
-                ) {
-                    OutlinedTextField(
-                        value = broker.permitJoinDevice,
-                        onValueChange = {
-                            broker = broker.copy(permitJoinDevice = it)
-                            permitJoinDeviceExpanded = true
-                        },
-                        label = { Text("Permit join via (optional)") },
-                        placeholder = { Text("Blank = whole network") },
-                        trailingIcon = if (routerFriendlyNames.isNotEmpty()) {
-                            { ExposedDropdownMenuDefaults.TrailingIcon(expanded = permitJoinDeviceExpanded) }
-                        } else null,
-                        modifier = Modifier.fillMaxWidth().clearFocusOnBack()
-                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
-                    )
-                    ExposedDropdownMenu(
-                        expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
-                        onDismissRequest = { permitJoinDeviceExpanded = false }
-                    ) {
-                        filteredRouterNames.forEach { name ->
-                            DropdownMenuItem(
-                                text = { Text(name) },
-                                onClick = {
-                                    broker = broker.copy(permitJoinDevice = name)
-                                    permitJoinDeviceExpanded = false
-                                }
+
+                Spacer(Modifier.height(24.dp))
+                Column(modifier = Modifier.bringIntoViewRequester(permitJoinSectionRequester)) {
+                    Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                        Column(Modifier.weight(1f)) {
+                            Text("Permit Join", style = MaterialTheme.typography.titleMedium)
+                            Text(
+                                if (permitJoinStatus.isOn) {
+                                    "Open for ${PermitJoin.formatRemaining(permitJoinStatus.remainingSeconds)} more"
+                                } else {
+                                    "Allow new Zigbee devices to join this network for a few minutes"
+                                },
+                                style = MaterialTheme.typography.bodySmall
                             )
                         }
+                        Switch(
+                            checked = permitJoinStatus.isOn,
+                            onCheckedChange = { enabled ->
+                                app.configRepository.updatePermitJoinDevice(existing.id, broker.permitJoinDevice)
+                                val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
+                                app.connectionManager.publish(existing.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
+                            }
+                        )
                     }
+                    Spacer(Modifier.height(8.dp))
+                    var permitJoinDeviceExpanded by remember { mutableStateOf(false) }
+                    val filteredRouterNames = remember(routerFriendlyNames, broker.permitJoinDevice) {
+                        routerFriendlyNames.filter { it.contains(broker.permitJoinDevice, ignoreCase = true) }
+                    }
+                    ExposedDropdownMenuBox(
+                        expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
+                        onExpandedChange = { permitJoinDeviceExpanded = it }
+                    ) {
+                        OutlinedTextField(
+                            value = broker.permitJoinDevice,
+                            onValueChange = {
+                                broker = broker.copy(permitJoinDevice = it)
+                                permitJoinDeviceExpanded = true
+                            },
+                            label = { Text("Permit join via (optional)") },
+                            placeholder = { Text("Blank = whole network") },
+                            trailingIcon = if (routerFriendlyNames.isNotEmpty()) {
+                                { ExposedDropdownMenuDefaults.TrailingIcon(expanded = permitJoinDeviceExpanded) }
+                            } else null,
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
+                        )
+                        ExposedDropdownMenu(
+                            expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
+                            onDismissRequest = { permitJoinDeviceExpanded = false }
+                        ) {
+                            filteredRouterNames.forEach { name ->
+                                DropdownMenuItem(
+                                    text = { Text(name) },
+                                    onClick = {
+                                        broker = broker.copy(permitJoinDevice = name)
+                                        permitJoinDeviceExpanded = false
+                                    }
+                                )
+                            }
+                        }
+                    }
+                    Text(
+                        "Friendly name of a specific router to extend joining through, or \"Coordinator\" for " +
+                            "just the coordinator. Leave blank to permit joining via every router and the " +
+                            "coordinator at once.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
-                Text(
-                    "Friendly name of a specific router to extend joining through, or \"Coordinator\" for " +
-                        "just the coordinator. Leave blank to permit joining via every router and the " +
-                        "coordinator at once.",
-                    style = MaterialTheme.typography.bodySmall
-                )
 
                 Spacer(Modifier.height(24.dp))
                 OutlinedButton(

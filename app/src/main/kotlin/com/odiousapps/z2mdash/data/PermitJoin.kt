@@ -26,15 +26,17 @@ object PermitJoin {
      * alone would show a frozen "time" instead of one that actually counts down (or notices
      * joining being closed/opened by another client, e.g. Zigbee2MQTT's own frontend).
      * bridge/info is republished by the bridge whenever this state changes and carries a live
-     * "permit_join_end" epoch-seconds timestamp for exactly this purpose.
+     * "permit_join_end" timestamp for exactly this purpose - already epoch MILLISECONDS (it's
+     * `Date.now() + time*1000` straight from zigbee-herdsman, not epoch seconds despite what the
+     * Zigbee2MQTT docs' wording might suggest).
      */
     fun status(payloads: Map<String, String>, brokerId: String, baseTopic: String, nowMillis: Long): Status {
         val infoPayload = payloads["$brokerId|${infoTopic(baseTopic)}"] ?: return Status(false, 0)
         val isOn = JsonPath.extract(infoPayload, "permit_join").equals("true", ignoreCase = true)
         if (!isOn) return Status(false, 0)
-        val endEpochSeconds = JsonPath.extract(infoPayload, "permit_join_end")?.toLongOrNull()
-        val remainingSeconds = endEpochSeconds
-            ?.let { ((it * 1000 - nowMillis) / 1000).toInt().coerceAtLeast(0) }
+        val endEpochMillis = JsonPath.extract(infoPayload, "permit_join_end")?.toLongOrNull()
+        val remainingSeconds = endEpochMillis
+            ?.let { ((it - nowMillis) / 1000).toInt().coerceAtLeast(0) }
             ?: 0
         return Status(remainingSeconds > 0, remainingSeconds)
     }
