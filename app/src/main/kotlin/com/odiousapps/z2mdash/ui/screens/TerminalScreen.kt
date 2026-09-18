@@ -50,6 +50,7 @@ import androidx.compose.ui.unit.dp
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.mqtt.LoggedMessage
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
@@ -187,6 +188,7 @@ fun TerminalScreen() {
                 onValueChange = { filterText = it },
                 label = { Text("Filter by topic or payload") },
                 singleLine = true,
+                keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Spacer(Modifier.height(8.dp))

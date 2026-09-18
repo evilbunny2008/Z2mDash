@@ -63,6 +63,7 @@ import com.odiousapps.z2mdash.data.MqttProtocol
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
 import kotlinx.coroutines.delay
@@ -168,6 +169,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                 value = broker.name,
                 onValueChange = { broker = broker.copy(name = it) },
                 label = { Text("Name") },
+                keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Spacer(Modifier.height(16.dp))
@@ -176,6 +178,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                 onValueChange = { broker = broker.copy(host = it) },
                 label = { Text("Host") },
                 isError = broker.host.isBlank(),
+                keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Spacer(Modifier.height(16.dp))
@@ -185,6 +188,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                 onValueChange = { broker = broker.copy(baseTopic = it) },
                 label = { Text("Base topic") },
                 placeholder = { Text("zigbee2mqtt") },
+                keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Text(
@@ -227,7 +231,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                 value = broker.port.toString(),
                 onValueChange = { it.toIntOrNull()?.let { p -> broker = broker.copy(port = p) } },
                 label = { Text("Port") },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
 
@@ -237,6 +241,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     value = broker.webSocketPath,
                     onValueChange = { broker = broker.copy(webSocketPath = it) },
                     label = { Text("WebSocket path") },
+                    keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
             }
@@ -289,6 +294,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     value = broker.username,
                     onValueChange = { broker = broker.copy(username = it) },
                     label = { Text("Username") },
+                    keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Spacer(Modifier.height(8.dp))
@@ -302,6 +308,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                             Text(if (showPassword) "Hide" else "Show")
                         }
                     },
+                    keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
             }
@@ -321,6 +328,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     value = broker.clientId,
                     onValueChange = { broker = broker.copy(clientId = it) },
                     label = { Text("Client ID") },
+                    keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Spacer(Modifier.height(16.dp))
@@ -343,7 +351,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     value = broker.keepAliveSeconds.toString(),
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(keepAliveSeconds = v) } },
                     label = { Text("Keep Alive Interval") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Text(
@@ -355,7 +363,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     value = broker.connectionTimeoutSeconds.toString(),
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(connectionTimeoutSeconds = v) } },
                     label = { Text("Connection Timeout") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Text(
@@ -496,6 +504,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                             },
                             label = { Text("Permit join via (optional)") },
                             placeholder = { Text("Blank = whole network") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             trailingIcon = if (routerFriendlyNames.isNotEmpty()) {
                                 { ExposedDropdownMenuDefaults.TrailingIcon(expanded = permitJoinDeviceExpanded) }
                             } else null,

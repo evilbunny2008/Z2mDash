@@ -50,6 +50,7 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -294,6 +295,7 @@ fun BackupRestoreScreen(navController: NavController) {
                         onValueChange = { exportPasswordText = it },
                         label = { Text("Password") },
                         visualTransformation = PasswordVisualTransformation(),
+                        keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                     )
                 }
@@ -335,6 +337,7 @@ fun BackupRestoreScreen(navController: NavController) {
                         visualTransformation = PasswordVisualTransformation(),
                         isError = passwordDialogError != null,
                         supportingText = passwordDialogError?.let { { Text(it) } },
+                        keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                     )
                 }

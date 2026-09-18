@@ -28,6 +28,7 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,6 +55,7 @@ fun AddGroupScreen(navController: NavController) {
                 value = name,
                 onValueChange = { name = it },
                 label = { Text("Group name") },
+                keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Spacer(Modifier.height(16.dp))

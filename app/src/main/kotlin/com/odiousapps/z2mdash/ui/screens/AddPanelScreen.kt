@@ -48,6 +48,7 @@ import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -256,6 +257,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     value = label,
                     onValueChange = { label = it },
                     label = { Text("Label") },
+                    keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 
@@ -265,6 +267,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     onValueChange = { clusterName = it },
                     label = { Text("Cluster name (optional)") },
                     placeholder = { Text("e.g. Soil Sensor 1 \u2013 groups this with other panels of the same name") },
+                    keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 
@@ -274,7 +277,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     onValueChange = { displayOrderText = it.filter { c -> c.isDigit() } },
                     label = { Text("Display order (optional)") },
                     placeholder = { Text("Lower numbers appear first within the group") },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                    keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 
@@ -304,6 +307,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { topic = it },
                             label = { Text("Topic") },
                             placeholder = { Text("e.g. zigbee2mqtt/Soil Sensor 1") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
@@ -312,6 +316,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { jsonPath = it },
                             label = { Text("JSON field (blank = raw payload)") },
                             placeholder = { Text("e.g. temperature or state.battery") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
@@ -319,6 +324,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             value = unit,
                             onValueChange = { unit = it },
                             label = { Text("Unit (optional)") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
@@ -327,7 +333,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { decimalsText = it.filter { c -> c.isDigit() } },
                             label = { Text("Decimal places") },
                             placeholder = { Text("e.g. 0 to round to the nearest whole number") },
-                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
@@ -336,6 +342,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { idealRangeTopic = it },
                             label = { Text("Ideal range topic (optional)") },
                             placeholder = { Text("e.g. z2m2/SoilSensor_01/ideal \u2013 publishes {\"min\":x,\"max\":y}") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         if (idealRangeTopic.isNotBlank()) {
@@ -345,6 +352,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                     value = idealMinPath,
                                     onValueChange = { idealMinPath = it },
                                     label = { Text("Min field name") },
+                                    keyboardOptions = tvAwareKeyboardOptions(),
                                     modifier = Modifier.weight(1f).clearFocusOnBack()
                                 )
                                 Spacer(Modifier.width(8.dp))
@@ -352,6 +360,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                     value = idealMaxPath,
                                     onValueChange = { idealMaxPath = it },
                                     label = { Text("Max field name") },
+                                    keyboardOptions = tvAwareKeyboardOptions(),
                                     modifier = Modifier.weight(1f).clearFocusOnBack()
                                 )
                             }
@@ -373,6 +382,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { commandTopic = it },
                             label = { Text("Command topic") },
                             placeholder = { Text("e.g. zigbee2mqtt/Kitchen Plug/set") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
@@ -381,6 +391,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 value = onPayload,
                                 onValueChange = { onPayload = it },
                                 label = { Text("ON payload") },
+                                keyboardOptions = tvAwareKeyboardOptions(),
                                 modifier = Modifier.weight(1f).clearFocusOnBack()
                             )
                             Spacer(Modifier.width(8.dp))
@@ -388,6 +399,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 value = offPayload,
                                 onValueChange = { offPayload = it },
                                 label = { Text("OFF payload") },
+                                keyboardOptions = tvAwareKeyboardOptions(),
                                 modifier = Modifier.weight(1f).clearFocusOnBack()
                             )
                         }
@@ -397,6 +409,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { stateTopic = it },
                             label = { Text("State topic (optional)") },
                             placeholder = { Text("e.g. zigbee2mqtt/Kitchen Plug") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
@@ -405,6 +418,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { stateJsonPath = it },
                             label = { Text("State JSON field (optional)") },
                             placeholder = { Text("e.g. state") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                     }
@@ -416,6 +430,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { commandTopic = it },
                             label = { Text("Command topic") },
                             placeholder = { Text("e.g. zigbee2mqtt/Blind_01/set") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
@@ -424,6 +439,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { buttonPayload = it },
                             label = { Text("Payload") },
                             placeholder = { Text("e.g. {\"state\": \"STOP\"} or a bare value like STOP") },
+                            keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Text(
