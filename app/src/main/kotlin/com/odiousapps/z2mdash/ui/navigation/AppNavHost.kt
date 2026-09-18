@@ -214,7 +214,14 @@ private fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
         LaunchedEffect(backStackEntry?.id) {
-            if (bottomTabs.none { it.route == currentRoute }) {
+            // currentRoute != null is not redundant with the bottomTabs check below - on the very
+            // first composition, before NavHost has settled on its startDestination, this can
+            // briefly be null, which also isn't "one of the 3 tabs." Without this guard, that
+            // moment raced TvNavShell's own initial focus request (Home gets focus there first,
+            // this effect then immediately bumps it one step forward) - confirmed on-device as
+            // the cause of a real "Home is shown as selected, but the remote acts like Terminal
+            // has focus" report right after a cold start.
+            if (currentRoute != null && bottomTabs.none { it.route == currentRoute }) {
                 focusManager.moveFocus(FocusDirection.Next)
             }
         }

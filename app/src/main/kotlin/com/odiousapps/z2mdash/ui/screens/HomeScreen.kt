@@ -249,9 +249,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
-                Text("No groups yet", style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.height(8.dp))
-                Text("Tap + to create your first group, then add panels to it.")
+                if (isConfigLoaded) {
+                    Text("No groups yet", style = MaterialTheme.typography.titleMedium)
+                    Spacer(Modifier.height(8.dp))
+                    Text("Tap + to create your first group, then add panels to it.")
+                } else {
+                    // config.groups briefly looks empty while ConfigRepository is still loading
+                    // it from disk in the background (see its own init{} comment) - without this,
+                    // someone who genuinely has groups configured could see this "add your first
+                    // group" message flash up for real on a slow cold start, telling them to do
+                    // something they've already done.
+                    Text("Loading…", style = MaterialTheme.typography.titleMedium)
+                    Spacer(Modifier.height(8.dp))
+                    Text("Still reading your saved configuration.")
+                }
             }
         }
 
