@@ -160,9 +160,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // Nothing on this screen can do anything without a broker - send the user
     // straight to Add Broker rather than showing them an unusable empty Home.
     // Only re-fires if brokers go from present to empty again later (e.g. the
-    // last one gets deleted), not on every recomposition.
-    LaunchedEffect(config.brokers.isEmpty()) {
-        if (config.brokers.isEmpty()) {
+    // last one gets deleted), not on every recomposition. Gated on isLoaded so
+    // this doesn't fire during the brief window while ConfigRepository's real,
+    // on-disk config is still loading off the main thread (config.value is a
+    // momentarily-empty default until then) - without that, a user who
+    // genuinely has brokers configured could get bounced to Welcome for a
+    // moment on every cold start.
+    val isConfigLoaded by app.configRepository.isLoaded.collectAsState()
+    LaunchedEffect(config.brokers.isEmpty(), isConfigLoaded) {
+        if (isConfigLoaded && config.brokers.isEmpty()) {
             navController.navigate("welcome")
         }
     }

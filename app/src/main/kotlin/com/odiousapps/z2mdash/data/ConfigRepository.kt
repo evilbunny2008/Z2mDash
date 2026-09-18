@@ -28,8 +28,31 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         encodeDefaults = true
     }
 
-    private val _config = MutableStateFlow(load())
+    private val _config = MutableStateFlow(AppConfig())
     val config: StateFlow<AppConfig> = _config
+
+    // True once the on-disk config has actually been read (or determined not to exist) -
+    // callers that must not act on the still-loading, momentarily-empty default config above
+    // (e.g. HomeScreen's "no brokers configured, go to Welcome" redirect) can wait for this
+    // before deciding anything from config.value.
+    private val _isLoaded = MutableStateFlow(false)
+    val isLoaded: StateFlow<Boolean> = _isLoaded
+
+    init {
+        // Loaded on a background dispatcher rather than synchronously in this constructor (as it
+        // used to be) - this constructor runs on the main thread, from
+        // Z2mDashApplication.onCreate(), before the Activity/UI even exists yet, and this is real
+        // file I/O plus JSON-decoding the user's whole configuration (every broker/group/panel).
+        // Confirmed via logcat on an underpowered TV: a >12 second "time to first frame" followed
+        // by several more seconds of skipped-frame/slow-dispatch warnings and heavy GC right at
+        // cold start - the same class of main-thread-blocking problem MqttConnectionManager's own
+        // payload-cache seeding had (see that class's init{} block), just not caught until now
+        // because it only bites hard enough to notice on weaker hardware.
+        scope.launch(Dispatchers.IO) {
+            _config.value = load()
+            _isLoaded.value = true
+        }
+    }
 
     private fun load(): AppConfig = try {
         val loaded = if (file.exists()) json.decodeFromString(AppConfig.serializer(), file.readText())
