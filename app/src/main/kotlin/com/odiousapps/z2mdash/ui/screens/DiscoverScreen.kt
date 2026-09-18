@@ -50,6 +50,7 @@ import com.odiousapps.z2mdash.data.AutoConfiguredDevice
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import java.util.UUID
 
 private const val NEW_GROUP_ID = "__new_group__"
@@ -281,7 +282,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                     value = newGroupName,
                     onValueChange = { newGroupName = it },
                     label = { Text("New group name") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
             }
 

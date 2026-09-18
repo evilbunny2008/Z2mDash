@@ -44,6 +44,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.odiousapps.z2mdash.data.TileIcon
+import com.odiousapps.z2mdash.ui.tv.tvFocusIndicator
 
 /** Whether a sensor's current value sits inside, above, or below its configured ideal range. */
 enum class SensorAlert { NONE, IN_RANGE, BELOW_MIN, ABOVE_MAX }
@@ -112,6 +113,7 @@ fun SensorTile(
     Surface(
         modifier = modifier
             .heightIn(min = 120.dp)
+            .tvFocusIndicator()
             .clickable(onClick = onEdit),
         shape = RoundedCornerShape(12.dp),
         color = backgroundColor,
@@ -168,7 +170,7 @@ fun ToggleTile(
     // icon/label, since plain clickable doesn't intercept long-press) still
     // reaches the drag detector supplied via the outer modifier parameter.
     Surface(
-        modifier = modifier.heightIn(min = 120.dp),
+        modifier = modifier.heightIn(min = 120.dp).tvFocusIndicator(),
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 1.dp
     ) {
@@ -202,7 +204,7 @@ fun ButtonTile(
     onEdit: () -> Unit = {}
 ) {
     Surface(
-        modifier = modifier.heightIn(min = 120.dp),
+        modifier = modifier.heightIn(min = 120.dp).tvFocusIndicator(),
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 1.dp
     ) {

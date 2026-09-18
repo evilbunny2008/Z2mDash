@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
+import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 
 private const val DEFAULT_BACKUP_PREFIX = "z2mdash/backup"
 
@@ -140,7 +141,7 @@ fun MqttBackupScreen(navController: NavController) {
                 onValueChange = { topicPrefix = it; hasScanned = false },
                 label = { Text("Backup topic prefix") },
                 placeholder = { Text(DEFAULT_BACKUP_PREFIX) },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
 
             Spacer(Modifier.height(24.dp))

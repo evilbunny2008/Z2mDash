@@ -79,6 +79,7 @@ import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
 import com.odiousapps.z2mdash.ui.components.ToggleTile
+import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import kotlinx.coroutines.delay
 import java.util.UUID
 import kotlin.math.roundToInt
@@ -598,7 +599,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 OutlinedTextField(
                     value = renameText,
                     onValueChange = { renameText = it },
-                    label = { Text("Name") }
+                    label = { Text("Name") },
+                    modifier = Modifier.clearFocusOnBack()
                 )
             },
             confirmButton = {

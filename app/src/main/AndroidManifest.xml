@@ -9,10 +9,18 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
+    <!-- Not a TV-only app - these just declare it also works fine without a
+         touchscreen or the Leanback D-pad-navigation feature set, which is
+         what lets it show up on Android TV's own launcher (below) instead of
+         being filtered out of the Play/F-Droid TV listing entirely. -->
+    <uses-feature android:name="android.software.leanback" android:required="false" />
+    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+
     <application
         android:name=".Z2mDashApplication"
         android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
+        android:banner="@drawable/tv_banner"
         android:label="@string/app_name"
         android:theme="@style/Theme.Z2mDash">
 
@@ -23,6 +31,10 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <!-- Required for the app to appear in the Android TV home
+                     launcher's own app row - without it, TV's launcher never
+                     surfaces the app at all even though it installs fine. -->
+                <category android:name="android.intent.category.LEANBACK_LAUNCHER" />
             </intent-filter>
         </activity>
 

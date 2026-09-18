@@ -47,6 +47,7 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.TileIcon
+import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -255,7 +256,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     value = label,
                     onValueChange = { label = it },
                     label = { Text("Label") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 
                 Spacer(Modifier.height(16.dp))
@@ -264,7 +265,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     onValueChange = { clusterName = it },
                     label = { Text("Cluster name (optional)") },
                     placeholder = { Text("e.g. Soil Sensor 1 \u2013 groups this with other panels of the same name") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 
                 Spacer(Modifier.height(16.dp))
@@ -274,7 +275,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     label = { Text("Display order (optional)") },
                     placeholder = { Text("Lower numbers appear first within the group") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 
                 Spacer(Modifier.height(16.dp))
@@ -303,7 +304,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { topic = it },
                             label = { Text("Topic") },
                             placeholder = { Text("e.g. zigbee2mqtt/Soil Sensor 1") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
@@ -311,14 +312,14 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { jsonPath = it },
                             label = { Text("JSON field (blank = raw payload)") },
                             placeholder = { Text("e.g. temperature or state.battery") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
                             value = unit,
                             onValueChange = { unit = it },
                             label = { Text("Unit (optional)") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
@@ -327,7 +328,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             label = { Text("Decimal places") },
                             placeholder = { Text("e.g. 0 to round to the nearest whole number") },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
@@ -335,7 +336,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { idealRangeTopic = it },
                             label = { Text("Ideal range topic (optional)") },
                             placeholder = { Text("e.g. z2m2/SoilSensor_01/ideal \u2013 publishes {\"min\":x,\"max\":y}") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         if (idealRangeTopic.isNotBlank()) {
                             Spacer(Modifier.height(8.dp))
@@ -344,14 +345,14 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                     value = idealMinPath,
                                     onValueChange = { idealMinPath = it },
                                     label = { Text("Min field name") },
-                                    modifier = Modifier.weight(1f)
+                                    modifier = Modifier.weight(1f).clearFocusOnBack()
                                 )
                                 Spacer(Modifier.width(8.dp))
                                 OutlinedTextField(
                                     value = idealMaxPath,
                                     onValueChange = { idealMaxPath = it },
                                     label = { Text("Max field name") },
-                                    modifier = Modifier.weight(1f)
+                                    modifier = Modifier.weight(1f).clearFocusOnBack()
                                 )
                             }
                             Text(
@@ -372,7 +373,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { commandTopic = it },
                             label = { Text("Command topic") },
                             placeholder = { Text("e.g. zigbee2mqtt/Kitchen Plug/set") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
                         Row(modifier = Modifier.fillMaxWidth()) {
@@ -380,14 +381,14 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 value = onPayload,
                                 onValueChange = { onPayload = it },
                                 label = { Text("ON payload") },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f).clearFocusOnBack()
                             )
                             Spacer(Modifier.width(8.dp))
                             OutlinedTextField(
                                 value = offPayload,
                                 onValueChange = { offPayload = it },
                                 label = { Text("OFF payload") },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f).clearFocusOnBack()
                             )
                         }
                         Spacer(Modifier.height(16.dp))
@@ -396,7 +397,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { stateTopic = it },
                             label = { Text("State topic (optional)") },
                             placeholder = { Text("e.g. zigbee2mqtt/Kitchen Plug") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
@@ -404,7 +405,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { stateJsonPath = it },
                             label = { Text("State JSON field (optional)") },
                             placeholder = { Text("e.g. state") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                     }
                     else -> {
@@ -415,7 +416,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { commandTopic = it },
                             label = { Text("Command topic") },
                             placeholder = { Text("e.g. zigbee2mqtt/Blind_01/set") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
@@ -423,7 +424,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { buttonPayload = it },
                             label = { Text("Payload") },
                             placeholder = { Text("e.g. {\"state\": \"STOP\"} or a bare value like STOP") },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Text(
                             "Sent every time this button is tapped - there's no on/off state to track.",

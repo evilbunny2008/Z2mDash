@@ -143,6 +143,14 @@ dependencies {
 
     implementation("androidx.navigation:navigation-compose:2.10.1")
 
+    // TV-flavoured chrome (focus rings/scale, nav rail) for the small set of
+    // places this app branches on isTelevision() - see ui/tv/TvSupport.kt.
+    // Deliberately not androidx.tv:tv-foundation: that artefact is deprecated,
+    // its lazy-list D-pad/focus-search functionality having been folded into
+    // plain androidx.compose.foundation (already pulled in via compose-bom
+    // above) since Compose Foundation 1.7.0.
+    implementation("androidx.tv:tv-material:1.1.0")
+
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
 

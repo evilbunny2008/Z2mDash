@@ -56,6 +56,7 @@ import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.MqttProtocol
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
+import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -147,7 +148,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 value = broker.name,
                 onValueChange = { broker = broker.copy(name = it) },
                 label = { Text("Name") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Spacer(Modifier.height(16.dp))
             OutlinedTextField(
@@ -155,7 +156,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 onValueChange = { broker = broker.copy(host = it) },
                 label = { Text("Host") },
                 isError = broker.host.isBlank(),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Spacer(Modifier.height(16.dp))
 
@@ -164,7 +165,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 onValueChange = { broker = broker.copy(baseTopic = it) },
                 label = { Text("Base topic") },
                 placeholder = { Text("zigbee2mqtt") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Text(
                 "The app watches \"<base topic>/#\" for devices and their /app configs, " +
@@ -207,7 +208,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 onValueChange = { it.toIntOrNull()?.let { p -> broker = broker.copy(port = p) } },
                 label = { Text("Port") },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
 
             if (broker.protocol == MqttProtocol.WS || broker.protocol == MqttProtocol.WSS) {
@@ -216,7 +217,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     value = broker.webSocketPath,
                     onValueChange = { broker = broker.copy(webSocketPath = it) },
                     label = { Text("WebSocket path") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
             }
 
@@ -266,7 +267,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     value = broker.username,
                     onValueChange = { broker = broker.copy(username = it) },
                     label = { Text("Username") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Spacer(Modifier.height(8.dp))
                 OutlinedTextField(
@@ -279,7 +280,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                             Text(if (showPassword) "Hide" else "Show")
                         }
                     },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
             }
 
@@ -298,7 +299,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     value = broker.clientId,
                     onValueChange = { broker = broker.copy(clientId = it) },
                     label = { Text("Client ID") },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Spacer(Modifier.height(16.dp))
                 Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
@@ -317,7 +318,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(keepAliveSeconds = v) } },
                     label = { Text("Keep Alive Interval") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Text(
                     "Time interval in seconds between keep alive messages. Default: 60 seconds. Range: 5\u2013120 seconds",
@@ -329,7 +330,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(connectionTimeoutSeconds = v) } },
                     label = { Text("Connection Timeout") },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
                 Text(
                     "Maximum wait time for connection. Default: 30 seconds. Range: 1\u2013300 seconds",

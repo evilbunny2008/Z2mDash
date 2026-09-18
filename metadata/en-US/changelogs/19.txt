@@ -7,3 +7,4 @@
 - Added a "Clean Up Orphaned Data" option in Settings (only shown when there's something to clean) to remove any panels left over from a broker deleted before the above fix
 - Fixed tapping "Done" on the very first broker (added from the "no brokers configured" welcome screen) landing back on that welcome screen instead of Home, needing an extra tap back to actually see your dashboard
 - Added a "Tile & Cluster Width" slider in Settings, so tiles/clusters can be widened to fill the screen instead of stopping at a fixed 110dp
+- Added proper Android TV support: the app now appears on the TV's own launcher, the remote's D-pad actually works throughout the app (previously nothing ever had focus, so button presses did nothing at all), text fields no longer trap focus (Back now reliably backs out of one in a single press), tiles show a visible focus ring when navigated to with a remote, and TV uses a side navigation rail instead of the phone's bottom bar
