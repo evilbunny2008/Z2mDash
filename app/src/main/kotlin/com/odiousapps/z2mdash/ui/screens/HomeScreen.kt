@@ -51,6 +51,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -100,21 +101,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     val config by app.configRepository.config.collectAsState()
 
     val listState = rememberLazyListState()
-    // AddPanelScreen sets this on save (for a newly-added panel, not an edit)
-    // via the standard Navigation Compose result-passing pattern - reacting
-    // to it here lets the just-added panel's group scroll into view, since
-    // it's easy for a new cluster to land somewhere already off-screen,
-    // especially in a group that already has several clusters.
+    // AddPanelScreen sets this on save (new panel, not edit) via Navigation Compose's result
+    // passing pattern, so the newly-added panel's group can scroll into view.
     //
-    // Uses this screen's own NavBackStackEntry (passed in from the nav graph)
-    // rather than navController.currentBackStackEntry - that property can be
-    // null depending on navigation timing, and calling collectAsState()
-    // conditionally through a nullable chain violates Compose's rule that
-    // composable calls must happen unconditionally, in the same position,
-    // every recomposition. Since this screen recomposes frequently (on every
-    // incoming MQTT payload), that mismatch was a real, live bug, not just a
-    // theoretical one - backStackEntry.savedStateHandle is always non-null,
-    // so collectAsState() below can be called safely and consistently.
+    // Uses this screen's own NavBackStackEntry rather than navController.currentBackStackEntry -
+    // that property can be null depending on timing, and calling collectAsState() through a
+    // nullable chain violates Compose's rule that composable calls happen unconditionally in the
+    // same position every recomposition (a real bug here, since this screen recomposes on every
+    // MQTT payload). backStackEntry.savedStateHandle is always non-null, so this is safe.
     val scrollToGroupId by backStackEntry.savedStateHandle
         .getStateFlow<String?>("scrollToGroupId", null)
         .collectAsState()
@@ -122,51 +116,39 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val targetGroupId = scrollToGroupId ?: return@LaunchedEffect
         val groupIndex = config.groups.indexOfFirst { it.id == targetGroupId }
         if (groupIndex >= 0) {
-            // The permit-join banner (one per broker) and pending-device banners
-            // both occupy LazyColumn items ahead of the groups, so the target
-            // index needs to account for however many are currently showing.
+            // Permit-join and pending-device banners occupy LazyColumn items ahead of the
+            // groups, so the target index must account for however many are currently showing.
             listState.requestScrollToItem(config.brokers.size + config.pendingAutoConfigDevices.size + groupIndex)
         }
         backStackEntry.savedStateHandle.set<String?>("scrollToGroupId", null)
     }
-    // Deliberately NOT unwrapped via "by" here - HomeScreen's own composable body never reads
-    // .value directly, only passes the State object itself down to PanelTile/ClusterCard, each of
-    // which does its own narrowly-scoped derivedStateOf read (see PanelTile/ClusterCard below).
-    // Reading .value at this level (the old "by ...collectAsState()" pattern) would subscribe
-    // HomeScreen's entire composable scope - and by extension every tile's call site inside it -
-    // to EVERY incoming MQTT message on EVERY topic, since latestPayloads is one big shared map
-    // whose identity changes on every single message: with the previous pattern, one temperature
-    // sensor reporting recomposed literally every tile on the whole dashboard, not just its own.
+    // Deliberately NOT unwrapped via "by" - HomeScreen never reads .value directly, only passes
+    // the State object down to PanelTile/ClusterCard, which each do their own narrowly-scoped
+    // derivedStateOf read. Reading .value here would subscribe HomeScreen's whole composable
+    // scope to EVERY MQTT message on EVERY topic (latestPayloads' identity changes on each one) -
+    // previously, one sensor reporting recomposed every tile on the dashboard, not just its own.
     val payloadsState = app.connectionManager.latestPayloads.collectAsState()
     val timestampsState = app.connectionManager.latestPayloadTimestamps.collectAsState()
 
-    // Ticks every second so "N seconds ago" counts up smoothly and resets the
-    // moment a fresh MQTT message (or last_seen field) actually arrives - the
-    // ageText computation below always re-derives from whichever timestamp is
-    // most recent, so a new message naturally overrides a stale running count.
+    // Ticks every second so "N seconds ago" counts up smoothly, and resets automatically when a
+    // fresher timestamp arrives since ageText always re-derives from whichever is most recent.
     //
-    // Kept as a State object (not unwrapped via "by" here) for the same reason as
-    // payloadsState/timestampsState above - passed down as-is so each ClusterCard's own
-    // derivedStateOf can read .value itself, rather than HomeScreen's own recomposition scope
-    // (and everything under it) re-running every single second regardless of whether any
-    // cluster's displayed age text actually changed that second.
-    val nowMillisState = remember { mutableStateOf(System.currentTimeMillis()) }
+    // Kept as a State object, not unwrapped via "by", for the same reason as payloadsState/
+    // timestampsState above - so each ClusterCard's own derivedStateOf reads .value itself,
+    // instead of HomeScreen's whole scope re-running every second regardless of whether any
+    // cluster's age text actually changed.
+    val nowMillisState = remember { mutableLongStateOf(System.currentTimeMillis()) }
     LaunchedEffect(Unit) {
         while (true) {
             delay(1_000.milliseconds)
-            nowMillisState.value = System.currentTimeMillis()
+            nowMillisState.longValue = System.currentTimeMillis()
         }
     }
 
-    // Nothing on this screen can do anything without a broker - send the user
-    // straight to Add Broker rather than showing them an unusable empty Home.
-    // Only re-fires if brokers go from present to empty again later (e.g. the
-    // last one gets deleted), not on every recomposition. Gated on isLoaded so
-    // this doesn't fire during the brief window while ConfigRepository's real,
-    // on-disk config is still loading off the main thread (config.value is a
-    // momentarily-empty default until then) - without that, a user who
-    // genuinely has brokers configured could get bounced to Welcome for a
-    // moment on every cold start.
+    // Nothing works without a broker - send the user to Welcome rather than showing an unusable
+    // empty Home. Gated on isLoaded so this doesn't fire during the brief window while
+    // ConfigRepository's on-disk config is still loading (config.value is momentarily empty until
+    // then) - without that, a user with real brokers could get bounced to Welcome on cold start.
     val isConfigLoaded by app.configRepository.isLoaded.collectAsState()
     LaunchedEffect(config.brokers.isEmpty(), isConfigLoaded) {
         if (isConfigLoaded && config.brokers.isEmpty()) {
@@ -179,16 +161,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var renamingGroup by remember { mutableStateOf<PanelGroup?>(null) }
     var renameText by remember { mutableStateOf("") }
 
-    // Group drag-to-reorder state, shared across every group on this screen -
-    // only one group can ever be dragged at a time. Unlike the fixed-height
-    // rows in the old dedicated Groups screen, each group here can be a
-    // wildly different height depending on how many clusters/panels it has
-    // and whether it's collapsed, so a uniform "row height" division
-    // wouldn't work. Instead, this reuses the same position-based
-    // nearest-match approach as cluster dragging: each group's own measured
-    // centre point (via onGloballyPositioned), compared against the current
-    // drag position, re-read fresh at both onDrag and onDragEnd rather than
-    // relying on a value fixed once at drag-start.
+    // Group drag-to-reorder state, shared across all groups (only one dragged at a time). Groups
+    // vary wildly in height (collapsed, cluster count), so a uniform row-height division won't
+    // work - instead this uses the same position-based nearest-match approach as cluster
+    // dragging: each group's measured centre (via onGloballyPositioned) compared against the
+    // current drag position, re-read fresh at both onDrag and onDragEnd.
     var draggedGroupId by remember { mutableStateOf<String?>(null) }
     var draggedToGroupId by remember { mutableStateOf<String?>(null) }
     var totalGroupDragOffset by remember { mutableStateOf(Offset.Zero) }
@@ -201,23 +178,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             ?.key
     }
 
-    // Standalone (non-clustered) panels, and panels inside a cluster card, both
-    // lay out as an exact 3-column grid. Tile width is capped at a sensible
-    // maximum rather than always scaling proportionally to screen size -
-    // otherwise a tablet's shorter dimension is still much bigger than a
-    // phone's, so tiles (and whole clusters) end up oversized there too,
-    // leaving no room for a second cluster even on a wide screen. A fixed cap
-    // keeps clusters a consistent, comfortable size on any device, so the
-    // manual row-packing below (see packedRows) can fit as many side-by-side
-    // as actually fit, rather than relying on FlowRow's own wrapping logic.
-    // LocalConfiguration (not LocalWindowInfo) is the officially-recommended
-    // choice specifically for pure-Android apps - LocalWindowInfo.containerSize
-    // was primarily designed for Compose Multiplatform, where
-    // LocalConfiguration isn't available on non-Android targets, and has real
-    // documented discrepancies/reliability quirks in various Android contexts
-    // that LocalConfiguration doesn't share.
+    // Both standalone panels and cluster-card panels lay out as an exact 3-column grid. Tile
+    // width is capped rather than scaled proportionally to screen size, since a tablet's shorter
+    // dimension is still much bigger than a phone's - an uncapped tile would leave no room for a
+    // second cluster even on a wide screen. A fixed cap keeps clusters a consistent size, so the
+    // manual row-packing below (packedRows) can fit as many side-by-side as actually fit.
+    // LocalConfiguration (not LocalWindowInfo) is Android's recommended choice - LocalWindowInfo
+    // is primarily for Compose Multiplatform and has documented reliability quirks on Android.
+    // The IDE's "ConfigurationScreenWidthHeight" nudge towards LocalWindowInfo is intentionally
+    // suppressed rather than followed, since containerSize returns raw pixels (not dp) and would
+    // need extra density conversion for no behavioural benefit here.
     val configuration = LocalConfiguration.current
+    @Suppress("ConfigurationScreenWidthHeight")
     val screenWidthDp = configuration.screenWidthDp.dp
+    @Suppress("ConfigurationScreenWidthHeight")
     val screenHeightDp = configuration.screenHeightDp.dp
     val columnsPerRow = 3
     val standaloneTileWidth = run {
@@ -227,13 +201,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val proportionalWidth = (referenceWidthDp - groupHorizontalPadding - gapsBetweenColumns) / columnsPerRow
         minOf(proportionalWidth, config.tileWidthDp.dp)
     }
-    // Scales each tile's text/icon/height/padding proportionally to how wide it's actually
-    // rendering (not just the raw slider setting - this tracks standaloneTileWidth itself, so it
-    // stays correct even when the proportional cap above kicks in on a narrow screen). 110dp -
-    // AppConfig.tileWidthDp's own default - is the baseline that maps to scale=1f (today's normal
-    // phone/tablet sizing); a tile shrunk for TV (more tiles need to fit on screen, and reading
-    // distance makes full phone-sized text unnecessary there) scales everything down together
-    // instead of keeping phone-sized text/icons packed into a visibly smaller box.
+    // Scales tile text/icon/height/padding proportionally to actual rendered width (tracks
+    // standaloneTileWidth, not the raw slider setting, so it stays correct when the cap above
+    // kicks in). 110dp (AppConfig.tileWidthDp's default) maps to scale=1f; a TV tile shrunk for
+    // screen density scales everything down together instead of keeping phone-sized text/icons
+    // in a smaller box.
     val tileScale = standaloneTileWidth / 110.dp
 
     Scaffold(
@@ -255,11 +227,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     Spacer(Modifier.height(8.dp))
                     Text("Tap + to create your first group, then add panels to it.")
                 } else {
-                    // config.groups briefly looks empty while ConfigRepository is still loading
-                    // it from disk in the background (see its own init{} comment) - without this,
-                    // someone who genuinely has groups configured could see this "add your first
-                    // group" message flash up for real on a slow cold start, telling them to do
-                    // something they've already done.
+                    // config.groups briefly looks empty while ConfigRepository loads from disk -
+                    // without this check, a user with real groups could see "add your first
+                    // group" flash up on a slow cold start.
                     Text("Loading…", style = MaterialTheme.typography.titleMedium)
                     Spacer(Modifier.height(8.dp))
                     Text("Still reading your saved configuration.")
@@ -270,10 +240,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         LazyColumn(
             state = listState,
             modifier = Modifier.padding(padding).fillMaxSize(),
-            // Extra bottom padding so the last group's trailing icons (add
-            // panel, delete group) can scroll clear of the FAB rather than
-            // sitting underneath it - the FAB floats on top of content and
-            // doesn't reserve space for itself otherwise.
+            // Extra bottom padding so the last group's trailing icons can scroll clear of the
+            // FAB, which floats on top of content without reserving space for itself.
             contentPadding = PaddingValues(bottom = 96.dp)
         ) {
             items(config.brokers, key = { "permitJoin_${it.id}" }) { broker ->
@@ -291,10 +259,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     pending = pending,
                     onAdd = {
                         addPendingDevice(app, config, payloadsState.value, pending)
-                        // Both actions mean the user has already handled this
-                        // prompt via the in-app banner, so the matching system
-                        // notification (posted with the same deviceName-based
-                        // ID) shouldn't keep lingering in the shade too.
+                        // Both actions mean the user handled this via the in-app banner, so the
+                        // matching system notification (same deviceName-based ID) shouldn't linger.
                         NotificationManagerCompat.from(context).cancel(pending.deviceName.hashCode())
                     },
                     onIgnore = {
@@ -307,14 +273,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 val isDraggingThisGroup = draggedGroupId == group.id
                 val isDropTargetGroup = draggedGroupId != null && draggedGroupId != group.id &&
                     draggedToGroupId == group.id
-                // Sticky so the group's own name/controls stay reachable
-                // (and orientable - which group's content you're currently
-                // looking at) while scrolled deep into a long group's
-                // clusters, rather than the header itself scrolling away
-                // entirely. Wrapped in an opaque Surface since stickyHeader
-                // itself is just a pinning mechanism - without an explicit
-                // background, content scrolling underneath would otherwise
-                // show through the pinned header.
+                // Sticky so the group's name/controls stay reachable while scrolled deep into its
+                // clusters. Wrapped in an opaque Surface since stickyHeader only pins position -
+                // without an explicit background, content underneath would show through.
                 stickyHeader(key = "${group.id}_header") {
                 Surface(color = MaterialTheme.colorScheme.background, tonalElevation = 2.dp) {
                 Column(
@@ -343,11 +304,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         Row(
                             modifier = Modifier.weight(1f)
                                 .clickable { app.configRepository.setGroupCollapsed(group.id, !group.collapsed) }
-                                // Long-press starts a drag-to-reorder here, layered
-                                // alongside the tap-to-collapse clickable above -
-                                // the two are distinguishable by Compose's gesture
-                                // system since they sit on very different timing
-                                // thresholds (a quick tap vs. a sustained hold).
+                                // Long-press starts a drag-to-reorder, layered alongside the
+                                // tap-to-collapse clickable - distinguishable by Compose's gesture
+                                // system via timing (quick tap vs. sustained hold).
                                 .pointerInput(group.id) {
                                     detectDragGesturesAfterLongPress(
                                         onDragStart = {
@@ -357,13 +316,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         },
                                         onDragEnd = {
                                             val fromId = draggedGroupId
-                                            // Recomputed fresh, right here, rather than
-                                            // trusting whatever onDrag last set - see
-                                            // the same reasoning applied to cluster
-                                            // dragging: a quick drag-and-release might
-                                            // not produce enough onDrag callbacks for
-                                            // a still-settling position to have
-                                            // self-corrected by release time.
+                                            // Recomputed fresh here rather than trusting onDrag's
+                                            // last value - a quick drag-and-release might not
+                                            // produce enough callbacks for a still-settling
+                                            // position to have self-corrected by release time.
                                             val toId = fromId?.let { computeNearestGroupKey(it) }
                                             if (fromId != null && toId != null && fromId != toId) {
                                                 val currentGroups = app.configRepository.config.value.groups
@@ -412,58 +368,42 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
                 if (!group.collapsed) {
                     item(key = "${group.id}_content") {
-                        // Panels sharing a non-blank clusterName render together in one
-                        // card; panels with a blank clusterName stay as standalone tiles,
-                        // each getting its own unique bucket so they don't merge together.
+                        // Panels sharing a non-blank clusterName render together in one card;
+                        // blank-clusterName panels each get their own unique bucket to stay standalone.
                         val clusters = LinkedHashMap<String, MutableList<Panel>>()
                         group.panels.forEach { panel ->
                             val key = panel.clusterName.ifBlank { "__single__${panel.id}" }
                             clusters.getOrPut(key) { mutableListOf() }.add(panel)
                         }
-                        // Sort clusters/standalone tiles by their lowest displayOrder (falls
-                        // back to insertion order for anything left at the Int.MAX_VALUE default),
-                        // and also sort each cluster's own panels by displayOrder so panels can
-                        // be reordered *within* a cluster, not just relative to other clusters.
+                        // Sort clusters by lowest displayOrder (falls back to insertion order at
+                        // the Int.MAX_VALUE default), and sort each cluster's panels too, so panels
+                        // can be reordered *within* a cluster, not just relative to other clusters.
                         val orderedClusters = clusters.values
                             .map { bucket -> bucket.sortedBy { it.displayOrder } }
                             .sortedBy { bucket -> bucket.minOf { it.displayOrder } }
 
-                        // Cluster drag-to-reorder state, scoped to this one group - only one
-                        // cluster can ever be dragged at a time, and only within its own
-                        // group. Unlike Groups' plain vertical list, or a panel grid's fixed
-                        // columns, clusters can sit side by side within a packed row, so
-                        // "which cluster is the drag currently over" is tracked by comparing
-                        // the current absolute drag position against each cluster's own
-                        // last-known centre point (updated via onGloballyPositioned), rather
-                        // than computing a row/column index delta - a position-based nearest
-                        // match handles the irregular, width-based row-packing correctly
-                        // whether the target is directly below, or beside, the dragged
-                        // cluster. Standalone tiles (no clusterName) aren't individually
-                        // draggable via this mechanism, though they still participate
-                        // correctly in the underlying displayOrder sequence either way.
+                        // Cluster drag-to-reorder state, scoped to this group - only one cluster
+                        // draggable at a time, within its own group. Since clusters can sit side
+                        // by side in a packed row (unlike a fixed grid), "which cluster is the
+                        // drag over" is tracked via nearest-centre-point matching (onGloballyPositioned)
+                        // rather than a row/column index delta - this handles irregular,
+                        // width-based row-packing correctly whether the target is below or beside.
+                        // Standalone tiles aren't individually draggable, but still participate
+                        // in the underlying displayOrder sequence.
                         var draggedClusterKey by remember(group.id) { mutableStateOf<String?>(null) }
                         var draggedToClusterKey by remember(group.id) { mutableStateOf<String?>(null) }
-                        // Tracks only the raw, accumulated finger movement since the drag
-                        // started - deliberately NOT combined with the dragged cluster's
-                        // starting centre point up front. clusterCenters[key] is re-read
-                        // fresh on every single onDrag call below instead, so if it was
-                        // still momentarily stale at drag-start (Compose's relayout after
-                        // the previous reorder hadn't fully caught up yet) and then
-                        // corrects itself mid-drag, the next onDrag call picks up the
-                        // corrected baseline automatically rather than the whole
-                        // "nearest cluster" calculation suddenly jumping when a late
-                        // onGloballyPositioned callback finally fires.
+                        // Tracks only raw accumulated finger movement since drag start -
+                        // deliberately not combined with the dragged cluster's starting centre
+                        // up front. clusterCenters[key] is re-read fresh each onDrag call, so a
+                        // momentarily-stale centre at drag-start (relayout lagging a prior
+                        // reorder) self-corrects mid-drag instead of causing a sudden jump.
                         var totalDragOffset by remember(group.id) { mutableStateOf(Offset.Zero) }
                         val clusterCenters = remember(group.id) { mutableStateMapOf<String, Offset>() }
-                        // Shared by both onDrag (for live visual feedback) and onDragEnd
-                        // (for the actual commit) - critically, onDragEnd calls this itself
-                        // one final time with the freshest possible clusterCenters read,
-                        // rather than trusting whatever draggedToClusterKey was last set by
-                        // onDrag. A quick drag-and-release might only produce a handful of
-                        // onDrag callbacks, possibly not enough for a still-settling
-                        // clusterCenters entry to have self-corrected by the time the user
-                        // actually lifts their finger - recomputing at the exact moment of
-                        // release closes that remaining timing gap.
+                        // Shared by onDrag (live feedback) and onDragEnd (actual commit) -
+                        // onDragEnd recomputes this one final time with a fresh clusterCenters
+                        // read rather than trusting onDrag's last value, closing the timing gap
+                        // where a quick drag-and-release doesn't produce enough callbacks for a
+                        // still-settling entry to self-correct before release.
                         fun computeNearestClusterKey(draggedKey: String): String? {
                             val draggedBaseline = clusterCenters[draggedKey] ?: Offset.Zero
                             val currentPosition = draggedBaseline + totalDragOffset
@@ -472,18 +412,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 ?.key
                         }
 
-                        // Manually pack clusters/tiles into rows rather than relying on
-                        // FlowRow's own wrapping - computed directly against each item's
-                        // known width, so multiple clusters land on the same row whenever
-                        // they actually fit, on any screen size or orientation.
-                        // + 16.dp accounts for ClusterCard's own Modifier.padding(8.dp) around its
-                        // Row of tiles (8dp each side) - without it, this card width matched the
-                        // Row's own content width exactly, leaving no room for that padding once
-                        // laid out inside it. The Row still claimed its full (unpadded) width
-                        // regardless, so it silently overflowed the card by 16dp and got clipped
-                        // on the right by the card's rounded-corner shape - cutting into the
-                        // rightmost (3rd) column's tile specifically, while columns 1-2 stayed
-                        // fully visible.
+                        // Manually pack clusters/tiles into rows rather than relying on FlowRow -
+                        // computed against each item's known width so multiple clusters share a
+                        // row whenever they fit, on any screen size.
+                        // + 16.dp accounts for ClusterCard's own 8dp-each-side padding around its
+                        // Row of tiles - without it, the Row's unpadded width silently overflowed
+                        // the card by 16dp, clipping the rightmost column's tile.
                         val clusterCardWidth = standaloneTileWidth * columnsPerRow + 8.dp * (columnsPerRow - 1) + 16.dp
                         val availableRowWidth = screenWidthDp - 24.dp
                         val packedRows = remember(orderedClusters, standaloneTileWidth, availableRowWidth) {
@@ -518,11 +452,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                     row.forEach { panelsInCluster ->
                                         val name = panelsInCluster.first().clusterName
-                                        // Stable per-cluster identity, independent of list
-                                        // position - without this, Compose can reuse another
-                                        // cluster's remembered state (like ageText) when the
-                                        // list reorders as devices are added/removed, since
-                                        // it otherwise identifies composables by call position.
+                                        // Stable per-cluster identity, independent of list position -
+                                        // without this, Compose can reuse another cluster's remembered
+                                        // state (like ageText) when the list reorders.
                                         key(panelsInCluster.first().id) {
                                             if (name.isBlank()) {
                                                 PanelTile(
@@ -575,27 +507,16 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                             },
                                                             onDragEnd = {
                                                                 val fromKey = draggedClusterKey
-                                                                // Recomputed fresh, right here, rather than trusting
-                                                                // whatever onDrag last set draggedToClusterKey to - a
-                                                                // quick drag-and-release might only produce a
-                                                                // handful of onDrag callbacks, possibly not enough
-                                                                // for a still-settling clusterCenters entry (from
-                                                                // Compose's relayout after a previous reorder not
-                                                                // having fully caught up yet) to have self-corrected
-                                                                // by the exact moment the user actually lifts their
-                                                                // finger. This closes that remaining timing gap.
+                                                                // Recomputed fresh here for the same reason as
+                                                                // draggedToClusterKey's own comment above.
                                                                 val toKey = fromKey?.let { computeNearestClusterKey(it) }
                                                                 if (fromKey != null && toKey != null && fromKey != toKey) {
-                                                                    // Read fresh from the live config here, rather than
-                                                                    // closing over the composable-scope orderedClusters/
-                                                                    // group - this pointerInput block only launches once
-                                                                    // per cluster card (keyed on its own name, which
-                                                                    // rarely changes), so a captured value would stay
-                                                                    // frozen at whatever it was during that very first
-                                                                    // launch, silently going stale as later
-                                                                    // recompositions (e.g. from ongoing MQTT traffic)
-                                                                    // moved on without it - the same class of bug fixed
-                                                                    // earlier for the Terminal screen's message list.
+                                                                    // Read fresh from the live config rather than closing
+                                                                    // over orderedClusters/group - this pointerInput block
+                                                                    // launches once per cluster card, so a captured value
+                                                                    // would go stale as later recompositions move on
+                                                                    // without it (same class of bug fixed for Terminal's
+                                                                    // message list).
                                                                     val currentGroup = app.configRepository.config.value
                                                                         .groups.find { it.id == group.id }
                                                                     if (currentGroup != null) {
@@ -703,20 +624,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 private data class PendingClusterDelete(val groupId: String, val name: String, val panelIds: List<String>)
 
 /**
- * If this cluster's panels belong to an auto-configured device, publishes an
- * updated (retained) "/app" payload reflecting the new panel order, so the
- * device's own config topic stays in sync with a manual reorder - otherwise,
- * a future republish of that topic (for an unrelated reason) would rebuild
- * the panels using the device's original order, silently undoing this.
+ * If this cluster belongs to an auto-configured device, publishes an updated retained "/app"
+ * payload reflecting the new panel order, so a future republish of that topic doesn't silently
+ * rebuild panels in the device's original order.
  *
- * Deliberately reads app.connectionManager.latestPayloads.value directly
- * (a StateFlow's current value) rather than accepting a payloads parameter -
- * this is called from inside a pointerInput block that only launches once
- * per panel tile, so a parameter passed in from the composable scope would
- * be captured at that first launch and go stale on every call after,
- * potentially rewriting the /app payload from an outdated base and then
- * having that stale republish silently overwrite a subsequent, correct
- * reorder once the app's own auto-config reconciliation re-consumes it.
+ * Reads app.connectionManager.latestPayloads.value directly rather than accepting a parameter -
+ * this runs from a pointerInput block that launches once per tile, so a captured parameter would
+ * go stale on every call after the first, risking a stale republish overwriting a later reorder.
  */
 private fun pushOrderUpdateIfAutoConfigured(
     app: Z2mDashApplication,
@@ -753,16 +667,11 @@ private fun pushOrderUpdateIfAutoConfigured(
 }
 
 /**
- * Reordering clusters shifts every cluster's relative position within the
- * group, not just the one that was dragged - so every affected cluster that
- * belongs to an auto-configured device gets its own retained "/app" update
- * reflecting its new group_order, not just the dragged one.
+ * Reordering shifts every cluster's relative position, not just the dragged one - so every
+ * affected auto-configured cluster gets its own retained "/app" update with its new group_order.
  *
- * Same reasoning as pushOrderUpdateIfAutoConfigured above for reading
- * app.connectionManager.latestPayloads.value directly rather than accepting
- * a payloads parameter - this is called from inside a pointerInput block
- * that only launches once per cluster card, so a captured parameter would
- * go stale after the first launch.
+ * Same reasoning as pushOrderUpdateIfAutoConfigured for reading latestPayloads.value directly
+ * rather than accepting a parameter, which would go stale after this pointerInput's first launch.
  */
 private fun pushGroupOrderUpdatesForClusters(
     app: Z2mDashApplication,
@@ -772,9 +681,8 @@ private fun pushGroupOrderUpdatesForClusters(
     val config = app.configRepository.config.value
     val payloads = app.connectionManager.latestPayloads.value
     val panelsByCluster = groupPanels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
-    // One shared timestamp for every cluster this single drag touches, so a
-    // phone reconciling any of them later treats the whole batch as one
-    // logical write rather than racing itself between clusters.
+    // One shared timestamp for every cluster this drag touches, so a phone reconciling any of
+    // them later treats the whole batch as one logical write.
     val orderVersion = System.currentTimeMillis()
 
     orderedClusterKeys.forEachIndexed { index, clusterKey ->
@@ -785,19 +693,12 @@ private fun pushGroupOrderUpdatesForClusters(
         val updatedPayload = SensorDiscovery.updateGroupOrderInAppPayload(currentPayload, index + 1, orderVersion)
             ?: return@forEachIndexed
         app.connectionManager.publish(device.brokerId, device.appConfigTopic, updatedPayload, retain = true)
-        // Since every broker is subscribed to "#", that publish echoes straight back
-        // to DeviceAutoConfigManager, which would otherwise see the payload change
-        // and reconcile it - normally fine (that's how another phone sharing this
-        // broker picks up the new order), but a *stale* retained redelivery of an
-        // older payload (e.g. from a reconnect, or another phone that hasn't caught
-        // up yet) could just as easily land here and clobber this fresher reorder.
-        // Pre-marking the payload as applied, with this order_version, means:
-        // this exact echo is recognised as already up to date and skipped, and any
-        // later payload with an older/missing order_version is recognised as stale
-        // and ignored - while a genuinely newer order_version (a real subsequent
-        // reorder, from this phone or another one) still gets adopted normally. See
-        // DeviceAutoConfigManager.reconcileKnownDevices/AutoConfiguredDevice.
-        // lastKnownOrderVersion.
+        // Every broker subscribes to "#", so this publish echoes back to DeviceAutoConfigManager,
+        // which would otherwise reconcile it - fine normally (how another phone picks up the new
+        // order), but a *stale* retained redelivery could clobber this fresher reorder. Pre-marking
+        // the payload as applied with this order_version lets the echo be recognised as already
+        // current and skipped, while a genuinely newer order_version still gets adopted. See
+        // DeviceAutoConfigManager.reconcileKnownDevices / AutoConfiguredDevice.lastKnownOrderVersion.
         app.configRepository.markAutoConfiguredDevicePayloadApplied(
             device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
         )
@@ -820,30 +721,24 @@ private fun ClusterCard(
     tileWidth: Dp,
     tileScale: Float,
     onDelete: () -> Unit,
-    // Cross-cluster drag-to-reorder state/gesture-handling lives one level up
-    // (in the group section, which can see every cluster at once) and gets
-    // threaded in here, same pattern as how each panel tile receives its own
-    // drag detector via an externally-built modifier rather than owning that
-    // logic itself.
+    // Cross-cluster drag-to-reorder state lives one level up (the group section sees every
+    // cluster at once) and is threaded in here, same pattern as each panel tile's own modifier
+    // supplied drag detector.
     modifier: Modifier = Modifier,
     captionRowModifier: Modifier = Modifier,
     isDraggingCluster: Boolean = false,
     isClusterDropTarget: Boolean = false
 ) {
-    // A single long-lived derivedStateOf (not recreated every recomposition, since panels is the
-    // only remember() key - payloads/timestamps/now are all read from their State objects inside
-    // the lambda itself) so its own equality check can actually do its job: this cluster's
-    // ageText/isStale only propagates a recomposition to whatever reads it below when the
-    // COMPUTED result changes - not on every unrelated topic's MQTT message elsewhere on the
-    // dashboard, and not on every single nowMillisState tick when the relative-time string
-    // happens to read the same as last second (e.g. "2 hours ago" doesn't change every second).
+    // A single long-lived derivedStateOf (keyed only on panels; payloads/timestamps/now are read
+    // from their State objects inside the lambda) so its equality check works: ageText/isStale
+    // only triggers recomposition when the COMPUTED result changes, not on every unrelated MQTT
+    // message or every nowMillisState tick where the relative-time string reads the same.
     val ageState = remember(panels) {
         derivedStateOf {
             fun topicFor(panel: Panel): String? = when (panel) {
                 is Panel.Sensor -> panel.topic
                 is Panel.Toggle -> panel.stateTopic.takeIf { it.isNotBlank() }
-                // No meaningful state to track age from - a momentary command has
-                // nothing to have "last reported" a value for.
+                // A momentary command has nothing to report "last seen" for.
                 is Panel.Button -> null
             }
 
@@ -851,11 +746,8 @@ private fun ClusterCard(
             val timestamps = timestampsState.value
             val nowMillis = nowMillisState.value
 
-            // Prefer the device's own reported time (Zigbee2MQTT's "last_seen" field)
-            // over our app's receipt time - it reflects when the device itself last
-            // reported in, not just when this app instance happened to receive a
-            // message (which can be bumped by things unrelated to real freshness,
-            // like a broker redelivering a retained message on resubscribe).
+            // Prefer the device's own "last_seen" over receipt time - receipt time can be
+            // bumped by things unrelated to freshness, like a broker redelivering on resubscribe.
             val deviceReportedTimestamps = panels.mapNotNull { panel ->
                 val topic = topicFor(panel) ?: return@mapNotNull null
                 payloads["${panel.brokerId}|$topic"]
@@ -863,10 +755,9 @@ private fun ClusterCard(
                     ?.let { JsonPath.parseIso8601(it) }
             }
 
-            // Only fall back to receipt time if NONE of this cluster's panels have a
-            // genuine last_seen anywhere - otherwise a config-only topic without one
-            // (like the device's own "/app" topic) could drag the cluster's displayed
-            // freshness down just because its unrelated topic happened to update.
+            // Only fall back to receipt time if none of this cluster's panels have a genuine
+            // last_seen - otherwise a config-only topic (like "/app") without one could drag
+            // down displayed freshness just because it happened to update.
             val latestTimestamp = if (deviceReportedTimestamps.isNotEmpty()) {
                 deviceReportedTimestamps.max()
             } else {
@@ -885,19 +776,11 @@ private fun ClusterCard(
     }
     val (ageText, isStale) = ageState.value
 
-    // Drag-to-reorder state, local to this one cluster card. Long-press
-    // directly on a tile starts the drag (via detectDragGesturesAfterLongPress
-    // on each tile's own modifier chain, ahead of that tile's plain
-    // short-press-to-edit clickable) - no separate reorder-mode toggle or icon
-    // needed. Panels render in a plain Column/Row here (not a LazyColumn), so
-    // unlike the Groups screen's drag-reorder there's no LazyListState
-    // scroll-anchor tracking to fight, but the same "don't actually move
-    // anything during the drag" principle still applies for its own sake: it
-    // keeps the interaction simple and avoids offset-compensation math
-    // entirely. Rows stay static; only the dragged tile is highlighted, and
-    // the drop target tile gets an outline. The real reorder - and, if this
-    // cluster came from an auto-configured device, a republished /app message
-    // reflecting the new order - commits once, when the drag ends.
+    // Drag-to-reorder state, local to this cluster card. Long-press on a tile starts the drag
+    // (ahead of its plain short-press-to-edit clickable) - no separate reorder-mode toggle needed.
+    // Rows stay static during the drag (only the dragged tile dims, the drop target outlines) to
+    // avoid offset-compensation math; the actual reorder, and any auto-config /app republish,
+    // commits once on drag end.
     var draggedPanelId by remember { mutableStateOf<String?>(null) }
     var draggedFromIndex by remember { mutableIntStateOf(-1) }
     var draggedToIndex by remember { mutableIntStateOf(-1) }
@@ -926,10 +809,8 @@ private fun ClusterCard(
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 1.dp
     ) {
-        // Every row gets the same fixed width (a full 3-column row), regardless
-        // of how many panels actually land in it - a short trailing row, or a
-        // whole cluster with fewer than 3 panels, then centers within that
-        // fixed width instead of bunching to the left with empty space beside it.
+        // Every row gets the same fixed 3-column width regardless of how many panels land in
+        // it, so a short trailing row centers instead of bunching to the left.
         val fullRowWidth = tileWidth * columns + 8.dp * (columns - 1)
         Column(modifier = Modifier.padding(8.dp), horizontalAlignment = Alignment.CenterHorizontally) {
             panels.chunked(columns).forEachIndexed { rowIndex, row ->
@@ -983,19 +864,14 @@ private fun ClusterCard(
                                                 val toIndex = draggedToIndex
                                                 if (toIndex != fromIndex && fromIndex >= 0 && toIndex >= 0 && toIndex < panels.size) {
                                                     val targetPanelId = panels[toIndex].id
-                                                    // Read fresh from the live config for the actual
-                                                    // commit, rather than relying purely on the
-                                                    // closure-captured `panels` list - this
-                                                    // pointerInput block only launches once per tile,
-                                                    // so that list would go stale exactly like the
-                                                    // cluster-level drag's equivalent bug. Resolving
-                                                    // both the dragged and target panels by *id*
-                                                    // (rather than trusting the drag's own index
-                                                    // bookkeeping, which was itself computed against
-                                                    // that same possibly-stale list) means a slightly
-                                                    // outdated starting point still resolves correctly
-                                                    // against whatever the panel list actually looks
-                                                    // like right now.
+                                                    // Read fresh from the live config rather than the
+                                                    // closure-captured `panels` list - this pointerInput
+                                                    // block launches once per tile, so that list goes
+                                                    // stale (same bug class as cluster-level drag).
+                                                    // Resolving both panels by *id* rather than the
+                                                    // drag's own (possibly-stale) index bookkeeping
+                                                    // means a stale starting point still resolves
+                                                    // correctly against the current panel list.
                                                     val currentPanels = app.configRepository.config.value.groups
                                                         .find { it.id == groupId }?.panels
                                                         ?.filter { it.clusterName == name }
@@ -1050,34 +926,23 @@ private fun ClusterCard(
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                // fillMaxWidth so the whole caption bar is a touch target for
-                // the drag, not just the width of the name/age text itself -
-                // otherwise a long-press anywhere else along this row (which
-                // is naturally where someone would try "holding the
-                // cluster") lands outside the row's actual bounds and never
-                // reaches the gesture detector at all.
+                // fillMaxWidth so the whole caption bar is a drag touch target, not just the
+                // name/age text width - otherwise a long-press elsewhere along the row (where
+                // someone would naturally try "holding the cluster") misses the gesture detector.
                 modifier = captionRowModifier.fillMaxWidth()
             ) {
-                // maxLines/overflow/softWrap=false are a deliberate safety net, not just cosmetic:
-                // confirmed on-device (via `adb shell uiautomator dump`) that this Text could end
-                // up wrapping one character per line into a tall, narrow vertical strip that looked
-                // like a scrollbar - a device/cluster name with no line cap at all, laid out in
-                // whatever width the Row happens to receive, has no defence against a width
-                // that's momentarily far too narrow for it. This doesn't fix whatever causes the
-                // width itself to collapse, but it does mean that if it ever happens again the
-                // name just truncates with "…" instead of turning into that vertical artifact.
-                // Floored well above tileScale's own range (which can go well under 0.5 at the
-                // smallest tile width) - a cluster's caption is a heading read once for the whole
-                // row of tiles below it, not per-tile decoration, so it shouldn't shrink as
-                // aggressively as the tiles themselves do before it stops being legible. Still
-                // shrinks some at small tile widths, just not all the way down with them.
+                // maxLines/overflow/softWrap=false are a deliberate safety net: confirmed on-device
+                // that an uncapped Text could wrap one character per line into a tall vertical
+                // strip resembling a scrollbar when the Row's width momentarily collapsed. This
+                // doesn't fix the collapse, but ensures it truncates with "…" instead.
+                // captionScale is floored well above tileScale's own range - a caption is a
+                // heading read once, not per-tile decoration, so it shouldn't shrink as
+                // aggressively as the tiles before becoming illegible.
                 val captionScale = tileScale.coerceAtLeast(0.85f)
                 Text(
                     name,
-                    // Scaled the same way (fontSize AND lineHeight, not just fontSize - see
-                    // SensorTile's own comment on why lineHeight can't be left out) as every
-                    // tile's own text, so the cluster caption shrinks right along with its tiles
-                    // instead of staying phone-sized above a much smaller row of them.
+                    // Scales fontSize AND lineHeight (see SensorTile's comment on why) so the
+                    // caption shrinks with its tiles instead of staying phone-sized above them.
                     style = MaterialTheme.typography.titleSmall.copy(
                         fontSize = MaterialTheme.typography.titleSmall.fontSize * captionScale,
                         lineHeight = MaterialTheme.typography.titleSmall.lineHeight * captionScale
@@ -1135,35 +1000,28 @@ private fun PanelTile(
     payloadsState: State<Map<String, String>>,
     app: Z2mDashApplication,
     navController: NavController,
-    tileScale: Float = 1f,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    tileScale: Float = 1f
 ) {
     val config by app.configRepository.config.collectAsState()
     when (panel) {
         is Panel.Sensor -> {
-            // A single long-lived derivedStateOf, same reasoning as ClusterCard's ageState above -
-            // this tile only actually recomposes when ITS OWN computed value/alert/presence changes,
-            // not on every MQTT message for every other topic on the dashboard (which is what
-            // reading payloadsState.value directly and unconditionally, as this used to, caused).
+            // Same derivedStateOf reasoning as ClusterCard's ageState above - this tile only
+            // recomposes when its own computed value/alert/presence changes, not on every MQTT
+            // message for every other topic (as reading payloadsState.value directly used to).
             val derived by remember(panel) {
                 derivedStateOf {
                     val payloads = payloadsState.value
                     val raw = payloads["${panel.brokerId}|${panel.topic}"]
                     val extracted = raw?.let { JsonPath.extract(it, panel.jsonPath) }
-                    // Zigbee2MQTT uses "occupancy" for PIR-based motion sensors and
-                    // "presence" for mmWave/radar-based ones - both mean the same
-                    // thing here (is someone currently detected), so both are
-                    // treated identically rather than needing the user to know
-                    // which convention their specific device uses.
+                    // Zigbee2MQTT uses "occupancy" for PIR sensors and "presence" for mmWave ones -
+                    // both mean "someone detected" here, so both are treated identically.
                     val isPresenceField = panel.jsonPath.equals("occupancy", ignoreCase = true) ||
                         panel.jsonPath.equals("presence", ignoreCase = true)
                     val isPresent = extracted?.equals("true", ignoreCase = true) == true
-                    // Only reformat genuinely numeric values - a non-numeric extracted
-                    // value (e.g. a text state like "online") passes through as-is,
-                    // since rounding only makes sense for actual measurements.
-                    // Presence/occupancy fields get their own dedicated label instead
-                    // of a raw "true"/"false", with the icon itself carrying the
-                    // detected-or-not state visually.
+                    // Only reformat numeric values - non-numeric text (e.g. "online") passes
+                    // through as-is. Presence fields get a dedicated label instead of raw
+                    // "true"/"false", with the icon itself carrying the detected state.
                     val value = when {
                         isPresenceField -> if (extracted != null) { if (isPresent) "Detected" else "Clear" } else "--"
                         extracted != null -> extracted.toDoubleOrNull()?.let { num -> "%.${panel.decimals}f".format(num) } ?: extracted
@@ -1172,11 +1030,8 @@ private fun PanelTile(
                     val alert = if (panel.idealRangeTopic.isBlank()) {
                         SensorAlert.NONE
                     } else {
-                        // Deliberately reparses the original extracted text, not the
-                        // now-rounded display value - comparing against a rounded
-                        // number could misclassify a borderline reading (e.g. a true
-                        // 45.4 rounding to "45" and appearing further from a 45.5
-                        // threshold than it actually is).
+                        // Reparses the original extracted text, not the rounded display value -
+                        // comparing a rounded number could misclassify a borderline reading.
                         val numericValue = extracted?.toDoubleOrNull()
                         val idealRaw = payloads["${panel.brokerId}|${panel.idealRangeTopic}"]
                         val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
@@ -1212,11 +1067,9 @@ private fun PanelTile(
                 derivedStateOf {
                     val statePayload = payloadsState.value["${panel.brokerId}|${panel.stateTopic}"]
                     val resolvedState = statePayload?.let { JsonPath.extract(it, panel.stateJsonPath) }
-                    // onPayload might be a whole JSON command like {"state":"OPEN"}, not
-                    // just the bare value the state topic reports back - pull the same
-                    // field back out of it (via the same stateJsonPath) to get a fair
-                    // comparison. Falls back to the raw onPayload string for simple
-                    // non-JSON commands like a bare "ON", where extraction fails.
+                    // onPayload might be a full JSON command like {"state":"OPEN"}, not the bare
+                    // value the state topic reports - extract via the same stateJsonPath for a
+                    // fair comparison, falling back to the raw string for simple commands like "ON".
                     val expectedOnValue = JsonPath.extract(panel.onPayload, panel.stateJsonPath) ?: panel.onPayload
                     resolvedState != null && resolvedState.equals(expectedOnValue, ignoreCase = true)
                 }
@@ -1313,20 +1166,16 @@ private fun addPendingDevice(
         app.configRepository.removePendingAutoConfigDevice(pending.brokerId, pending.appConfigTopic)
         Log.i(tag, "Added ${newPanels.size} panels for ${pending.deviceName} into group $targetGroupId")
     } catch (e: Exception) {
-        // Deliberately caught and logged rather than left to propagate - a
-        // silent early-return elsewhere in this function was already easy to
-        // mistake for "the button does nothing"; an uncaught exception here
-        // would be worse (an unexplained crash), so this at least surfaces
-        // what actually went wrong in Logcat.
+        // Caught and logged rather than propagated - an uncaught exception here would be an
+        // unexplained crash, worse than the silent early-returns already possible elsewhere.
         Log.e(tag, "addPendingDevice failed for ${pending.deviceName}", e)
     }
 }
 
 /**
- * One broker's own item in HomeScreen's LazyColumn - does its own narrowly-scoped
- * derivedStateOf read of payloadsState/nowMillisState (same reasoning as ClusterCard/PanelTile
- * below), so the once-a-second countdown tick only recomposes this one row instead of the whole
- * screen.
+ * One broker's item in HomeScreen's LazyColumn - does its own narrowly-scoped derivedStateOf read
+ * (same reasoning as ClusterCard/PanelTile) so the once-a-second countdown only recomposes this
+ * row, not the whole screen.
  */
 @Composable
 private fun PermitJoinItem(
@@ -1349,9 +1198,8 @@ private fun PermitJoinItem(
             val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
             app.connectionManager.publish(broker.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
         },
-        // Deep-links straight to this broker's own "Permit Join" section (rather than just the
-        // top of its whole edit screen) - e.g. to change which router it's scoped to, or check
-        // on it, without hunting back through a long scrolling form to find that section again.
+        // Deep-links straight to this broker's "Permit Join" section rather than the top of its
+        // edit screen, so the user doesn't hunt through a long scrolling form.
         onInfoClick = { navController.navigate("broker/${broker.id}?focus=permitJoin") }
     )
 }

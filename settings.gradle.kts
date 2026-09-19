@@ -1,3 +1,8 @@
+// Suppresses the @Incubating warning for the centralised repository
+// declaration below (same suppression as app/build.gradle.kts, for its
+// AGP Variant API warnings).
+@file:Suppress("UnstableApiUsage")
+
 pluginManagement {
     repositories {
         google()

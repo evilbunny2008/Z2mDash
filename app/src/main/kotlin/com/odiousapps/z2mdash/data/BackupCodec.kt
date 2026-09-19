@@ -13,21 +13,16 @@ import javax.crypto.spec.PBEKeySpec
 import javax.crypto.spec.SecretKeySpec
 
 /**
- * Gzip compression for the exported config JSON, used by both the file-based
- * backup (Settings > Configuration Backup) and the MQTT-based one. Config
- * JSON is highly repetitive (the same field names over and over across many
- * panels), so gzip typically shrinks it 70-90%. Also handles optional
- * AES-256-GCM encryption of the compressed bytes, keyed by a password
- * (typically a broker's own password, so there's no separate encryption
- * password to remember) via PBKDF2.
+ * Gzip compression for the exported config JSON, used by both the file-based and MQTT-based
+ * backups (config JSON is repetitive, so gzip typically shrinks it 70-90%). Also handles
+ * optional AES-256-GCM encryption of the compressed bytes, keyed via PBKDF2 by a password
+ * (typically a broker's own, so there's nothing separate to remember).
  */
 object BackupCodec {
 
-    // yyyy-MM-dd_HH-mm-ss - zero-padded and most-significant-first, so plain
-    // string sorting already puts backups in chronological order (no need to
-    // parse it back to compare two of these). Avoids ":" since it's an MQTT
-    // wildcard-adjacent character some brokers/tools are fussy about in topics,
-    // and colons aren't valid in filenames on some platforms either.
+    // yyyy-MM-dd_HH-mm-ss: zero-padded and most-significant-first so plain string sorting
+    // already gives chronological order. Avoids ":" (an MQTT wildcard-adjacent character,
+    // and invalid in filenames on some platforms).
     private val TIMESTAMP_FORMAT = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss")
 
     private fun currentTimestamp(): String = java.time.LocalDateTime.now().format(TIMESTAMP_FORMAT)
@@ -35,7 +30,7 @@ object BackupCodec {
     /** A new "<baseTopic>/<timestamp>" topic for a fresh backup, e.g. "z2mdash/backup/2026-08-24_01-45-30". */
     fun newBackupTopic(baseTopic: String): String = "${baseTopic.trim().trim('/')}/${currentTimestamp()}"
 
-    /** A timestamped filename for a fresh file backup, e.g. "z2mdash-config-2026-08-24_01-45-30.json.gz" - or, when [brokersOnly] is true, "z2mdash-config-brokers-only-2026-08-24_01-45-30.json.gz", so a restore later doesn't have to be opened/inspected just to tell which kind of backup it is. */
+    /** A timestamped filename, e.g. "z2mdash-config-2026-08-24_01-45-30.json.gz"; [brokersOnly] adds a "-brokers-only" marker so the backup type is visible without opening the file. */
     fun newBackupFileName(brokersOnly: Boolean = false): String {
         val scopeSuffix = if (brokersOnly) "-brokers-only" else ""
         return "z2mdash-config$scopeSuffix-${currentTimestamp()}.json.gz"
@@ -68,10 +63,8 @@ object BackupCodec {
     fun decompressFromBase64(base64: String): String =
         decompress(Base64.decode(base64, Base64.NO_WRAP))
 
-    // Magic bytes identifying an encrypted backup - distinct from gzip's own
-    // 0x1F 0x8B header, so a file's format can be auto-detected from its
-    // content alone (no separate extension/flag needed) before deciding
-    // whether to prompt for a password on restore.
+    // Magic bytes identifying an encrypted backup, distinct from gzip's own 0x1F 0x8B header -
+    // lets format be auto-detected from content alone before prompting for a password.
     private val ENCRYPTED_MAGIC = byteArrayOf('Z'.code.toByte(), '2'.code.toByte(), 'M'.code.toByte(), 'E'.code.toByte())
     private const val SALT_LENGTH = 16
     private const val IV_LENGTH = 12
@@ -90,11 +83,9 @@ object BackupCodec {
     }
 
     /**
-     * Encrypts already-gzip-compressed bytes with AES-256-GCM, keyed by
-     * [password] via PBKDF2. Prepends a magic header plus a fresh random
-     * salt/IV needed to decrypt later - neither is secret, they just need to
-     * be unique per encryption, which is why they travel alongside the
-     * ciphertext rather than needing to be remembered separately.
+     * Encrypts gzip-compressed bytes with AES-256-GCM, keyed by [password] via PBKDF2. Prepends
+     * a magic header plus a fresh random salt/IV - not secret, just needed unique per encryption,
+     * so they travel with the ciphertext instead of being remembered separately.
      */
     fun encrypt(compressedBytes: ByteArray, password: String): ByteArray {
         val random = SecureRandom()
@@ -108,10 +99,8 @@ object BackupCodec {
     }
 
     /**
-     * Reverses [encrypt]. Returns null if the password is wrong or the data
-     * is corrupted - GCM's own authentication tag catches both cases the
-     * same way, so there's no way to tell them apart, only that decryption
-     * didn't succeed.
+     * Reverses [encrypt]. Returns null if the password is wrong or the data is corrupted - GCM's
+     * auth tag catches both the same way, so the two can't be distinguished.
      */
     fun decrypt(data: ByteArray, password: String): ByteArray? {
         if (!isEncrypted(data)) return null

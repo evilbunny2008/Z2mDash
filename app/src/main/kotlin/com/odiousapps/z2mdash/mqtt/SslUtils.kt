@@ -8,10 +8,9 @@ import javax.net.ssl.TrustManagerFactory
 
 object SslUtils {
     /**
-     * Builds a TrustManagerFactory that trusts exactly one certificate, supplied
-     * as Base64 (the PEM or DER bytes picked via the file chooser in Add/Edit Broker).
-     * This lets the app connect to a broker with a self-signed cert without
-     * disabling certificate validation entirely.
+     * Builds a TrustManagerFactory that trusts exactly one certificate, supplied as Base64
+     * (from the file chooser in Add/Edit Broker) - lets the app connect to a self-signed
+     * broker without disabling certificate validation entirely.
      */
     fun trustManagerFactoryFromCertBase64(certBase64: String): TrustManagerFactory {
         val certBytes = Base64.decode(certBase64, Base64.DEFAULT)

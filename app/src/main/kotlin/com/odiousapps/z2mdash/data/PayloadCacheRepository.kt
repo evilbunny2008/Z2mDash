@@ -11,19 +11,15 @@ import java.io.File
 data class PayloadCacheEntry(val payload: String, val timestamp: Long)
 
 /**
- * Persists the last-known payload (and when it arrived) for every topic, so
- * the dashboard can show correct "updated N ago" ages - including each
- * payload's own "last_seen" field where present - the instant the app opens,
- * from whatever was last seen, rather than showing nothing (or a misleadingly
- * uniform "just now") until fresh MQTT messages repopulate everything from
- * scratch after every restart.
+ * Persists the last-known payload (and arrival time) for every topic, so the dashboard can show
+ * correct "updated N ago" ages immediately on open, rather than a misleading "just now" until
+ * fresh MQTT messages repopulate everything after a restart.
  */
 class PayloadCacheRepository(context: Context) {
     private val file = File(context.filesDir, "payload_cache.json")
     private val json = Json { ignoreUnknownKeys = true }
-    // Explicit serializer rather than the reified encodeToString/decodeFromString
-    // extensions - avoids Android Studio's unused-import false positive with
-    // those, since it doesn't always track reified generic usage correctly.
+    // Explicit serializer instead of the reified extensions - avoids an Android Studio
+    // unused-import false positive with those.
     private val entriesSerializer = MapSerializer(String.serializer(), PayloadCacheEntry.serializer())
 
     fun load(): Map<String, PayloadCacheEntry> = try {

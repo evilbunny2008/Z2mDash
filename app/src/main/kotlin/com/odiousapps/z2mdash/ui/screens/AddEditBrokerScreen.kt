@@ -44,6 +44,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -73,6 +74,7 @@ import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonPrimitive
 import java.util.UUID
+import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -84,11 +86,8 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
 
     val existing = remember(brokerId, config) { config.brokers.find { it.id == brokerId } }
     var showDeleteConfirm by remember { mutableStateOf(false) }
-    // Keyed on brokerId (not "existing" itself) so a config change elsewhere - including this
-    // screen's own updatePermitJoinDevice() call below, the moment the "Permit Join" switch is
-    // used - doesn't reset this screen's still-unsaved edits back to whatever's on disk. Only
-    // actually navigating to a different broker (or from "new" to a freshly-saved one) should
-    // reinitialize this state.
+    // Keyed on brokerId, not "existing" itself, so a config change elsewhere (including this
+    // screen's own updatePermitJoinDevice() call) doesn't reset unsaved edits back to disk state.
     var broker by remember(brokerId) {
         mutableStateOf(
             existing ?: Broker(
@@ -131,15 +130,9 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                 onClick = {
                     if (broker.host.isNotBlank()) {
                         app.configRepository.upsertBroker(broker)
-                        // Reached via WelcomeScreen's "Add a Broker" (shown only
-                        // when there were no brokers at all) - a plain single-
-                        // level pop would land back on Welcome, which has no
-                        // logic of its own to skip itself now that a broker
-                        // exists, leaving the user to tap back a second time
-                        // before Home actually appeared. Popping welcome off
-                        // too goes straight there instead. Any other entry
-                        // point (e.g. the Brokers list) still gets a normal
-                        // single-level pop, back to wherever it came from.
+                        // If reached via WelcomeScreen's "Add a Broker", pop Welcome too - it has
+                        // no logic to skip itself now that a broker exists, so a normal single
+                        // pop would strand the user there needing a second back-tap.
                         if (navController.previousBackStackEntry?.destination?.route == "welcome") {
                             navController.popBackStack("welcome", inclusive = true)
                         } else {
@@ -409,26 +402,21 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             }
 
             if (existing != null) {
-                // "<baseTopic>/#" is already subscribed continuously for every
-                // configured broker (see MqttConnectionManager.applyConfig), so
-                // bridge/info's retained/live payload is already flowing into
-                // latestPayloads without needing a subscription of its own here.
+                // "<baseTopic>/#" is already subscribed for every configured broker (see
+                // MqttConnectionManager.applyConfig), so bridge/info flows into latestPayloads already.
                 val baseTopicNormalized = remember(broker.baseTopic) { PermitJoin.normalizedBaseTopic(broker.baseTopic) }
-                var nowMillis by remember { mutableStateOf(System.currentTimeMillis()) }
+                var nowMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
                 LaunchedEffect(Unit) {
                     while (true) {
-                        delay(1_000L)
+                        delay(1_000L.milliseconds)
                         nowMillis = System.currentTimeMillis()
                     }
                 }
                 val permitJoinStatus = remember(latestPayloads, existing.id, baseTopicNormalized, nowMillis) {
                     PermitJoin.status(latestPayloads, existing.id, baseTopicNormalized, nowMillis)
                 }
-                // Zigbee2MQTT also retains its whole device list on "<baseTopic>/bridge/devices" -
-                // already flowing into latestPayloads for the same reason permit_join's own
-                // response is. Only routers/the coordinator can actually be targeted by permit_join's
-                // "device" field (end devices don't route child joins), so end devices are filtered
-                // out of the suggestion list rather than just listing every known device.
+                // Only routers/coordinator can be targeted by permit_join's "device" field (end
+                // devices don't route child joins), so they're filtered from the suggestion list.
                 val routerFriendlyNames = remember(latestPayloads, existing.id, baseTopicNormalized) {
                     val devicesPayload = latestPayloads["${existing.id}|$baseTopicNormalized/bridge/devices"]
                     devicesPayload?.let { raw ->
@@ -446,9 +434,8 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     } ?: emptyList()
                 }
 
-                // Lets HomeScreen's own Permit Join banner deep-link straight here (via the
-                // "focus" nav argument) instead of the user having to scroll a long form to find
-                // it again themselves every time.
+                // Lets HomeScreen's Permit Join banner deep-link here via the "focus" nav argument,
+                // instead of the user scrolling this long form to find it.
                 val permitJoinSectionRequester = remember { BringIntoViewRequester() }
                 LaunchedEffect(focusSection) {
                     if (focusSection == "permitJoin") {
@@ -486,11 +473,8 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     val filteredRouterNames = remember(routerFriendlyNames, broker.permitJoinDevice) {
                         routerFriendlyNames.filter { it.contains(broker.permitJoinDevice, ignoreCase = true) }
                     }
-                    // Lets Down (see clearFocusOnBack's onDirectionDown below) jump straight into
-                    // the open suggestion list instead of its usual "escape this field" behavior -
-                    // without an explicit target to request focus onto, there was no reliable way
-                    // to actually reach the list with a D-pad at all (confirmed on-device: nothing
-                    // inside the popup ever received focus on its own when it opened).
+                    // Lets Down (see onDirectionDown below) jump into the open suggestion list -
+                    // without an explicit focus target, nothing in the popup ever received D-pad focus.
                     val firstSuggestionFocusRequester = remember { FocusRequester() }
                     ExposedDropdownMenuBox(
                         expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
@@ -602,17 +586,10 @@ private fun protocolLabel(protocol: MqttProtocol): String = when (protocol) {
 }
 
 /**
- * Applies a credential import's fields onto [current] - every field
- * beyond "Hostname" itself (already guaranteed present by
- * CredentialImportDialog before this is ever called) is optional and
- * falls back to whatever [current] already had when missing or
- * unparsable, so a preset only needs to specify the settings that
- * actually differ from this app's own defaults rather than all of them.
- * Field names mirror the Broker properties they map to one-for-one
- * (PascalCase, since that's how they're typed as plain "Key: Value"
- * lines on mx3launcher.odiousapps.com/manage_credentials.php) - keep
- * this in sync with that page's own hint text and the website's README
- * if any of these names or the Broker shape itself ever changes.
+ * Applies a credential import's fields onto [current]. Every field but "Hostname" is optional,
+ * falling back to [current] when missing/unparsable. Field names (PascalCase) mirror the Broker
+ * properties they map to, matching mx3launcher.odiousapps.com/manage_credentials.php's "Key: Value"
+ * format - keep in sync with that page and the website's README if names or shape change.
  */
 private fun applyImportedFields(current: Broker, fields: Map<String, String>): Broker {
     val username = fields["Username"]
@@ -647,12 +624,9 @@ private fun importedString(value: String?): String? = value?.trim()?.takeIf { it
 private fun importedInt(value: String?): Int? = value?.trim()?.toIntOrNull()
 
 /**
- * Maps a credential import's "Protocol" field (the standard MQTT scheme
- * names - MQTT/MQTTS/WS/WSS, matching how brokers themselves are
- * usually documented) onto this app's own MqttProtocol enum (named
- * after the underlying transport instead - TCP/SSL/WS/WSS). Null for a
- * missing or unrecognised value, so the caller can fall back to
- * whatever the broker draft already had rather than silently resetting it.
+ * Maps a credential import's "Protocol" field (standard MQTT scheme names: MQTT/MQTTS/WS/WSS)
+ * onto this app's transport-named MqttProtocol enum (TCP/SSL/WS/WSS). Null when unrecognised,
+ * so the caller falls back to the existing value instead of resetting it.
  */
 private fun importedProtocol(value: String?): MqttProtocol? = when (value?.trim()?.uppercase()) {
     "MQTT" -> MqttProtocol.TCP

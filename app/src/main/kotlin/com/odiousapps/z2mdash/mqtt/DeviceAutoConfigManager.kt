@@ -22,15 +22,10 @@ import kotlinx.coroutines.launch
 import java.util.UUID
 
 /**
- * Keeps every device that was configured via its own "<topic>/app" payload
- * (see SensorDiscovery/DiscoverScreen) up to date - whenever that topic's
- * retained payload changes, this regenerates the device's panels to match,
- * live, without needing go to Discover screen.
- *
- * Also watches every broker's full topic stream (MqttConnectionManager now
- * subscribes every broker to "#" continuously) for brand-new "<topic>/app"
- * topics it hasn't seen before, adds them to a pending list, and notifies the
- * user.
+ * Keeps auto-configured devices' panels in sync with their "<topic>/app" retained
+ * payload (see SensorDiscovery/DiscoverScreen). Also watches every broker's "#"
+ * subscription for new "<topic>/app" topics, queuing unknown ones as pending and
+ * notifying the user.
  */
 class DeviceAutoConfigManager(
     private val context: Context,
@@ -70,22 +65,12 @@ class DeviceAutoConfigManager(
                 .flatMap { it.panels }
                 .filter { it.id in device.createdPanelIds }
                 .associateBy(::identityKey)
-            // This payload's group_order/panel_order is only trusted for a panel
-            // that already exists here when it's stamped with a strictly newer
-            // order_version than the last one this phone adopted for this
-            // device - i.e. a genuine, more recent reorder (from this phone or
-            // another one sharing the same broker). Otherwise - no order_version
-            // at all (a payload no app has ever written an order to), or one no
-            // newer than what's already applied (a stale retained redelivery,
-            // e.g. from a reconnect, or another phone that hasn't caught up yet)
-            // - the existing displayOrder is kept as-is. Without this, a stale
-            // echo would silently undo the user's local reorder the next time
-            // this device's payload happens to be reconciled. Either way the id
-            // is always carried over (matched by stable field/command identity,
-            // not the fresh random id buildPanels just assigned it) so Compose
-            // keeps its remembered state for the panel. Only a genuinely new
-            // panel (no existing match) takes its order from the payload
-            // unconditionally, same as before.
+            // Only adopt the payload's order for an existing panel if its order_version is
+            // strictly newer than what this phone last applied for the device - otherwise a
+            // stale/retained redelivery (reconnect, or another phone not yet caught up) would
+            // silently undo the user's local reorder. The id is always carried over via
+            // identity match (not buildPanels fresh random id) so Compose keeps panel state.
+            // A brand-new panel always takes its order from the payload.
             val incomingOrderVersion = deviceConfig.orderVersion
             val adoptIncomingOrder = incomingOrderVersion != null && incomingOrderVersion > device.lastKnownOrderVersion
             val newPanels = builtPanels.map { panel ->
@@ -115,11 +100,9 @@ class DeviceAutoConfigManager(
     }
 
     /**
-     * A stable identity for a panel, independent of its random UUID - so a
-     * freshly rebuilt panel (buildPanels always mints a new id) can still be
-     * recognised as "the same panel" as one already in the config. Sensors are
-     * identified by which field of the device they render; controls by the
-     * command they send - both fixed by the device's own config, unlike id.
+     * Stable panel identity independent of its random UUID, so a freshly rebuilt panel
+     * (buildPanels always mints a new id) can be matched to its existing counterpart:
+     * sensors by field, controls by command topic.
      */
     private fun identityKey(panel: Panel): String = when (panel) {
         is Panel.Sensor -> "sensor|${panel.topic}|${panel.jsonPath}"
@@ -168,16 +151,10 @@ class DeviceAutoConfigManager(
     }
 
     /**
-     * Same end result as a user tapping "Add" on the Home screen's pending-
-     * device banner (see HomeScreen.kt's addPendingDevice) - built straight
-     * from the discovered payload rather than going through the
-     * pendingAutoConfigDevices detour first, for a broker whose
-     * autoAcceptDiscoveredDevices is on (e.g. set via a credential import's
-     * "AutoAccept" field - see CredentialImportDialog). Falls back to the
-     * group the device declares, or the first existing group, or a new
-     * "Discovered Sensors" group - same fallback order as the manual path,
-     * so a broker with this on doesn't behave differently once a device
-     * does land somewhere.
+     * Same result as tapping "Add" on the pending-device banner (HomeScreen.addPendingDevice),
+     * but built directly from the payload - used when the broker's autoAcceptDiscoveredDevices
+     * is on. Group fallback order matches the manual path: declared group, then first existing
+     * group, then a new "Discovered Sensors" group.
      */
     private fun autoAcceptDevice(
         brokerId: String,
@@ -266,8 +243,8 @@ class DeviceAutoConfigManager(
         try {
             NotificationManagerCompat.from(context).notify(deviceName.hashCode(), notification)
         } catch (_: SecurityException) {
-            // Permission revoked between the check above and this call - safe to ignore,
-            // the pending device still shows up as a Home screen banner regardless.
+            // Permission revoked between the check and this call - safe to ignore; the
+            // device still shows up as a Home screen banner.
         }
     }
 

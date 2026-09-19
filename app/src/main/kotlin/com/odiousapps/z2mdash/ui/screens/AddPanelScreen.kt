@@ -184,11 +184,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             app.configRepository.updatePanel(groupId, panel)
                         } else {
                             app.configRepository.addPanelToGroup(groupId, panel)
-                            // Signal back to HomeScreen which group to scroll to -
-                            // a newly-added panel is exactly the case where its
-                            // cluster (new or existing) is most likely to be
-                            // scrolled out of view, especially in a group with
-                            // several clusters already.
+                            // Signal back to HomeScreen which group to scroll to - a newly-added
+                            // panel's cluster is likely to be scrolled out of view already.
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
                                 ?.set("scrollToGroupId", groupId)

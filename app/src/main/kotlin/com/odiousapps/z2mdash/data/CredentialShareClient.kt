@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package com.odiousapps.z2mdash.data
 
 import kotlinx.serialization.json.Json
@@ -13,27 +15,17 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 /**
- * Client for MX3Launcher's generic credential relay (credential_start/
- * status/view.php) in "pull" mode - this app has no credentials of its
- * own yet, so it asks to RECEIVE a broker's hostname/username/password,
- * the same short-code/QR/poll pattern MX3Launcher's own TV pairing
- * flow uses (see that project's SoundbarPairing.kt) to receive its own
- * pairing URL/secret. The logged-in account holder picks which of
- * their own saved credential presets to send, at
- * mx3launcher.odiousapps.com/credential_view.php - a preset meant for
- * this app must name its fields exactly "Hostname", "Username", and
- * "Password" (Username/Password only needed if the broker requires
- * auth), since this app looks those keys up by name once resolved.
+ * Client for MX3Launcher's generic credential relay in "pull" mode - this app has no credentials
+ * of its own, so it asks to RECEIVE a broker's hostname/username/password via the same
+ * short-code/QR/poll pattern MX3Launcher's own TV pairing uses (see its SoundbarPairing.kt). A
+ * preset meant for this app must name its fields exactly "Hostname", "Username", "Password".
  *
- * All functions here perform blocking network I/O - callers must run
- * them off the main thread (a coroutine on Dispatchers.IO).
+ * All functions here perform blocking network I/O - run off the main thread (Dispatchers.IO).
  */
 object CredentialShareClient {
 
-    // mx3launcher.odiousapps.com is the same self-service site MX3Launcher's
-    // TV-pairing flow uses - a separate domain from any individual user's
-    // own home server, so no broker credentials ever touch that server
-    // except in transit through this short-lived exchange.
+    // Same self-service site as MX3Launcher's TV-pairing flow, separate from any user's own home
+    // server - broker credentials only ever touch it in transit through this short-lived exchange.
     private const val START_URL = "https://mx3launcher.odiousapps.com/credential_start.php"
     private const val STATUS_URL = "https://mx3launcher.odiousapps.com/credential_status.php"
     private const val VIEW_URL_BASE = "https://mx3launcher.odiousapps.com/credential_view.php"
@@ -54,8 +46,7 @@ object CredentialShareClient {
 
     fun startImport(label: String): ImportSession? {
         return try {
-            // No "fields" - this is a pull-mode request, asking to
-            // RECEIVE credentials rather than offering any of its own.
+            // No "fields" - a pull-mode request, asking to RECEIVE credentials, not offer any.
             val body = buildJsonObject {
                 put("app", APP_NAME)
                 put("label", label)

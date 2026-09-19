@@ -27,10 +27,8 @@ class MainActivity : ComponentActivity() {
         }
 
         val app = application as Z2mDashApplication
-        // ConfigRepository now loads its config off the main thread (see its own init{}
-        // comment), so config.value here could still be the momentarily-empty default rather
-        // than what's actually on disk - waiting for isLoaded first avoids skipping the
-        // foreground service on a cold start just because this check ran before that finished.
+        // Config loads off the main thread, so config.value may still be the empty default here;
+        // wait for isLoaded to avoid skipping the foreground service on a cold start.
         lifecycleScope.launch {
             app.configRepository.isLoaded.first { it }
             if (app.configRepository.config.value.backgroundWorkEnabled) {

@@ -14,10 +14,9 @@ import java.io.File
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
- * Persists the whole app configuration (brokers, groups, panels) as a single
- * plain-JSON file under the app's private storage. Also doubles as the export
- * format for "Configuration Backup" / "Configuration Recovery" in Settings -
- * it's just JSON you own, no proprietary/encrypted format, no lock-in.
+ * Persists the whole app configuration (brokers, groups, panels) as a single JSON file
+ * under private storage. Also doubles as the export format for Settings' Configuration
+ * Backup/Recovery - plain JSON, no proprietary format or lock-in.
  */
 class ConfigRepository(private val context: Context, private val scope: CoroutineScope) {
 
@@ -31,23 +30,16 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     private val _config = MutableStateFlow(AppConfig())
     val config: StateFlow<AppConfig> = _config
 
-    // True once the on-disk config has actually been read (or determined not to exist) -
-    // callers that must not act on the still-loading, momentarily-empty default config above
-    // (e.g. HomeScreen's "no brokers configured, go to Welcome" redirect) can wait for this
-    // before deciding anything from config.value.
+    // True once the on-disk config has actually been read (or found not to exist) - callers that
+    // must not act on the still-loading default config (e.g. HomeScreen's "no brokers, go to
+    // Welcome" redirect) can wait for this before reading config.value.
     private val _isLoaded = MutableStateFlow(false)
     val isLoaded: StateFlow<Boolean> = _isLoaded
 
     init {
-        // Loaded on a background dispatcher rather than synchronously in this constructor (as it
-        // used to be) - this constructor runs on the main thread, from
-        // Z2mDashApplication.onCreate(), before the Activity/UI even exists yet, and this is real
-        // file I/O plus JSON-decoding the user's whole configuration (every broker/group/panel).
-        // Confirmed via logcat on an underpowered TV: a >12 second "time to first frame" followed
-        // by several more seconds of skipped-frame/slow-dispatch warnings and heavy GC right at
-        // cold start - the same class of main-thread-blocking problem MqttConnectionManager's own
-        // payload-cache seeding had (see that class's init{} block), just not caught until now
-        // because it only bites hard enough to notice on weaker hardware.
+        // Off the main thread: this constructor runs from Application.onCreate() before the UI
+        // exists, and synchronous file I/O + JSON-decoding here caused a >12s time-to-first-frame
+        // on an underpowered TV (same class of issue as MqttConnectionManager's cache seeding).
         scope.launch(Dispatchers.IO) {
             _config.value = load()
             _isLoaded.value = true
@@ -63,15 +55,9 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * One-time migration for sensor panels created before the decimal-places
-     * default became field-aware (temperature: 1, everything else: 0) - any
-     * existing panel still sitting on the old, uniform default of 1 gets
-     * moved over to whatever SensorDiscovery.suggestedDecimals now says for
-     * its field, so already-configured tiles benefit from the new default
-     * too rather than only new panels going forward. Guarded by
-     * decimalsMigrationApplied so this only ever runs once: without it, a
-     * later deliberate choice of "1" on a non-temperature field would get
-     * silently reverted on every subsequent app launch.
+     * One-time migration: sensor panels still on the old uniform default of 1 decimal get
+     * moved to SensorDiscovery's now field-aware suggestion. Guarded by decimalsMigrationApplied
+     * so a later deliberate choice of "1" isn't silently reverted on every launch.
      */
     private fun migrateDecimalsIfNeeded(config: AppConfig): AppConfig {
         if (config.decimalsMigrationApplied) return config
@@ -94,21 +80,13 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         try {
             file.writeText(json.encodeToString(AppConfig.serializer(), config))
         } catch (_: Exception) {
-            // Best-effort - fine to silently skip a write if it fails; _config (what the UI
-            // actually reads) is already up to date in memory regardless, same as the payload
-            // cache's own save() already treats a failed write as non-fatal.
+            // Best-effort: _config in memory (what the UI reads) is already up to date regardless.
         }
     }
 
-    // Debounced and off the main thread - schedulePersist() used to call persist() synchronously,
-    // inline, on whatever thread called update() (almost always the main thread, since every
-    // caller is a UI event handler). That's a full JSON-encode-and-write of the *entire* config
-    // on every single edit - not just occasional ones like renaming a group, but also anything
-    // that fires update() repeatedly in a burst, like dragging the "Tile & Cluster Width" slider
-    // (Slider.onValueChange fires continuously while dragging, not just on release) or a
-    // cluster/panel drag-reorder. Reading _config.value fresh inside the delayed job (rather than
-    // capturing the transformed value at call time) also means a rapid burst of update() calls
-    // coalesces into one write of the final state instead of one write per call.
+    // Debounced and off the main thread, since update() can fire in rapid bursts (e.g. a slider's
+    // continuous onValueChange, or a drag-reorder) and each write JSON-encodes the entire config.
+    // Reading _config.value fresh inside the delayed job coalesces a burst into one final write.
     private var persistJob: Job? = null
     private fun schedulePersist() {
         persistJob?.cancel()
@@ -130,28 +108,19 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         cfg.copy(brokers = newList)
     }
 
-    // Persisted independently of upsertBroker/"Done" so the "Permit Join" toggle (on both the
-    // broker edit screen and HomeScreen's own banner) remembers the last device actually used the
-    // moment it's used - flipping that switch is a real, meaningful action on its own, and
-    // shouldn't need the whole edit screen's "Done" button pressed afterwards to be remembered,
-    // nor should using it accidentally persist any of that screen's other still-unsaved edits.
+    // Persisted independently of upsertBroker/"Done" so flipping the Permit Join toggle is
+    // remembered immediately, without needing (or triggering) the edit screen's other unsaved edits.
     fun updatePermitJoinDevice(brokerId: String, device: String) = update { cfg ->
         cfg.copy(brokers = cfg.brokers.map { if (it.id == brokerId) it.copy(permitJoinDevice = device) else it })
     }
 
     fun deleteBroker(id: String) = update { cfg ->
-        // Pending/ignored device prompts are scoped to a broker - once it's gone,
-        // clear both so the Home screen doesn't keep showing stale "add/ignore"
-        // banners (or silently remembering a dismissal) for a broker that no longer exists.
+        // Pending/ignored device prompts are scoped to a broker - clear both so Home doesn't
+        // keep showing stale add/ignore banners for a broker that's gone.
         val prefix = "$id|"
-        // A deleted broker takes its own panels and auto-config tracking with
-        // it too - without this, they'd linger tagged with a brokerId nothing
-        // references any more. That used to bite hardest on exactly the
-        // sequence that looks most natural (delete a broker, then re-add it,
-        // whether by hand or via a credential import): the new broker gets a
-        // fresh random id, so every "<topic>/app" looks brand new again and
-        // gets rebuilt right alongside the still-present orphaned originals -
-        // every cluster ending up with double the tiles it should have.
+        // Also drop the broker's panels/auto-config tracking - otherwise re-adding the broker
+        // (fresh random id) would rebuild them as new, doubling every cluster's tiles alongside
+        // the orphaned originals.
         val updatedGroups = cfg.groups.map { g -> g.copy(panels = g.panels.filterNot { it.brokerId == id }) }
         cfg.copy(
             brokers = cfg.brokers.filterNot { it.id == id },
@@ -163,20 +132,15 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * Removes any panel/auto-config tracking left tagged with a brokerId
-     * that no longer matches any configured broker - a broker deleted
-     * before this cleanup was added to deleteBroker() itself left exactly
-     * this behind (see that function's own comment). Safe to call any
-     * time; a no-op if there's nothing orphaned. Returns how many panels
-     * were removed, so a caller can show what it actually did.
+     * Removes panel/auto-config tracking tagged with a brokerId that no longer matches any
+     * configured broker (leftovers from before this cleanup existed - see deleteBroker()).
+     * No-op if nothing's orphaned. Returns the number of panels removed.
      */
     fun pruneOrphanedBrokerData(): Int {
         var removedCount = 0
         update { cfg ->
-            // Reset on every invocation, not just the first - update()'s
-            // underlying StateFlow.update retries this transform on a
-            // concurrent write, and without resetting, a retry would double
-            // (or more) count rather than reflect just the call that actually won.
+            // Reset each call: StateFlow.update retries this transform on a concurrent write,
+            // and without resetting, a retry would double-count.
             removedCount = 0
             val brokerIds = cfg.brokers.map { it.id }.toSet()
             val updatedGroups = cfg.groups.map { g ->
@@ -201,10 +165,8 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
 
     fun deleteGroup(id: String) = update { cfg ->
         val remainingGroups = cfg.groups.filterNot { it.id == id }
-        // A deleted group takes its panels with it. Any autoconfigured device
-        // whose panels all lived in that group has nothing left - drop its
-        // tracking record too, or the Discover screen would keep that topic
-        // hidden forever even though it has no panels any more.
+        // A deleted group takes its panels with it - also drop tracking for any device left with
+        // no panels, or Discover would keep hiding a topic that has nothing to show any more.
         val remainingPanelIds = remainingGroups.flatMap { it.panels }.map { it.id }.toSet()
         val remainingDevices = cfg.autoConfiguredDevices.filter { device ->
             device.createdPanelIds.any { it in remainingPanelIds }
@@ -243,12 +205,9 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
 
     /**
      * Reassigns displayOrder for every panel in one cluster to match [orderedPanelIds]
-     * (first = lowest), leaving every other cluster/panel untouched. Keeps the
-     * cluster's *own* overall position among other clusters unchanged - that's
-     * driven by the minimum displayOrder among its panels, so this preserves
-     * that minimum and only spreads values upward from it, rather than
-     * resetting to 0-based values that could accidentally jump the whole
-     * cluster to the front of its group.
+     * (first = lowest), leaving other clusters/panels untouched. Preserves the cluster's
+     * existing minimum displayOrder (rather than resetting to 0) so its position among
+     * other clusters doesn't shift.
      */
     fun reorderPanelsInCluster(groupId: String, orderedPanelIds: List<String>) = update { cfg ->
         val updatedGroups = cfg.groups.map { g ->
@@ -271,15 +230,10 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * Reassigns displayOrder for every panel in a group so its clusters end
-     * up in the order given by [orderedClusterKeys] - each key matching a
-     * cluster's clusterName, or "__single__<panelId>" for a standalone panel
-     * with no cluster name (the same convention HomeScreen uses to group
-     * panels into clusters for display). Panels *within* each cluster keep
-     * their existing relative order - only which cluster comes before which
-     * changes. Uses a generous step (1000) between clusters' base values, so
-     * there's room for within-cluster panel reordering later without ever
-     * needing to renumber a neighbouring cluster.
+     * Reassigns displayOrder so a group's clusters follow [orderedClusterKeys] (clusterName, or
+     * "__single__<panelId>" for a standalone panel - same convention HomeScreen uses). Panels
+     * keep their relative order within each cluster. A step of 1000 between clusters leaves
+     * room for later within-cluster reordering without renumbering neighbours.
      */
     fun reorderClustersInGroup(groupId: String, orderedClusterKeys: List<String>) = update { cfg ->
         val updatedGroups = cfg.groups.map { g ->
@@ -322,9 +276,7 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         val updatedGroups = cfg.groups.map { g ->
             if (g.id == groupId) g.copy(panels = g.panels.filterNot { it.id == panelId }) else g
         }
-        // Same reasoning as deleteGroup: if that was the last panel an
-        // autoconfigured device owned, drop its tracking record too so the
-        // Discover screen stops hiding a topic with nothing left to show for it.
+        // Same reasoning as deleteGroup: drop tracking if that was the device's last panel.
         val remainingPanelIds = updatedGroups.flatMap { it.panels }.map { it.id }.toSet()
         val remainingDevices = cfg.autoConfiguredDevices.filter { device ->
             device.createdPanelIds.any { it in remainingPanelIds }
@@ -346,13 +298,10 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * Atomically replaces everything owned by an auto-configured device: strips
-     * its previous panels ([oldPanelIds] - wherever they currently live, in case
-     * the device's declared group changed) out of every group, adds the
-     * freshly-built [newPanels] into [targetGroupId], and records/updates the
-     * tracking entry ([updatedDevice], whose own createdPanelIds should be the
-     * *new* panels' IDs) in one state transition so there's no intermediate
-     * inconsistent state.
+     * Atomically replaces everything owned by an auto-configured device: strips [oldPanelIds]
+     * out of every group (wherever they live, in case the device's group changed), adds
+     * [newPanels] into [targetGroupId], and updates the tracking entry ([updatedDevice],
+     * whose createdPanelIds should be the new panels' IDs) - all in one state transition.
      */
     fun applyDeviceAutoConfig(
         oldPanelIds: Set<String>,
@@ -382,20 +331,12 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * Records that [payload] (stamped with [orderVersion]) is already reflected
-     * in the app's own state for one auto-configured device, without rebuilding
-     * its panels. Used right after the app itself publishes a retained
-     * "<topic>/app" update (e.g. a cluster/panel drag reorder writing a new
-     * group_order/panel_order) - since every broker is subscribed to "#", that
-     * publish echoes straight back to DeviceAutoConfigManager, which would
-     * otherwise treat it as a config update to reconcile. Pre-marking the
-     * payload as applied here means that exact echo is recognised as already up
-     * to date and skipped; recording [orderVersion] as this device's new
-     * lastKnownOrderVersion also means any later payload with an
-     * older/missing order_version (a stale retained redelivery, e.g. from a
-     * reconnect, or another phone sharing this broker that hasn't caught up
-     * yet) is recognised as stale and ignored rather than clobbering this
-     * reorder - while a genuinely newer order_version still gets adopted. See
+     * Marks [payload]/[orderVersion] as already applied for a device, without rebuilding panels.
+     * Called right after the app itself publishes a retained "<topic>/app" update, since the "#"
+     * subscription echoes that publish straight back to DeviceAutoConfigManager - pre-marking it
+     * means the echo is skipped, and a later payload with an older/missing order_version (a stale
+     * retained redelivery, or another phone sharing the broker) is ignored rather than clobbering
+     * this state, while a genuinely newer one still gets adopted. See
      * DeviceAutoConfigManager.reconcileKnownDevices.
      */
     fun markAutoConfiguredDevicePayloadApplied(
@@ -449,10 +390,8 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * @param includeBrokers Set false for the MQTT backup path - broker host/
-     * username/password shouldn't be published over MQTT even compressed, in
-     * case that topic isn't as tightly secured as the device itself. The file
-     * backup keeps brokers included, since that file stays under your control.
+     * @param includeBrokers Set false for the MQTT backup path - broker credentials shouldn't be
+     * published over MQTT in case that topic is less secure than the device itself.
      */
     fun exportJson(includeBrokers: Boolean = true): String {
         val toExport = if (includeBrokers) _config.value else _config.value.copy(brokers = emptyList())
@@ -472,12 +411,9 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * For restoring a brokers-only backup: only the brokers list changes,
-     * everything else (groups, panels, auto-config state) stays exactly as
-     * it is. Brokers are matched/merged by id - an imported broker with the
-     * same id as an existing one replaces it, brokers with new ids are
-     * added, and existing brokers not mentioned in the import are left
-     * untouched rather than being removed.
+     * Restores a brokers-only backup: only the brokers list changes. Merged by id - an imported
+     * broker replaces an existing one with the same id, new ids are added, and brokers not
+     * mentioned in the import are left untouched.
      */
     fun importBrokersOnlyJson(text: String) {
         val imported = json.decodeFromString(AppConfig.serializer(), text)
@@ -490,12 +426,9 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * For restoring a brokerless MQTT backup: everything (groups, panels,
-     * auto-config state) comes from [text], but the current device's brokers
-     * are kept as-is rather than being wiped to an empty list. Note this only
-     * round-trips cleanly on the *same* device/broker setup the backup was
-     * taken from - panels still reference the original brokerId, so restoring
-     * onto a different device's brokers won't reconnect them automatically.
+     * Restores a brokerless MQTT backup: everything but brokers comes from [text]; the current
+     * device's brokers are kept. Only round-trips cleanly on the same device/broker setup - panels
+     * still reference the original brokerId, so a different device's brokers won't reconnect them.
      */
     fun importJsonPreservingBrokers(text: String) {
         val imported = json.decodeFromString(AppConfig.serializer(), text)

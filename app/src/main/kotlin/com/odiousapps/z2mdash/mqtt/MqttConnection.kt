@@ -22,12 +22,10 @@ data class IncomingMessage(val topic: String, val payload: String)
 /**
  * Wraps a single broker connection using the HiveMQ MQTT client.
  *
- * This is the actual fix for "websockets disconnect every 5 minutes": Paho's
- * Android websocket transport has a long-standing bug where its own keepalive
- * ping scheduling drifts and silently drops the connection under Android's
- * background network/Doze throttling. HiveMQ's client manages its own
- * ping/keepalive and reconnect state machine (with jittered backoff) that
- * doesn't share that bug, over TCP+TLS *or* WS/WSS transports.
+ * Fixes "websockets disconnect every 5 minutes": Paho's Android websocket transport has a
+ * keepalive scheduling bug that silently drops the connection under Doze/background network
+ * throttling. HiveMQ manages its own ping/reconnect state machine (jittered backoff) across
+ * TCP+TLS and WS/WSS without that bug.
  */
 class MqttConnection(private val broker: Broker) {
 
@@ -55,7 +53,7 @@ class MqttConnection(private val broker: Broker) {
             .applyAutomaticReconnect()
 
         when (broker.protocol) {
-            MqttProtocol.TCP -> { /* plain TCP, nothing extra to configure */ }
+            MqttProtocol.TCP -> {}
             MqttProtocol.SSL -> applySsl(builder)
             MqttProtocol.WS -> applyWebSocket(builder)
             MqttProtocol.WSS -> {
@@ -74,9 +72,8 @@ class MqttConnection(private val broker: Broker) {
         val builtClient = builder.buildAsync()
         client = builtClient
 
-        // Global callback: fires for every publish on every topic this client is
-        // currently subscribed to, so we don't need a separate callback per
-        // subscribeWith() call (and re-subscribing after a reconnect "just works").
+        // Global callback covers every subscribed topic, so no per-subscribeWith() callback
+        // is needed and resubscribing after a reconnect "just works".
         builtClient.publishes(MqttGlobalPublishFilter.SUBSCRIBED) { publish ->
             val payload = String(publish.payloadAsBytes, StandardCharsets.UTF_8)
             _messages.tryEmit(IncomingMessage(publish.topic.toString(), payload))
@@ -109,26 +106,18 @@ class MqttConnection(private val broker: Broker) {
                 .trustManagerFactory(SslUtils.trustManagerFactoryFromCertBase64(certBase64))
                 .applySslConfig()
         } else {
-            // sslWithDefaultConfig() mutates builder in place and returns the
-            // same (@CheckReturnValue-annotated) builder for chaining - not
-            // a separate object that needs capturing, same as the
-            // sslConfig()...applySslConfig() chain above, which also never
-            // reassigns builder and already works correctly. .let{} here
-            // just explicitly consumes the return value to satisfy that
-            // check, without changing behaviour.
+            // sslWithDefaultConfig() mutates builder in place and returns the same
+            // @CheckReturnValue-annotated builder; .let{} just consumes that return
+            // value to satisfy the check, without changing behaviour.
             builder.sslWithDefaultConfig().let { }
         }
     }
 
     fun subscribe(topic: String) {
         if (topic.isBlank()) return
-        // Set.add() returns false if the topic was already tracked - skip
-        // resending an actual SUBSCRIBE packet in that case. Otherwise, every
-        // config change (of which there can be many during device
-        // auto-discovery) triggers a fresh "#" subscribe, and MQTT brokers
-        // redeliver every matching retained message on every subscribe, even
-        // for a topic already subscribed to - which was quietly resetting
-        // this app's own "updated N ago" displays back toward zero.
+        // Skip resending SUBSCRIBE for an already-tracked topic - brokers redeliver every
+        // matching retained message on every subscribe (even repeats), which was resetting
+        // this app's "updated N ago" displays. Frequent during auto-discovery's config churn.
         val isNewSubscription = subscribedTopics.add(topic)
         if (isNewSubscription && _connectionState.value == ConnectionState.CONNECTED) {
             doSubscribe(topic)

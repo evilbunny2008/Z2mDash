@@ -24,22 +24,18 @@ import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.contentOrNull
 
 /**
- * Watches every incoming MQTT payload, across every broker/topic, for a JSON
- * "smoke": true field - deliberately not scoped to any specific configured
- * device or panel, so a smoke detector is monitored automatically the moment
- * it starts publishing, without the user needing to explicitly register it
- * anywhere first. Posts a high-priority notification (with an alarm-style
- * sound, if enabled) the moment a topic's smoke state transitions to true,
- * and clears it again once that topic reports smoke has cleared.
+ * Watches every incoming MQTT payload, across every broker/topic, for a JSON "smoke": true
+ * field - deliberately unscoped to any configured device/panel, so a smoke detector is
+ * monitored the moment it starts publishing, with no registration needed. Posts a
+ * high-priority notification on the true transition, and clears it once smoke clears.
  */
 class SmokeAlertManager(
     private val context: Context,
     private val configRepository: ConfigRepository,
     private val connectionManager: MqttConnectionManager
 ) {
-    // Topics currently believed to be in an active alarm state - tracked so a
-    // transition to true only alerts once, not on every repeated message
-    // while the device keeps re-publishing the same ongoing alarm.
+    // Topics currently in an active alarm state, so we alert once on the transition to
+    // true rather than on every repeated message while an alarm stays ongoing.
     private val topicsInAlarm = mutableSetOf<String>()
 
     fun start(scope: CoroutineScope) {
@@ -51,12 +47,9 @@ class SmokeAlertManager(
     }
 
     /**
-     * Fires a real notification (and sound, if the sound setting is
-     * currently enabled) using the exact same underlying logic as a genuine
-     * smoke alert - so tapping a "test" button actually verifies the
-     * notification/sound work, rather than just simulating what they'd look
-     * like. Uses a dedicated key rather than any real topic, so it never
-     * touches topicsInAlarm tracking for actual devices.
+     * Fires a real notification via the same logic as a genuine alert, so the "test" button
+     * verifies the notification/sound actually work. Uses a dedicated key, not a real topic,
+     * so it never touches topicsInAlarm tracking.
      */
     fun triggerTestAlert() {
         val playSound = configRepository.config.value.smokeAlertSoundEnabled
@@ -72,10 +65,9 @@ class SmokeAlertManager(
             when {
                 smokeDetected && !wasInAlarm -> {
                     topicsInAlarm.add(compositeKey)
-                    // Checked here rather than at the top of checkForSmoke, so
-                    // topicsInAlarm still stays accurate even while alerts are
-                    // disabled - re-enabling the setting shouldn't immediately
-                    // re-fire for smoke that was already active beforehand.
+                    // Checked here, not at the top of checkForSmoke, so topicsInAlarm stays
+                    // accurate even while alerts are disabled - re-enabling shouldn't re-fire
+                    // for smoke that was already active.
                     if (config.smokeAlertsEnabled) {
                         notifySmokeDetected(compositeKey, config.smokeAlertSoundEnabled)
                     }
@@ -109,11 +101,8 @@ class SmokeAlertManager(
             context, compositeKey.hashCode(), launchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        // Two pre-created channels (one with an alarm sound, one silent) since
-        // a notification channel's own sound can't be changed programmatically
-        // once created - picking which channel to post to at send time is the
-        // standard, reliable way to make a "play sound" toggle actually work
-        // without needing to delete and recreate channels.
+        // A channel's sound can't be changed once created, so we pre-create a sound and a
+        // silent channel and pick between them at send time to make the toggle work.
         val channelId = if (playSound) CHANNEL_ID_SOUND else CHANNEL_ID_SILENT
         val title = if (isTest) "Test alert" else "Smoke detected!"
         val text = if (isTest) {
@@ -154,11 +143,8 @@ class SmokeAlertManager(
             .setUsage(AudioAttributes.USAGE_ALARM)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
-        // A custom smoke-alarm sound (res/raw/smoke_alarm.wav) rather than the
-        // device's default alarm ringtone, so this notification is instantly
-        // distinguishable from any other alarm going off. Referenced via the
-        // android.resource:// scheme, the standard way to point a
-        // NotificationChannel's sound at an app-bundled raw resource.
+        // A custom sound (res/raw/smoke_alarm.wav) rather than the device's default alarm
+        // ringtone, so this alert is distinguishable from any other alarm.
         val alarmSoundUri = "android.resource://${context.packageName}/${R.raw.smoke_alarm}".toUri()
 
         val soundChannel = NotificationChannel(

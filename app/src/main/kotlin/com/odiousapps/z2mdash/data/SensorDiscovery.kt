@@ -12,12 +12,10 @@ import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.longOrNull
 
 /**
- * Turns a raw bag of "topic -> last payload" (as gathered by subscribing a
- * broker to "#") into a list of candidate sensors: topics whose payload is a
- * JSON object with at least one numeric field. Topics that are commands,
- * availability pings, bridge/system chatter, or plain non-JSON strings are
- * skipped automatically because they simply won't parse into any numeric
- * fields - no topic allow/deny list to maintain by hand.
+ * Turns a raw bag of "topic -> last payload" (from subscribing a broker to "#") into candidate
+ * sensors: topics whose payload is a JSON object with at least one numeric field. Commands,
+ * availability pings, and bridge chatter are excluded automatically since they won't parse into
+ * numeric fields - no allow/deny list needed.
  */
 object SensorDiscovery {
 
@@ -38,53 +36,35 @@ object SensorDiscovery {
      * {"name":"Alpinia - 01","moisture_min":60,"moisture_max":75,
      *  "panels":["linkquality","humidity","temperature","soil_moisture"]}
      *
-     * [rangePairs] maps a base concept name (e.g. "moisture") to its
-     * (minKey, maxKey) pair, discovered generically by looking for any two
-     * numeric fields named "<base>_min" and "<base>_max" in the same
-     * payload - not hardcoded to "moisture" specifically, so a future device
-     * publishing "temperature_min"/"temperature_max" works the same way.
+     * [rangePairs] maps a base concept (e.g. "moisture") to its (minKey, maxKey) pair, found
+     * generically from any two "<base>_min"/"<base>_max" fields - not hardcoded to "moisture".
      */
     data class DeviceAppConfig(
         val name: String,
-        // Optional. When set, panels go into a dashboard group with this exact
-        // name (created if it doesn't exist yet), bypassing whatever group is
-        // picked in the UI - the device fully self-configures.
+        // Optional. When set, panels go into a dashboard group with this name (created if
+        // needed), bypassing the UI-picked group - the device fully self-configures.
         val group: String?,
-        // Optional. Position of this device's cluster/panels within the group
-        // (lower sorts first) - the order panels appear *inside* [group], not
-        // the group's own position among other dashboard groups.
+        // Optional. This device's cluster/panel position within [group] (lower sorts first).
         val groupOrder: Int?,
         val panelFields: List<String>,
-        // Optional. Parallel to panelFields by index - custom label per field.
-        // Falls back to suggestedLabel() for any field with no matching entry.
+        // Optional, parallel to panelFields - custom label per field, else suggestedLabel().
         val labels: List<String>,
         val rangePairs: Map<String, Pair<String, String>>,
-        // Optional. Parallel to panelFields by index - overrides which cluster
-        // that field renders in, instead of the device's overall [name]. Blank
-        // or missing entries fall back to [name] as before.
+        // Optional, parallel to panelFields - overrides which cluster the field renders in
+        // instead of [name]. Blank/missing falls back to [name].
         val panelClusters: List<String> = emptyList(),
-        // Optional. Parallel to panelFields by index - position within its
-        // cluster (lower sorts first). Missing/null entries fall back to
-        // [groupOrder], then declaration order.
+        // Optional, parallel to panelFields - position within its cluster (lower sorts first),
+        // else falls back to [groupOrder] then declaration order.
         val panelOrders: List<Int?> = emptyList(),
-        // Optional. Parallel to panelFields by index - how many decimal
-        // places to round that field's displayed value to, e.g. 0 for a
-        // humidity percentage or 1 for a temperature. Missing/null entries
-        // fall back to Panel.Sensor's own default (1).
+        // Optional, parallel to panelFields - decimal places for the displayed value, else
+        // Panel.Sensor's default (1).
         val panelDecimals: List<Int?> = emptyList(),
-        // Optional. Toggle/command panels (blinds, plugs, anything with an
-        // on/off-style command) declared alongside the sensor fields above.
+        // Optional. Toggle/command panels (blinds, plugs, etc.) declared alongside the sensors.
         val controls: List<ControlConfig> = emptyList(),
-        // Optional. Epoch-millis timestamp of when [groupOrder]/[panelOrders]
-        // (and controls' own per-item order) were last intentionally set - the
-        // app stamps this itself whenever a cluster/panel drag-reorder writes a
-        // new order back to this payload. Lets DeviceAutoConfigManager tell a
-        // genuinely newer order (e.g. pushed moments ago from another phone
-        // sharing this broker) apart from a stale retained redelivery of an
-        // older payload, so reconciling doesn't clobber a more recent reorder
-        // with an out-of-date one. Missing on payloads no app has ever written
-        // an order to (e.g. a hand-authored one) - treated as "no order
-        // authority", so the order already applied locally is left alone.
+        // Optional epoch-millis stamp of when ordering was last set (written by the app on a
+        // drag-reorder). Lets DeviceAutoConfigManager tell a genuinely newer order apart from a
+        // stale retained redelivery when reconciling. Missing means "no order authority" -
+        // the locally-applied order is left alone.
         val orderVersion: Long? = null
     )
 
@@ -96,27 +76,19 @@ object SensorDiscovery {
         val offPayload: String,
         val stateTopic: String?,
         val stateField: String?,
-        // Optional. Overrides which cluster this control renders in, instead of
-        // the device's overall name - lets one physical device (e.g. a combo
-        // light/fan switch) split into multiple dashboard clusters.
+        // Optional. Overrides which cluster this control renders in (instead of the device's
+        // name) - lets one physical device (e.g. a combo light/fan switch) span multiple clusters.
         val cluster: String? = null,
-        // Optional. Position within its cluster (lower sorts first). Falls back
-        // to the device's overall group_order, then declaration order, if unset -
-        // sensor panels are otherwise always built before controls regardless of
-        // array position, so this is the only way to interleave them.
+        // Optional. Position within its cluster, else falls back to group_order then declaration
+        // order. The only way to interleave with sensor panels, which are otherwise always built first.
         val order: Int? = null,
-        // A single-press button with no on/off state - set when the config
-        // omits "off_payload" entirely (as opposed to it defaulting to "OFF"
-        // when unspecified but everything else about the control looks like a
-        // regular toggle). e.g. a blind motor's STOP command. Built as a
-        // Panel.Button rather than a Panel.Toggle when set.
+        // True when the config omits "off_payload" entirely (a single-press button with no
+        // on/off state, e.g. a blind motor's STOP) - built as Panel.Button instead of Panel.Toggle.
         val momentary: Boolean = false
     )
 
-    // Topics matching these patterns are structural, not sensor data - skip them
-    // even if they happen to contain a stray number (defence in depth; in
-    // practice the "must have a numeric field" check below already excludes
-    // almost all of these).
+    // Structural topics, not sensor data - skipped even if they contain a stray number
+    // (the numeric-field check below already excludes most of these anyway).
     private val ignoredSuffixes = listOf("/set", "/get", "/availability", "/ideal", "/app", "/config")
     private val ignoredSubstrings = listOf("/bridge/")
 
@@ -133,20 +105,12 @@ object SensorDiscovery {
     }
 
     /**
-     * Rewrites a device's "/app" payload with updated ordering - panel_order
-     * for sensor fields, order for each control - matching [orderByFieldOrLabel]
-     * (keyed by sensor field name, matching a "panels" array entry, or by
-     * control label, matching a "controls" array entry's "label"). Everything
-     * else in the payload (name, group, labels, on/off payloads, etc.) passes
-     * through completely unchanged. Also stamps "order_version" with
-     * [orderVersion] (an epoch-millis publish time) so that if this same
-     * broker is shared by more than one phone running this app, each one can
-     * tell this genuinely-newer order apart from a stale retained redelivery
-     * of an older payload when reconciling - see AutoConfiguredDevice.
-     * lastKnownOrderVersion. Returns null if the payload isn't a JSON object,
-     * so a manual reorder of auto-configured panels can push its new order
-     * back to the device's own retained config without ever having to
-     * reconstruct the rest of that config from scratch.
+     * Rewrites a device's "/app" payload with updated ordering - panel_order for sensor fields,
+     * order for each control - keyed by [orderByFieldOrLabel] (sensor field name or control
+     * label). Everything else in the payload passes through unchanged. Also stamps
+     * "order_version" with [orderVersion] (epoch-millis) so phones sharing a broker can tell a
+     * genuinely newer order apart from a stale retained redelivery when reconciling - see
+     * AutoConfiguredDevice.lastKnownOrderVersion. Returns null if the payload isn't a JSON object.
      */
     fun updateOrderingInAppPayload(
         currentPayload: String,
@@ -192,14 +156,10 @@ object SensorDiscovery {
     }
 
     /**
-     * Rewrites a device's "/app" payload with its "group_order" field updated
-     * (and "order_version" stamped to [orderVersion], an epoch-millis publish
-     * time - see updateOrderingInAppPayload's doc for why) - everything else
-     * (name, group, labels, panels, controls, etc.) passes through completely
-     * unchanged. Used when a cluster reorder shifts a device's relative
-     * position among its siblings within the same group, so a stale retained
-     * redelivery of this topic's older payload doesn't quietly revert the new
-     * arrangement. Returns null if the payload isn't a JSON object.
+     * Rewrites a device's "/app" payload with "group_order" updated and "order_version" stamped
+     * (see updateOrderingInAppPayload's doc) - everything else passes through unchanged. Used
+     * when a cluster reorder shifts a device's position among siblings in the same group.
+     * Returns null if the payload isn't a JSON object.
      */
     fun updateGroupOrderInAppPayload(currentPayload: String, newGroupOrder: Int, orderVersion: Long): String? = try {
         val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
@@ -323,47 +283,29 @@ object SensorDiscovery {
     fun fieldKeysOf(payload: String): Set<String> = numericFieldsOf(payload).map { it.key }.toSet()
 
     /**
-     * Builds the panels described by [deviceConfig]: Sensor panels from
-     * panelFields, plus Toggle/Button panels from any declared controls. Each
-     * sensor field is pointed at the app-config topic specifically if it's
-     * actually found there (covers fields like "moisture_min" that only
-     * exist in the config payload), otherwise it defaults to the main sensor
-     * topic - trusting panelFields' own declaration of what to expect there,
-     * regardless of whether a live message has been seen on that topic yet.
-     * [sensorFieldKeys] is currently unused here (kept for now to avoid
-     * churning every call site) - an earlier version required a field to
-     * already be confirmed live on the sensor topic before a panel would be
-     * created for it at all, which meant a perfectly valid device could
-     * never be added if its sensor topic simply hadn't published anything
-     * since the app last connected. Any field that's part of a detected
-     * "<base>_min"/"<base>_max" pair gets wired up with an ideal range
-     * pointing at the app-config topic - except the min/max fields
-     * themselves, which would otherwise trivially compare against their own
-     * value. Pure function: callers decide where the resulting panels
-     * actually get stored.
+     * Builds the panels described by [deviceConfig]: Sensor panels from panelFields, plus
+     * Toggle/Button panels from declared controls. A sensor field is pointed at the app-config
+     * topic if found there (e.g. "moisture_min"), else the main sensor topic, trusting
+     * panelFields' declaration regardless of whether a live message has been seen yet.
+     * [sensorFieldKeys] is currently unused (kept to avoid churning call sites) - an earlier
+     * version required a field to be confirmed live first, which meant a valid device could never
+     * be added if its topic simply hadn't published recently. Fields in a detected
+     * "<base>_min"/"<base>_max" pair get an ideal range wired to the app-config topic, except the
+     * min/max fields themselves. Pure function: callers decide where panels get stored.
      */
     /**
-     * Combines a device's [groupOrder] (its cluster's rank among the other
-     * clusters/panels in the group) with [within] (a field/control's position
-     * inside that one cluster, e.g. from panel_order or a control's own
-     * order) into a single absolute Panel.displayOrder - scaling groupOrder
-     * up so it dominates, the same way ConfigRepository.reorderClustersInGroup
-     * spaces clusters 1000 apart locally. Both are optional on the wire
-     * ([within] in particular is almost always absent, since most panels
-     * never need their own explicit position): with neither set, there's
-     * nothing to order by at all, so the panel falls in after everything
-     * that IS ordered, same as an ordinary unordered panel always has.
-     * [fallbackWithin] (normally the field's own declaration index) keeps
-     * same-cluster panels distinct from each other when [within] is absent,
-     * rather than every field in the cluster colliding on the bare groupOrder
-     * value - which would lose their relative order and, worse, make a
-     * cluster indistinguishable in rank from one at groupOrder 0.
+     * Combines [groupOrder] (a cluster's rank among others in the group) with [within] (a field/
+     * control's position inside that cluster) into an absolute Panel.displayOrder, scaling
+     * groupOrder up to dominate (same 1000-spacing as ConfigRepository.reorderClustersInGroup).
+     * With neither set, the panel falls in after everything ordered. [fallbackWithin] (normally
+     * declaration index) keeps same-cluster panels distinct when [within] is absent.
      */
     private fun composedDisplayOrder(groupOrder: Int?, within: Int?, fallbackWithin: Int): Int {
         if (groupOrder == null && within == null) return Int.MAX_VALUE
         return (groupOrder ?: 0) * 1000 + (within ?: fallbackWithin)
     }
 
+    @Suppress("unused")
     fun buildPanels(
         brokerId: String,
         sensorTopic: String,
@@ -376,18 +318,10 @@ object SensorDiscovery {
         val deviceClusterName = deviceConfig.name.ifBlank { sensorTopic.substringAfterLast("/") }
 
         val sensorPanels: List<Panel> = deviceConfig.panelFields.mapIndexed { index, field ->
-            // Prefer the app-config topic specifically when this field is
-            // actually found there (some devices publish live sensor values
-            // directly alongside their own config, on the same topic).
-            // Otherwise, trust the /app config's own declaration of which
-            // fields to expect and default to the sensor topic - even if it
-            // hasn't published anything yet (e.g. a slow-reporting device,
-            // or one that simply hasn't sent a message since the app last
-            // connected). The panel will just show "--" until a real message
-            // arrives, same as any other freshly-added panel; gating panel
-            // *creation* on a live message already having been seen meant a
-            // perfectly valid device could never be added at all if its
-            // sensor topic happened to be quiet at that exact moment.
+            // Prefer the app-config topic when the field is actually found there (some devices
+            // publish live values alongside their config). Otherwise, default to the sensor topic
+            // even if it hasn't published yet - the panel shows "--" until a message arrives,
+            // rather than refusing to create the panel just because the topic was quiet.
             val topic = if (appConfigPayload != null && JsonPath.extract(appConfigPayload, field) != null) {
                 appConfigTopic
             } else {
@@ -421,9 +355,8 @@ object SensorDiscovery {
         }
 
         val controlPanels: List<Panel> = deviceConfig.controls.mapIndexed { controlIndex, control ->
-            // Sensor panels are always built before controls regardless of
-            // array position (see ControlConfig.order's doc), so a control
-            // with no explicit order falls in right after them by default.
+            // Sensor panels are always built before controls (see ControlConfig.order), so a
+            // control with no explicit order falls in right after them by default.
             val fallbackWithin = sensorPanels.size + controlIndex
             if (control.momentary) {
                 Panel.Button(

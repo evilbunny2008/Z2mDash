@@ -16,8 +16,7 @@ data class Broker(
     val username: String = "",
     val password: String = "",
     val selfSignedCert: Boolean = false,
-    // Raw certificate bytes (PEM or DER), Base64-encoded so it round-trips through
-    // the plain-JSON config file cleanly.
+    // Raw certificate bytes (PEM or DER), Base64-encoded to round-trip through plain JSON.
     val selfSignedCertBase64: String? = null,
     val webSocketPath: String = "/mqtt",
     val clientId: String = "android_dashboard_${(10000..99999).random()}",
@@ -26,43 +25,34 @@ data class Broker(
     val connectionTimeoutSeconds: Int = 30,
     val autoConnect: Boolean = true,
     val showReconnectionStatus: Boolean = true,
-    // Scopes the app's automatic "#" discovery/watch subscription to
-    // "<baseTopic>/#" instead of the entire broker - most people only ever
-    // want their Zigbee2MQTT namespace, not every topic on a shared broker.
+    // Scopes the app's automatic "#" discovery/watch subscription to "<baseTopic>/#" instead of
+    // the entire broker, since most people only want their Zigbee2MQTT namespace.
     val baseTopic: String = "zigbee2mqtt",
-    // When on, a newly-seen "<topic>/app" on this broker gets its
-    // group/clusters/panels created immediately (DeviceAutoConfigManager),
-    // same as tapping "Add" on the Home screen's pending-device banner -
-    // instead of the default of prompting for each one. Off by default so
-    // an unfamiliar broker's traffic doesn't populate the dashboard without
-    // asking first; worth turning on for a broker you already trust to only
-    // publish "/app" configs you want. Settable via a credential import's
-    // "AutoAccept" field - see CredentialImportDialog.
+    // When on, a newly-seen "<topic>/app" on this broker is auto-configured immediately
+    // (DeviceAutoConfigManager) instead of prompting via the Home screen banner. Off by default
+    // so an unfamiliar broker's traffic doesn't populate the dashboard unasked. Settable via a
+    // credential import's "AutoAccept" field - see CredentialImportDialog.
     val autoAcceptDiscoveredDevices: Boolean = false,
-    // Friendly name last used for the "Permit Join" toggle's optional "device"
-    // field (see AddEditBrokerScreen) - e.g. a specific router's name to extend
-    // joining through, or "Coordinator" for just the coordinator. Blank permits
-    // joining via every router and the coordinator at once. Remembered per broker
-    // purely as a convenience so it doesn't need retyping every time; carries no
-    // meaning on its own until a toggle press actually publishes it.
+    // Friendly name last used for the "Permit Join" toggle's optional "device" field (see
+    // AddEditBrokerScreen) - blank permits joining via every router and the coordinator at once.
+    // Remembered per broker purely for convenience.
     val permitJoinDevice: String = ""
 )
 
 @Serializable
 enum class TileIcon { HUMIDITY, MOISTURE, TEMPERATURE, SIGNAL, POWER, GAUGE, BATTERY, LIGHT, PRESENCE }
 
+@Suppress("unused")
 @Serializable
 sealed class Panel {
     abstract val id: String
     abstract val label: String
     abstract val brokerId: String
-    // Optional. Panels sharing the same non-blank clusterName within a group
-    // are rendered together in one bordered card with this name shown
-    // underneath - e.g. all the tiles for one physical sensor device.
+    // Optional. Panels sharing the same non-blank clusterName within a group render together in
+    // one bordered card named underneath - e.g. all tiles for one physical sensor device.
     abstract val clusterName: String
-    // Controls left-to-right/top-to-bottom position within a group (lower
-    // sorts first). Panels/clusters without an explicit order default to
-    // Int.MAX_VALUE, so they fall in after anything explicitly ordered.
+    // Left-to-right/top-to-bottom position within a group (lower sorts first). Unordered
+    // panels/clusters default to Int.MAX_VALUE, falling in after anything explicitly ordered.
     abstract val displayOrder: Int
 
     @Serializable
@@ -71,17 +61,15 @@ sealed class Panel {
         override val label: String,
         override val brokerId: String,
         val topic: String,
-        // Dot path into a JSON payload, e.g. "temperature" or "state.battery".
-        // Leave blank to display the raw payload as-is.
+        // Dot path into a JSON payload, e.g. "temperature" or "state.battery". Blank displays
+        // the raw payload as-is.
         val jsonPath: String = "",
         val unit: String = "",
         val icon: TileIcon = TileIcon.GAUGE,
         val decimals: Int = 0,
-        // Optional companion topic publishing the ideal range (retained). When set,
-        // the tile flashes red below min / green within / blue above max. Defaults
-        // to a topic shaped {"min":x,"max":y}; idealMinPath/idealMaxPath let it
-        // instead point at differently-named sibling fields (e.g. "moisture_min" /
-        // "moisture_max" inside a broader device config payload).
+        // Optional companion topic publishing the ideal range (retained) - tile flashes red
+        // below min / green within / blue above max. Defaults to {"min":x,"max":y};
+        // idealMinPath/idealMaxPath let it point at differently-named sibling fields instead.
         val idealRangeTopic: String = "",
         val idealMinPath: String = "min",
         val idealMaxPath: String = "max",
@@ -106,10 +94,8 @@ sealed class Panel {
         override val displayOrder: Int = Int.MAX_VALUE
     ) : Panel()
 
-    // A momentary action with no on/off state to reflect - e.g. "Stop" on a
-    // blind motor, interrupting whatever it's currently doing. Unlike Toggle,
-    // there's nothing to display as checked/unchecked; tapping it just sends
-    // payload to commandTopic every time.
+    // A momentary action with no on/off state, e.g. "Stop" on a blind motor - unlike Toggle,
+    // tapping it just sends payload to commandTopic every time.
     @Serializable
     data class Button(
         override val id: String,
@@ -132,10 +118,8 @@ data class PanelGroup(
 )
 
 /**
- * Tracks a device that was configured via its own "<topic>/app" payload, so the
- * app can keep watching that topic afterwards and automatically regenerate the
- * device's panels if the device republishes a changed config - not just a
- * one-off action.
+ * Tracks a device configured via its own "<topic>/app" payload, so the app can keep watching
+ * that topic and regenerate panels if the device republishes a changed config.
  */
 @Serializable
 data class AutoConfiguredDevice(
@@ -144,27 +128,20 @@ data class AutoConfiguredDevice(
     val appConfigTopic: String,
     // Raw payload last applied - compared against the live value to detect changes.
     val lastAppliedPayload: String,
-    // IDs of the panels this device currently owns, so a reconfigure can
-    // cleanly remove the old set before adding the new one.
+    // IDs of the panels this device currently owns, so a reconfigure can cleanly remove the
+    // old set before adding the new one.
     val createdPanelIds: List<String> = emptyList(),
-    // Highest "order_version" (a publish-time epoch-millis stamp) this phone
-    // has adopted for this device's group_order/panel_order - lets multiple
-    // phones sharing the same broker do last-writer-wins on cluster/panel
-    // drag-reorder instead of a race: reconciling this device's payload only
-    // adopts its group_order/panel_order for panels that already exist here
-    // when the incoming order_version is strictly newer than this. Without
-    // it, a stale retained redelivery of an older payload (e.g. from a
-    // reconnect, or another phone's now-superseded state) would silently
-    // undo a more recent reorder. Defaults to 0 so any versioned payload
-    // (every payload this app itself has ever published an order update to)
-    // is adopted the first time a phone sees it.
+    // Highest "order_version" (publish-time epoch-millis) adopted for this device's
+    // group_order/panel_order - lets phones sharing a broker do last-writer-wins on
+    // drag-reorder: an incoming payload's order is only adopted when its order_version is
+    // strictly newer, so a stale retained redelivery can't undo a more recent reorder.
+    // Defaults to 0 so any versioned payload is adopted the first time a phone sees it.
     val lastKnownOrderVersion: Long = 0L
 )
 
 /**
- * A "<topic>/app" was seen for the first time (parses successfully, not
- * already autoconfigured, not previously dismissed) - waiting on the user to
- * accept or ignore it, surfaced as a Home screen banner and a notification.
+ * A "<topic>/app" seen for the first time (parses successfully, not already autoconfigured or
+ * dismissed) - waiting on the user to accept or ignore it via a Home screen banner/notification.
  */
 @Serializable
 data class PendingAutoConfigDevice(
@@ -178,53 +155,31 @@ data class PendingAutoConfigDevice(
 data class AppConfig(
     val brokers: List<Broker> = emptyList(),
     val groups: List<PanelGroup> = emptyList(),
-    // Off by default: since every "<topic>/app" and sensor payload is retained,
-    // the broker delivers current state immediately on connect regardless of
-    // whether this app was running in the background - a persistent foreground
-    // connection genuinely is optional for correct data, not just for UX, so
-    // it should be something the user opts into rather than something enabled
-    // for them out of the box.
+    // Off by default: since payloads are retained, the broker delivers current state on connect
+    // regardless of background running, so a persistent foreground connection is opt-in, not
+    // required for correct data.
     val backgroundWorkEnabled: Boolean = false,
     val autoConfiguredDevices: List<AutoConfiguredDevice> = emptyList(),
     val pendingAutoConfigDevices: List<PendingAutoConfigDevice> = emptyList(),
-    // "brokerId|appConfigTopic" composite keys the user has explicitly dismissed,
-    // so a declined device isn't re-prompted on every subsequent scan.
+    // "brokerId|appConfigTopic" keys the user has dismissed, so a declined device isn't
+    // re-prompted on every scan.
     val ignoredAppConfigTopics: List<String> = emptyList(),
-    // Smoke detector monitoring: watches every incoming payload, across every
-    // topic, for a JSON "smoke": true field - not scoped to any specific
-    // configured device/panel, so nothing is ever missed just because a
-    // detector wasn't explicitly added as a panel. Defaults to on, given the
-    // safety purpose.
+    // Watches every incoming payload, any topic, for a JSON "smoke": true field - not scoped to
+    // a configured panel, so nothing is missed just because a detector wasn't added. On by default.
     val smokeAlertsEnabled: Boolean = true,
     val smokeAlertSoundEnabled: Boolean = true,
-    // Tracks whether the one-time migration (see ConfigRepository.load) that
-    // updates existing sensor panels still sitting on the old, uniform "1
-    // decimal place for everything" default over to the new field-aware
-    // default has already run - without this flag, the migration would
-    // re-apply on every app launch and silently overwrite a deliberate
-    // later choice of "1" on a non-temperature field.
+    // Whether the one-time decimals migration (see ConfigRepository.load) has already run -
+    // without this flag it would re-apply every launch and overwrite a deliberate later choice.
     val decimalsMigrationApplied: Boolean = false,
-    // Remembered so the export password dialog can be pre-filled next time,
-    // rather than asking fresh on every export. Stored in plaintext, same as
-    // broker passwords elsewhere in this same config file - anyone with
-    // access to the app's own private storage could already read those, so
-    // this doesn't meaningfully change the app's existing threat model.
+    // Remembered so the export password dialog is pre-filled next time. Stored in plaintext,
+    // same as broker passwords elsewhere in this config file.
     val rememberedExportPassword: String? = null,
-    // Governs the red/blue flash on an individual sensor tile whose value
-    // has drifted outside its configured ideal range. The stale-data
-    // indicator on cluster cards is deliberately NOT controlled by this -
-    // it was previously blink-capable too, but was found not noticeable
-    // enough to be worth the flicker and is now always a flat static color
-    // regardless of this setting. When false, an out-of-range tile still
-    // shows its warning color, just static rather than pulsing. Defaults
-    // to on.
+    // Red/blue flash on a sensor tile outside its ideal range. Does NOT control the cluster
+    // card's stale-data indicator (that blink wasn't noticeable enough to be worth it, and is
+    // now always static). When false, an out-of-range tile still shows its warning colour, static
+    // rather than pulsing.
     val staleDataBlinkEnabled: Boolean = true,
-    // Caps each tile's (and so each 3-wide cluster card's) width on the Home
-    // screen - the actual width used is whichever is smaller, this or what
-    // would otherwise evenly fill the screen at 3 tiles per row, so raising
-    // this past a phone's own proportional width just makes tiles fill the
-    // screen, while lowering it keeps them more compact than the screen
-    // alone would. 110 was this app's original hardcoded constant - kept as
-    // the default so nobody's layout changes just from upgrading.
+    // Caps each tile's width on the Home screen; the smaller of this or the even-fill-at-3-per-row
+    // width is used. 110 was this app's original hardcoded constant, kept as the default.
     val tileWidthDp: Int = 110
 )

@@ -68,9 +68,8 @@ fun MqttBackupScreen(navController: NavController) {
     var restoringTopic by remember { mutableStateOf<String?>(null) }
     var pendingDeleteTopic by remember { mutableStateOf<String?>(null) }
 
-    // Every backup topic ever discovered under "<prefix>/", newest first -
-    // recomputed straight off the live payloads map, so the list updates on
-    // its own as more retained backups arrive after a scan.
+    // Backup topics under "<prefix>/", newest first - recomputed off the live
+    // payloads map so the list updates as retained backups arrive after a scan.
     val prefix = topicPrefix.trim().trim('/')
     val discoveredBackups = remember(payloads, selectedBrokerId, prefix) {
         val keyPrefix = "$selectedBrokerId|$prefix/"
@@ -252,11 +251,9 @@ fun MqttBackupScreen(navController: NavController) {
                     text = { Text("Removes the retained backup from $displayTime. This can't be undone.") },
                     confirmButton = {
                         TextButton(onClick = {
-                            // Publishing an empty retained message is the standard
-                            // MQTT way to clear a retained value - the broker drops
-                            // it, and our own subscription echoes that back to us,
-                            // removing it from latestPayloads (see
-                            // MqttConnectionManager) so it disappears from this list.
+                            // Empty retained message is the standard MQTT way to clear a
+                            // retained value - our subscription echoes it back, removing it
+                            // from latestPayloads (see MqttConnectionManager) and this list.
                             app.connectionManager.publish(selectedBrokerId, topicToDelete, "", retain = true)
                             statusMessage = "Deleted backup from $displayTime"
                             pendingDeleteTopic = null

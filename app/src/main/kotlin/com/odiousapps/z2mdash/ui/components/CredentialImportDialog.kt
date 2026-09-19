@@ -30,22 +30,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 
 /**
- * Shows a code/QR to receive a broker's hostname/username/password from
- * MX3Launcher's generic credential relay (see CredentialShareClient) -
- * this app has no data of its own yet, so it asks to receive some, the
- * same "pull" flow MX3Launcher's own TV pairing uses. Scanning the QR
- * (or typing the code) on mx3launcher.odiousapps.com, once logged in,
- * lets the account holder pick one of their own saved credential
- * presets to send - avoiding typing a password by hand into this
- * screen, or over voice/screenshot/chat to get it there another way.
+ * Shows a code/QR to pull a broker's hostname/username/password from MX3Launcher's generic
+ * credential relay (see CredentialShareClient) - the same "pull" flow MX3Launcher's own TV
+ * pairing uses, letting the user send a saved preset from mx3launcher.odiousapps.com instead of
+ * typing a password by hand or over voice/chat.
  *
- * Starts the request as soon as this composes, then polls in the same
- * coroutine until it's resolved (or the code expires), calling
- * [onImported] with whatever fields came back (this dialog only checks
- * that "Hostname" is present - it's the caller's job to know what the
- * rest of the field names mean, e.g. AddEditBrokerScreen also reading
- * "Username"/"Password"/"Protocol") - no separate ViewModel needed for
- * something this self-contained and dialog-scoped.
+ * Starts the request on composition, then polls in the same coroutine until resolved or expired,
+ * calling [onImported] with whatever fields came back (only "Hostname" is checked here - the
+ * caller interprets the rest, e.g. AddEditBrokerScreen's "Username"/"Password"/"Protocol").
  */
 @Composable
 fun CredentialImportDialog(
@@ -69,11 +61,10 @@ fun CredentialImportDialog(
             generateQrCodeBitmap(CredentialShareClient.viewUrl(started.code))
         }
 
-        // Poll until resolved or the code expires - no fixed iteration
-        // count, since how long that takes is entirely up to whoever's
-        // picking a preset to send.
+        // Poll until resolved or expired - no fixed iteration count since timing is up to
+        // whoever's picking a preset to send.
         while (true) {
-            delay(3000)
+            delay(3000.milliseconds)
             when (val polled = withContext(Dispatchers.IO) { CredentialShareClient.pollStatus(started.token) }) {
                 is CredentialShareClient.StatusResult.Resolved -> {
                     if (polled.fields["Hostname"].isNullOrBlank()) {

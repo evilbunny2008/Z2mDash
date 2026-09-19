@@ -11,9 +11,8 @@ import androidx.core.app.NotificationCompat
 import com.odiousapps.z2mdash.Z2mDashApplication
 
 /**
- * Keeps broker connections alive while the app is backgrounded. Toggled by
- * "Background Work" in Settings; MainActivity starts this when that setting
- * is enabled.
+ * Keeps broker connections alive while backgrounded. Started by MainActivity when
+ * "Background Work" is enabled in Settings.
  */
 class MqttForegroundService : Service() {
 

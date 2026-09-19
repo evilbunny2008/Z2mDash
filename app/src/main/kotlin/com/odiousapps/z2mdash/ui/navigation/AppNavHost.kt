@@ -64,12 +64,9 @@ private val bottomTabs = listOf(
 )
 
 /**
- * Set by [TvNavShell] on the FocusRequester attached to its content area (see that function's own
- * comment) - lets [AppNavGraph] request focus specifically INTO the content area on navigating to
- * a non-tab screen, rather than [androidx.compose.ui.focus.FocusManager.moveFocus] searching the
- * whole composition from "nothing focused," which - confirmed on-device - could land back on the
- * rail's own Home item (the very first focusable node in the whole tree, since the rail is
- * composed before the content) instead of anything on the screen just navigated to.
+ * Set by [TvNavShell] on its content area's FocusRequester, so [AppNavGraph] can focus directly
+ * into the content area on navigating to a non-tab screen - moveFocus() alone can land back on the
+ * rail's Home item instead (confirmed on-device), since the rail composes before the content.
  */
 private val LocalTvContentFocusRequester = staticCompositionLocalOf<FocusRequester?> { null }
 
@@ -116,24 +113,14 @@ private fun PhoneNavShell(
 }
 
 /**
- * TV shell: a persistent side rail instead of a bottom bar - reaching the bottom edge of the
- * screen with a D-pad is a much worse fit for a 10-foot remote experience than a rail that's
- * already adjacent to wherever focus currently sits.
+ * TV shell: a persistent side rail instead of a bottom bar - a D-pad reaching the screen edge is
+ * worse than a rail already adjacent to focus.
  *
- * Always wraps `content` in the exact same NavigationDrawer, on every route, rather than only
- * doing so for the 3 main tab destinations and calling `content(Modifier)` directly (bypassing
- * the drawer entirely) everywhere else. That conditional-bypass version was a real, confirmed
- * bug: `content` ultimately composes the whole NavHost, and calling it from two different
- * positions in the tree (sometimes as a direct child of this function, sometimes nested inside
- * NavigationDrawer's own content lambda) meant Compose treated it as a *different* composable
- * every time a route crossed between "is a main tab" and "isn't" - disposing and recreating the
- * entire NavHost, along with every destination's own rememberSaveable-backed state. The
- * user-visible symptom: opening a panel from Home and pressing Back landed back on Home with its
- * scroll position reset to the top, because HomeScreen's LazyListState never actually survived
- * the round trip. Keeping the wrapping structure identical on every route - the rail is simply
- * always present, including on sub-screens like broker/panel editors - fixes that by construction,
- * and doubles as a reasonably common TV pattern in its own right (a persistent nav rail everywhere,
- * not just top-level screens).
+ * Always wraps `content` in the same NavigationDrawer on every route (never bypassing it for
+ * non-tab screens) - calling `content` from two different tree positions made Compose treat it as
+ * a different composable each time a route crossed the tab/non-tab boundary, disposing and
+ * recreating the whole NavHost and every screen's rememberSaveable state (confirmed bug: Back from
+ * a panel to Home reset Home's scroll position). Identical wrapping fixes this by construction.
  */
 @Composable
 private fun TvNavShell(
@@ -141,53 +128,37 @@ private fun TvNavShell(
     currentRoute: String?,
     content: @Composable (Modifier) -> Unit
 ) {
-    // tv-material's own components (NavigationDrawerItem included) source their default colors
-    // from androidx.tv.material3's OWN theme, a separate CompositionLocal from this app's usual
-    // androidx.compose.material3.MaterialTheme - without this wrapper, unselected items rendered
-    // with no visible color at all on real hardware (confirmed on-device: only the currently
-    // selected tab's icon was showing; the other two were present but effectively invisible).
-    // Explicitly fed this app's OWN current color scheme (light/dark/dynamic - see
-    // toTvColorScheme()'s own comment) rather than left on tv-material3's default tokens -
-    // confirmed on-device (TV set to system dark mode) that leaving it on the default produced
-    // near-illegible dark-on-dark rail text, since tv-material3's own default has no idea what
-    // theme the rest of the app is actually in.
+    // tv-material3 components source colours from their own separate MaterialTheme, not this app's
+    // androidx.compose.material3 one - without this wrapper, unselected rail items rendered with
+    // no visible colour (confirmed on-device), and tv-material3's default tokens produced
+    // near-illegible dark-on-dark rail text in dark mode since they don't know the app's theme.
     androidx.tv.material3.MaterialTheme(colorScheme = MaterialTheme.colorScheme.toTvColorScheme()) {
-        // The first NavigationDrawerItem is given focus as soon as this shell appears, because
-        // Compose does NOT automatically focus anything on its own when a D-pad key first
-        // arrives with nothing focused yet (confirmed on-device: without this, every D-pad press
-        // - including on HomeScreen's list - was simply inert, matching the user's original "the
-        // remote does nothing" report). Every screen this shell wraps can then be reached by
-        // moving focus right from here into the content area.
+        // Focus the first rail item as soon as this shell appears - Compose doesn't autofocus
+        // anything on a D-pad's first press (confirmed on-device: without this, every D-pad press
+        // was inert). Every other screen is then reachable by moving focus right from here.
         val homeItemFocusRequester = remember { FocusRequester() }
         LaunchedEffect(Unit) { homeItemFocusRequester.requestFocus() }
-        // Given to AppNavGraph via LocalTvContentFocusRequester so it can request focus directly
-        // into this content area (via requestFocus()'s default Enter direction, which finds the
-        // first eligible focusable descendant of a focusGroup()) when landing on a non-tab route,
-        // rather than searching the whole composition from "nothing focused" - see that
-        // CompositionLocal's own comment for the confirmed bug this replaces.
+        // Exposed via LocalTvContentFocusRequester so AppNavGraph can focus directly into this
+        // content area on a non-tab route, instead of searching from "nothing focused" - see that
+        // CompositionLocal's own comment.
         val contentFocusRequester = remember { FocusRequester() }
         NavigationDrawer(
             drawerState = rememberDrawerState(DrawerValue.Closed),
             drawerContent = {
-                // NavigationDrawerScope doesn't itself arrange children vertically - without this
-                // explicit Column, all 3 items ended up rendering on top of each other (confirmed
-                // on-device: only one was ever visible or reachable, no matter which).
+                // NavigationDrawerScope doesn't arrange children vertically on its own - without
+                // this Column, all 3 items rendered on top of each other (confirmed on-device).
                 Column {
                     bottomTabs.forEachIndexed { index, tab ->
                         val onTabClick = { navigateToTab(navController, tab.route) }
                         NavigationDrawerItem(
                             selected = currentRoute == tab.route,
                             onClick = onTabClick,
-                            // Deliberately tv-material3's own Icon/Text here, NOT the
-                            // androidx.compose.material3 ones this file otherwise uses (see
-                            // PhoneNavShell below) - NavigationDrawerItem only ever adjusts ITS
-                            // OWN library's LocalContentColor for selected/focused/unselected
-                            // contrast. The compose-material3 versions read a completely
-                            // different, unrelated LocalContentColor, so they were silently
-                            // falling back to the app's outer theme's plain onSurface color
-                            // regardless of this item's actual state - the real cause of the
-                            // confirmed on-device dark-on-dark illegibility, independent of (and
-                            // in addition to) the ColorScheme mismatch fixed above.
+                            // Deliberately tv-material3's own Icon/Text, not compose-material3's
+                            // (see PhoneNavShell) - NavigationDrawerItem only adjusts its own
+                            // library's LocalContentColor for selected/focused state; the
+                            // compose-material3 versions read a different LocalContentColor and
+                            // silently fell back to a fixed colour, causing the dark-on-dark bug
+                            // independent of the ColorScheme mismatch fixed above.
                             leadingContent = {
                                 androidx.tv.material3.Icon(tab.icon, contentDescription = tab.label)
                             },
@@ -221,34 +192,24 @@ private fun navigateToTab(navController: NavHostController, route: String) {
 
 @Composable
 private fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
-    // Same root cause as the nav rail's own initial-focus request above, but for every OTHER
-    // screen (Brokers, Add/Edit Broker, Discover, etc.) that isn't one of the 3 rail
-    // destinations: confirmed on-device that without this, landing on a fresh screen left
-    // nothing focused at all, so D-pad input was completely inert there too - not just "won't
-    // scroll," genuinely unusable. Requests focus directly into the content area (via
-    // LocalTvContentFocusRequester - see its own comment) rather than
-    // focusManager.moveFocus(FocusDirection.Next), which used to do this: moveFocus() searches
-    // the WHOLE composition from "nothing focused," and confirmed on-device, that could land back
-    // on the rail's own Home item - the very first focusable node in the whole tree, since the
-    // rail is composed before the content - instead of anything on the screen just navigated to
-    // (e.g. tapping "Alarm/Alert" from Settings landed focus back on the Home rail icon, which
-    // then visibly expanded, rather than on the Alarm/Alert screen's own Back button).
-    // Skipped for the 3 rail destinations themselves, which already get a more deliberate initial
-    // focus (the Home rail item) from TvNavShell above - this effect would otherwise race that
-    // one and could steal focus back off the rail.
+    // Same issue as the rail's initial-focus fix above, for every non-tab screen: without this,
+    // landing on a fresh screen left nothing focused, making D-pad input completely inert
+    // (confirmed on-device). Focuses directly into the content area via LocalTvContentFocusRequester
+    // rather than moveFocus(Next), which searched from "nothing focused" and could land back on the
+    // rail's Home item instead (e.g. Settings -> Alarm/Alert landed focus back on Home).
+    // Skipped for the 3 rail destinations, which already get initial focus from TvNavShell -
+    // running this too would race that and could steal focus back off the rail.
     val isTv = LocalIsTv.current
     if (isTv) {
         val contentFocusRequester = LocalTvContentFocusRequester.current
         val backStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = backStackEntry?.destination?.route
         LaunchedEffect(backStackEntry?.id) {
-            // currentRoute != null is not redundant with the bottomTabs check below - on the very
-            // first composition, before NavHost has settled on its startDestination, this can
-            // briefly be null, which also isn't "one of the 3 tabs." Without this guard, that
-            // moment raced TvNavShell's own initial focus request (Home gets focus there first,
-            // this effect then immediately bumps it one step forward) - confirmed on-device as
-            // the cause of a real "Home is shown as selected, but the remote acts like Terminal
-            // has focus" report right after a cold start.
+            // currentRoute != null isn't redundant with the bottomTabs check below - on first
+            // composition, before NavHost settles on startDestination, route can briefly be null.
+            // Without this guard that raced TvNavShell's initial focus request, causing a
+            // confirmed cold-start bug: Home shown selected but the remote acting like Terminal
+            // had focus.
             if (currentRoute != null && bottomTabs.none { it.route == currentRoute }) {
                 contentFocusRequester?.requestFocus()
             }
@@ -271,10 +232,9 @@ private fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
         }
         composable("mqttBackup") { MqttBackupScreen(navController) }
         composable(
-            // "?focus={focus}" is an optional query segment - every existing "broker/$id"
-            // navigation call (without it) still matches this route unchanged. Lets a caller
-            // like HomeScreen's own Permit Join banner deep-link straight to that section of
-            // this screen instead of just landing at the top of a long scrolling form.
+            // "?focus={focus}" is optional - existing "broker/$id" calls still match unchanged.
+            // Lets a caller (e.g. HomeScreen's Permit Join banner) deep-link to a section of this
+            // screen instead of landing at the top of a long form.
             route = "broker/{brokerId}?focus={focus}",
             arguments = listOf(
                 navArgument("focus") {

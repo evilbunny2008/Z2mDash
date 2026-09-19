@@ -4,9 +4,8 @@ import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.put
 
 /**
- * Shared logic for the "Permit Join" toggle (AddEditBrokerScreen and HomeScreen's own
- * quick-access banner both read/write the same Zigbee2MQTT bridge topics) - kept in one
- * place so both call sites stay in sync with each other and with Zigbee2MQTT's own API shape.
+ * Shared logic for the "Permit Join" toggle, used by both AddEditBrokerScreen and HomeScreen's
+ * banner, so they stay in sync with each other and with Zigbee2MQTT's bridge topic API.
  */
 object PermitJoin {
 
@@ -20,15 +19,10 @@ object PermitJoin {
     data class Status(val isOn: Boolean, val remainingSeconds: Int)
 
     /**
-     * Reads current permit-join state from Zigbee2MQTT's own "bridge/info", not the one-shot
-     * "bridge/response/permit_join" acknowledgement - that response only ever reflects the
-     * single request it answered and never updates again afterwards, so a toggle driven by it
-     * alone would show a frozen "time" instead of one that actually counts down (or notices
-     * joining being closed/opened by another client, e.g. Zigbee2MQTT's own frontend).
-     * bridge/info is republished by the bridge whenever this state changes and carries a live
-     * "permit_join_end" timestamp for exactly this purpose - already epoch MILLISECONDS (it's
-     * `Date.now() + time*1000` straight from zigbee-herdsman, not epoch seconds despite what the
-     * Zigbee2MQTT docs' wording might suggest).
+     * Reads permit-join state from "bridge/info", not the one-shot "bridge/response/permit_join"
+     * ack (which never updates again, so a toggle driven by it would freeze and miss changes from
+     * other clients). bridge/info republishes on every change with a live "permit_join_end" -
+     * already epoch MILLISECONDS despite what the Zigbee2MQTT docs might suggest.
      */
     fun status(payloads: Map<String, String>, brokerId: String, baseTopic: String, nowMillis: Long): Status {
         val infoPayload = payloads["$brokerId|${infoTopic(baseTopic)}"] ?: return Status(false, 0)

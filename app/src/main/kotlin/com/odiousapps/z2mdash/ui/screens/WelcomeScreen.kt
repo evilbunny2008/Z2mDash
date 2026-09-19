@@ -34,10 +34,8 @@ import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
 
 /**
- * Shown instead of an empty Home screen when there are no brokers configured
- * yet - offers a fresh start (Add a Broker) or restoring a previously
- * exported config file (Settings -> Configuration Backup), rather than
- * assuming the person wants to start from scratch.
+ * Shown instead of an empty Home screen when there are no brokers configured yet - offers Add a
+ * Broker or restoring a previous backup, rather than assuming a fresh start.
  */
 @Composable
 fun WelcomeScreen(navController: NavController) {
@@ -55,9 +53,8 @@ fun WelcomeScreen(navController: NavController) {
                 context.contentResolver.openInputStream(it)?.use { input ->
                     val bytes = input.readBytes()
                     val text = bytes.toString(Charsets.UTF_8)
-                    // Same three formats SettingsScreen's import handles -
-                    // base64+gzip (current), raw gzip (a brief earlier
-                    // format), or plain JSON (oldest, pre-compression).
+                    // Same three formats SettingsScreen's import handles: base64+gzip (current),
+                    // raw gzip (earlier), or plain JSON (oldest, pre-compression).
                     val json = try {
                         BackupCodec.decompressFromBase64(text)
                     } catch (_: Exception) {

@@ -43,12 +43,8 @@ fun SettingsScreen(navController: NavController) {
     val config by app.configRepository.config.collectAsState()
     var showPruneConfirm by remember { mutableStateOf(false) }
     var pruneResultMessage by remember { mutableStateOf<String?>(null) }
-    // A panel left tagged with a brokerId that no longer matches any
-    // configured broker can never update again - most commonly left behind
-    // by deleting a broker before ConfigRepository.deleteBroker() cleaned
-    // this up itself (see that function's own comment), so re-adding the
-    // same broker afterwards doubled up every cluster instead of just
-    // reconnecting to the same one.
+    // A panel tagged with a brokerId that no longer exists can never update again - usually left
+    // behind when a broker is deleted (see ConfigRepository.deleteBroker()'s own comment).
     val orphanedPanelCount = remember(config) {
         val brokerIds = config.brokers.map { it.id }.toSet()
         config.groups.sumOf { g -> g.panels.count { it.brokerId !in brokerIds } }
@@ -97,13 +93,9 @@ fun SettingsScreen(navController: NavController) {
                                 "How wide tiles (and so cluster cards, 3 tiles wide) can grow, up to " +
                                     "filling the screen - currently ${config.tileWidthDp}dp"
                             )
-                            // TVs can go noticeably narrower than phones/tablets before it looks
-                            // cramped: there's no finger to size a touch target for, the tile
-                            // scaling this width now also drives (see HomeScreen's tileScale)
-                            // shrinks font/icon/height right along with it, and a big screen
-                            // viewed from further away can comfortably read smaller text anyway -
-                            // so more, smaller tiles fitting on screen at once is a net win there
-                            // in a way it wouldn't be on a phone.
+                            // TVs can go narrower before looking cramped: no touch target to size for,
+                            // tileScale (HomeScreen) shrinks font/icon with it, and text reads fine
+                            // smaller from a distance - so more, smaller tiles is a net win there.
                             val minTileWidthDp = if (LocalIsTv.current) 40f else 80f
                             Slider(
                                 value = config.tileWidthDp.toFloat(),

@@ -57,11 +57,9 @@ import java.util.UUID
 private const val NEW_GROUP_ID = "__new_group__"
 
 /**
- * Whether a discovered field should default to "use ideal range" ticked, when
- * its topic has a matching "<topic>/ideal" companion. Only pre-ticks the
- * field the range topic is actually meant for (moisture) - other numeric
- * fields on the same topic (temperature, battery, etc.) default unticked so
- * they don't end up permanently flashing against an unrelated min/max.
+ * Whether a field with a matching "<topic>/ideal" companion should default to
+ * "use ideal range" ticked. Only moisture defaults on, so other numeric fields on
+ * the same topic don't end up flashing against an unrelated min/max.
  */
 private fun defaultUsesIdealRange(fieldKey: String): Boolean =
     fieldKey.contains("moisture", ignoreCase = true)
@@ -96,9 +94,8 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
         allPayloads.filterKeys { it.startsWith(prefix) }.mapKeys { it.key.removePrefix(prefix) }
     }
     val discovered = remember(brokerPayloads) { SensorDiscovery.discoverSensors(brokerPayloads) }
-    // Devices already tracked as autoconfigured (for this broker) are hidden
-    // permanently - the DeviceAutoConfigManager background reconciler keeps
-    // them up to date on its own from here on, no need to revisit this screen.
+    // Already-autoconfigured devices stay hidden permanently - DeviceAutoConfigManager
+    // keeps them up to date in the background from here on.
     val visibleSensors = discovered.filterNot { sensor ->
         config.autoConfiguredDevices.any {
             it.brokerId == selectedBrokerId && it.appConfigTopic == sensor.appConfigTopic
@@ -124,10 +121,8 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
         return id
     }
 
-    // Shared by the per-device "Apply device config" button and the bulk
-    // "Auto-configure all found devices" button. Returns true if it actually
-    // applied something (false for topics with no valid /app config, so a bulk
-    // pass over every visible sensor can just skip those silently).
+    // Shared by the per-device and bulk "Auto-configure" buttons. Returns false for
+    // topics with no valid /app config, so a bulk pass can skip those silently.
     fun applyOneDevice(sensor: SensorDiscovery.DiscoveredSensor): Boolean {
         val appConfigTopic = sensor.appConfigTopic ?: return false
         val appConfigPayload = brokerPayloads[appConfigTopic] ?: return false

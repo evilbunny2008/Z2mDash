@@ -33,10 +33,8 @@ fun Z2mDashTheme(
         SideEffect {
             val window = (view.context as Activity).window
             val insetsController = WindowCompat.getInsetsController(window, view)
-            // Dark icons on a light status/nav bar for light theme, light icons
-            // for dark theme - this was never being set before, so the system
-            // bar icons defaulted to light/white and were invisible against
-            // this app's light theme background.
+            // Status/nav bar icons must contrast with the theme - previously unset, so they
+            // defaulted to light/white and were invisible against this app's light background.
             insetsController.isAppearanceLightStatusBars = !darkTheme
             insetsController.isAppearanceLightNavigationBars = !darkTheme
         }

@@ -7,13 +7,10 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.qrcode.QRCodeWriter
 
 /**
- * Returns null (rather than throwing) on any encoding failure - the
- * credential-share UI falls back to the plain-text code display in
- * that case, so a QR generation hiccup shouldn't block sharing entirely.
+ * Returns null (rather than throwing) on any encoding failure, so the credential-share UI can
+ * fall back to a plain-text code display instead of blocking sharing entirely.
  *
- * CPU-bound, not network I/O, but still worth calling from a background
- * dispatcher (Dispatchers.Default) rather than directly during
- * composition, to avoid any chance of jank on the main thread.
+ * CPU-bound - call from Dispatchers.Default rather than during composition to avoid jank.
  */
 fun generateQrCodeBitmap(content: String, sizePx: Int = 512): ImageBitmap? {
     return try {

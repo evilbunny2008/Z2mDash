@@ -88,21 +88,16 @@ fun TerminalScreen() {
         }
     }
 
-    // Chronological order (oldest first, newest last) - matches how
-    // MqttConnectionManager already stores the log (appends to the end), and
-    // lets new entries land at the bottom without disturbing anything above,
-    // unlike the earlier newest-first/prepend approach where every new
-    // message required fighting LazyColumn's own anchor-preservation just to
-    // stay visible.
+    // Chronological (oldest first) matches how MqttConnectionManager stores the log (appends to
+    // the end) and lets new entries land at the bottom without disturbing anchors above.
     val filtered = remember(messageLog, filterText, selectedBrokerId) {
         filterMessages(messageLog, filterText, selectedBrokerId)
     }
 
     val listState = rememberLazyListState()
 
-    // True only once the user genuinely drags the list themselves - not from
-    // any of this screen's own programmatic scrolling. Used both to decide
-    // whether to keep auto-following new messages, and to show the jump button.
+    // True only for a genuine user drag, not this screen's own programmatic scrolling. Drives
+    // both auto-follow and the jump button.
     var userScrolledAway by remember { mutableStateOf(false) }
     LaunchedEffect(listState) {
         listState.interactionSource.interactions.collect { interaction ->
@@ -112,13 +107,9 @@ fun TerminalScreen() {
         }
     }
 
-    // New entries append at the end - jump there whenever one arrives and the
-    // user hasn't scrolled away. Uses requestScrollToItem rather than
-    // suspend scrollToItem: it's synchronous (no coroutine needed at all, so
-    // there's nothing to race or cancel between this and the FAB's manual
-    // jump below) and explicitly resolves "at the next remeasure," which
-    // correctly handles a just-arrived item that hasn't been laid out yet
-    // instead of racing against it.
+    // Jump to the newest entry unless the user scrolled away. requestScrollToItem (not suspend
+    // scrollToItem) is synchronous and resolves at the next remeasure, so it isn't racing a
+    // just-arrived item that hasn't been laid out yet.
     LaunchedEffect(filtered) {
         if (!userScrolledAway && filtered.isNotEmpty()) {
             listState.requestScrollToItem(filtered.size - 1)

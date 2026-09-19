@@ -67,17 +67,13 @@ fun BackupRestoreScreen(navController: NavController) {
     var importScope by remember { mutableStateOf("Full") } // "Full" or "BrokersOnly"
     var encryptEnabled by remember { mutableStateOf(false) }
 
-    // Shown when the user taps Export with encryption enabled, before the
-    // file picker launches - exportPasswordText is the dialog's live input,
-    // pendingExportPassword is the confirmed value the exportLauncher
-    // callback below actually uses once the file destination is chosen.
+    // exportPasswordText is the dialog's live input; pendingExportPassword is the
+    // confirmed value the exportLauncher callback uses once a destination is chosen.
     var showExportPasswordDialog by remember { mutableStateOf(false) }
     var exportPasswordText by remember { mutableStateOf("") }
     var pendingExportPassword by remember { mutableStateOf<String?>(null) }
 
-    // Set once a picked file turns out to be encrypted - holds the raw file
-    // bytes until the user enters a password, since decryption (and the
-    // subsequent import) can't happen until then.
+    // Holds a picked file's raw bytes until the user enters a password to decrypt it.
     var pendingEncryptedBytes by remember { mutableStateOf<ByteArray?>(null) }
     var passwordDialogText by remember { mutableStateOf("") }
     var passwordDialogError by remember { mutableStateOf<String?>(null) }
@@ -104,10 +100,8 @@ fun BackupRestoreScreen(navController: NavController) {
             return
         }
         val text = bytes.toString(Charsets.UTF_8)
-        // Three formats this file could be, oldest first: plain JSON
-        // (pre-compression), raw gzip bytes (the brief .gz/.z2mbackup era),
-        // or base64-encoded gzip (current). Try newest-likeliest first so
-        // old backups still import fine either way.
+        // File may be plain JSON (pre-compression), raw gzip (brief .gz/.z2mbackup
+        // era), or base64 gzip (current) - try newest format first, fall back for old backups.
         val json = try {
             BackupCodec.decompressFromBase64(text)
         } catch (_: Exception) {
@@ -123,7 +117,7 @@ fun BackupRestoreScreen(navController: NavController) {
     val exportLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.CreateDocument("application/gzip")
     ) { uri: Uri? ->
-        uri?.let { it ->
+        uri?.let {
             val json = if (exportScope == "BrokersOnly") {
                 app.configRepository.exportBrokersOnlyJson()
             } else {
@@ -256,12 +250,9 @@ fun BackupRestoreScreen(navController: NavController) {
                         supportingContent = { Text("Restore from a previously exported backup file") },
                         leadingContent = { Icon(Icons.Default.Restore, contentDescription = null) },
                         modifier = Modifier.clickable {
-                            // "*/*" rather than filtering by MIME type - different
-                            // storage providers report gzip files inconsistently
-                            // (application/x-gzip vs application/gzip vs
-                            // octet-stream), which was silently hiding valid
-                            // backups from the picker. The app already validates
-                            // content itself regardless of what the OS reports.
+                            // "*/*" not a gzip MIME filter - storage providers report gzip
+                            // files inconsistently, which was hiding valid backups from the
+                            // picker. Content is validated ourselves regardless.
                             try {
                                 importLauncher.launch(arrayOf("*/*"))
                             } catch (_: ActivityNotFoundException) {
