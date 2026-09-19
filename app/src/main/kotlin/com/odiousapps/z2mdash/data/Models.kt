@@ -42,7 +42,6 @@ data class Broker(
 @Serializable
 enum class TileIcon { HUMIDITY, MOISTURE, TEMPERATURE, SIGNAL, POWER, GAUGE, BATTERY, LIGHT, PRESENCE }
 
-@Suppress("unused")
 @Serializable
 sealed class Panel {
     abstract val id: String

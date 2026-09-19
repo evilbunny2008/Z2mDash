@@ -305,7 +305,6 @@ object SensorDiscovery {
         return (groupOrder ?: 0) * 1000 + (within ?: fallbackWithin)
     }
 
-    @Suppress("unused")
     fun buildPanels(
         brokerId: String,
         sensorTopic: String,
