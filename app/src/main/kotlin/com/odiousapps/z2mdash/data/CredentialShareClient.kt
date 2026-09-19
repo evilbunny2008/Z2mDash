@@ -1,3 +1,5 @@
+@file:Suppress("unused", "RedundantSuppression")
+
 package com.odiousapps.z2mdash.data
 
 import kotlinx.serialization.json.Json
@@ -20,6 +22,7 @@ import java.nio.charset.StandardCharsets
  *
  * All functions here perform blocking network I/O - run off the main thread (Dispatchers.IO).
  */
+@Suppress("unused")
 object CredentialShareClient {
 
     // Same self-service site as MX3Launcher's TV-pairing flow, separate from any user's own home

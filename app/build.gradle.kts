@@ -1,4 +1,4 @@
-@file:Suppress("UnstableApiUsage")
+@file:Suppress("unused", "UnstableApiUsage", "RedundantSuppression")
 
 import com.android.build.api.artifact.SingleArtifact
 import org.gradle.api.DefaultTask

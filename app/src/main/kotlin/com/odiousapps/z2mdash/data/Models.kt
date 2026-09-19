@@ -55,6 +55,7 @@ sealed class Panel {
     abstract val displayOrder: Int
 
     @Serializable
+    @Suppress("unused", "RedundantSuppression")
     data class Sensor(
         override val id: String,
         override val label: String,
@@ -77,6 +78,7 @@ sealed class Panel {
     ) : Panel()
 
     @Serializable
+    @Suppress("unused", "RedundantSuppression")
     data class Toggle(
         override val id: String,
         override val label: String,
@@ -96,6 +98,7 @@ sealed class Panel {
     // A momentary action with no on/off state, e.g. "Stop" on a blind motor - unlike Toggle,
     // tapping it just sends payload to commandTopic every time.
     @Serializable
+    @Suppress("unused", "RedundantSuppression")
     data class Button(
         override val id: String,
         override val label: String,
