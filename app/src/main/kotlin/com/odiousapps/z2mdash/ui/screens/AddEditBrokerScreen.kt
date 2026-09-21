@@ -587,9 +587,8 @@ private fun protocolLabel(protocol: MqttProtocol): String = when (protocol) {
 
 /**
  * Applies a credential import's fields onto [current]. Every field but "Hostname" is optional,
- * falling back to [current] when missing/unparsable. Field names (PascalCase) mirror the Broker
- * properties they map to, matching mx3launcher.odiousapps.com/manage_credentials.php's "Key: Value"
- * format - keep in sync with that page and the website's README if names or shape change.
+ * falling back to [current] when missing/unparsable. Field names (PascalCase) match the
+ * "Key: Value" preset format from sync.odiousapps.com/manage_credentials.php.
  */
 private fun applyImportedFields(current: Broker, fields: Map<String, String>): Broker {
     val username = fields["Username"]

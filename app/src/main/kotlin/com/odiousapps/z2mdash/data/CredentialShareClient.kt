@@ -15,21 +15,19 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 /**
- * Client for MX3Launcher's generic credential relay in "pull" mode - this app has no credentials
- * of its own, so it asks to RECEIVE a broker's hostname/username/password via the same
- * short-code/QR/poll pattern MX3Launcher's own TV pairing uses (see its SoundbarPairing.kt). A
- * preset meant for this app must name its fields exactly "Hostname", "Username", "Password".
+ * Client for the shared credential relay's "pull" mode: requests a broker's hostname/username/
+ * password via a short-code/QR/poll exchange. A preset must name its fields exactly "Hostname",
+ * "Username", "Password".
  *
  * All functions here perform blocking network I/O - run off the main thread (Dispatchers.IO).
  */
 @Suppress("unused")
 object CredentialShareClient {
 
-    // Same self-service site as MX3Launcher's TV-pairing flow, separate from any user's own home
-    // server - broker credentials only ever touch it in transit through this short-lived exchange.
-    private const val START_URL = "https://mx3launcher.odiousapps.com/credential_start.php"
-    private const val STATUS_URL = "https://mx3launcher.odiousapps.com/credential_status.php"
-    private const val VIEW_URL_BASE = "https://mx3launcher.odiousapps.com/credential_view.php"
+    // Credentials only ever touch this relay in transit through this short-lived exchange.
+    private const val START_URL = "https://sync.odiousapps.com/credential_start.php"
+    private const val STATUS_URL = "https://sync.odiousapps.com/credential_status.php"
+    private const val VIEW_URL_BASE = "https://sync.odiousapps.com/credential_view.php"
 
     private const val APP_NAME = "Z2M Dash"
 

@@ -28,16 +28,15 @@ import com.odiousapps.z2mdash.data.CredentialShareClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import kotlin.time.Duration.Companion.milliseconds
 
 /**
- * Shows a code/QR to pull a broker's hostname/username/password from MX3Launcher's generic
- * credential relay (see CredentialShareClient) - the same "pull" flow MX3Launcher's own TV
- * pairing uses, letting the user send a saved preset from mx3launcher.odiousapps.com instead of
- * typing a password by hand or over voice/chat.
+ * Shows a code/QR to pull a broker's hostname/username/password from a saved sync.odiousapps.com
+ * preset, avoiding a hand-typed or voice/chat-dictated password.
  *
- * Starts the request on composition, then polls in the same coroutine until resolved or expired,
- * calling [onImported] with whatever fields came back (only "Hostname" is checked here - the
- * caller interprets the rest, e.g. AddEditBrokerScreen's "Username"/"Password"/"Protocol").
+ * Starts the request on composition, then polls until resolved or expired, calling [onImported]
+ * with whatever fields came back (only "Hostname" is checked here - the caller interprets the
+ * rest, e.g. AddEditBrokerScreen's "Username"/"Password"/"Protocol").
  */
 @Composable
 fun CredentialImportDialog(
@@ -53,7 +52,7 @@ fun CredentialImportDialog(
             CredentialShareClient.startImport(label = "New broker")
         }
         if (started == null) {
-            errorMessage = "Couldn't reach mx3launcher.odiousapps.com - check your connection and try again."
+            errorMessage = "Couldn't reach sync.odiousapps.com - check your connection and try again."
             return@LaunchedEffect
         }
         session = started
@@ -68,7 +67,7 @@ fun CredentialImportDialog(
             when (val polled = withContext(Dispatchers.IO) { CredentialShareClient.pollStatus(started.token) }) {
                 is CredentialShareClient.StatusResult.Resolved -> {
                     if (polled.fields["Hostname"].isNullOrBlank()) {
-                        errorMessage = "That preset didn't include a Hostname field - check it on mx3launcher.odiousapps.com and try again."
+                        errorMessage = "That preset didn't include a Hostname field - check it on sync.odiousapps.com and try again."
                     } else {
                         onImported(polled.fields)
                     }
@@ -112,7 +111,7 @@ fun CredentialImportDialog(
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "Scan this, or open mx3launcher.odiousapps.com/credential_view.php and enter the code, then pick a saved \"Z2M Dash\" credential to send.",
+                            "Scan this, or open sync.odiousapps.com/credential_view.php and enter the code, then pick a saved \"Z2M Dash\" credential to send.",
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center
                         )

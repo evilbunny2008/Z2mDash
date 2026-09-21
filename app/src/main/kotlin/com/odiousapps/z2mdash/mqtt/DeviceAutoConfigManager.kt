@@ -88,7 +88,7 @@ class DeviceAutoConfigManager(
             val updatedDevice = device.copy(
                 lastAppliedPayload = currentPayload,
                 createdPanelIds = newPanels.map { it.id },
-                lastKnownOrderVersion = if (adoptIncomingOrder) incomingOrderVersion!! else device.lastKnownOrderVersion
+                lastKnownOrderVersion = if (adoptIncomingOrder) incomingOrderVersion else device.lastKnownOrderVersion
             )
             configRepository.applyDeviceAutoConfig(
                 oldPanelIds = device.createdPanelIds.toSet(),
