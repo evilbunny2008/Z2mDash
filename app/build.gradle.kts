@@ -36,14 +36,14 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 20
-        versionName = "0.0.20"
+        versionCode = 21
+        versionName = "0.0.21"
     }
 
     buildTypes {
         release {
             optimization {
-                enable = true
+                enable = false
             }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

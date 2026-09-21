@@ -182,6 +182,10 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         }
                         if (isEditing) {
                             app.configRepository.updatePanel(groupId, panel)
+                            val oldClusterName = existing?.clusterName.orEmpty()
+                            if (oldClusterName.isNotBlank() && oldClusterName != clusterName) {
+                                app.configRepository.renameCluster(groupId, oldClusterName, clusterName)
+                            }
                         } else {
                             app.configRepository.addPanelToGroup(groupId, panel)
                             // Signal back to HomeScreen which group to scroll to - a newly-added

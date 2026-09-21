@@ -272,6 +272,22 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         })
     }
 
+    /** Renames a cluster: every panel in [groupId] named [oldClusterName] switches to [newClusterName]. */
+    fun renameCluster(groupId: String, oldClusterName: String, newClusterName: String) = update { cfg ->
+        if (oldClusterName.isBlank() || oldClusterName == newClusterName) return@update cfg
+        cfg.copy(groups = cfg.groups.map { g ->
+            if (g.id != groupId) return@map g
+            g.copy(panels = g.panels.map { panel ->
+                if (panel.clusterName != oldClusterName) return@map panel
+                when (panel) {
+                    is Panel.Sensor -> panel.copy(clusterName = newClusterName)
+                    is Panel.Toggle -> panel.copy(clusterName = newClusterName)
+                    is Panel.Button -> panel.copy(clusterName = newClusterName)
+                }
+            })
+        })
+    }
+
     fun removePanel(groupId: String, panelId: String) = update { cfg ->
         val updatedGroups = cfg.groups.map { g ->
             if (g.id == groupId) g.copy(panels = g.panels.filterNot { it.id == panelId }) else g
