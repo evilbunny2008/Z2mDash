@@ -1,0 +1,5 @@
+- Updated the credential sync/pairing service address to sync.odiousapps.com.
+- Editing a tile's cluster name now renames it for every tile that shared the old name, instead of just that one tile.
+- Fixed a crash when restoring a backup on the Google Play build.
+- Fixed brokers using WebSocket (ws/wss) getting stuck on "Connecting" on the Google Play build.
+- You can now long-press-drag a cluster's caption onto another group to move it there, not just reorder it within its own group.

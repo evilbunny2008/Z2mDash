@@ -1,0 +1,1 @@
+- Fixed auto-configured devices that declare the same sensor field twice (e.g. a shared reading shown once per outlet) getting their tiles merged together and unable to be independently drag-reordered.

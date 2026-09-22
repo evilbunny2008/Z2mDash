@@ -1,0 +1,1 @@
+- Fixed auto-configured toggle/button tiles that share a command topic (e.g. two outlets on the same device) also getting merged together and unable to be independently drag-reordered.

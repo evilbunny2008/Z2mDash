@@ -1,0 +1,1 @@
+- Renaming a cluster/tile label, or moving a cluster to a different group, now updates the owning device's retained "/app" message too (auto-configured devices only) - not just the local config, so the change survives the device's next config republish.
