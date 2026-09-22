@@ -61,10 +61,13 @@ class DeviceAutoConfigManager(
             )
             if (builtPanels.isEmpty()) return@forEach
 
-            val existingPanels = config.groups.asSequence()
+            val existingPanelsList = config.groups.asSequence()
                 .flatMap { it.panels }
                 .filter { it.id in device.createdPanelIds }
-                .associateBy(::identityKey)
+                .toList()
+            val existingKeys = identityKeys(existingPanelsList)
+            val existingPanels = existingPanelsList.associateBy { existingKeys.getValue(it) }
+            val builtKeys = identityKeys(builtPanels)
             // Only adopt the payload's order for an existing panel if its order_version is
             // strictly newer than what this phone last applied for the device - otherwise a
             // stale/retained redelivery (reconnect, or another phone not yet caught up) would
@@ -74,7 +77,7 @@ class DeviceAutoConfigManager(
             val incomingOrderVersion = deviceConfig.orderVersion
             val adoptIncomingOrder = incomingOrderVersion != null && incomingOrderVersion > device.lastKnownOrderVersion
             val newPanels = builtPanels.map { panel ->
-                val existing = existingPanels[identityKey(panel)] ?: return@map panel
+                val existing = existingPanels[builtKeys.getValue(panel)] ?: return@map panel
                 val displayOrder = if (adoptIncomingOrder) panel.displayOrder else existing.displayOrder
                 when (panel) {
                     is Panel.Sensor -> panel.copy(id = existing.id, displayOrder = displayOrder)
@@ -101,13 +104,30 @@ class DeviceAutoConfigManager(
 
     /**
      * Stable panel identity independent of its random UUID, so a freshly rebuilt panel
-     * (buildPanels always mints a new id) can be matched to its existing counterpart:
-     * sensors by field, controls by command topic.
+     * (buildPanels always mints a new id) can be matched to its existing counterpart: sensors by
+     * field, controls by command topic. A device can legitimately declare the same field twice
+     * (e.g. one shared "linkquality" value shown once per outlet on a dual-outlet device) - those
+     * would otherwise collide on field alone and get merged onto a single id by the caller, which
+     * is exactly what broke independent drag-reordering of two such tiles. So sensors also fold
+     * in "which occurrence of this field this is" (0-based, in list order) - stable as long as
+     * same-named fields keep the same order relative to each other between rebuilds, which this
+     * function is always called once per full list (both the existing panels and the freshly
+     * built ones) precisely so that ordering lines up.
      */
-    private fun identityKey(panel: Panel): String = when (panel) {
-        is Panel.Sensor -> "sensor|${panel.topic}|${panel.jsonPath}"
-        is Panel.Toggle -> "toggle|${panel.commandTopic}"
-        is Panel.Button -> "button|${panel.commandTopic}"
+    private fun identityKeys(panels: List<Panel>): Map<Panel, String> {
+        val seenCount = mutableMapOf<String, Int>()
+        return panels.associateWith { panel ->
+            when (panel) {
+                is Panel.Sensor -> {
+                    val base = "sensor|${panel.topic}|${panel.jsonPath}"
+                    val occurrence = seenCount.getOrDefault(base, 0)
+                    seenCount[base] = occurrence + 1
+                    "$base|$occurrence"
+                }
+                is Panel.Toggle -> "toggle|${panel.commandTopic}"
+                is Panel.Button -> "button|${panel.commandTopic}"
+            }
+        }
     }
 
     /** Scans every topic ending in "/app" for ones not yet tracked, pending, or dismissed. */
