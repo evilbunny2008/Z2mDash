@@ -82,6 +82,8 @@ import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
+import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
@@ -552,9 +554,19 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                         // Dropped onto a different group entirely (another
                                                                         // group's cluster, or its header) - move the whole
                                                                         // cluster there, appended to the end.
+                                                                        val liveGroups = app.configRepository.config.value.groups
+                                                                        val movedPanelIds = liveGroups.find { it.id == fromGroupId }
+                                                                            ?.panels?.filter { it.clusterName == fromClusterName }
+                                                                            ?.map { it.id } ?: emptyList()
+                                                                        val newGroupName = liveGroups.find { it.id == toGroupId }?.name
                                                                         app.configRepository.moveClusterToGroup(
                                                                             fromGroupId, toGroupId, fromClusterName
                                                                         )
+                                                                        if (newGroupName != null) {
+                                                                            pushGroupMoveForAutoConfiguredDevices(
+                                                                                app, movedPanelIds, newGroupName
+                                                                            )
+                                                                        }
                                                                     }
                                                                 }
                                                                 draggedClusterKey = null
@@ -614,8 +626,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             },
             confirmButton = {
                 TextButton(onClick = {
-                    if (renameText.isNotBlank()) {
+                    if (renameText.isNotBlank() && renameText != group.name) {
                         app.configRepository.upsertGroup(group.copy(name = renameText))
+                        pushGroupRenameForAutoConfiguredDevices(app, group.name, renameText)
                     }
                     renamingGroup = null
                 }) { Text("Save") }

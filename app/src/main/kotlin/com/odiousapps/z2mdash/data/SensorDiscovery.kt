@@ -175,6 +175,85 @@ object SensorDiscovery {
         null
     }
 
+    /**
+     * Rewrites a device's "/app" payload to reflect local edits made in the app - a field's or
+     * control's label/cluster override, the device's own "name" (which every field/control
+     * without its own cluster override falls back to as its cluster), and/or the shared "group"
+     * every cluster this payload describes belongs to. Fields/controls are matched by their
+     * stable identity (sensor field key; control by its command_topic, falling back to
+     * "<state_topic>/set" the same way parseControlConfig does), not by position, so passing a
+     * partial update leaves everything else - including keys this app doesn't recognise -
+     * untouched. Doesn't touch "order_version"; that's unrelated to these fields. Returns null if
+     * the payload isn't a JSON object.
+     */
+    fun updateDescriptionInAppPayload(
+        currentPayload: String,
+        fieldLabelUpdates: Map<String, String> = emptyMap(),
+        fieldClusterUpdates: Map<String, String> = emptyMap(),
+        controlLabelUpdates: Map<String, String> = emptyMap(),
+        controlClusterUpdates: Map<String, String> = emptyMap(),
+        newDeviceName: String? = null,
+        newGroup: String? = null
+    ): String? = try {
+        val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
+        if (obj == null) {
+            null
+        } else {
+            val mutableFields = obj.toMutableMap()
+
+            if (fieldLabelUpdates.isNotEmpty() || fieldClusterUpdates.isNotEmpty()) {
+                val fieldNames = (obj["panels"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+                if (fieldNames != null) {
+                    if (fieldLabelUpdates.isNotEmpty()) {
+                        val existing = (obj["labels"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+                        val updated = fieldNames.mapIndexed { i, field ->
+                            fieldLabelUpdates[field] ?: existing?.getOrNull(i) ?: ""
+                        }
+                        mutableFields["labels"] = JsonArray(updated.map { JsonPrimitive(it) })
+                    }
+                    if (fieldClusterUpdates.isNotEmpty()) {
+                        val existing = (obj["panel_clusters"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+                        val updated = fieldNames.mapIndexed { i, field ->
+                            fieldClusterUpdates[field] ?: existing?.getOrNull(i) ?: ""
+                        }
+                        mutableFields["panel_clusters"] = JsonArray(updated.map { JsonPrimitive(it) })
+                    }
+                }
+            }
+
+            if (controlLabelUpdates.isNotEmpty() || controlClusterUpdates.isNotEmpty()) {
+                val controlsArray = obj["controls"] as? JsonArray
+                if (controlsArray != null) {
+                    val updatedControls = controlsArray.map { element ->
+                        val controlObj = element as? JsonObject ?: return@map element
+                        val stateTopic = (controlObj["state_topic"] as? JsonPrimitive)?.contentOrNull
+                        val commandTopic = (controlObj["command_topic"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
+                            ?: stateTopic?.takeIf { it.isNotBlank() }?.let { "$it/set" }
+                            ?: return@map element
+                        val newLabel = controlLabelUpdates[commandTopic]
+                        val newCluster = controlClusterUpdates[commandTopic]
+                        if (newLabel == null && newCluster == null) {
+                            element
+                        } else {
+                            val updatedControl = controlObj.toMutableMap()
+                            newLabel?.let { updatedControl["label"] = JsonPrimitive(it) }
+                            newCluster?.let { updatedControl["cluster"] = JsonPrimitive(it) }
+                            JsonObject(updatedControl)
+                        }
+                    }
+                    mutableFields["controls"] = JsonArray(updatedControls)
+                }
+            }
+
+            newDeviceName?.let { mutableFields["name"] = JsonPrimitive(it) }
+            newGroup?.let { mutableFields["group"] = JsonPrimitive(it) }
+
+            Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
+        }
+    } catch (_: Exception) {
+        null
+    }
+
     /** Parses a "<topic>/app" payload into a DeviceAppConfig, or null if it doesn't look like one. */
     fun parseDeviceAppConfig(payload: String): DeviceAppConfig? = try {
         val obj = Json.parseToJsonElement(payload) as? JsonObject
