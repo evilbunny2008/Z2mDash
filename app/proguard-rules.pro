@@ -64,3 +64,32 @@
 # final package (that packaging.resources.excludes rule only applies to the
 # final packaging step, after R8 has already processed the merged resources).
 -dontwarn reactor.blockhound.integration.BlockHoundIntegration
+
+# Netty's ResourceLeakDetector.addExclusions() self-registers these exact methods by
+# their literal source name via reflection in each class's <clinit> - renaming them
+# makes that lookup throw IllegalArgumentException, crashing with ExceptionInInitializerError
+# the moment the MQTT/Netty transport is first used (e.g. on connect). Members only
+# need their names kept, not the whole class - they're already reachable normally.
+-keepclassmembernames class io.netty.buffer.AbstractByteBufAllocator {
+    *** toLeakAwareBuffer(...);
+}
+-keepclassmembernames class io.netty.buffer.AdvancedLeakAwareByteBuf {
+    *** touch(...);
+    *** recordLeakNonRefCountingOperation(...);
+}
+-keepclassmembernames class io.netty.util.ReferenceCountUtil {
+    *** touch(...);
+}
+
+# Netty's MessageToMessageEncoder/-Decoder and friends resolve their generic type parameter
+# (e.g. <I>) at runtime via TypeParameterMatcher, which walks the real class hierarchy's
+# generic signatures. R8's vertical class merging collapses concrete subclasses like
+# HttpRequestEncoder into their caller (observed as "R8$$REMOVED$$CLASS$$..." in the mapping
+# file), destroying that hierarchy and making the walk fail with
+# "IllegalStateException: unknown type parameter 'I'" the moment a WebSocket/HTTP-upgrade MQTT
+# connection is attempted (HiveMQ's own MQTT codec doesn't use Netty's generic base classes, so
+# plain TCP/SSL connections aren't at risk - only WS/WSS, which goes through Netty's own HTTP
+# upgrade handshake). "-optimizations !class/merging/*" is NOT honoured by this R8 version (still
+# merged with it present) - a keep on the whole package is what actually prevents it. Renaming
+# and removal of genuinely-unused members are still allowed, only merging is blocked.
+-keep,allowobfuscation,allowshrinking class io.netty.handler.codec.** { *; }

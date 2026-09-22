@@ -288,6 +288,31 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         })
     }
 
+    /** Moves every panel of [clusterName] from [fromGroupId] to the end of [toGroupId]. */
+    fun moveClusterToGroup(fromGroupId: String, toGroupId: String, clusterName: String) = update { cfg ->
+        if (fromGroupId == toGroupId || clusterName.isBlank()) return@update cfg
+        val fromGroup = cfg.groups.find { it.id == fromGroupId } ?: return@update cfg
+        val toGroup = cfg.groups.find { it.id == toGroupId } ?: return@update cfg
+        val moving = fromGroup.panels.filter { it.clusterName == clusterName }.sortedBy { it.displayOrder }
+        if (moving.isEmpty()) return@update cfg
+        val base = (toGroup.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
+        val relocated = moving.mapIndexed { index, panel ->
+            val newOrder = base + index
+            when (panel) {
+                is Panel.Sensor -> panel.copy(displayOrder = newOrder)
+                is Panel.Toggle -> panel.copy(displayOrder = newOrder)
+                is Panel.Button -> panel.copy(displayOrder = newOrder)
+            }
+        }
+        cfg.copy(groups = cfg.groups.map { g ->
+            when (g.id) {
+                fromGroupId -> g.copy(panels = g.panels.filterNot { it.clusterName == clusterName })
+                toGroupId -> g.copy(panels = g.panels + relocated)
+                else -> g
+            }
+        })
+    }
+
     fun removePanel(groupId: String, panelId: String) = update { cfg ->
         val updatedGroups = cfg.groups.map { g ->
             if (g.id == groupId) g.copy(panels = g.panels.filterNot { it.id == panelId }) else g

@@ -178,6 +178,25 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             ?.key
     }
 
+    // Cluster drag-to-move/reorder state, shared across *all* groups (only one cluster dragged
+    // at a time) - lets a cluster be dropped either onto another cluster in the same group
+    // (reorders it there, as before) or onto a cluster/header in a different group (moves the
+    // whole cluster there, appended to the end - drag again within that group to position it).
+    // Keys are "<groupId>::<clusterKey>", clusterKey being a clusterName or "__header__" for a
+    // group's own header (so an otherwise-empty group is still a valid drop target) - group-
+    // scoped rather than by clusterKey alone, since two different groups can share a cluster name.
+    var draggedClusterKey by remember { mutableStateOf<String?>(null) }
+    var draggedToClusterKey by remember { mutableStateOf<String?>(null) }
+    var totalClusterDragOffset by remember { mutableStateOf(Offset.Zero) }
+    val clusterCenters = remember { mutableStateMapOf<String, Offset>() }
+    fun computeNearestClusterKey(draggedKey: String): String? {
+        val draggedBaseline = clusterCenters[draggedKey] ?: Offset.Zero
+        val currentPosition = draggedBaseline + totalClusterDragOffset
+        return clusterCenters.entries
+            .minByOrNull { (_, center) -> (center - currentPosition).getDistance() }
+            ?.key
+    }
+
     // Both standalone panels and cluster-card panels lay out as an exact 3-column grid. Tile
     // width is capped rather than scaled proportionally to screen size, since a tablet's shorter
     // dimension is still much bigger than a phone's - an uncapped tile would leave no room for a
@@ -273,6 +292,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 val isDraggingThisGroup = draggedGroupId == group.id
                 val isDropTargetGroup = draggedGroupId != null && draggedGroupId != group.id &&
                     draggedToGroupId == group.id
+                val headerClusterKey = "${group.id}::__header__"
+                val isClusterDropTargetHeader = draggedClusterKey != null &&
+                    !draggedClusterKey!!.startsWith("${group.id}::") &&
+                    draggedToClusterKey == headerClusterKey
                 // Sticky so the group's name/controls stay reachable while scrolled deep into its
                 // clusters. Wrapped in an opaque Surface since stickyHeader only pins position -
                 // without an explicit background, content underneath would show through.
@@ -282,14 +305,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                         .onGloballyPositioned { coordinates ->
                             val topLeft = coordinates.positionInWindow()
-                            groupCenters[group.id] = Offset(
+                            val center = Offset(
                                 topLeft.x + coordinates.size.width / 2f,
                                 topLeft.y + coordinates.size.height / 2f
                             )
+                            groupCenters[group.id] = center
+                            // Also a valid drop point for a dragged cluster (see headerClusterKey
+                            // above) - lets a cluster be moved into an otherwise-empty group.
+                            clusterCenters[headerClusterKey] = center
                         }
                         .alpha(if (isDraggingThisGroup) 0.5f else 1f)
                         .then(
-                            if (isDropTargetGroup) {
+                            if (isDropTargetGroup || isClusterDropTargetHeader) {
                                 Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
                             } else {
                                 Modifier
@@ -382,35 +409,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             .map { bucket -> bucket.sortedBy { it.displayOrder } }
                             .sortedBy { bucket -> bucket.minOf { it.displayOrder } }
 
-                        // Cluster drag-to-reorder state, scoped to this group - only one cluster
-                        // draggable at a time, within its own group. Since clusters can sit side
-                        // by side in a packed row (unlike a fixed grid), "which cluster is the
-                        // drag over" is tracked via nearest-centre-point matching (onGloballyPositioned)
-                        // rather than a row/column index delta - this handles irregular,
-                        // width-based row-packing correctly whether the target is below or beside.
+                        // Cluster drag state (draggedClusterKey/clusterCenters/etc.) is declared
+                        // once, shared across all groups - see the comment above its declaration.
+                        // Since clusters can sit side by side in a packed row (unlike a fixed
+                        // grid), "which cluster is the drag over" is tracked via nearest-centre-
+                        // point matching (onGloballyPositioned) rather than a row/column index
+                        // delta - this handles irregular, width-based row-packing correctly
+                        // whether the target is below/beside/in another group entirely.
                         // Standalone tiles aren't individually draggable, but still participate
                         // in the underlying displayOrder sequence.
-                        var draggedClusterKey by remember(group.id) { mutableStateOf<String?>(null) }
-                        var draggedToClusterKey by remember(group.id) { mutableStateOf<String?>(null) }
-                        // Tracks only raw accumulated finger movement since drag start -
-                        // deliberately not combined with the dragged cluster's starting centre
-                        // up front. clusterCenters[key] is re-read fresh each onDrag call, so a
-                        // momentarily-stale centre at drag-start (relayout lagging a prior
-                        // reorder) self-corrects mid-drag instead of causing a sudden jump.
-                        var totalDragOffset by remember(group.id) { mutableStateOf(Offset.Zero) }
-                        val clusterCenters = remember(group.id) { mutableStateMapOf<String, Offset>() }
-                        // Shared by onDrag (live feedback) and onDragEnd (actual commit) -
-                        // onDragEnd recomputes this one final time with a fresh clusterCenters
-                        // read rather than trusting onDrag's last value, closing the timing gap
-                        // where a quick drag-and-release doesn't produce enough callbacks for a
-                        // still-settling entry to self-correct before release.
-                        fun computeNearestClusterKey(draggedKey: String): String? {
-                            val draggedBaseline = clusterCenters[draggedKey] ?: Offset.Zero
-                            val currentPosition = draggedBaseline + totalDragOffset
-                            return clusterCenters.entries
-                                .minByOrNull { (_, center) -> (center - currentPosition).getDistance() }
-                                ?.key
-                        }
 
                         // Manually pack clusters/tiles into rows rather than relying on FlowRow -
                         // computed against each item's known width so multiple clusters share a
@@ -467,6 +474,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     modifier = Modifier.width(standaloneTileWidth)
                                                 )
                                             } else {
+                                                val compoundKey = "${group.id}::$name"
                                                 ClusterCard(
                                                     name = name,
                                                     panels = panelsInCluster,
@@ -486,24 +494,24 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                             panelIds = panelsInCluster.map { it.id }
                                                         )
                                                     },
-                                                    isDraggingCluster = draggedClusterKey == name,
+                                                    isDraggingCluster = draggedClusterKey == compoundKey,
                                                     isClusterDropTarget = draggedClusterKey != null &&
-                                                        draggedClusterKey != name &&
-                                                        draggedToClusterKey == name,
+                                                        draggedClusterKey != compoundKey &&
+                                                        draggedToClusterKey == compoundKey,
                                                     modifier = Modifier.width(clusterCardWidth)
                                                         .onGloballyPositioned { coordinates ->
                                                         val topLeft = coordinates.positionInWindow()
-                                                        clusterCenters[name] = Offset(
+                                                        clusterCenters[compoundKey] = Offset(
                                                             topLeft.x + coordinates.size.width / 2f,
                                                             topLeft.y + coordinates.size.height / 2f
                                                         )
                                                     },
-                                                    captionRowModifier = Modifier.pointerInput(name) {
+                                                    captionRowModifier = Modifier.pointerInput(compoundKey) {
                                                         detectDragGesturesAfterLongPress(
                                                             onDragStart = {
-                                                                draggedClusterKey = name
-                                                                draggedToClusterKey = name
-                                                                totalDragOffset = Offset.Zero
+                                                                draggedClusterKey = compoundKey
+                                                                draggedToClusterKey = compoundKey
+                                                                totalClusterDragOffset = Offset.Zero
                                                             },
                                                             onDragEnd = {
                                                                 val fromKey = draggedClusterKey
@@ -511,29 +519,42 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                 // draggedToClusterKey's own comment above.
                                                                 val toKey = fromKey?.let { computeNearestClusterKey(it) }
                                                                 if (fromKey != null && toKey != null && fromKey != toKey) {
-                                                                    // Read fresh from the live config rather than closing
-                                                                    // over orderedClusters/group - this pointerInput block
-                                                                    // launches once per cluster card, so a captured value
-                                                                    // would go stale as later recompositions move on
-                                                                    // without it (same class of bug fixed for Terminal's
-                                                                    // message list).
-                                                                    val currentGroup = app.configRepository.config.value
-                                                                        .groups.find { it.id == group.id }
-                                                                    if (currentGroup != null) {
-                                                                        val panelsByClusterKey = currentGroup.panels
-                                                                            .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
-                                                                        val currentOrder = panelsByClusterKey.entries
-                                                                            .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
-                                                                            .map { (key, _) -> key }
-                                                                        val fromIndex = currentOrder.indexOf(fromKey)
-                                                                        val toIndex = currentOrder.indexOf(toKey)
-                                                                        if (fromIndex >= 0 && toIndex >= 0) {
-                                                                            val reordered = currentOrder.toMutableList()
-                                                                            reordered.removeAt(fromIndex)
-                                                                            reordered.add(toIndex, fromKey)
-                                                                            app.configRepository.reorderClustersInGroup(group.id, reordered)
-                                                                            pushGroupOrderUpdatesForClusters(app, reordered, currentGroup.panels)
+                                                                    val fromGroupId = fromKey.substringBefore("::")
+                                                                    val fromClusterName = fromKey.substringAfter("::")
+                                                                    val toGroupId = toKey.substringBefore("::")
+                                                                    val toClusterKey = toKey.substringAfter("::")
+                                                                    if (toGroupId == fromGroupId) {
+                                                                        // Read fresh from the live config rather than closing
+                                                                        // over orderedClusters/group - this pointerInput block
+                                                                        // launches once per cluster card, so a captured value
+                                                                        // would go stale as later recompositions move on
+                                                                        // without it (same class of bug fixed for Terminal's
+                                                                        // message list).
+                                                                        val currentGroup = app.configRepository.config.value
+                                                                            .groups.find { it.id == fromGroupId }
+                                                                        if (currentGroup != null) {
+                                                                            val panelsByClusterKey = currentGroup.panels
+                                                                                .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+                                                                            val currentOrder = panelsByClusterKey.entries
+                                                                                .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
+                                                                                .map { (key, _) -> key }
+                                                                            val fromIndex = currentOrder.indexOf(fromClusterName)
+                                                                            val toIndex = currentOrder.indexOf(toClusterKey)
+                                                                            if (fromIndex >= 0 && toIndex >= 0) {
+                                                                                val reordered = currentOrder.toMutableList()
+                                                                                reordered.removeAt(fromIndex)
+                                                                                reordered.add(toIndex, fromClusterName)
+                                                                                app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
+                                                                                pushGroupOrderUpdatesForClusters(app, reordered, currentGroup.panels)
+                                                                            }
                                                                         }
+                                                                    } else {
+                                                                        // Dropped onto a different group entirely (another
+                                                                        // group's cluster, or its header) - move the whole
+                                                                        // cluster there, appended to the end.
+                                                                        app.configRepository.moveClusterToGroup(
+                                                                            fromGroupId, toGroupId, fromClusterName
+                                                                        )
                                                                     }
                                                                 }
                                                                 draggedClusterKey = null
@@ -545,8 +566,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                             },
                                                             onDrag = { change, dragAmount ->
                                                                 change.consume()
-                                                                totalDragOffset += dragAmount
-                                                                draggedToClusterKey = computeNearestClusterKey(name)
+                                                                totalClusterDragOffset += dragAmount
+                                                                draggedToClusterKey = computeNearestClusterKey(compoundKey)
                                                             }
                                                         )
                                                     }
