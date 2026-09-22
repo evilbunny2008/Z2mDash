@@ -314,6 +314,65 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
+     * Clones the panels identified by [sourcePanelIds] into a new cluster named [newClusterName],
+     * appended after everything else already in [groupId]. When [topicReplacement] (old, new) is
+     * given, that exact substring is replaced in every clone's topic-like fields
+     * (Sensor.topic/idealRangeTopic, Toggle.commandTopic/stateTopic, Button.commandTopic) - lets a
+     * duplicate be retargeted at a different physical device/topic in one step instead of editing
+     * each tile individually afterward. The clone is always a plain, independent cluster (never
+     * auto-configured) even if the source was, since it has no device payload of its own to track.
+     */
+    fun duplicateCluster(
+        groupId: String,
+        sourcePanelIds: List<String>,
+        newClusterName: String,
+        topicReplacement: Pair<String, String>?
+    ) = update { cfg ->
+        if (newClusterName.isBlank()) return@update cfg
+        val group = cfg.groups.find { it.id == groupId } ?: return@update cfg
+        val sourcePanels = group.panels.filter { it.id in sourcePanelIds }.sortedBy { it.displayOrder }
+        if (sourcePanels.isEmpty()) return@update cfg
+
+        fun retopic(topic: String): String =
+            if (topicReplacement != null && topicReplacement.first.isNotEmpty()) {
+                topic.replace(topicReplacement.first, topicReplacement.second)
+            } else {
+                topic
+            }
+
+        val base = (group.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
+        val cloned = sourcePanels.mapIndexed { index, panel ->
+            val newId = java.util.UUID.randomUUID().toString()
+            val newOrder = base + index
+            when (panel) {
+                is Panel.Sensor -> panel.copy(
+                    id = newId,
+                    clusterName = newClusterName,
+                    displayOrder = newOrder,
+                    topic = retopic(panel.topic),
+                    idealRangeTopic = retopic(panel.idealRangeTopic)
+                )
+                is Panel.Toggle -> panel.copy(
+                    id = newId,
+                    clusterName = newClusterName,
+                    displayOrder = newOrder,
+                    commandTopic = retopic(panel.commandTopic),
+                    stateTopic = retopic(panel.stateTopic)
+                )
+                is Panel.Button -> panel.copy(
+                    id = newId,
+                    clusterName = newClusterName,
+                    displayOrder = newOrder,
+                    commandTopic = retopic(panel.commandTopic)
+                )
+            }
+        }
+        cfg.copy(groups = cfg.groups.map { g ->
+            if (g.id == groupId) g.copy(panels = g.panels + cloned) else g
+        })
+    }
+
+    /**
      * Pulls one panel out of whatever cluster it currently shares with siblings, giving it
      * [newClusterName] as its own - so it renders in its own titled card instead of being stuck
      * reordering only among the panels it was grouped with. Appended after every other panel in

@@ -25,6 +25,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -161,6 +162,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
     var pendingGroupDelete by remember { mutableStateOf<String?>(null) }
     var pendingClusterDelete by remember { mutableStateOf<PendingClusterDelete?>(null) }
+    var pendingClusterDuplicate by remember { mutableStateOf<PendingClusterDuplicate?>(null) }
+    var duplicateTopicText by remember { mutableStateOf("") }
+    var duplicateClusterNameText by remember { mutableStateOf("") }
     var renamingGroup by remember { mutableStateOf<PanelGroup?>(null) }
     var renameText by remember { mutableStateOf("") }
 
@@ -497,6 +501,17 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                             panelIds = panelsInCluster.map { it.id }
                                                         )
                                                     },
+                                                    onDuplicate = {
+                                                        val prefix = commonTopicPrefix(panelsInCluster)
+                                                        pendingClusterDuplicate = PendingClusterDuplicate(
+                                                            groupId = group.id,
+                                                            name = name,
+                                                            panelIds = panelsInCluster.map { it.id },
+                                                            originalTopicPrefix = prefix
+                                                        )
+                                                        duplicateClusterNameText = "$name copy"
+                                                        duplicateTopicText = prefix
+                                                    },
                                                     isDraggingCluster = draggedClusterKey == compoundKey,
                                                     isClusterDropTarget = draggedClusterKey != null &&
                                                         draggedClusterKey != compoundKey &&
@@ -654,9 +669,61 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             dismissButton = { TextButton(onClick = { pendingClusterDelete = null }) { Text("Cancel") } }
         )
     }
+
+    pendingClusterDuplicate?.let { pending ->
+        AlertDialog(
+            onDismissRequest = { pendingClusterDuplicate = null },
+            title = { Text("Duplicate \"${pending.name}\"") },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = duplicateTopicText,
+                        onValueChange = { duplicateTopicText = it },
+                        label = { Text("Topic") },
+                        singleLine = true
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = duplicateClusterNameText,
+                        onValueChange = { duplicateClusterNameText = it },
+                        label = { Text("Cluster name") },
+                        singleLine = true
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        app.configRepository.duplicateCluster(
+                            groupId = pending.groupId,
+                            sourcePanelIds = pending.panelIds,
+                            newClusterName = duplicateClusterNameText,
+                            topicReplacement = if (duplicateTopicText != pending.originalTopicPrefix) {
+                                pending.originalTopicPrefix to duplicateTopicText
+                            } else {
+                                null
+                            }
+                        )
+                        pendingClusterDuplicate = null
+                    },
+                    enabled = duplicateClusterNameText.isNotBlank()
+                ) { Text("Duplicate") }
+            },
+            dismissButton = { TextButton(onClick = { pendingClusterDuplicate = null }) { Text("Cancel") } }
+        )
+    }
 }
 
 private data class PendingClusterDelete(val groupId: String, val name: String, val panelIds: List<String>)
+
+private data class PendingClusterDuplicate(
+    val groupId: String,
+    val name: String,
+    val panelIds: List<String>,
+    // Captured once when the dialog opens - the substring duplicateTopicText's edits replace at
+    // confirm time. Kept separate from duplicateTopicText itself, which the user goes on to edit.
+    val originalTopicPrefix: String
+)
 
 /**
  * If this cluster belongs to an auto-configured device, publishes an updated retained "/app"
@@ -699,6 +766,37 @@ private fun pushOrderUpdateIfAutoConfigured(
     app.configRepository.markAutoConfiguredDevicePayloadApplied(
         device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
     )
+}
+
+/**
+ * Best-effort common prefix across [panels]' topic-like fields (Sensor.topic, Toggle.command/
+ * stateTopic, Button.commandTopic) - used to prefill the duplicate-cluster dialog's topic field,
+ * and as the substring its edits replace. Trimmed back to the last "/" only when the raw prefix
+ * stops mid-segment (some topic continues past it with a non-"/" character) - a clean, ordinary
+ * device topic like "zigbee2mqtt/Green Hose" (shared by a "…/Green Hose" sensor topic and a
+ * "…/Green Hose/set" command topic) is returned whole rather than chopped down to "zigbee2mqtt".
+ */
+private fun commonTopicPrefix(panels: List<Panel>): String {
+    val topics = panels.flatMap { panel ->
+        when (panel) {
+            is Panel.Sensor -> listOfNotNull(panel.topic.takeIf { it.isNotBlank() })
+            is Panel.Toggle -> listOfNotNull(
+                panel.commandTopic.takeIf { it.isNotBlank() },
+                panel.stateTopic.takeIf { it.isNotBlank() }
+            )
+            is Panel.Button -> listOfNotNull(panel.commandTopic.takeIf { it.isNotBlank() })
+        }
+    }
+    if (topics.isEmpty()) return ""
+    var prefix = topics.first()
+    for (topic in topics.drop(1)) {
+        prefix = prefix.commonPrefixWith(topic)
+        if (prefix.isEmpty()) return ""
+    }
+    val endsCleanly = topics.all { it.length == prefix.length || it.getOrNull(prefix.length) == '/' }
+    if (endsCleanly) return prefix
+    val lastSlash = prefix.lastIndexOf('/')
+    return if (lastSlash >= 0) prefix.substring(0, lastSlash) else prefix
 }
 
 /**
@@ -756,6 +854,7 @@ private fun ClusterCard(
     tileWidth: Dp,
     tileScale: Float,
     onDelete: () -> Unit,
+    onDuplicate: () -> Unit,
     // Cross-cluster drag-to-reorder state lives one level up (the group section sees every
     // cluster at once) and is threaded in here, same pattern as each panel tile's own modifier
     // supplied drag detector.
@@ -1030,6 +1129,13 @@ private fun ClusterCard(
                             modifier = Modifier.size(20.dp)
                         )
                     }
+                }
+                IconButton(onClick = onDuplicate, modifier = Modifier.size(28.dp)) {
+                    Icon(
+                        Icons.Default.ContentCopy,
+                        contentDescription = "Duplicate $name",
+                        modifier = Modifier.size(16.dp)
+                    )
                 }
                 IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
                     Icon(
