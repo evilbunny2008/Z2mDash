@@ -180,18 +180,20 @@ object SensorDiscovery {
      * control's label/cluster override, the device's own "name" (which every field/control
      * without its own cluster override falls back to as its cluster), and/or the shared "group"
      * every cluster this payload describes belongs to. Fields/controls are matched by their
-     * stable identity (sensor field key; control by its command_topic, falling back to
-     * "<state_topic>/set" the same way parseControlConfig does), not by position, so passing a
-     * partial update leaves everything else - including keys this app doesn't recognise -
-     * untouched. Doesn't touch "order_version"; that's unrelated to these fields. Returns null if
-     * the payload isn't a JSON object.
+     * index into "panels"/"controls" (not by field name/command_topic - either can legitimately
+     * repeat, e.g. one shared "linkquality" reading per outlet, or two outlets whose commands
+     * both go to the same "<state_topic>/set" - see sensorFieldIndex/controlIndex for resolving
+     * the right index for a given local panel), so passing a partial update leaves everything
+     * else - including keys this app doesn't recognise - untouched. Doesn't touch
+     * "order_version"; that's unrelated to these fields. Returns null if the payload isn't a JSON
+     * object.
      */
     fun updateDescriptionInAppPayload(
         currentPayload: String,
-        fieldLabelUpdates: Map<String, String> = emptyMap(),
-        fieldClusterUpdates: Map<String, String> = emptyMap(),
-        controlLabelUpdates: Map<String, String> = emptyMap(),
-        controlClusterUpdates: Map<String, String> = emptyMap(),
+        fieldLabelUpdates: Map<Int, String> = emptyMap(),
+        fieldClusterUpdates: Map<Int, String> = emptyMap(),
+        controlLabelUpdates: Map<Int, String> = emptyMap(),
+        controlClusterUpdates: Map<Int, String> = emptyMap(),
         newDeviceName: String? = null,
         newGroup: String? = null
     ): String? = try {
@@ -202,36 +204,26 @@ object SensorDiscovery {
             val mutableFields = obj.toMutableMap()
 
             if (fieldLabelUpdates.isNotEmpty() || fieldClusterUpdates.isNotEmpty()) {
-                val fieldNames = (obj["panels"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
-                if (fieldNames != null) {
-                    if (fieldLabelUpdates.isNotEmpty()) {
-                        val existing = (obj["labels"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
-                        val updated = fieldNames.mapIndexed { i, field ->
-                            fieldLabelUpdates[field] ?: existing?.getOrNull(i) ?: ""
-                        }
-                        mutableFields["labels"] = JsonArray(updated.map { JsonPrimitive(it) })
-                    }
-                    if (fieldClusterUpdates.isNotEmpty()) {
-                        val existing = (obj["panel_clusters"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
-                        val updated = fieldNames.mapIndexed { i, field ->
-                            fieldClusterUpdates[field] ?: existing?.getOrNull(i) ?: ""
-                        }
-                        mutableFields["panel_clusters"] = JsonArray(updated.map { JsonPrimitive(it) })
-                    }
+                val fieldCount = (obj["panels"] as? JsonArray)?.size ?: 0
+                if (fieldLabelUpdates.isNotEmpty()) {
+                    val existing = (obj["labels"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+                    val updated = (0 until fieldCount).map { i -> fieldLabelUpdates[i] ?: existing?.getOrNull(i) ?: "" }
+                    mutableFields["labels"] = JsonArray(updated.map { JsonPrimitive(it) })
+                }
+                if (fieldClusterUpdates.isNotEmpty()) {
+                    val existing = (obj["panel_clusters"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+                    val updated = (0 until fieldCount).map { i -> fieldClusterUpdates[i] ?: existing?.getOrNull(i) ?: "" }
+                    mutableFields["panel_clusters"] = JsonArray(updated.map { JsonPrimitive(it) })
                 }
             }
 
             if (controlLabelUpdates.isNotEmpty() || controlClusterUpdates.isNotEmpty()) {
                 val controlsArray = obj["controls"] as? JsonArray
                 if (controlsArray != null) {
-                    val updatedControls = controlsArray.map { element ->
-                        val controlObj = element as? JsonObject ?: return@map element
-                        val stateTopic = (controlObj["state_topic"] as? JsonPrimitive)?.contentOrNull
-                        val commandTopic = (controlObj["command_topic"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
-                            ?: stateTopic?.takeIf { it.isNotBlank() }?.let { "$it/set" }
-                            ?: return@map element
-                        val newLabel = controlLabelUpdates[commandTopic]
-                        val newCluster = controlClusterUpdates[commandTopic]
+                    val updatedControls = controlsArray.mapIndexed { i, element ->
+                        val controlObj = element as? JsonObject ?: return@mapIndexed element
+                        val newLabel = controlLabelUpdates[i]
+                        val newCluster = controlClusterUpdates[i]
                         if (newLabel == null && newCluster == null) {
                             element
                         } else {
@@ -252,6 +244,57 @@ object SensorDiscovery {
         }
     } catch (_: Exception) {
         null
+    }
+
+    /**
+     * Finds [target]'s index into [deviceConfig].panelFields, for use with
+     * updateDescriptionInAppPayload. A field name can appear more than once (e.g. one shared
+     * "linkquality" reading shown once per outlet) - resolved by matching [target]'s occurrence
+     * among same-field siblings within [orderedDevicePanels] (that device's own panels, in
+     * original declaration order - AutoConfiguredDevice.createdPanelIds already preserves this)
+     * to the same occurrence within panelFields. Returns null if not found.
+     */
+    fun sensorFieldIndex(deviceConfig: DeviceAppConfig, orderedDevicePanels: List<Panel>, target: Panel.Sensor): Int? {
+        var occurrence = 0
+        for (p in orderedDevicePanels) {
+            if (p is Panel.Sensor && p.jsonPath == target.jsonPath) {
+                if (p.id == target.id) break
+                occurrence++
+            }
+        }
+        var seen = 0
+        deviceConfig.panelFields.forEachIndexed { index, field ->
+            if (field == target.jsonPath) {
+                if (seen == occurrence) return index
+                seen++
+            }
+        }
+        return null
+    }
+
+    /** Same idea as sensorFieldIndex, but finds a Toggle/Button's index into [deviceConfig].controls, matched by command topic. */
+    fun controlIndex(deviceConfig: DeviceAppConfig, orderedDevicePanels: List<Panel>, target: Panel): Int? {
+        val targetCommandTopic = when (target) {
+            is Panel.Toggle -> target.commandTopic
+            is Panel.Button -> target.commandTopic
+            else -> return null
+        }
+        var occurrence = 0
+        for (p in orderedDevicePanels) {
+            val commandTopic = (p as? Panel.Toggle)?.commandTopic ?: (p as? Panel.Button)?.commandTopic
+            if (commandTopic == targetCommandTopic) {
+                if (p.id == target.id) break
+                occurrence++
+            }
+        }
+        var seen = 0
+        deviceConfig.controls.forEachIndexed { index, control ->
+            if (control.commandTopic == targetCommandTopic) {
+                if (seen == occurrence) return index
+                seen++
+            }
+        }
+        return null
     }
 
     /** Parses a "<topic>/app" payload into a DeviceAppConfig, or null if it doesn't look like one. */
