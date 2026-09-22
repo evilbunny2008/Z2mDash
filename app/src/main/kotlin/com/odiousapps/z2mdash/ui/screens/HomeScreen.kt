@@ -84,6 +84,7 @@ import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
+import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
 import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
@@ -818,6 +819,11 @@ private fun ClusterCard(
     var draggedPanelId by remember { mutableStateOf<String?>(null) }
     var draggedFromIndex by remember { mutableIntStateOf(-1) }
     var draggedToIndex by remember { mutableIntStateOf(-1) }
+    // True once the drag has moved past this cluster's own first/last tile - released there, the
+    // panel is pulled out into its own cluster (see movePanelToOwnCluster) instead of just being
+    // reordered among its current siblings. Lets a panel escape a shared card it was auto- or
+    // manually- clustered into, e.g. two unrelated relay outlets on the same physical device.
+    var draggedWillPopOut by remember { mutableStateOf(false) }
     var dragOffsetX by remember { mutableFloatStateOf(0f) }
     var dragOffsetY by remember { mutableFloatStateOf(0f) }
     var tileWidthPx by remember { mutableFloatStateOf(0f) }
@@ -858,12 +864,18 @@ private fun ClusterCard(
                         val isDropTarget = draggedPanelId != null &&
                             draggedPanelId != panel.id &&
                             panelIndex == draggedToIndex
+                        val isPoppingOut = isDragging && draggedWillPopOut
 
                         Box(
                             modifier = Modifier
                                 .width(tileWidth)
                                 .then(
-                                    if (isDropTarget) {
+                                    if (isPoppingOut) {
+                                        // Dashed-look substitute (Compose border has no dash param) -
+                                        // the error colour alone reads as "about to leave" against the
+                                        // steady primary-coloured within-cluster drop-target border.
+                                        Modifier.border(2.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(12.dp))
+                                    } else if (isDropTarget) {
                                         Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
                                     } else {
                                         Modifier
@@ -890,13 +902,23 @@ private fun ClusterCard(
                                                 draggedPanelId = panel.id
                                                 draggedFromIndex = panelIndex
                                                 draggedToIndex = panelIndex
+                                                draggedWillPopOut = false
                                                 dragOffsetX = 0f
                                                 dragOffsetY = 0f
                                             },
                                             onDragEnd = {
                                                 val fromIndex = draggedFromIndex
                                                 val toIndex = draggedToIndex
-                                                if (toIndex != fromIndex && fromIndex >= 0 && toIndex >= 0 && toIndex < panels.size) {
+                                                val willPopOut = draggedWillPopOut
+                                                if (willPopOut && panels.size > 1 && panel.label.isNotBlank()) {
+                                                    // Pulled past this cluster's own edge - give it its
+                                                    // own titled card instead of reordering it among the
+                                                    // siblings it's leaving. Pushed to the owning device's
+                                                    // payload too (when auto-configured), so a future
+                                                    // reconcile pass doesn't silently merge it back in.
+                                                    app.configRepository.movePanelToOwnCluster(groupId, panel.id, panel.label)
+                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label)
+                                                } else if (toIndex != fromIndex && fromIndex >= 0 && toIndex >= 0 && toIndex < panels.size) {
                                                     val targetPanelId = panels[toIndex].id
                                                     // Read fresh from the live config rather than the
                                                     // closure-captured `panels` list - this pointerInput
@@ -926,6 +948,7 @@ private fun ClusterCard(
                                                 draggedPanelId = null
                                                 draggedFromIndex = -1
                                                 draggedToIndex = -1
+                                                draggedWillPopOut = false
                                                 dragOffsetX = 0f
                                                 dragOffsetY = 0f
                                             },
@@ -933,6 +956,7 @@ private fun ClusterCard(
                                                 draggedPanelId = null
                                                 draggedFromIndex = -1
                                                 draggedToIndex = -1
+                                                draggedWillPopOut = false
                                                 dragOffsetX = 0f
                                                 dragOffsetY = 0f
                                             },
@@ -946,8 +970,9 @@ private fun ClusterCard(
                                                     val columnDelta = (dragOffsetX / w).roundToInt()
                                                     val rowDelta = (dragOffsetY / h).roundToInt()
                                                     val linearDelta = rowDelta * columns + columnDelta
-                                                    draggedToIndex = (draggedFromIndex + linearDelta)
-                                                        .coerceIn(0, panels.lastIndex)
+                                                    val rawIndex = draggedFromIndex + linearDelta
+                                                    draggedWillPopOut = rawIndex !in 0..panels.lastIndex
+                                                    draggedToIndex = if (draggedWillPopOut) -1 else rawIndex
                                                 }
                                             }
                                         )

@@ -313,6 +313,29 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         })
     }
 
+    /**
+     * Pulls one panel out of whatever cluster it currently shares with siblings, giving it
+     * [newClusterName] as its own - so it renders in its own titled card instead of being stuck
+     * reordering only among the panels it was grouped with. Appended after every other panel in
+     * the group (a fresh displayOrder past the current max), so it lands at the end rather than
+     * wherever its old cluster happened to sort.
+     */
+    fun movePanelToOwnCluster(groupId: String, panelId: String, newClusterName: String) = update { cfg ->
+        if (newClusterName.isBlank()) return@update cfg
+        cfg.copy(groups = cfg.groups.map { g ->
+            if (g.id != groupId) return@map g
+            val newOrder = (g.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
+            g.copy(panels = g.panels.map { panel ->
+                if (panel.id != panelId) return@map panel
+                when (panel) {
+                    is Panel.Sensor -> panel.copy(clusterName = newClusterName, displayOrder = newOrder)
+                    is Panel.Toggle -> panel.copy(clusterName = newClusterName, displayOrder = newOrder)
+                    is Panel.Button -> panel.copy(clusterName = newClusterName, displayOrder = newOrder)
+                }
+            })
+        })
+    }
+
     fun removePanel(groupId: String, panelId: String) = update { cfg ->
         val updatedGroups = cfg.groups.map { g ->
             if (g.id == groupId) g.copy(panels = g.panels.filterNot { it.id == panelId }) else g
