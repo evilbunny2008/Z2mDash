@@ -687,6 +687,7 @@ object SensorDiscovery {
         key.contains("contact", ignoreCase = true) -> TileIcon.CONTACT
         key.contains("lock", ignoreCase = true) -> TileIcon.LOCK
         key.contains("leak", ignoreCase = true) -> TileIcon.WATER_LEAK
+        key.contains("flow", ignoreCase = true) || key.contains("water_consumed", ignoreCase = true) -> TileIcon.TAP
         key.contains("smoke", ignoreCase = true) -> TileIcon.SMOKE
         key.contains("gas", ignoreCase = true) -> TileIcon.GAS
         key.contains("vibration", ignoreCase = true) || key.contains("tamper", ignoreCase = true) -> TileIcon.VIBRATION
@@ -711,6 +712,8 @@ object SensorDiscovery {
         key.contains("co2", ignoreCase = true) -> "ppm"
         key.contains("voltage", ignoreCase = true) -> "V"
         key.contains("current", ignoreCase = true) -> "A"
+        key.contains("flow", ignoreCase = true) -> "L/min"
+        key.contains("water_consumed", ignoreCase = true) -> "L"
         key == "power" -> "W"
         key.contains("energy", ignoreCase = true) -> "kWh"
         else -> ""

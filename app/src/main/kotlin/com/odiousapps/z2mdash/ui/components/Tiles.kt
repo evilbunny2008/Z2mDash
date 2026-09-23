@@ -44,6 +44,7 @@ import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Water
 import androidx.compose.material.icons.filled.WaterDamage
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Button
@@ -102,6 +103,7 @@ private fun iconFor(tileIcon: TileIcon): ImageVector = when (tileIcon) {
     TileIcon.ROUTER -> Icons.Default.Router
     TileIcon.VALVE -> Icons.Default.Plumbing
     TileIcon.DOORBELL -> Icons.Default.Doorbell
+    TileIcon.TAP -> Icons.Default.Water
 }
 
 @Composable
