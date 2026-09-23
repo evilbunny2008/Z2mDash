@@ -1,0 +1,1 @@
+- You can now drag a tile out of a shared cluster card into its own independent card, instead of only being able to reorder it among the tiles it's stuck sharing a card with.

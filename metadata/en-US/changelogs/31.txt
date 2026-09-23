@@ -1,0 +1,1 @@
+- Dragging a tile, cluster, or group now shows an "Undo" prompt at the bottom of the screen, in case the drag was accidental. How long it stays up is configurable in Settings (default 10s, 0 turns it off).

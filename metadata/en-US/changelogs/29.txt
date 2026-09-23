@@ -1,0 +1,1 @@
+- Added a duplicate button to cluster cards - clones every tile in the cluster into a new one, with a dialog to retarget the topic and rename the cluster in one step, instead of adding each tile again from scratch.
