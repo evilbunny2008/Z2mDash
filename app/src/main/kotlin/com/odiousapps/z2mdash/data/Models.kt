@@ -73,6 +73,12 @@ sealed class Panel {
         val idealRangeTopic: String = "",
         val idealMinPath: String = "min",
         val idealMaxPath: String = "max",
+        // When true, this tile's value isn't a live hardware reading but a fixed preference an
+        // automation script published (e.g. a soil moisture min/max threshold) - tapping it opens
+        // a number entry that republishes the new value, retained, to this same topic/jsonPath.
+        // Off by default: flipping it on for a genuine sensor reading would just get overwritten
+        // by the next real update, so it's an opt-in per panel via AddPanelScreen.
+        val editable: Boolean = false,
         override val clusterName: String = "",
         override val displayOrder: Int = Int.MAX_VALUE
     ) : Panel()

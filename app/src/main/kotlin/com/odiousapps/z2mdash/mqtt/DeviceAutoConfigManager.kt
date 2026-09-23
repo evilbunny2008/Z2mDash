@@ -80,7 +80,14 @@ class DeviceAutoConfigManager(
                 val existing = existingPanels[builtKeys.getValue(panel)] ?: return@map panel
                 val displayOrder = if (adoptIncomingOrder) panel.displayOrder else existing.displayOrder
                 when (panel) {
-                    is Panel.Sensor -> panel.copy(id = existing.id, displayOrder = displayOrder)
+                    // editable is a local-only UI preference (see Panel.Sensor's doc) with no
+                    // representation in the device's own payload - preserved the same way
+                    // displayOrder is, so a rebuilt panel doesn't silently lose it.
+                    is Panel.Sensor -> panel.copy(
+                        id = existing.id,
+                        displayOrder = displayOrder,
+                        editable = (existing as? Panel.Sensor)?.editable ?: false
+                    )
                     is Panel.Toggle -> panel.copy(id = existing.id, displayOrder = displayOrder)
                     is Panel.Button -> panel.copy(id = existing.id, displayOrder = displayOrder)
                 }

@@ -30,6 +30,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -39,6 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
@@ -109,6 +111,9 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
     var idealMaxPath by remember(existing) {
         mutableStateOf((existing as? Panel.Sensor)?.idealMaxPath ?: "max")
     }
+    var editableValue by remember(existing) {
+        mutableStateOf((existing as? Panel.Sensor)?.editable ?: false)
+    }
 
     // Toggle fields
     var commandTopic by remember(existing) {
@@ -154,6 +159,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 idealRangeTopic = idealRangeTopic,
                                 idealMinPath = idealMinPath,
                                 idealMaxPath = idealMaxPath,
+                                editable = editableValue,
                                 clusterName = clusterName,
                                 displayOrder = displayOrderValue,
                                 decimals = decimalsText.toIntOrNull() ?: 0
@@ -348,6 +354,23 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
+                        Spacer(Modifier.height(16.dp))
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text("Editable value")
+                                Text(
+                                    "Tapping this tile lets you type a new number, which republishes " +
+                                        "to this same topic/field (retained) - for a fixed preference " +
+                                        "an automation script reads (e.g. a moisture threshold), not a " +
+                                        "live hardware reading, which the next update would just overwrite.",
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                            Switch(checked = editableValue, onCheckedChange = { editableValue = it })
+                        }
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
                             value = idealRangeTopic,

@@ -53,4 +53,43 @@ object JsonPath {
     } catch (_: Exception) {
         null
     }
+
+    /**
+     * The write-side counterpart to [extract]: returns [currentPayload] with [newValue] set at
+     * [path] (creating any missing nested objects along the way), for republishing a fixed
+     * preference value (e.g. an editable Sensor tile's min/max) back to its topic. A blank path
+     * means the topic publishes a bare value rather than a JSON object, so [newValue] replaces it
+     * outright. [newValue] is stored as a JSON number when it parses as one, else as a string.
+     * [currentPayload] being null/blank/unparseable starts from an empty object rather than
+     * failing, so a field can be set even before the topic has ever published anything.
+     */
+    fun withValueAt(currentPayload: String?, path: String, newValue: String): String {
+        if (path.isBlank()) return newValue
+        val root = currentPayload?.takeIf { it.isNotBlank() }?.let {
+            try {
+                Json.parseToJsonElement(it) as? JsonObject
+            } catch (_: Exception) {
+                null
+            }
+        } ?: JsonObject(emptyMap())
+        // A whole number is written back without a trailing ".0" - JsonPrimitive(Double) always
+        // serialises with a decimal point, which would otherwise turn a clean "40" into "40.0"
+        // every time the value round-trips through this dialog.
+        val leaf: JsonElement = newValue.toDoubleOrNull()?.let { d ->
+            if (d == Math.floor(d) && !d.isInfinite()) JsonPrimitive(d.toLong()) else JsonPrimitive(d)
+        } ?: JsonPrimitive(newValue)
+        val segments = path.split(".")
+
+        fun setIn(obj: JsonObject, index: Int): JsonObject {
+            val key = segments[index]
+            val value = if (index == segments.lastIndex) {
+                leaf
+            } else {
+                setIn(obj[key] as? JsonObject ?: JsonObject(emptyMap()), index + 1)
+            }
+            return JsonObject(obj.toMutableMap().apply { put(key, value) })
+        }
+
+        return Json.encodeToString(JsonElement.serializer(), setIn(root, 0))
+    }
 }

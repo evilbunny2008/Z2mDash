@@ -6,6 +6,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -63,6 +64,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
@@ -165,6 +167,16 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var pendingClusterDuplicate by remember { mutableStateOf<PendingClusterDuplicate?>(null) }
     var duplicateTopicText by remember { mutableStateOf("") }
     var duplicateClusterNameText by remember { mutableStateOf("") }
+    var pendingValueEdit by remember { mutableStateOf<Panel.Sensor?>(null) }
+    var valueEditText by remember { mutableStateOf("") }
+    // Shared by every PanelTile (standalone or inside a ClusterCard) - reads the sensor's current
+    // raw value fresh rather than trusting any composed/cached display string, so the dialog
+    // prefills with what's actually retained right now.
+    val onEditSensorValue: (Panel.Sensor) -> Unit = { sensorPanel ->
+        val currentPayload = app.connectionManager.latestPayloads.value["${sensorPanel.brokerId}|${sensorPanel.topic}"]
+        valueEditText = currentPayload?.let { JsonPath.extract(it, sensorPanel.jsonPath) } ?: ""
+        pendingValueEdit = sensorPanel
+    }
     var renamingGroup by remember { mutableStateOf<PanelGroup?>(null) }
     var renameText by remember { mutableStateOf("") }
 
@@ -478,6 +490,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     app = app,
                                                     navController = navController,
                                                     tileScale = tileScale,
+                                                    onEditSensorValue = onEditSensorValue,
                                                     modifier = Modifier.width(standaloneTileWidth)
                                                 )
                                             } else {
@@ -494,6 +507,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     columns = columnsPerRow,
                                                     tileWidth = standaloneTileWidth,
                                                     tileScale = tileScale,
+                                                    onEditSensorValue = onEditSensorValue,
                                                     onDelete = {
                                                         pendingClusterDelete = PendingClusterDelete(
                                                             groupId = group.id,
@@ -712,6 +726,34 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             dismissButton = { TextButton(onClick = { pendingClusterDuplicate = null }) { Text("Cancel") } }
         )
     }
+
+    pendingValueEdit?.let { panel ->
+        AlertDialog(
+            onDismissRequest = { pendingValueEdit = null },
+            title = { Text("Edit \"${panel.label}\"") },
+            text = {
+                OutlinedTextField(
+                    value = valueEditText,
+                    onValueChange = { valueEditText = it },
+                    label = { Text("Value") },
+                    singleLine = true,
+                    keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val currentPayload = app.connectionManager.latestPayloads.value["${panel.brokerId}|${panel.topic}"]
+                        val updatedPayload = JsonPath.withValueAt(currentPayload, panel.jsonPath, valueEditText)
+                        app.connectionManager.publish(panel.brokerId, panel.topic, updatedPayload, retain = true)
+                        pendingValueEdit = null
+                    },
+                    enabled = valueEditText.isNotBlank()
+                ) { Text("Save") }
+            },
+            dismissButton = { TextButton(onClick = { pendingValueEdit = null }) { Text("Cancel") } }
+        )
+    }
 }
 
 private data class PendingClusterDelete(val groupId: String, val name: String, val panelIds: List<String>)
@@ -855,6 +897,7 @@ private fun ClusterCard(
     tileScale: Float,
     onDelete: () -> Unit,
     onDuplicate: () -> Unit,
+    onEditSensorValue: (Panel.Sensor) -> Unit,
     // Cross-cluster drag-to-reorder state lives one level up (the group section sees every
     // cluster at once) and is threaded in here, same pattern as each panel tile's own modifier
     // supplied drag detector.
@@ -988,6 +1031,7 @@ private fun ClusterCard(
                                 app = app,
                                 navController = navController,
                                 tileScale = tileScale,
+                                onEditSensorValue = onEditSensorValue,
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .alpha(if (isDragging) 0.5f else 1f)
@@ -1166,7 +1210,8 @@ private fun PanelTile(
     app: Z2mDashApplication,
     navController: NavController,
     modifier: Modifier = Modifier,
-    tileScale: Float = 1f
+    tileScale: Float = 1f,
+    onEditSensorValue: (Panel.Sensor) -> Unit = {}
 ) {
     val config by app.configRepository.config.collectAsState()
     when (panel) {
@@ -1222,7 +1267,9 @@ private fun PanelTile(
                 blinkEnabled = config.staleDataBlinkEnabled,
                 iconTint = if (derived.isPresenceField && derived.isPresent) MaterialTheme.colorScheme.primary else null,
                 scale = tileScale,
-                onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") }
+                onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") },
+                editable = panel.editable,
+                onEditValue = { onEditSensorValue(panel) }
             )
         }
 

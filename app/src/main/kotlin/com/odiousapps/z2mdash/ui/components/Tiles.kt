@@ -84,7 +84,13 @@ fun SensorTile(
     // icon, height and spacing together for TV's narrower tiles instead of keeping phone-sized
     // proportions in a smaller box.
     scale: Float = 1f,
-    onEdit: () -> Unit = {}
+    onEdit: () -> Unit = {},
+    // See Panel.Sensor's editable doc. When true, the icon becomes the config-edit affordance
+    // (matching ToggleTile/ButtonTile's own icon-is-edit convention) and the rest of the tile
+    // opens onEditValue instead - a plain (non-editable) tile is unaffected, keeping its whole
+    // Surface as the config-edit click target exactly as before.
+    editable: Boolean = false,
+    onEditValue: () -> Unit = {}
 ) {
     val flashingAlertColor = when (alert) {
         SensorAlert.BELOW_MIN -> AlertRed
@@ -115,7 +121,7 @@ fun SensorTile(
         modifier = modifier
             .heightIn(min = 120.dp * scale)
             .tvFocusIndicator()
-            .clickable(onClick = onEdit),
+            .clickable(onClick = if (editable) onEditValue else onEdit),
         shape = RoundedCornerShape(12.dp),
         color = backgroundColor,
         tonalElevation = if (flashingAlertColor != null || alert == SensorAlert.IN_RANGE) 0.dp else 1.dp
@@ -130,6 +136,7 @@ fun SensorTile(
                 contentDescription = null,
                 tint = iconTint ?: LocalContentColor.current,
                 modifier = Modifier.size(24.dp * scale)
+                    .then(if (editable) Modifier.clickable(onClick = onEdit) else Modifier)
             )
             Spacer(Modifier.height(8.dp * scale))
             Text(
