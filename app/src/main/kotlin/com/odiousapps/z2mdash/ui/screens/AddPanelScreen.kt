@@ -53,6 +53,7 @@ import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushClusterRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushLabelUpdateIfAutoConfigured
+import com.odiousapps.z2mdash.ui.components.iconFor
 import com.odiousapps.z2mdash.data.pushPanelDetailsIfAutoConfigured
 import com.odiousapps.z2mdash.data.pushPanelRemovalIfAutoConfigured
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
@@ -344,12 +345,17 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         value = icon.name,
                         onValueChange = {},
                         label = { Text("Icon") },
+                        leadingIcon = { Icon(iconFor(icon), contentDescription = null) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = iconExpanded) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                     )
                     ExposedDropdownMenu(expanded = iconExpanded, onDismissRequest = { iconExpanded = false }) {
-                        TileIcon.entries.forEach { ic ->
-                            DropdownMenuItem(text = { Text(ic.name) }, onClick = { icon = ic; iconExpanded = false })
+                        TileIcon.entries.sortedBy { it.name }.forEach { ic ->
+                            DropdownMenuItem(
+                                text = { Text(ic.name) },
+                                leadingIcon = { Icon(iconFor(ic), contentDescription = null) },
+                                onClick = { icon = ic; iconExpanded = false }
+                            )
                         }
                     }
                 }

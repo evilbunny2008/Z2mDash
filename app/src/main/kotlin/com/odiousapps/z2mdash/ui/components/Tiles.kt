@@ -41,6 +41,7 @@ import androidx.compose.material.icons.filled.SensorDoor
 import androidx.compose.material.icons.filled.SignalWifi4Bar
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Thermostat
+import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled.Warning
@@ -74,7 +75,9 @@ private val AlertRed = Color(0xFFE53935)
 private val AlertBlue = Color(0xFF1E88E5)
 private val AlertGreen = Color(0xFF43A047)
 
-private fun iconFor(tileIcon: TileIcon): ImageVector = when (tileIcon) {
+// Internal (not private) so pickers like AddPanelScreen's icon dropdown can render the same
+// glyph next to each TileIcon option instead of duplicating this mapping.
+internal fun iconFor(tileIcon: TileIcon): ImageVector = when (tileIcon) {
     TileIcon.HUMIDITY -> Icons.Default.WaterDrop
     TileIcon.MOISTURE -> Icons.Default.Opacity
     TileIcon.TEMPERATURE -> Icons.Default.Thermostat
@@ -104,6 +107,7 @@ private fun iconFor(tileIcon: TileIcon): ImageVector = when (tileIcon) {
     TileIcon.VALVE -> Icons.Default.Plumbing
     TileIcon.DOORBELL -> Icons.Default.Doorbell
     TileIcon.TAP -> Icons.Default.Water
+    TileIcon.COUNTDOWN -> Icons.Default.Timer
 }
 
 @Composable
