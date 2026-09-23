@@ -39,8 +39,14 @@ data class Broker(
     val permitJoinDevice: String = ""
 )
 
+// New entries only ever get appended - stored panels reference these by name (see PanelStore/
+// Backup), so reordering or renaming an existing entry would silently break saved configs.
 @Serializable
-enum class TileIcon { HUMIDITY, MOISTURE, TEMPERATURE, SIGNAL, POWER, GAUGE, BATTERY, LIGHT, PRESENCE }
+enum class TileIcon {
+    HUMIDITY, MOISTURE, TEMPERATURE, SIGNAL, POWER, GAUGE, BATTERY, LIGHT, PRESENCE,
+    CONTACT, LOCK, WATER_LEAK, SMOKE, GAS, VIBRATION, AIR_QUALITY, SIREN, WARNING,
+    BUTTON, OUTLET, ENERGY, COLOR, COVER, CLIMATE, FAN, ROUTER, VALVE, DOORBELL
+}
 
 @Serializable
 sealed class Panel {

@@ -684,6 +684,21 @@ object SensorDiscovery {
         key.contains("occupancy", ignoreCase = true) -> TileIcon.PRESENCE
         key.contains("presence", ignoreCase = true) -> TileIcon.PRESENCE
         key.contains("illuminance", ignoreCase = true) -> TileIcon.LIGHT
+        key.contains("contact", ignoreCase = true) -> TileIcon.CONTACT
+        key.contains("lock", ignoreCase = true) -> TileIcon.LOCK
+        key.contains("leak", ignoreCase = true) -> TileIcon.WATER_LEAK
+        key.contains("smoke", ignoreCase = true) -> TileIcon.SMOKE
+        key.contains("gas", ignoreCase = true) -> TileIcon.GAS
+        key.contains("vibration", ignoreCase = true) || key.contains("tamper", ignoreCase = true) -> TileIcon.VIBRATION
+        key.contains("co2", ignoreCase = true) || key.contains("voc", ignoreCase = true) ||
+            key.contains("pm25", ignoreCase = true) || key.contains("aqi", ignoreCase = true) -> TileIcon.AIR_QUALITY
+        key.contains("siren", ignoreCase = true) || key.contains("alarm", ignoreCase = true) ||
+            key.contains("warning", ignoreCase = true) -> TileIcon.SIREN
+        key.contains("action", ignoreCase = true) -> TileIcon.BUTTON
+        key.contains("energy", ignoreCase = true) || key.contains("current", ignoreCase = true) ||
+            key.contains("voltage", ignoreCase = true) || key == "power" -> TileIcon.ENERGY
+        key.contains("color", ignoreCase = true) -> TileIcon.COLOR
+        key.contains("position", ignoreCase = true) -> TileIcon.COVER
         else -> TileIcon.GAUGE
     }
 
@@ -693,6 +708,11 @@ object SensorDiscovery {
         key.contains("moisture", ignoreCase = true) -> "%"
         key.contains("battery", ignoreCase = true) -> "%"
         key.contains("illuminance", ignoreCase = true) -> "lx"
+        key.contains("co2", ignoreCase = true) -> "ppm"
+        key.contains("voltage", ignoreCase = true) -> "V"
+        key.contains("current", ignoreCase = true) -> "A"
+        key == "power" -> "W"
+        key.contains("energy", ignoreCase = true) -> "kWh"
         else -> ""
     }
 

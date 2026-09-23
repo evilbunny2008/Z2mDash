@@ -18,14 +18,33 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Air
 import androidx.compose.material.icons.filled.BatteryFull
+import androidx.compose.material.icons.filled.Blinds
+import androidx.compose.material.icons.filled.Bolt
+import androidx.compose.material.icons.filled.Co2
+import androidx.compose.material.icons.filled.DeviceThermostat
+import androidx.compose.material.icons.filled.Doorbell
+import androidx.compose.material.icons.filled.GasMeter
 import androidx.compose.material.icons.filled.Lightbulb
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LocalFireDepartment
+import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Opacity
+import androidx.compose.material.icons.filled.Outlet
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Plumbing
 import androidx.compose.material.icons.filled.Power
+import androidx.compose.material.icons.filled.Router
+import androidx.compose.material.icons.filled.SensorDoor
 import androidx.compose.material.icons.filled.SignalWifi4Bar
 import androidx.compose.material.icons.filled.Speed
 import androidx.compose.material.icons.filled.Thermostat
+import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material.icons.filled.Vibration
+import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.WaterDamage
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -64,6 +83,25 @@ private fun iconFor(tileIcon: TileIcon): ImageVector = when (tileIcon) {
     TileIcon.BATTERY -> Icons.Default.BatteryFull
     TileIcon.LIGHT -> Icons.Default.Lightbulb
     TileIcon.PRESENCE -> Icons.Default.Person
+    TileIcon.CONTACT -> Icons.Default.SensorDoor
+    TileIcon.LOCK -> Icons.Default.Lock
+    TileIcon.WATER_LEAK -> Icons.Default.WaterDamage
+    TileIcon.SMOKE -> Icons.Default.LocalFireDepartment
+    TileIcon.GAS -> Icons.Default.GasMeter
+    TileIcon.VIBRATION -> Icons.Default.Vibration
+    TileIcon.AIR_QUALITY -> Icons.Default.Co2
+    TileIcon.SIREN -> Icons.Default.NotificationsActive
+    TileIcon.WARNING -> Icons.Default.Warning
+    TileIcon.BUTTON -> Icons.Default.TouchApp
+    TileIcon.OUTLET -> Icons.Default.Outlet
+    TileIcon.ENERGY -> Icons.Default.Bolt
+    TileIcon.COLOR -> Icons.Default.Palette
+    TileIcon.COVER -> Icons.Default.Blinds
+    TileIcon.CLIMATE -> Icons.Default.DeviceThermostat
+    TileIcon.FAN -> Icons.Default.Air
+    TileIcon.ROUTER -> Icons.Default.Router
+    TileIcon.VALVE -> Icons.Default.Plumbing
+    TileIcon.DOORBELL -> Icons.Default.Doorbell
 }
 
 @Composable

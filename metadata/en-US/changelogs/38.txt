@@ -1,0 +1,2 @@
+- Added many more tile icons (door/window contact, lock, water leak, smoke, gas, vibration, air quality, siren, warning, button, outlet, energy, colour light, cover/blind, climate, fan, router, valve, doorbell) to better represent the wide range of Zigbee device types.
+- The Discover screen now auto-suggests a more fitting icon and unit for these device types when adding a panel.
