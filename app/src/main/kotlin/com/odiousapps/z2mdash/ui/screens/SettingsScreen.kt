@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Icon
@@ -109,6 +110,34 @@ fun SettingsScreen(navController: NavController) {
                         }
                     },
                     leadingContent = { Icon(Icons.Default.Straighten, contentDescription = null) }
+                )
+            }
+            item {
+                ListItem(
+                    headlineContent = { Text("Undo Toast Duration") },
+                    supportingContent = {
+                        Column(modifier = Modifier.fillMaxWidth()) {
+                            Text(
+                                if (config.undoToastSeconds == 0) {
+                                    "How long the \"Undo\" prompt stays up after dragging a tile, cluster, or " +
+                                        "group - currently off"
+                                } else {
+                                    "How long the \"Undo\" prompt stays up after dragging a tile, cluster, or " +
+                                        "group - currently ${config.undoToastSeconds}s"
+                                }
+                            )
+                            Slider(
+                                value = config.undoToastSeconds.toFloat(),
+                                onValueChange = { newValue ->
+                                    app.configRepository.update { it.copy(undoToastSeconds = newValue.toInt()) }
+                                },
+                                valueRange = 0f..30f,
+                                steps = 29, // 1s increments, 0 (off) through 30
+                                modifier = Modifier.horizontalSliderDpadFocusNav()
+                            )
+                        }
+                    },
+                    leadingContent = { Icon(Icons.AutoMirrored.Filled.Undo, contentDescription = null) }
                 )
             }
             item {

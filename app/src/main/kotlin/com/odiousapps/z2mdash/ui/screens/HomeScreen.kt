@@ -40,6 +40,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -57,6 +61,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -95,6 +100,8 @@ import com.odiousapps.z2mdash.ui.components.ToggleTile
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import java.util.UUID
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
@@ -180,6 +187,35 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var renamingGroup by remember { mutableStateOf<PanelGroup?>(null) }
     var renameText by remember { mutableStateOf("") }
 
+    // Undo prompt for an accidental tile/cluster/group drag. previousGroups is a full snapshot of
+    // config.groups taken right before the drag's own mutation, restored wholesale on Undo rather
+    // than trying to compute the inverse of each move - simpler, and correct for every move type
+    // (reorder, pop-out, cross-group) at once. [repushIfUndone] re-publishes whatever retained MQTT
+    // state the original move already pushed (e.g. an order_version or cluster override), using the
+    // pre-move values it closed over - without it, a later device reconcile could silently redo the
+    // very change Undo just reverted locally.
+    val snackbarHostState = remember { SnackbarHostState() }
+    val undoCoroutineScope = rememberCoroutineScope()
+    val showUndoSnackbar: (String, List<PanelGroup>, () -> Unit) -> Unit =
+        { message, previousGroups, repushIfUndone ->
+            val seconds = app.configRepository.config.value.undoToastSeconds
+            if (seconds > 0) {
+                undoCoroutineScope.launch {
+                    val result = withTimeoutOrNull(seconds * 1000L) {
+                        snackbarHostState.showSnackbar(
+                            message = message,
+                            actionLabel = "Undo",
+                            duration = SnackbarDuration.Indefinite
+                        )
+                    }
+                    if (result == SnackbarResult.ActionPerformed) {
+                        app.configRepository.update { it.copy(groups = previousGroups) }
+                        repushIfUndone()
+                    }
+                }
+            }
+        }
+
     // Group drag-to-reorder state, shared across all groups (only one dragged at a time). Groups
     // vary wildly in height (collapsed, cluster count), so a uniform row-height division won't
     // work - instead this uses the same position-based nearest-match approach as cluster
@@ -252,7 +288,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             FloatingActionButton(onClick = { navController.navigate("addGroup") }) {
                 Icon(Icons.Default.Add, contentDescription = "Add group")
             }
-        }
+        },
+        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         if (config.groups.isEmpty()) {
             Column(
@@ -368,10 +405,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                             // position to have self-corrected by release time.
                                             val toId = fromId?.let { computeNearestGroupKey(it) }
                                             if (fromId != null && toId != null && fromId != toId) {
-                                                val currentGroups = app.configRepository.config.value.groups
-                                                val toIndex = currentGroups.indexOfFirst { it.id == toId }
+                                                val previousGroups = app.configRepository.config.value.groups
+                                                val toIndex = previousGroups.indexOfFirst { it.id == toId }
                                                 if (toIndex >= 0) {
+                                                    val movedGroupName = previousGroups.find { it.id == fromId }?.name ?: "Group"
                                                     app.configRepository.moveGroupToIndex(fromId, toIndex + 1)
+                                                    showUndoSnackbar("Moved \"$movedGroupName\"", previousGroups) {}
                                                 }
                                             }
                                             draggedGroupId = null
@@ -508,6 +547,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     tileWidth = standaloneTileWidth,
                                                     tileScale = tileScale,
                                                     onEditSensorValue = onEditSensorValue,
+                                                    onUndoableMove = showUndoSnackbar,
                                                     onDelete = {
                                                         pendingClusterDelete = PendingClusterDelete(
                                                             groupId = group.id,
@@ -573,11 +613,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                             val fromIndex = currentOrder.indexOf(fromClusterName)
                                                                             val toIndex = currentOrder.indexOf(toClusterKey)
                                                                             if (fromIndex >= 0 && toIndex >= 0) {
+                                                                                val previousGroups = app.configRepository.config.value.groups
                                                                                 val reordered = currentOrder.toMutableList()
                                                                                 reordered.removeAt(fromIndex)
                                                                                 reordered.add(toIndex, fromClusterName)
                                                                                 app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
                                                                                 pushGroupOrderUpdatesForClusters(app, reordered, currentGroup.panels)
+                                                                                showUndoSnackbar("Moved \"$fromClusterName\"", previousGroups) {
+                                                                                    pushGroupOrderUpdatesForClusters(app, currentOrder, currentGroup.panels)
+                                                                                }
                                                                             }
                                                                         }
                                                                     } else {
@@ -588,6 +632,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                         val movedPanelIds = liveGroups.find { it.id == fromGroupId }
                                                                             ?.panels?.filter { it.clusterName == fromClusterName }
                                                                             ?.map { it.id } ?: emptyList()
+                                                                        val oldGroupName = liveGroups.find { it.id == fromGroupId }?.name
                                                                         val newGroupName = liveGroups.find { it.id == toGroupId }?.name
                                                                         app.configRepository.moveClusterToGroup(
                                                                             fromGroupId, toGroupId, fromClusterName
@@ -596,6 +641,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                             pushGroupMoveForAutoConfiguredDevices(
                                                                                 app, movedPanelIds, newGroupName
                                                                             )
+                                                                        }
+                                                                        showUndoSnackbar("Moved \"$fromClusterName\"", liveGroups) {
+                                                                            if (oldGroupName != null) {
+                                                                                pushGroupMoveForAutoConfiguredDevices(
+                                                                                    app, movedPanelIds, oldGroupName
+                                                                                )
+                                                                            }
                                                                         }
                                                                     }
                                                                 }
@@ -898,6 +950,9 @@ private fun ClusterCard(
     onDelete: () -> Unit,
     onDuplicate: () -> Unit,
     onEditSensorValue: (Panel.Sensor) -> Unit,
+    // See HomeScreen's own showUndoSnackbar doc - shows an "Undo" prompt for a within-cluster
+    // reorder or pop-out-to-own-cluster drag, both of which happen inside this composable.
+    onUndoableMove: (String, List<PanelGroup>, () -> Unit) -> Unit,
     // Cross-cluster drag-to-reorder state lives one level up (the group section sees every
     // cluster at once) and is threaded in here, same pattern as each panel tile's own modifier
     // supplied drag detector.
@@ -1059,8 +1114,12 @@ private fun ClusterCard(
                                                     // siblings it's leaving. Pushed to the owning device's
                                                     // payload too (when auto-configured), so a future
                                                     // reconcile pass doesn't silently merge it back in.
+                                                    val previousGroups = app.configRepository.config.value.groups
                                                     app.configRepository.movePanelToOwnCluster(groupId, panel.id, panel.label)
                                                     pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label)
+                                                    onUndoableMove("Moved \"${panel.label}\"", previousGroups) {
+                                                        pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.clusterName)
+                                                    }
                                                 } else if (toIndex != fromIndex && fromIndex >= 0 && toIndex >= 0 && toIndex < panels.size) {
                                                     val targetPanelId = panels[toIndex].id
                                                     // Read fresh from the live config rather than the
@@ -1079,12 +1138,18 @@ private fun ClusterCard(
                                                         val currentFromIndex = currentPanels.indexOfFirst { it.id == panel.id }
                                                         val currentToIndex = currentPanels.indexOfFirst { it.id == targetPanelId }
                                                         if (currentFromIndex >= 0 && currentToIndex >= 0 && currentFromIndex != currentToIndex) {
+                                                            val previousGroups = app.configRepository.config.value.groups
                                                             val reordered = currentPanels.toMutableList()
                                                             val moved = reordered.removeAt(currentFromIndex)
                                                             reordered.add(currentToIndex, moved)
                                                             val orderedIds = reordered.map { it.id }
                                                             app.configRepository.reorderPanelsInCluster(groupId, orderedIds)
                                                             pushOrderUpdateIfAutoConfigured(app, orderedIds, reordered)
+                                                            onUndoableMove("Moved \"${panel.label}\"", previousGroups) {
+                                                                pushOrderUpdateIfAutoConfigured(
+                                                                    app, currentPanels.map { it.id }, currentPanels
+                                                                )
+                                                            }
                                                         }
                                                     }
                                                 }

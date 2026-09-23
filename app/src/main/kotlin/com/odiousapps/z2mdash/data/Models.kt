@@ -189,5 +189,9 @@ data class AppConfig(
     val staleDataBlinkEnabled: Boolean = true,
     // Caps each tile's width on the Home screen; the smaller of this or the even-fill-at-3-per-row
     // width is used. 110 was this app's original hardcoded constant, kept as the default.
-    val tileWidthDp: Int = 110
+    val tileWidthDp: Int = 110,
+    // How long the "Tile moved" / "Cluster moved" / "Group moved" undo snackbar stays on screen
+    // after a drag-reorder, in seconds - long enough to catch an accidental drag without lingering
+    // forever. 0 disables the undo snackbar entirely.
+    val undoToastSeconds: Int = 10
 )
