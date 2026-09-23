@@ -71,6 +71,12 @@ android {
             excludes += "/META-INF/io.netty.versions.properties"
             excludes += "/META-INF/services/reactor.blockhound.integration.BlockHoundIntegration"
         }
+        jniLibs {
+            // androidx.graphics:graphics-path ships this prebuilt without an NDK strip tool
+            // available to match it, so the strip task can't touch it anyway - telling AGP to
+            // keep its debug symbols outright stops it from trying (and logging the warning).
+            keepDebugSymbols += "**/libandroidx.graphics.path.so"
+        }
     }
 }
 
