@@ -58,6 +58,139 @@ fun pushLabelUpdateIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
 }
 
 /**
+ * Pushes [panel]'s removal into its device's retained payload, if it's auto-configured - the
+ * delete counterpart to pushLabelUpdateIfAutoConfigured, and the fix for a deleted panel otherwise
+ * silently reappearing. Without this, deleting just one panel out of a multi-panel auto-configured
+ * device (e.g. a duplicated cluster with several fields/controls) leaves the device's retained
+ * "/app" payload still declaring the deleted field/control - so the very next time anything
+ * reconciles that device (even the echo of a later edit to a sibling panel), buildPanels silently
+ * recreates it as if it were brand new, undoing the delete. No-op for a manually-added panel.
+ *
+ * Must be called BEFORE the panel is actually removed from local config (e.g.
+ * ConfigRepository.removePanel) - it resolves [panel]'s index by matching it among the device's
+ * still-intact local panels (see sensorFieldIndex/controlIndex), which requires [panel] to still
+ * be present there.
+ */
+fun pushPanelRemovalIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
+    val device = deviceFor(app, panel.id) ?: return
+    val currentPayload = currentPayloadFor(app, device) ?: return
+    val deviceConfig = SensorDiscovery.parseDeviceAppConfig(currentPayload) ?: return
+    val orderedPanels = orderedPanelsOf(app, device)
+    val orderVersion = System.currentTimeMillis()
+    val updatedPayload = when (panel) {
+        is Panel.Sensor -> {
+            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel) ?: return
+            SensorDiscovery.removeSensorFieldFromAppPayload(currentPayload, index, orderVersion)
+        }
+        is Panel.Toggle, is Panel.Button -> {
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel) ?: return
+            SensorDiscovery.removeControlFromAppPayload(currentPayload, index, orderVersion)
+        }
+    } ?: return
+    publishAndMarkApplied(app, device, updatedPayload)
+    // Keeps createdPanelIds in sync too - without this, the device would still "own" a panel id
+    // that no longer exists in any group, which is exactly what let it reappear in the first
+    // place. A no-op if this was the device's last panel: the caller's own removePanel call
+    // already drops the whole tracking entry (and clears the retained topic) in that case.
+    app.configRepository.pruneAutoConfiguredDevicePanelId(device.brokerId, device.appConfigTopic, panel.id)
+}
+
+/** An update map for [index] when [oldValue] and [newValue] differ, else empty - used by pushPanelDetailsIfAutoConfigured to only push fields that actually changed. */
+private fun <T> diffMap(index: Int, oldValue: T, newValue: T): Map<Int, T> =
+    if (oldValue != newValue) mapOf(index to newValue) else emptyMap()
+
+/**
+ * Pushes every appearance/detail field that differs between [oldPanel] and [newPanel] into the
+ * owning device's retained payload, if it's auto-configured: unit, icon, decimals, and ideal-range
+ * topic/min-path/max-path for a Sensor; command topic, on/off payload, state topic/field, and icon
+ * for a Toggle; command topic, payload, and icon for a Button. Label and cluster name are pushed
+ * separately (pushLabelUpdateIfAutoConfigured, and the cluster-rename path in AddPanelScreen, since
+ * a cluster rename cascades to every panel sharing the old name, not just this one).
+ *
+ * Without this, editing any of these fields on an auto-configured panel (e.g. one of several tiles
+ * duplicated from a device's own published config) only changed local config.json - so the next
+ * time anything reconciled that device (even the echo of an unrelated sibling panel's own edit),
+ * buildPanels silently recomputed the field's suggested default from its raw name, discarding the
+ * edit. No-op for a manually-added panel, or when nothing covered here actually changed.
+ *
+ * Must be called with [newPanel] already reflecting what's live in local config (i.e. after
+ * ConfigRepository.updatePanel) - it resolves the panel's index by matching [newPanel]'s id among
+ * the device's current local panels, same as pushLabelUpdateIfAutoConfigured.
+ */
+fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, newPanel: Panel) {
+    val device = deviceFor(app, newPanel.id) ?: return
+    val currentPayload = currentPayloadFor(app, device) ?: return
+    val deviceConfig = SensorDiscovery.parseDeviceAppConfig(currentPayload) ?: return
+    val orderedPanels = orderedPanelsOf(app, device)
+
+    val updatedPayload = when (newPanel) {
+        is Panel.Sensor -> {
+            val old = oldPanel as? Panel.Sensor ?: return
+            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, newPanel) ?: return
+            val unitUpdate = diffMap(index, old.unit, newPanel.unit)
+            val iconUpdate = diffMap(index, old.icon.name, newPanel.icon.name)
+            val decimalUpdate = diffMap(index, old.decimals, newPanel.decimals)
+            val idealTopicUpdate = diffMap(index, old.idealRangeTopic, newPanel.idealRangeTopic)
+            val idealMinUpdate = diffMap(index, old.idealMinPath, newPanel.idealMinPath)
+            val idealMaxUpdate = diffMap(index, old.idealMaxPath, newPanel.idealMaxPath)
+            if (unitUpdate.isEmpty() && iconUpdate.isEmpty() && decimalUpdate.isEmpty() &&
+                idealTopicUpdate.isEmpty() && idealMinUpdate.isEmpty() && idealMaxUpdate.isEmpty()
+            ) {
+                return
+            }
+            SensorDiscovery.updateDescriptionInAppPayload(
+                currentPayload,
+                fieldUnitUpdates = unitUpdate,
+                fieldIconUpdates = iconUpdate,
+                fieldDecimalUpdates = decimalUpdate,
+                fieldIdealTopicUpdates = idealTopicUpdate,
+                fieldIdealMinPathUpdates = idealMinUpdate,
+                fieldIdealMaxPathUpdates = idealMaxUpdate
+            )
+        }
+        is Panel.Toggle -> {
+            val old = oldPanel as? Panel.Toggle ?: return
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, newPanel) ?: return
+            val commandTopicUpdate = diffMap(index, old.commandTopic, newPanel.commandTopic)
+            val onPayloadUpdate = diffMap(index, old.onPayload, newPanel.onPayload)
+            val offPayloadUpdate = diffMap(index, old.offPayload, newPanel.offPayload)
+            val stateTopicUpdate = diffMap(index, old.stateTopic, newPanel.stateTopic)
+            val stateFieldUpdate = diffMap(index, old.stateJsonPath, newPanel.stateJsonPath)
+            val iconUpdate = diffMap(index, old.icon.name, newPanel.icon.name)
+            if (commandTopicUpdate.isEmpty() && onPayloadUpdate.isEmpty() && offPayloadUpdate.isEmpty() &&
+                stateTopicUpdate.isEmpty() && stateFieldUpdate.isEmpty() && iconUpdate.isEmpty()
+            ) {
+                return
+            }
+            SensorDiscovery.updateDescriptionInAppPayload(
+                currentPayload,
+                controlCommandTopicUpdates = commandTopicUpdate,
+                controlOnPayloadUpdates = onPayloadUpdate,
+                controlOffPayloadUpdates = offPayloadUpdate,
+                controlStateTopicUpdates = stateTopicUpdate,
+                controlStateFieldUpdates = stateFieldUpdate,
+                controlIconUpdates = iconUpdate
+            )
+        }
+        is Panel.Button -> {
+            val old = oldPanel as? Panel.Button ?: return
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, newPanel) ?: return
+            val commandTopicUpdate = diffMap(index, old.commandTopic, newPanel.commandTopic)
+            val payloadUpdate = diffMap(index, old.payload, newPanel.payload)
+            val iconUpdate = diffMap(index, old.icon.name, newPanel.icon.name)
+            if (commandTopicUpdate.isEmpty() && payloadUpdate.isEmpty() && iconUpdate.isEmpty()) return
+            SensorDiscovery.updateDescriptionInAppPayload(
+                currentPayload,
+                controlCommandTopicUpdates = commandTopicUpdate,
+                controlOnPayloadUpdates = payloadUpdate,
+                controlIconUpdates = iconUpdate
+            )
+        }
+    } ?: return
+    publishAndMarkApplied(app, device, updatedPayload)
+}
+
+/**
  * Pushes a single panel's own cluster override into its device's retained payload, if it's
  * auto-configured - the counterpart to ConfigRepository.movePanelToOwnCluster (dragging a panel
  * out of a shared cluster into its own). Without this, the next reconciliation pass (any future

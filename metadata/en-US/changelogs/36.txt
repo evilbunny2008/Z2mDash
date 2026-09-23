@@ -1,0 +1,1 @@
+- Fixed several other panel edits (unit, icon, decimal places, ideal-range topic, and for toggles/buttons: command topic, on/off payload, state topic) on an auto-published device's panel silently reverting the next time that device's config gets reconciled - these are now saved into its "/app" config too, the same as label and cluster already were.

@@ -549,6 +549,25 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
             cfg.copy(autoConfiguredDevices = updatedDevices)
         }
 
+    /**
+     * Drops [panelId] from the tracking entry for the auto-configured device at (brokerId,
+     * appConfigTopic), if present - keeps AutoConfiguredDevice.createdPanelIds in sync when the
+     * user deletes just one of a multi-panel device's fields/controls (see
+     * AutoConfigPush.pushPanelRemovalIfAutoConfigured). Leaves the device's other panels/tracking
+     * untouched; if that was the device's last panel, the caller's own removePanel/removePanels
+     * call already drops the whole tracking entry separately.
+     */
+    fun pruneAutoConfiguredDevicePanelId(brokerId: String, appConfigTopic: String, panelId: String) = update { cfg ->
+        val updatedDevices = cfg.autoConfiguredDevices.map { device ->
+            if (device.brokerId == brokerId && device.appConfigTopic == appConfigTopic) {
+                device.copy(createdPanelIds = device.createdPanelIds - panelId)
+            } else {
+                device
+            }
+        }
+        cfg.copy(autoConfiguredDevices = updatedDevices)
+    }
+
     /** Adds a newly-seen "<topic>/app" to the pending list, if not already there. */
     fun addPendingAutoConfigDevice(device: PendingAutoConfigDevice) = update { cfg ->
         val exists = cfg.pendingAutoConfigDevices.any {

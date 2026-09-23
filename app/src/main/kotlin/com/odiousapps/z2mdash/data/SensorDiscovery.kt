@@ -70,6 +70,17 @@ object SensorDiscovery {
         // Optional, parallel to panelFields - decimal places for the displayed value, else
         // Panel.Sensor's default (1).
         val panelDecimals: List<Int?> = emptyList(),
+        // Optional, parallel to panelFields - unit override, else suggestedUnit(field).
+        val panelUnits: List<String> = emptyList(),
+        // Optional, parallel to panelFields - icon override (TileIcon name, case-insensitive),
+        // else suggestedIcon(field).
+        val panelIcons: List<String> = emptyList(),
+        // Optional, parallel to panelFields - ideal-range topic/min-path/max-path overrides, each
+        // taking priority over the auto-derived default (this device's own appConfigTopic, when a
+        // matching "<x>_min"/"<x>_max" pair is found in rangePairs) independently of one another.
+        val panelIdealTopics: List<String> = emptyList(),
+        val panelIdealMinPaths: List<String> = emptyList(),
+        val panelIdealMaxPaths: List<String> = emptyList(),
         // Optional. Toggle/command panels (blinds, plugs, etc.) declared alongside the sensors.
         val controls: List<ControlConfig> = emptyList(),
         // Optional epoch-millis stamp of when ordering was last set (written by the app on a
@@ -95,7 +106,11 @@ object SensorDiscovery {
         val order: Int? = null,
         // True when the config omits "off_payload" entirely (a single-press button with no
         // on/off state, e.g. a blind motor's STOP) - built as Panel.Button instead of Panel.Toggle.
-        val momentary: Boolean = false
+        val momentary: Boolean = false,
+        // Optional. Overrides Panel.Toggle/Button's icon (TileIcon name, case-insensitive), else
+        // the hardcoded TileIcon.POWER default - unlike a Sensor's icon, a control's icon has no
+        // field name to derive a suggestion from.
+        val icon: String? = null
     )
 
     // Structural topics, not sensor data - skipped even if they contain a stray number
@@ -207,16 +222,76 @@ object SensorDiscovery {
         null
     }
 
+    // Every parallel array that describes one entry per "panels" field - kept in one place so
+    // removeSensorFieldFromAppPayload strips the same index from all of them, including any added
+    // later, without a matching addition being forgotten there.
+    private val sensorFieldParallelArrayKeys = listOf(
+        "labels", "panel_clusters", "panel_order", "panel_decimals",
+        "panel_units", "panel_icons", "panel_ideal_topics", "panel_ideal_min_paths", "panel_ideal_max_paths"
+    )
+
+    /**
+     * Rewrites a device's "/app" payload with the sensor field at [fieldIndex] (into "panels")
+     * removed, along with the same index from every parallel array that describes it (see
+     * sensorFieldParallelArrayKeys) so they stay aligned, plus "order_version" stamped. Used when
+     * the user deletes a single panel that came from this device's own declared field list:
+     * without this, the retained payload keeps declaring a field this phone (and any other phone
+     * sharing the broker) no longer shows a tile for, so the next time anything reconciles this
+     * device - even just the echo of a sibling panel's own next edit - buildPanels silently
+     * recreates the deleted field as a brand-new panel, undoing the delete. Returns null if the
+     * payload isn't a JSON object, has no "panels" array, or [fieldIndex] is out of range.
+     */
+    fun removeSensorFieldFromAppPayload(currentPayload: String, fieldIndex: Int, orderVersion: Long): String? = try {
+        val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
+        val panelsArray = obj?.get("panels") as? JsonArray
+        if (obj == null || panelsArray == null || fieldIndex !in panelsArray.indices) {
+            null
+        } else {
+            fun JsonArray.withoutIndex() = JsonArray(filterIndexed { i, _ -> i != fieldIndex })
+            val mutableFields = obj.toMutableMap()
+            mutableFields["panels"] = panelsArray.withoutIndex()
+            sensorFieldParallelArrayKeys.forEach { key ->
+                (obj[key] as? JsonArray)?.let { mutableFields[key] = it.withoutIndex() }
+            }
+            mutableFields["order_version"] = JsonPrimitive(orderVersion)
+            Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
+        }
+    } catch (_: Exception) {
+        null
+    }
+
+    /**
+     * Rewrites a device's "/app" payload with the control at [controlIndex] (into "controls")
+     * removed, and "order_version" stamped - the controls counterpart to
+     * removeSensorFieldFromAppPayload, for the same reason (a deleted Toggle/Button panel must
+     * stop being declared, or a later reconcile would recreate it). Returns null if the payload
+     * isn't a JSON object, has no "controls" array, or [controlIndex] is out of range.
+     */
+    fun removeControlFromAppPayload(currentPayload: String, controlIndex: Int, orderVersion: Long): String? = try {
+        val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
+        val controlsArray = obj?.get("controls") as? JsonArray
+        if (obj == null || controlsArray == null || controlIndex !in controlsArray.indices) {
+            null
+        } else {
+            val mutableFields = obj.toMutableMap()
+            mutableFields["controls"] = JsonArray(controlsArray.filterIndexed { i, _ -> i != controlIndex })
+            mutableFields["order_version"] = JsonPrimitive(orderVersion)
+            Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
+        }
+    } catch (_: Exception) {
+        null
+    }
+
     /**
      * Rewrites a device's "/app" payload to reflect local edits made in the app - a field's or
-     * control's label/cluster override, the device's own "name" (which every field/control
-     * without its own cluster override falls back to as its cluster), and/or the shared "group"
-     * every cluster this payload describes belongs to. Fields/controls are matched by their
-     * index into "panels"/"controls" (not by field name/command_topic - either can legitimately
-     * repeat, e.g. one shared "linkquality" reading per outlet, or two outlets whose commands
-     * both go to the same "<state_topic>/set" - see sensorFieldIndex/controlIndex for resolving
-     * the right index for a given local panel), so passing a partial update leaves everything
-     * else - including keys this app doesn't recognise - untouched. Doesn't touch
+     * control's label/cluster/appearance override, the device's own "name" (which every field/
+     * control without its own cluster override falls back to as its cluster), and/or the shared
+     * "group" every cluster this payload describes belongs to. Fields/controls are matched by
+     * their index into "panels"/"controls" (not by field name/command_topic - either can
+     * legitimately repeat, e.g. one shared "linkquality" reading per outlet, or two outlets whose
+     * commands both go to the same "<state_topic>/set" - see sensorFieldIndex/controlIndex for
+     * resolving the right index for a given local panel), so passing a partial update leaves
+     * everything else - including keys this app doesn't recognise - untouched. Doesn't touch
      * "order_version"; that's unrelated to these fields. Returns null if the payload isn't a JSON
      * object.
      */
@@ -224,8 +299,20 @@ object SensorDiscovery {
         currentPayload: String,
         fieldLabelUpdates: Map<Int, String> = emptyMap(),
         fieldClusterUpdates: Map<Int, String> = emptyMap(),
+        fieldUnitUpdates: Map<Int, String> = emptyMap(),
+        fieldIconUpdates: Map<Int, String> = emptyMap(),
+        fieldDecimalUpdates: Map<Int, Int> = emptyMap(),
+        fieldIdealTopicUpdates: Map<Int, String> = emptyMap(),
+        fieldIdealMinPathUpdates: Map<Int, String> = emptyMap(),
+        fieldIdealMaxPathUpdates: Map<Int, String> = emptyMap(),
         controlLabelUpdates: Map<Int, String> = emptyMap(),
         controlClusterUpdates: Map<Int, String> = emptyMap(),
+        controlCommandTopicUpdates: Map<Int, String> = emptyMap(),
+        controlOnPayloadUpdates: Map<Int, String> = emptyMap(),
+        controlOffPayloadUpdates: Map<Int, String> = emptyMap(),
+        controlStateTopicUpdates: Map<Int, String> = emptyMap(),
+        controlStateFieldUpdates: Map<Int, String> = emptyMap(),
+        controlIconUpdates: Map<Int, String> = emptyMap(),
         newDeviceName: String? = null,
         newGroup: String? = null
     ): String? = try {
@@ -234,36 +321,56 @@ object SensorDiscovery {
             null
         } else {
             val mutableFields = obj.toMutableMap()
+            val fieldCount = (obj["panels"] as? JsonArray)?.size ?: 0
 
-            if (fieldLabelUpdates.isNotEmpty() || fieldClusterUpdates.isNotEmpty()) {
-                val fieldCount = (obj["panels"] as? JsonArray)?.size ?: 0
-                if (fieldLabelUpdates.isNotEmpty()) {
-                    val existing = (obj["labels"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
-                    val updated = (0 until fieldCount).map { i -> fieldLabelUpdates[i] ?: existing?.getOrNull(i) ?: "" }
-                    mutableFields["labels"] = JsonArray(updated.map { JsonPrimitive(it) })
-                }
-                if (fieldClusterUpdates.isNotEmpty()) {
-                    val existing = (obj["panel_clusters"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
-                    val updated = (0 until fieldCount).map { i -> fieldClusterUpdates[i] ?: existing?.getOrNull(i) ?: "" }
-                    mutableFields["panel_clusters"] = JsonArray(updated.map { JsonPrimitive(it) })
-                }
+            // Splices [updates] into the existing string array at [key] (padded/truncated to
+            // fieldCount, same "parallel to panels" convention every per-field override already
+            // uses) - shared by every field-level override below, in place of a hand-written
+            // read-merge-write block per key.
+            fun applyFieldArray(key: String, updates: Map<Int, String>) {
+                if (updates.isEmpty()) return
+                val existing = (obj[key] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull }
+                val merged = (0 until fieldCount).map { i -> updates[i] ?: existing?.getOrNull(i) ?: "" }
+                mutableFields[key] = JsonArray(merged.map { JsonPrimitive(it) })
+            }
+            applyFieldArray("labels", fieldLabelUpdates)
+            applyFieldArray("panel_clusters", fieldClusterUpdates)
+            applyFieldArray("panel_units", fieldUnitUpdates)
+            applyFieldArray("panel_icons", fieldIconUpdates)
+            applyFieldArray("panel_ideal_topics", fieldIdealTopicUpdates)
+            applyFieldArray("panel_ideal_min_paths", fieldIdealMinPathUpdates)
+            applyFieldArray("panel_ideal_max_paths", fieldIdealMaxPathUpdates)
+
+            if (fieldDecimalUpdates.isNotEmpty()) {
+                val existing = (obj["panel_decimals"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.intOrNull }
+                val merged = (0 until fieldCount).map { i -> fieldDecimalUpdates[i] ?: existing?.getOrNull(i) }
+                mutableFields["panel_decimals"] = JsonArray(merged.map { if (it != null) JsonPrimitive(it) else JsonNull })
             }
 
-            if (controlLabelUpdates.isNotEmpty() || controlClusterUpdates.isNotEmpty()) {
+            // Every control-object key update funnels through one map-of-maps (controlIndex ->
+            // {jsonKey -> value}), so a control needing several updates at once (e.g. commandTopic
+            // + icon) only gets its JsonObject rebuilt once.
+            val controlUpdatesByIndex = mutableMapOf<Int, MutableMap<String, String>>()
+            fun queueControlUpdates(updates: Map<Int, String>, key: String) {
+                updates.forEach { (i, value) -> controlUpdatesByIndex.getOrPut(i) { mutableMapOf() }[key] = value }
+            }
+            queueControlUpdates(controlLabelUpdates, "label")
+            queueControlUpdates(controlClusterUpdates, "cluster")
+            queueControlUpdates(controlCommandTopicUpdates, "command_topic")
+            queueControlUpdates(controlOnPayloadUpdates, "on_payload")
+            queueControlUpdates(controlOffPayloadUpdates, "off_payload")
+            queueControlUpdates(controlStateTopicUpdates, "state_topic")
+            queueControlUpdates(controlStateFieldUpdates, "state_field")
+            queueControlUpdates(controlIconUpdates, "icon")
+            if (controlUpdatesByIndex.isNotEmpty()) {
                 val controlsArray = obj["controls"] as? JsonArray
                 if (controlsArray != null) {
                     val updatedControls = controlsArray.mapIndexed { i, element ->
                         val controlObj = element as? JsonObject ?: return@mapIndexed element
-                        val newLabel = controlLabelUpdates[i]
-                        val newCluster = controlClusterUpdates[i]
-                        if (newLabel == null && newCluster == null) {
-                            element
-                        } else {
-                            val updatedControl = controlObj.toMutableMap()
-                            newLabel?.let { updatedControl["label"] = JsonPrimitive(it) }
-                            newCluster?.let { updatedControl["cluster"] = JsonPrimitive(it) }
-                            JsonObject(updatedControl)
-                        }
+                        val updates = controlUpdatesByIndex[i] ?: return@mapIndexed element
+                        val updatedControl = controlObj.toMutableMap()
+                        updates.forEach { (key, value) -> updatedControl[key] = JsonPrimitive(value) }
+                        JsonObject(updatedControl)
                     }
                     mutableFields["controls"] = JsonArray(updatedControls)
                 }
@@ -352,6 +459,13 @@ object SensorDiscovery {
             val panelOrders = panelOrdersArray?.map { (it as? JsonPrimitive)?.intOrNull } ?: emptyList()
             val panelDecimalsArray = obj["panel_decimals"] as? JsonArray
             val panelDecimals = panelDecimalsArray?.map { (it as? JsonPrimitive)?.intOrNull } ?: emptyList()
+            fun stringArray(key: String) =
+                (obj[key] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull } ?: emptyList()
+            val panelUnits = stringArray("panel_units")
+            val panelIcons = stringArray("panel_icons")
+            val panelIdealTopics = stringArray("panel_ideal_topics")
+            val panelIdealMinPaths = stringArray("panel_ideal_min_paths")
+            val panelIdealMaxPaths = stringArray("panel_ideal_max_paths")
             val orderVersion = (obj["order_version"] as? JsonPrimitive)?.longOrNull
             val numericKeys = obj.entries
                 .filter { (_, v) -> (v as? JsonPrimitive)?.doubleOrNull != null }
@@ -373,6 +487,11 @@ object SensorDiscovery {
                 panelClusters = panelClusters,
                 panelOrders = panelOrders,
                 panelDecimals = panelDecimals,
+                panelUnits = panelUnits,
+                panelIcons = panelIcons,
+                panelIdealTopics = panelIdealTopics,
+                panelIdealMinPaths = panelIdealMinPaths,
+                panelIdealMaxPaths = panelIdealMaxPaths,
                 controls = controls,
                 orderVersion = orderVersion
             )
@@ -394,12 +513,13 @@ object SensorDiscovery {
         val stateField = (obj["state_field"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
         val cluster = (obj["cluster"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
         val order = (obj["order"] as? JsonPrimitive)?.intOrNull
+        val icon = (obj["icon"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
         // Zigbee2MQTT convention: commands go to "<state topic>/set" unless the
         // device explicitly overrides it with its own command_topic.
         val commandTopic = (obj["command_topic"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
             ?: stateTopic?.let { "$it/set" }
             ?: return null
-        return ControlConfig(label, commandTopic, onPayload, offPayload, stateTopic, stateField, cluster, order, momentary)
+        return ControlConfig(label, commandTopic, onPayload, offPayload, stateTopic, stateField, cluster, order, momentary, icon)
     }
 
     /** A JSON string primitive is used as-is; any other element (object/array/etc.) is re-serialized to its compact form. */
@@ -492,6 +612,12 @@ object SensorDiscovery {
                 ?: suggestedLabel(field)
             val clusterName = deviceConfig.panelClusters.getOrNull(index)?.takeIf { it.isNotBlank() }
                 ?: deviceClusterName
+            val unit = deviceConfig.panelUnits.getOrNull(index)?.takeIf { it.isNotBlank() }
+                ?: suggestedUnit(field)
+            val icon = deviceConfig.panelIcons.getOrNull(index)?.takeIf { it.isNotBlank() }
+                ?.let { name -> TileIcon.entries.find { it.name.equals(name, ignoreCase = true) } }
+                ?: suggestedIcon(field)
+            val idealTopicOverride = deviceConfig.panelIdealTopics.getOrNull(index)?.takeIf { it.isNotBlank() }
 
             Panel.Sensor(
                 id = java.util.UUID.randomUUID().toString(),
@@ -499,11 +625,13 @@ object SensorDiscovery {
                 brokerId = brokerId,
                 topic = topic,
                 jsonPath = field,
-                unit = suggestedUnit(field),
-                icon = suggestedIcon(field),
-                idealRangeTopic = if (rangeBase != null) appConfigTopic else "",
-                idealMinPath = rangeBase?.let { deviceConfig.rangePairs[it]!!.first } ?: "min",
-                idealMaxPath = rangeBase?.let { deviceConfig.rangePairs[it]!!.second } ?: "max",
+                unit = unit,
+                icon = icon,
+                idealRangeTopic = idealTopicOverride ?: (if (rangeBase != null) appConfigTopic else ""),
+                idealMinPath = deviceConfig.panelIdealMinPaths.getOrNull(index)?.takeIf { it.isNotBlank() }
+                    ?: rangeBase?.let { deviceConfig.rangePairs[it]!!.first } ?: "min",
+                idealMaxPath = deviceConfig.panelIdealMaxPaths.getOrNull(index)?.takeIf { it.isNotBlank() }
+                    ?: rangeBase?.let { deviceConfig.rangePairs[it]!!.second } ?: "max",
                 clusterName = clusterName,
                 displayOrder = composedDisplayOrder(deviceConfig.groupOrder, deviceConfig.panelOrders.getOrNull(index), index),
                 decimals = deviceConfig.panelDecimals.getOrNull(index) ?: suggestedDecimals(field)
@@ -514,6 +642,8 @@ object SensorDiscovery {
             // Sensor panels are always built before controls (see ControlConfig.order), so a
             // control with no explicit order falls in right after them by default.
             val fallbackWithin = sensorPanels.size + controlIndex
+            val icon = control.icon?.let { name -> TileIcon.entries.find { it.name.equals(name, ignoreCase = true) } }
+                ?: TileIcon.POWER
             if (control.momentary) {
                 Panel.Button(
                     id = java.util.UUID.randomUUID().toString(),
@@ -521,6 +651,7 @@ object SensorDiscovery {
                     brokerId = brokerId,
                     commandTopic = control.commandTopic,
                     payload = control.onPayload,
+                    icon = icon,
                     clusterName = control.cluster?.takeIf { it.isNotBlank() } ?: deviceClusterName,
                     displayOrder = composedDisplayOrder(deviceConfig.groupOrder, control.order, fallbackWithin)
                 )
@@ -534,6 +665,7 @@ object SensorDiscovery {
                     offPayload = control.offPayload,
                     stateTopic = control.stateTopic ?: "",
                     stateJsonPath = control.stateField ?: "",
+                    icon = icon,
                     clusterName = control.cluster?.takeIf { it.isNotBlank() } ?: deviceClusterName,
                     displayOrder = composedDisplayOrder(deviceConfig.groupOrder, control.order, fallbackWithin)
                 )
@@ -630,6 +762,11 @@ object SensorDiscovery {
             putJsonArray("panels") { sensors.forEach { add(it.jsonPath) } }
             putJsonArray("labels") { sensors.forEach { add(it.label) } }
             putJsonArray("panel_decimals") { sensors.forEach { add(it.decimals) } }
+            putJsonArray("panel_units") { sensors.forEach { add(it.unit) } }
+            putJsonArray("panel_icons") { sensors.forEach { add(it.icon.name) } }
+            putJsonArray("panel_ideal_topics") { sensors.forEach { add(it.idealRangeTopic) } }
+            putJsonArray("panel_ideal_min_paths") { sensors.forEach { add(it.idealMinPath) } }
+            putJsonArray("panel_ideal_max_paths") { sensors.forEach { add(it.idealMaxPath) } }
             putJsonArray("controls") {
                 controls.forEach { panel ->
                     addJsonObject {
@@ -641,11 +778,13 @@ object SensorDiscovery {
                                 put("off_payload", panel.offPayload)
                                 if (panel.stateTopic.isNotBlank()) put("state_topic", panel.stateTopic)
                                 if (panel.stateJsonPath.isNotBlank()) put("state_field", panel.stateJsonPath)
+                                put("icon", panel.icon.name)
                             }
                             is Panel.Button -> {
                                 put("label", panel.label)
                                 put("command_topic", panel.commandTopic)
                                 put("on_payload", panel.payload)
+                                put("icon", panel.icon.name)
                             }
                             else -> {}
                         }

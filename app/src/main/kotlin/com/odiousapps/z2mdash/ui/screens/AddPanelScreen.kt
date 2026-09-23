@@ -53,6 +53,8 @@ import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushClusterRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushLabelUpdateIfAutoConfigured
+import com.odiousapps.z2mdash.data.pushPanelDetailsIfAutoConfigured
+import com.odiousapps.z2mdash.data.pushPanelRemovalIfAutoConfigured
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import java.util.UUID
@@ -195,6 +197,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             if (existing.label != panel.label) {
                                 pushLabelUpdateIfAutoConfigured(app, panel)
                             }
+                            pushPanelDetailsIfAutoConfigured(app, existing, panel)
                             val oldClusterName = existing.clusterName
                             if (oldClusterName.isNotBlank() && oldClusterName != clusterName) {
                                 val renamedPanelIds = config.groups.find { it.id == groupId }
@@ -513,6 +516,9 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
             confirmButton = {
                 TextButton(onClick = {
                     val devicesBefore = app.configRepository.config.value.autoConfiguredDevices
+                    // Must run before removePanel - it resolves existing's index among the
+                    // device's still-intact local panels (see its own doc).
+                    pushPanelRemovalIfAutoConfigured(app, existing)
                     app.configRepository.removePanel(groupId, existing.id)
                     clearRetainedAppTopicsForOrphanedDevices(app, devicesBefore)
                     showDeleteConfirm = false
