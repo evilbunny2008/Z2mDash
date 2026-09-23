@@ -90,6 +90,8 @@ import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
+import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
@@ -556,7 +558,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         )
                                                     },
                                                     onDuplicate = {
-                                                        val prefix = commonTopicPrefix(panelsInCluster)
+                                                        val prefix = SensorDiscovery.commonTopicPrefix(panelsInCluster)
                                                         pendingClusterDuplicate = PendingClusterDuplicate(
                                                             groupId = group.id,
                                                             name = name,
@@ -619,6 +621,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                                 reordered.add(toIndex, fromClusterName)
                                                                                 app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
                                                                                 pushGroupOrderUpdatesForClusters(app, reordered, currentGroup.panels)
+                                                                                publishAppTopicForClusterIfMissing(app, fromGroupId, fromClusterName)
                                                                                 showUndoSnackbar("Moved \"$fromClusterName\"", previousGroups) {
                                                                                     pushGroupOrderUpdatesForClusters(app, currentOrder, currentGroup.panels)
                                                                                 }
@@ -642,6 +645,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                                 app, movedPanelIds, newGroupName
                                                                             )
                                                                         }
+                                                                        publishAppTopicForClusterIfMissing(app, toGroupId, fromClusterName)
                                                                         showUndoSnackbar("Moved \"$fromClusterName\"", liveGroups) {
                                                                             if (oldGroupName != null) {
                                                                                 pushGroupMoveForAutoConfiguredDevices(
@@ -685,7 +689,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             text = { Text("This removes the group and every panel in it.") },
             confirmButton = {
                 TextButton(onClick = {
+                    val devicesBefore = app.configRepository.config.value.autoConfiguredDevices
                     app.configRepository.deleteGroup(groupId)
+                    clearRetainedAppTopicsForOrphanedDevices(app, devicesBefore)
                     pendingGroupDelete = null
                 }) { Text("Delete") }
             },
@@ -728,7 +734,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             text = { Text("This removes all ${pending.panelIds.size} panels for this device.") },
             confirmButton = {
                 TextButton(onClick = {
+                    val devicesBefore = app.configRepository.config.value.autoConfiguredDevices
                     app.configRepository.removePanels(pending.groupId, pending.panelIds)
+                    clearRetainedAppTopicsForOrphanedDevices(app, devicesBefore)
                     pendingClusterDelete = null
                 }) { Text("Delete") }
             },
@@ -760,6 +768,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             confirmButton = {
                 TextButton(
                     onClick = {
+                        // Captured before duplicateCluster runs, in original displayOrder - zipped
+                        // positionally against the freshly-cloned panels below (same order,
+                        // guaranteed by duplicateCluster) to carry each field's current value over
+                        // to seed the new "/app" payload with, since the new topic has none of its
+                        // own yet.
+                        val sourcePanels = app.configRepository.config.value.groups
+                            .find { it.id == pending.groupId }?.panels
+                            ?.filter { it.id in pending.panelIds }
+                            ?.sortedBy { it.displayOrder } ?: emptyList()
                         app.configRepository.duplicateCluster(
                             groupId = pending.groupId,
                             sourcePanelIds = pending.panelIds,
@@ -770,6 +787,17 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 null
                             }
                         )
+                        val newPanels = app.configRepository.config.value.groups
+                            .find { it.id == pending.groupId }?.panels
+                            ?.filter { it.clusterName == duplicateClusterNameText }
+                            ?.sortedBy { it.displayOrder } ?: emptyList()
+                        val seedValues = sourcePanels.zip(newPanels).mapNotNull { (source, new) ->
+                            if (source !is Panel.Sensor) return@mapNotNull null
+                            val raw = app.connectionManager.latestPayloads.value["${source.brokerId}|${source.topic}"]
+                            val value = raw?.let { JsonPath.extract(it, source.jsonPath) } ?: return@mapNotNull null
+                            new.id to value
+                        }.toMap()
+                        publishAppTopicForClusterIfMissing(app, pending.groupId, duplicateClusterNameText, seedValues)
                         pendingClusterDuplicate = null
                     },
                     enabled = duplicateClusterNameText.isNotBlank()
@@ -860,37 +888,6 @@ private fun pushOrderUpdateIfAutoConfigured(
     app.configRepository.markAutoConfiguredDevicePayloadApplied(
         device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
     )
-}
-
-/**
- * Best-effort common prefix across [panels]' topic-like fields (Sensor.topic, Toggle.command/
- * stateTopic, Button.commandTopic) - used to prefill the duplicate-cluster dialog's topic field,
- * and as the substring its edits replace. Trimmed back to the last "/" only when the raw prefix
- * stops mid-segment (some topic continues past it with a non-"/" character) - a clean, ordinary
- * device topic like "zigbee2mqtt/Green Hose" (shared by a "…/Green Hose" sensor topic and a
- * "…/Green Hose/set" command topic) is returned whole rather than chopped down to "zigbee2mqtt".
- */
-private fun commonTopicPrefix(panels: List<Panel>): String {
-    val topics = panels.flatMap { panel ->
-        when (panel) {
-            is Panel.Sensor -> listOfNotNull(panel.topic.takeIf { it.isNotBlank() })
-            is Panel.Toggle -> listOfNotNull(
-                panel.commandTopic.takeIf { it.isNotBlank() },
-                panel.stateTopic.takeIf { it.isNotBlank() }
-            )
-            is Panel.Button -> listOfNotNull(panel.commandTopic.takeIf { it.isNotBlank() })
-        }
-    }
-    if (topics.isEmpty()) return ""
-    var prefix = topics.first()
-    for (topic in topics.drop(1)) {
-        prefix = prefix.commonPrefixWith(topic)
-        if (prefix.isEmpty()) return ""
-    }
-    val endsCleanly = topics.all { it.length == prefix.length || it.getOrNull(prefix.length) == '/' }
-    if (endsCleanly) return prefix
-    val lastSlash = prefix.lastIndexOf('/')
-    return if (lastSlash >= 0) prefix.substring(0, lastSlash) else prefix
 }
 
 /**
@@ -1117,6 +1114,7 @@ private fun ClusterCard(
                                                     val previousGroups = app.configRepository.config.value.groups
                                                     app.configRepository.movePanelToOwnCluster(groupId, panel.id, panel.label)
                                                     pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label)
+                                                    publishAppTopicForClusterIfMissing(app, groupId, panel.label)
                                                     onUndoableMove("Moved \"${panel.label}\"", previousGroups) {
                                                         pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.clusterName)
                                                     }
@@ -1145,6 +1143,7 @@ private fun ClusterCard(
                                                             val orderedIds = reordered.map { it.id }
                                                             app.configRepository.reorderPanelsInCluster(groupId, orderedIds)
                                                             pushOrderUpdateIfAutoConfigured(app, orderedIds, reordered)
+                                                            publishAppTopicForClusterIfMissing(app, groupId, name)
                                                             onUndoableMove("Moved \"${panel.label}\"", previousGroups) {
                                                                 pushOrderUpdateIfAutoConfigured(
                                                                     app, currentPanels.map { it.id }, currentPanels

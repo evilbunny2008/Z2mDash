@@ -6,10 +6,15 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.add
+import kotlinx.serialization.json.addJsonObject
+import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.longOrNull
+import kotlinx.serialization.json.put
+import kotlinx.serialization.json.putJsonArray
 
 /**
  * Turns a raw bag of "topic -> last payload" (from subscribing a broker to "#") into candidate
@@ -534,5 +539,100 @@ object SensorDiscovery {
     fun suggestedDecimals(key: String): Int = when {
         key.contains("temperature", ignoreCase = true) -> 1
         else -> 0
+    }
+
+    /**
+     * Best-effort common prefix across [panels]' topic-like fields (Sensor.topic, Toggle.command/
+     * stateTopic, Button.commandTopic) - used to prefill the duplicate-cluster dialog's topic
+     * field (and as the substring its edits replace), and to find the one topic a locally-created
+     * cluster's own "/app" payload should be published to (see buildAppConfigPayload). Trimmed
+     * back to the last "/" only when the raw prefix stops mid-segment (some topic continues past
+     * it with a non-"/" character) - a clean, ordinary device topic like "zigbee2mqtt/Green Hose"
+     * (shared by a "…/Green Hose" sensor topic and a "…/Green Hose/set" command topic) is returned
+     * whole rather than chopped down to "zigbee2mqtt".
+     */
+    fun commonTopicPrefix(panels: List<Panel>): String {
+        val topics = panels.flatMap { panel ->
+            when (panel) {
+                is Panel.Sensor -> listOfNotNull(panel.topic.takeIf { it.isNotBlank() })
+                is Panel.Toggle -> listOfNotNull(
+                    panel.commandTopic.takeIf { it.isNotBlank() },
+                    panel.stateTopic.takeIf { it.isNotBlank() }
+                )
+                is Panel.Button -> listOfNotNull(panel.commandTopic.takeIf { it.isNotBlank() })
+            }
+        }
+        if (topics.isEmpty()) return ""
+        var prefix = topics.first()
+        for (topic in topics.drop(1)) {
+            prefix = prefix.commonPrefixWith(topic)
+            if (prefix.isEmpty()) return ""
+        }
+        val endsCleanly = topics.all { it.length == prefix.length || it.getOrNull(prefix.length) == '/' }
+        if (endsCleanly) return prefix
+        val lastSlash = prefix.lastIndexOf('/')
+        return if (lastSlash >= 0) prefix.substring(0, lastSlash) else prefix
+    }
+
+    /**
+     * The write-side counterpart to [parseDeviceAppConfig]/[buildPanels]: serialises [panels]
+     * (all sharing [clusterName] and, per [commonTopicPrefix], one clean common topic) into a
+     * fresh "<topic>/app" payload - so a cluster that only ever existed in this phone's local
+     * config.json (e.g. one just created by duplicating another) can publish its own
+     * self-describing device-style config, the same as a real device would. A Sensor field whose
+     * own topic *is* [appTopic] itself (e.g. an editable min/max threshold) has nowhere else to
+     * source its current value from, so [seedValuesByPanelId] (keyed by that panel's id) supplies
+     * one - falling back to "0" - typically copied from whatever the cluster was duplicated from.
+     */
+    fun buildAppConfigPayload(
+        panels: List<Panel>,
+        clusterName: String,
+        groupName: String,
+        appTopic: String,
+        seedValuesByPanelId: Map<String, String> = emptyMap()
+    ): String {
+        val ordered = panels.sortedBy { it.displayOrder }
+        val sensors = ordered.filterIsInstance<Panel.Sensor>()
+        val controls = ordered.filter { it is Panel.Toggle || it is Panel.Button }
+
+        val obj = buildJsonObject {
+            put("name", clusterName)
+            put("group", groupName)
+            putJsonArray("panels") { sensors.forEach { add(it.jsonPath) } }
+            putJsonArray("labels") { sensors.forEach { add(it.label) } }
+            putJsonArray("panel_decimals") { sensors.forEach { add(it.decimals) } }
+            putJsonArray("controls") {
+                controls.forEach { panel ->
+                    addJsonObject {
+                        when (panel) {
+                            is Panel.Toggle -> {
+                                put("label", panel.label)
+                                put("command_topic", panel.commandTopic)
+                                put("on_payload", panel.onPayload)
+                                put("off_payload", panel.offPayload)
+                                if (panel.stateTopic.isNotBlank()) put("state_topic", panel.stateTopic)
+                                if (panel.stateJsonPath.isNotBlank()) put("state_field", panel.stateJsonPath)
+                            }
+                            is Panel.Button -> {
+                                put("label", panel.label)
+                                put("command_topic", panel.commandTopic)
+                                put("on_payload", panel.payload)
+                            }
+                            else -> {}
+                        }
+                    }
+                }
+            }
+            // A field sourced from this very topic (not the device's separate main sensor
+            // topic) has to have its current value embedded right here, or it'd read back as
+            // "--" the moment this payload is retained.
+            sensors.filter { it.topic == appTopic }.forEach { panel ->
+                val seed = seedValuesByPanelId[panel.id] ?: "0"
+                val numeric = seed.toDoubleOrNull()
+                if (numeric != null) put(panel.jsonPath, numeric) else put(panel.jsonPath, seed)
+            }
+            put("order_version", System.currentTimeMillis())
+        }
+        return Json.encodeToString(JsonElement.serializer(), obj)
     }
 }

@@ -49,6 +49,8 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.TileIcon
+import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
+import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushClusterRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushLabelUpdateIfAutoConfigured
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
@@ -210,6 +212,13 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
                                 ?.set("scrollToGroupId", groupId)
+                        }
+                        // Backfills a "/app" for this panel's (possibly just-created, possibly
+                        // just-renamed) cluster if its topic doesn't already have one - see
+                        // AutoConfigPush's own doc. A no-op for a standalone (blank-cluster) panel,
+                        // or one whose cluster already has a config topic.
+                        if (clusterName.isNotBlank()) {
+                            publishAppTopicForClusterIfMissing(app, groupId, clusterName)
                         }
                         navController.popBackStack()
                     },
@@ -503,7 +512,9 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
             text = { Text("This removes \"${existing.label}\" from the dashboard.") },
             confirmButton = {
                 TextButton(onClick = {
+                    val devicesBefore = app.configRepository.config.value.autoConfiguredDevices
                     app.configRepository.removePanel(groupId, existing.id)
+                    clearRetainedAppTopicsForOrphanedDevices(app, devicesBefore)
                     showDeleteConfirm = false
                     navController.popBackStack()
                 }) { Text("Delete") }

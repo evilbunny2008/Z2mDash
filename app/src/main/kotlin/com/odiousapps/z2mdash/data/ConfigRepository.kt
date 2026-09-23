@@ -454,6 +454,25 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
+     * Upserts a device tracking entry (by brokerId + appConfigTopic) without touching any group's
+     * panels - unlike applyDeviceAutoConfig, which is for when a device's payload is rebuilding
+     * the panels themselves. This is for the opposite case: the panels already exist locally (a
+     * duplicated cluster, say) and just need to start being tracked against a "/app" topic this
+     * phone itself just published for them (see AutoConfigPush.publishAppTopicForClusterIfMissing).
+     */
+    fun registerAutoConfiguredDevice(device: AutoConfiguredDevice) = update { cfg ->
+        val existingIndex = cfg.autoConfiguredDevices.indexOfFirst {
+            it.brokerId == device.brokerId && it.appConfigTopic == device.appConfigTopic
+        }
+        val updatedDevices = if (existingIndex >= 0) {
+            cfg.autoConfiguredDevices.toMutableList().also { it[existingIndex] = device }
+        } else {
+            cfg.autoConfiguredDevices + device
+        }
+        cfg.copy(autoConfiguredDevices = updatedDevices)
+    }
+
+    /**
      * Marks [payload]/[orderVersion] as already applied for a device, without rebuilding panels.
      * Called right after the app itself publishes a retained "<topic>/app" update, since the "#"
      * subscription echoes that publish straight back to DeviceAutoConfigManager - pre-marking it

@@ -180,3 +180,70 @@ fun pushGroupRenameForAutoConfiguredDevices(app: Z2mDashApplication, oldGroupNam
         publishAndMarkApplied(app, device, updatedPayload)
     }
 }
+
+/**
+ * Clears the retained "/app" topic for every auto-configured device that was tracked in
+ * [devicesBefore] but no longer appears in the current config - i.e. one whose last panel a
+ * ConfigRepository call like removePanel/removePanels/deleteGroup just removed (those already
+ * prune the device's tracking entry themselves). Call this right after such a removal, passing
+ * the autoConfiguredDevices list captured immediately before it.
+ *
+ * Without this, the device's retained payload lingers on the broker after its panels are deleted
+ * locally, and the very next reconcile pass - this app's own "#" subscription sees the still-
+ * retained payload as an untracked "/app" topic again - silently recreates the panels right back.
+ * With a broker that auto-accepts discovered devices, that makes a deleted cluster reappear
+ * almost instantly, as if the delete never happened.
+ */
+fun clearRetainedAppTopicsForOrphanedDevices(app: Z2mDashApplication, devicesBefore: List<AutoConfiguredDevice>) {
+    val stillTrackedKeys = app.configRepository.config.value.autoConfiguredDevices
+        .map { "${it.brokerId}|${it.appConfigTopic}" }.toSet()
+    devicesBefore
+        .filter { "${it.brokerId}|${it.appConfigTopic}" !in stillTrackedKeys }
+        .forEach { device -> app.connectionManager.publish(device.brokerId, device.appConfigTopic, "", retain = true) }
+}
+
+/**
+ * Publishes a fresh "<topic>/app" retained payload for [clusterName]'s panels (in [groupId]) if
+ * their shared topic doesn't already have one - e.g. right after a duplicated cluster is
+ * retargeted at a topic nothing has ever described. Without this, a cluster that only ever
+ * existed by duplication stays purely local: invisible to any other phone sharing the broker,
+ * and unable to benefit from the same rename/reorder/move pushes every other auto-configured
+ * cluster gets. Also registers the cluster as an auto-configured device locally, so this phone's
+ * own reconcile pass recognises its own echo instead of re-detecting it as a brand-new pending
+ * device. A no-op if the panels don't share one clean common topic (see
+ * SensorDiscovery.commonTopicPrefix - nothing coherent to publish under), or if that topic's
+ * "/app" is already retained by something else (never overwrites an existing config).
+ */
+fun publishAppTopicForClusterIfMissing(
+    app: Z2mDashApplication,
+    groupId: String,
+    clusterName: String,
+    // Seeds a Sensor field whose own topic *is* the new "/app" topic (e.g. a min/max threshold)
+    // with a starting value, keyed by that field's (new, already-cloned) panel id - see
+    // SensorDiscovery.buildAppConfigPayload's own doc for why this is needed at all.
+    seedValuesByPanelId: Map<String, String> = emptyMap()
+) {
+    val config = app.configRepository.config.value
+    val group = config.groups.find { it.id == groupId } ?: return
+    val panels = group.panels.filter { it.clusterName == clusterName }
+    if (panels.isEmpty()) return
+    val topic = SensorDiscovery.commonTopicPrefix(panels)
+    if (topic.isBlank()) return
+    val brokerId = panels.first().brokerId
+    val appTopic = "$topic/app"
+    if (app.connectionManager.latestPayloads.value["$brokerId|$appTopic"] != null) return
+
+    val payload = SensorDiscovery.buildAppConfigPayload(
+        panels, clusterName, group.name, appTopic, seedValuesByPanelId
+    )
+    app.connectionManager.publish(brokerId, appTopic, payload, retain = true)
+    app.configRepository.registerAutoConfiguredDevice(
+        AutoConfiguredDevice(
+            brokerId = brokerId,
+            sensorTopic = topic,
+            appConfigTopic = appTopic,
+            lastAppliedPayload = payload,
+            createdPanelIds = panels.map { it.id }
+        )
+    )
+}
