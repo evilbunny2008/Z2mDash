@@ -190,10 +190,10 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         }
                         if (isEditing) {
                             app.configRepository.updatePanel(groupId, panel)
-                            if (existing != null && existing.label != panel.label) {
+                            if (existing.label != panel.label) {
                                 pushLabelUpdateIfAutoConfigured(app, panel)
                             }
-                            val oldClusterName = existing?.clusterName.orEmpty()
+                            val oldClusterName = existing.clusterName
                             if (oldClusterName.isNotBlank() && oldClusterName != clusterName) {
                                 val renamedPanelIds = config.groups.find { it.id == groupId }
                                     ?.panels?.filter { it.clusterName == oldClusterName }?.map { it.id }
