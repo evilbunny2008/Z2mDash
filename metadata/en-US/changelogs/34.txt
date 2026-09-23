@@ -1,0 +1,1 @@
+- Reordering top-level dashboard groups (not just clusters within a group) now syncs to every device's "/app" config on the broker, so other phones sharing the same broker pick up the new group order too.

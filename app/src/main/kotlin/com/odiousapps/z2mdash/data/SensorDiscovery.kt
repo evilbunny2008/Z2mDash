@@ -51,6 +51,12 @@ object SensorDiscovery {
         val group: String?,
         // Optional. This device's cluster/panel position within [group] (lower sorts first).
         val groupOrder: Int?,
+        // Optional. [group]'s own position among every top-level dashboard group (lower sorts
+        // first) - distinct from groupOrder, which only ranks clusters within one group. Lets
+        // phones sharing a broker stay in sync on the order groups themselves appear in, the same
+        // way groupOrder/panel_order sync cluster/panel order - see
+        // AutoConfigPush.pushDashboardGroupOrderUpdates and DeviceAutoConfigManager's use of it.
+        val dashboardOrder: Int?,
         val panelFields: List<String>,
         // Optional, parallel to panelFields - custom label per field, else suggestedLabel().
         val labels: List<String>,
@@ -173,6 +179,27 @@ object SensorDiscovery {
         } else {
             val mutableFields = obj.toMutableMap()
             mutableFields["group_order"] = JsonPrimitive(newGroupOrder)
+            mutableFields["order_version"] = JsonPrimitive(orderVersion)
+            Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
+        }
+    } catch (_: Exception) {
+        null
+    }
+
+    /**
+     * Rewrites a device's "/app" payload with "dashboard_order" updated and "order_version"
+     * stamped (see updateOrderingInAppPayload's doc) - everything else passes through unchanged.
+     * Used when a top-level dashboard group reorder shifts [group]'s position among sibling
+     * groups. Distinct from updateGroupOrderInAppPayload, which ranks clusters *within* a group.
+     * Returns null if the payload isn't a JSON object.
+     */
+    fun updateDashboardGroupOrderInAppPayload(currentPayload: String, newDashboardOrder: Int, orderVersion: Long): String? = try {
+        val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
+        if (obj == null) {
+            null
+        } else {
+            val mutableFields = obj.toMutableMap()
+            mutableFields["dashboard_order"] = JsonPrimitive(newDashboardOrder)
             mutableFields["order_version"] = JsonPrimitive(orderVersion)
             Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
         }
@@ -316,6 +343,7 @@ object SensorDiscovery {
             val name = (obj["name"] as? JsonPrimitive)?.contentOrNull ?: ""
             val group = (obj["group"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
             val groupOrder = (obj["group_order"] as? JsonPrimitive)?.intOrNull
+            val dashboardOrder = (obj["dashboard_order"] as? JsonPrimitive)?.intOrNull
             val labelsArray = obj["labels"] as? JsonArray
             val labels = labelsArray?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull } ?: emptyList()
             val panelClustersArray = obj["panel_clusters"] as? JsonArray
@@ -338,6 +366,7 @@ object SensorDiscovery {
                 name = name,
                 group = group,
                 groupOrder = groupOrder,
+                dashboardOrder = dashboardOrder,
                 panelFields = panelFields,
                 labels = labels,
                 rangePairs = rangePairs,

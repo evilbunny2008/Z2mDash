@@ -106,6 +106,14 @@ class DeviceAutoConfigManager(
                 targetGroupId = targetGroupId,
                 newPanels = newPanels
             )
+            // Same last-writer-wins gate as panel/cluster order above: only reposition the group
+            // itself when this payload's order_version is genuinely newer, so a stale retained
+            // redelivery can't undo a more recent drag-reorder of the dashboard groups.
+            if (adoptIncomingOrder) {
+                deviceConfig.dashboardOrder?.let { order ->
+                    configRepository.moveGroupToIndex(targetGroupId, order)
+                }
+            }
         }
     }
 

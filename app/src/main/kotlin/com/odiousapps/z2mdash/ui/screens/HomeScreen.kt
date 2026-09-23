@@ -412,7 +412,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 if (toIndex >= 0) {
                                                     val movedGroupName = previousGroups.find { it.id == fromId }?.name ?: "Group"
                                                     app.configRepository.moveGroupToIndex(fromId, toIndex + 1)
-                                                    showUndoSnackbar("Moved \"$movedGroupName\"", previousGroups) {}
+                                                    val reorderedGroups = app.configRepository.config.value.groups
+                                                    pushDashboardGroupOrderUpdates(app, reorderedGroups)
+                                                    showUndoSnackbar("Moved \"$movedGroupName\"", previousGroups) {
+                                                        pushDashboardGroupOrderUpdates(app, previousGroups)
+                                                    }
                                                 }
                                             }
                                             draggedGroupId = null
@@ -926,6 +930,42 @@ private fun pushGroupOrderUpdatesForClusters(
         app.configRepository.markAutoConfiguredDevicePayloadApplied(
             device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
         )
+    }
+}
+
+/**
+ * Reordering top-level dashboard groups shifts every group's relative position, not just the
+ * dragged one - so every auto-configured device belonging to any group in [orderedGroups] gets
+ * its own retained "/app" update with its new dashboard_order. Unlike
+ * pushGroupOrderUpdatesForClusters (one device per cluster), a single dashboard group can contain
+ * several different devices' clusters, so every owning device is pushed, not just the first found.
+ *
+ * Same reasoning as pushOrderUpdateIfAutoConfigured for reading latestPayloads.value directly
+ * rather than accepting a parameter, which would go stale after this pointerInput's first launch.
+ */
+private fun pushDashboardGroupOrderUpdates(app: Z2mDashApplication, orderedGroups: List<PanelGroup>) {
+    val config = app.configRepository.config.value
+    val payloads = app.connectionManager.latestPayloads.value
+    // One shared timestamp for every device this drag touches, so a phone reconciling any of
+    // them later treats the whole batch as one logical write.
+    val orderVersion = System.currentTimeMillis()
+
+    orderedGroups.forEachIndexed { index, group ->
+        val panelIds = group.panels.map { it.id }.toSet()
+        val devices = config.autoConfiguredDevices.filter { device -> device.createdPanelIds.any { it in panelIds } }
+        devices.forEach { device ->
+            val currentPayload = payloads["${device.brokerId}|${device.appConfigTopic}"] ?: return@forEach
+            val updatedPayload = SensorDiscovery.updateDashboardGroupOrderInAppPayload(currentPayload, index + 1, orderVersion)
+                ?: return@forEach
+            app.connectionManager.publish(device.brokerId, device.appConfigTopic, updatedPayload, retain = true)
+            // See the matching comment in pushGroupOrderUpdatesForClusters above - without this,
+            // the "#"-subscribed echo of our own publish (or a stale retained redelivery on any
+            // phone sharing this broker) could race DeviceAutoConfigManager into re-reconciling
+            // this exact change right back.
+            app.configRepository.markAutoConfiguredDevicePayloadApplied(
+                device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
+            )
+        }
     }
 }
 
