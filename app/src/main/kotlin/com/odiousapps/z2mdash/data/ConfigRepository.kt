@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.io.File
+import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -197,6 +198,50 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         val moved = reordered.removeAt(currentIndex)
         reordered.add(targetIndex, moved)
         cfg.copy(groups = reordered)
+    }
+
+    /**
+     * Resolves the target group for a device's declared "group" name (case-insensitive), creating
+     * one if none exists yet - the shared fallback chain every first-time auto-config entry point
+     * (DeviceAutoConfigManager.autoAcceptDevice, HomeScreen.addPendingDevice) uses: the declared
+     * group if named, else the first existing group, else a fresh "Discovered Sensors". Callers
+     * that also learned a dashboard_order for this device should call resyncDashboardGroupOrder()
+     * afterward, once the device is actually registered (see that function's doc).
+     */
+    fun resolveOrCreateGroup(declaredGroupName: String?): String {
+        val cfg = _config.value
+        return if (!declaredGroupName.isNullOrBlank()) {
+            cfg.groups.find { it.name.equals(declaredGroupName, ignoreCase = true) }?.id
+                ?: UUID.randomUUID().toString().also { upsertGroup(PanelGroup(id = it, name = declaredGroupName)) }
+        } else {
+            cfg.groups.firstOrNull()?.id
+                ?: UUID.randomUUID().toString().also { upsertGroup(PanelGroup(id = it, name = "Discovered Sensors")) }
+        }
+    }
+
+    /**
+     * Resorts top-level dashboard groups to match every auto-configured device's
+     * lastKnownDashboardOrder (lowest first) - a group missing that info entirely (manually
+     * created, or none of its member devices has adopted one yet) keeps its current relative
+     * position, interleaved wherever a plain sort-by-key naturally puts it. Recomputed fresh from
+     * scratch each call (a full stable resort, not moving one group at a time to a fixed index),
+     * so the result doesn't depend on what order devices/groups happened to be discovered or
+     * reconciled in - important right after wiping app data, when a flood of retained "/app"
+     * messages can arrive in any order. Call after anything that could have taught the app a
+     * device's dashboard_order: a payload reconciling, or a brand-new device being auto- or
+     * manually-accepted.
+     */
+    fun resyncDashboardGroupOrder() = update { cfg ->
+        val orderByGroupId = mutableMapOf<String, Int>()
+        cfg.autoConfiguredDevices.forEach { device ->
+            val order = device.lastKnownDashboardOrder ?: return@forEach
+            val groupId = cfg.groups.find { g -> g.panels.any { it.id in device.createdPanelIds } }?.id ?: return@forEach
+            val existing = orderByGroupId[groupId]
+            if (existing == null || order < existing) orderByGroupId[groupId] = order
+        }
+        if (orderByGroupId.isEmpty()) return@update cfg
+        val sorted = cfg.groups.sortedBy { orderByGroupId[it.id] ?: Int.MAX_VALUE }
+        if (sorted.map { it.id } == cfg.groups.map { it.id }) cfg else cfg.copy(groups = sorted)
     }
 
     fun setGroupCollapsed(groupId: String, collapsed: Boolean) = update { cfg ->
@@ -485,13 +530,17 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         brokerId: String,
         appConfigTopic: String,
         payload: String,
-        orderVersion: Long
+        orderVersion: Long,
+        // Set only by a dashboard-group-order push (see HomeScreen.pushDashboardGroupOrderUpdates)
+        // - every other caller leaves this null, which keeps the device's existing value as-is.
+        dashboardOrder: Int? = null
     ) = update { cfg ->
             val updatedDevices = cfg.autoConfiguredDevices.map { device ->
                 if (device.brokerId == brokerId && device.appConfigTopic == appConfigTopic) {
                     device.copy(
                         lastAppliedPayload = payload,
-                        lastKnownOrderVersion = maxOf(device.lastKnownOrderVersion, orderVersion)
+                        lastKnownOrderVersion = maxOf(device.lastKnownOrderVersion, orderVersion),
+                        lastKnownDashboardOrder = dashboardOrder ?: device.lastKnownDashboardOrder
                     )
                 } else {
                     device

@@ -104,7 +104,6 @@ import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import java.util.UUID
 import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
@@ -335,7 +334,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 PendingDeviceBanner(
                     pending = pending,
                     onAdd = {
-                        addPendingDevice(app, config, payloadsState.value, pending)
+                        addPendingDevice(app, payloadsState.value, pending)
                         // Both actions mean the user handled this via the in-app banner, so the
                         // matching system notification (same deviceName-based ID) shouldn't linger.
                         NotificationManagerCompat.from(context).cancel(pending.deviceName.hashCode())
@@ -961,9 +960,13 @@ private fun pushDashboardGroupOrderUpdates(app: Z2mDashApplication, orderedGroup
             // See the matching comment in pushGroupOrderUpdatesForClusters above - without this,
             // the "#"-subscribed echo of our own publish (or a stale retained redelivery on any
             // phone sharing this broker) could race DeviceAutoConfigManager into re-reconciling
-            // this exact change right back.
+            // this exact change right back. Also records this device's new dashboard_order
+            // directly (rather than waiting for ConfigRepository.resyncDashboardGroupOrder to be
+            // triggered by some later, unrelated reconcile pass) so a resync run in the meantime
+            // - say, another group's device joining - doesn't compute this group's position from
+            // stale data.
             app.configRepository.markAutoConfiguredDevicePayloadApplied(
-                device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
+                device.brokerId, device.appConfigTopic, updatedPayload, orderVersion, dashboardOrder = index + 1
             )
         }
     }
@@ -1423,7 +1426,6 @@ private fun PanelTile(
 /** Builds and stores the panels for a newly-accepted pending device, then clears it from the pending list. */
 private fun addPendingDevice(
     app: Z2mDashApplication,
-    config: AppConfig,
     payloads: Map<String, String>,
     pending: PendingAutoConfigDevice
 ) {
@@ -1456,22 +1458,15 @@ private fun addPendingDevice(
             return
         }
 
-        val targetGroupId = deviceConfig.group?.let { name ->
-            config.groups.find { it.name.equals(name, ignoreCase = true) }?.id
-                ?: UUID.randomUUID().toString().also { id ->
-                    app.configRepository.upsertGroup(PanelGroup(id = id, name = name))
-                }
-        } ?: config.groups.firstOrNull()?.id
-            ?: UUID.randomUUID().toString().also { id ->
-                app.configRepository.upsertGroup(PanelGroup(id = id, name = "Discovered Sensors"))
-            }
+        val targetGroupId = app.configRepository.resolveOrCreateGroup(deviceConfig.group)
 
         val device = AutoConfiguredDevice(
             brokerId = pending.brokerId,
             sensorTopic = pending.sensorTopic,
             appConfigTopic = pending.appConfigTopic,
             lastAppliedPayload = appConfigPayload,
-            createdPanelIds = newPanels.map { it.id }
+            createdPanelIds = newPanels.map { it.id },
+            lastKnownDashboardOrder = deviceConfig.dashboardOrder
         )
         app.configRepository.applyDeviceAutoConfig(
             oldPanelIds = emptySet(),
@@ -1479,6 +1474,7 @@ private fun addPendingDevice(
             targetGroupId = targetGroupId,
             newPanels = newPanels
         )
+        app.configRepository.resyncDashboardGroupOrder()
         app.configRepository.removePendingAutoConfigDevice(pending.brokerId, pending.appConfigTopic)
         Log.i(tag, "Added ${newPanels.size} panels for ${pending.deviceName} into group $targetGroupId")
     } catch (e: Exception) {

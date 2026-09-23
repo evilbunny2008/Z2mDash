@@ -144,7 +144,16 @@ data class AutoConfiguredDevice(
     // drag-reorder: an incoming payload's order is only adopted when its order_version is
     // strictly newer, so a stale retained redelivery can't undo a more recent reorder.
     // Defaults to 0 so any versioned payload is adopted the first time a phone sees it.
-    val lastKnownOrderVersion: Long = 0L
+    val lastKnownOrderVersion: Long = 0L,
+    // Last-adopted "dashboard_order" (see SensorDiscovery.DeviceAppConfig.dashboardOrder) for
+    // this device's own top-level dashboard group - gated by lastKnownOrderVersion the same way,
+    // so it only changes on a genuinely newer payload, never a stale retained redelivery. Kept
+    // here (rather than re-parsed from lastAppliedPayload on demand) so
+    // ConfigRepository.resyncDashboardGroupOrder can resort every dashboard group from these
+    // already-vetted per-device values, converging to the same result regardless of the order
+    // devices/payloads happen to arrive in - notably right after wiping app data, when a flood of
+    // retained "/app" messages can arrive in any order. Null until a payload with one is adopted.
+    val lastKnownDashboardOrder: Int? = null
 )
 
 /**

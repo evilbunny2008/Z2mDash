@@ -95,10 +95,18 @@ class DeviceAutoConfigManager(
 
             val targetGroupId = resolveTargetGroupId(deviceConfig.group, device) ?: return@forEach
 
+            // Same last-writer-wins gate as panel/cluster order above: only adopt this payload's
+            // dashboard_order when its order_version is genuinely newer, so a stale retained
+            // redelivery can't undo a more recent drag-reorder of the dashboard groups.
             val updatedDevice = device.copy(
                 lastAppliedPayload = currentPayload,
                 createdPanelIds = newPanels.map { it.id },
-                lastKnownOrderVersion = if (adoptIncomingOrder) incomingOrderVersion else device.lastKnownOrderVersion
+                lastKnownOrderVersion = if (adoptIncomingOrder) incomingOrderVersion else device.lastKnownOrderVersion,
+                lastKnownDashboardOrder = if (adoptIncomingOrder) {
+                    deviceConfig.dashboardOrder ?: device.lastKnownDashboardOrder
+                } else {
+                    device.lastKnownDashboardOrder
+                }
             )
             configRepository.applyDeviceAutoConfig(
                 oldPanelIds = device.createdPanelIds.toSet(),
@@ -106,14 +114,7 @@ class DeviceAutoConfigManager(
                 targetGroupId = targetGroupId,
                 newPanels = newPanels
             )
-            // Same last-writer-wins gate as panel/cluster order above: only reposition the group
-            // itself when this payload's order_version is genuinely newer, so a stale retained
-            // redelivery can't undo a more recent drag-reorder of the dashboard groups.
-            if (adoptIncomingOrder) {
-                deviceConfig.dashboardOrder?.let { order ->
-                    configRepository.moveGroupToIndex(targetGroupId, order)
-                }
-            }
+            configRepository.resyncDashboardGroupOrder()
         }
     }
 
@@ -214,23 +215,15 @@ class DeviceAutoConfigManager(
         )
         if (newPanels.isEmpty()) return
 
-        val config = configRepository.config.value
-        val targetGroupId = deviceConfig.group?.let { name ->
-            config.groups.find { it.name.equals(name, ignoreCase = true) }?.id
-                ?: UUID.randomUUID().toString().also { id ->
-                    configRepository.upsertGroup(PanelGroup(id = id, name = name))
-                }
-        } ?: config.groups.firstOrNull()?.id
-            ?: UUID.randomUUID().toString().also { id ->
-                configRepository.upsertGroup(PanelGroup(id = id, name = "Discovered Sensors"))
-            }
+        val targetGroupId = configRepository.resolveOrCreateGroup(deviceConfig.group)
 
         val device = AutoConfiguredDevice(
             brokerId = brokerId,
             sensorTopic = sensorTopic,
             appConfigTopic = appConfigTopic,
             lastAppliedPayload = appConfigPayload,
-            createdPanelIds = newPanels.map { it.id }
+            createdPanelIds = newPanels.map { it.id },
+            lastKnownDashboardOrder = deviceConfig.dashboardOrder
         )
         configRepository.applyDeviceAutoConfig(
             oldPanelIds = emptySet(),
@@ -238,6 +231,7 @@ class DeviceAutoConfigManager(
             targetGroupId = targetGroupId,
             newPanels = newPanels
         )
+        configRepository.resyncDashboardGroupOrder()
     }
 
     private fun resolveTargetGroupId(declaredGroupName: String?, device: AutoConfiguredDevice): String? {

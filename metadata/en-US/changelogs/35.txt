@@ -1,0 +1,1 @@
+- Fixed dashboard group order sometimes coming back different after wiping app data and re-adding devices: groups now reliably rebuild in the order their "/app" configs declare, regardless of what order the broker happens to redeliver them in.
