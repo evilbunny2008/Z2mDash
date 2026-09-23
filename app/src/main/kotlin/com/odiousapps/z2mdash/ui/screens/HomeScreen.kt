@@ -1288,6 +1288,29 @@ private fun ClusterCard(
                         modifier = Modifier.size(16.dp)
                     )
                 }
+                IconButton(
+                    onClick = {
+                        // Prefills the new panel's cluster/broker/topic with this cluster's own
+                        // values - see AddPanelScreen's own doc on these preset* savedStateHandle
+                        // keys. Set on currentBackStackEntry (this screen's own entry) rather than
+                        // previousBackStackEntry, since we're passing forward to a screen that
+                        // doesn't exist yet - it reads them back via ITS previousBackStackEntry,
+                        // which is this same entry.
+                        val handle = navController.currentBackStackEntry?.savedStateHandle
+                        handle?.set("presetClusterName", name)
+                        panels.firstOrNull()?.brokerId?.let { handle?.set("presetBrokerId", it) }
+                        SensorDiscovery.commonTopicPrefix(panels).takeIf { it.isNotBlank() }
+                            ?.let { handle?.set("presetTopic", it) }
+                        navController.navigate("group/$groupId/panel/new")
+                    },
+                    modifier = Modifier.size(28.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = "Add tile to $name",
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
                 IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
                     Icon(
                         Icons.Default.Delete,

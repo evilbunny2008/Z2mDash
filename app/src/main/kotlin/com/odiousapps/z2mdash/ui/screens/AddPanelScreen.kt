@@ -71,6 +71,28 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
     val isEditing = existing != null
     var showDeleteConfirm by remember { mutableStateOf(false) }
 
+    // Set by ClusterCard's "+" (add tile) button via Navigation Compose's result-passing pattern
+    // (same idea as HomeScreen's own scrollToGroupId, just forward instead of back) - prefills a
+    // brand-new panel's cluster/broker/topic with that cluster's own values, so adding another
+    // tile to an existing device's card doesn't mean re-typing them. Read once and cleared
+    // immediately so a later, unrelated navigation to this screen (e.g. the group header's plain
+    // "Add" button, which never sets these) doesn't pick up a stale value from a previous visit.
+    val presetClusterName = remember {
+        navController.previousBackStackEntry?.savedStateHandle?.get<String>("presetClusterName").also {
+            navController.previousBackStackEntry?.savedStateHandle?.set<String?>("presetClusterName", null)
+        }
+    }
+    val presetBrokerId = remember {
+        navController.previousBackStackEntry?.savedStateHandle?.get<String>("presetBrokerId").also {
+            navController.previousBackStackEntry?.savedStateHandle?.set<String?>("presetBrokerId", null)
+        }
+    }
+    val presetTopic = remember {
+        navController.previousBackStackEntry?.savedStateHandle?.get<String>("presetTopic").also {
+            navController.previousBackStackEntry?.savedStateHandle?.set<String?>("presetTopic", null)
+        }
+    }
+
     var panelType by remember(existing) {
         mutableStateOf(
             when (existing) {
@@ -81,10 +103,10 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
         )
     }
     var selectedBrokerId by remember(existing) {
-        mutableStateOf(existing?.brokerId ?: config.brokers.firstOrNull()?.id ?: "")
+        mutableStateOf(existing?.brokerId ?: presetBrokerId ?: config.brokers.firstOrNull()?.id ?: "")
     }
     var label by remember(existing) { mutableStateOf(existing?.label ?: "") }
-    var clusterName by remember(existing) { mutableStateOf(existing?.clusterName ?: "") }
+    var clusterName by remember(existing) { mutableStateOf(existing?.clusterName ?: presetClusterName ?: "") }
     var displayOrderText by remember(existing) {
         mutableStateOf(existing?.displayOrder?.takeIf { it != Int.MAX_VALUE }?.toString() ?: "")
     }
@@ -100,7 +122,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
     }
 
     // Sensor fields
-    var topic by remember(existing) { mutableStateOf((existing as? Panel.Sensor)?.topic ?: "") }
+    var topic by remember(existing) { mutableStateOf((existing as? Panel.Sensor)?.topic ?: presetTopic ?: "") }
     var jsonPath by remember(existing) { mutableStateOf((existing as? Panel.Sensor)?.jsonPath ?: "") }
     var unit by remember(existing) { mutableStateOf((existing as? Panel.Sensor)?.unit ?: "") }
     var decimalsText by remember(existing) {
@@ -121,7 +143,10 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
 
     // Toggle fields
     var commandTopic by remember(existing) {
-        mutableStateOf((existing as? Panel.Toggle)?.commandTopic ?: (existing as? Panel.Button)?.commandTopic ?: "")
+        mutableStateOf(
+            (existing as? Panel.Toggle)?.commandTopic ?: (existing as? Panel.Button)?.commandTopic
+                ?: presetTopic ?: ""
+        )
     }
     var onPayload by remember(existing) { mutableStateOf((existing as? Panel.Toggle)?.onPayload ?: "ON") }
     var offPayload by remember(existing) { mutableStateOf((existing as? Panel.Toggle)?.offPayload ?: "OFF") }

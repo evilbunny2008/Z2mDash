@@ -1,0 +1,1 @@
+- Added a "+" button next to each cluster's delete icon, to add another tile straight into that cluster - prefilled with its broker and base topic, instead of only being able to add panels via the group header and typing the cluster name to match.
