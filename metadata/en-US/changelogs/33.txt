@@ -1,0 +1,1 @@
+- Fixed deleting a panel, cluster, or group that owned an auto-published "/app" config: it now clears that retained message on the broker too, instead of the deleted cluster immediately reappearing once the broker echoed the old config back.
