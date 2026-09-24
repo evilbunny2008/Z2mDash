@@ -6,6 +6,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -31,6 +34,8 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.UnfoldLess
+import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material3.AlertDialog
@@ -43,12 +48,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
@@ -68,13 +75,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.layout.LayoutCoordinates
+import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
@@ -102,6 +113,7 @@ import com.odiousapps.z2mdash.ui.components.ToggleTile
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlin.math.roundToInt
@@ -114,7 +126,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     val app = context.applicationContext as Z2mDashApplication
     val config by app.configRepository.config.collectAsState()
 
-    val listState = rememberLazyListState()
+    // A generous cache window (not just the default, near-zero buffer) keeps groups scrolled
+    // well out of view still composed rather than disposed - needed for cluster/group drag with
+    // auto-scroll: the dragged item's own long-press gesture runs as a coroutine tied to its
+    // composable, so disposing it mid-drag (confirmed on-device: holding near a screen edge for
+    // several seconds, auto-scrolling the origin group far enough away) cancels the gesture
+    // outright, with nothing moved - looking like the drag "just failed" partway through a hold.
+    val listState = rememberLazyListState(
+        cacheWindow = LazyLayoutCacheWindow(ahead = 4000.dp, behind = 4000.dp)
+    )
     // AddPanelScreen sets this on save (new panel, not edit) via Navigation Compose's result
     // passing pattern, so the newly-added panel's group can scroll into view.
     //
@@ -132,7 +152,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         if (groupIndex >= 0) {
             // Permit-join and pending-device banners occupy LazyColumn items ahead of the
             // groups, so the target index must account for however many are currently showing.
-            listState.requestScrollToItem(config.brokers.size + config.pendingAutoConfigDevices.size + groupIndex)
+            // Each group itself contributes its own sticky header item plus - only when
+            // expanded - a second item for its content (see the stickyHeader/item pair below),
+            // so a preceding expanded group must count as 2, not 1: undercounting here (as an
+            // earlier version did, counting exactly 1 per preceding group) lands the scroll
+            // short of the real target by one item per expanded group in between - with several
+            // expanded groups above the target, that shortfall was enough to look like it
+            // scrolled to the top of the screen instead.
+            var targetIndex = config.brokers.size + config.pendingAutoConfigDevices.size
+            for (i in 0 until groupIndex) {
+                targetIndex += if (config.groups[i].collapsed) 1 else 2
+            }
+            listState.requestScrollToItem(targetIndex)
         }
         backStackEntry.savedStateHandle.set<String?>("scrollToGroupId", null)
     }
@@ -217,6 +248,49 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             }
         }
 
+    // Window-space bounds of the LazyColumn's own viewport, captured once below via
+    // onGloballyPositioned on its modifier. Used by both computeNearest*Key functions to ignore
+    // stale entries in groupCenters/clusterCenters belonging to items that have since scrolled
+    // out of composition (LazyColumn disposes off-screen items, so their cached centre just
+    // freezes at wherever it last was rather than updating - without this filter, a drag could
+    // "snap" to one of those long-stale positions and look like it dropped somewhere random) -
+    // and by the auto-scroll effect below to know when a drag has neared the top/bottom edge.
+    var viewportBoundsInWindow by remember { mutableStateOf<Rect?>(null) }
+    val density = LocalDensity.current
+    // How far beyond the viewport's edges a cached centre is still trusted - generous enough that
+    // an item just barely scrolled out (or about to scroll in) still counts, but far enough stale
+    // entries from earlier in the session don't.
+    val staleCenterMarginPx = with(density) { 200.dp.toPx() }
+    fun isWithinTrustedBounds(center: Offset): Boolean {
+        val bounds = viewportBoundsInWindow ?: return true
+        return center.y in (bounds.top - staleCenterMarginPx)..(bounds.bottom + staleCenterMarginPx)
+    }
+
+    // Current drag's touch point, in WINDOW coordinates - shared by both group and cluster drags
+    // (only one is ever active at a time). Deliberately NOT tracked by accumulating each onDrag
+    // tick's local dragAmount, which is how this was first written and which broke once auto-
+    // scroll was added: change.position is reported relative to the pointerInput node's *local*
+    // layout frame, and that frame itself moves every time the list auto-scrolls underneath the
+    // still-held finger. Summing per-tick local deltas across a frame that's simultaneously
+    // shifting silently bakes the scroll amount into the running total on top of genuine finger
+    // movement - confirmed on-device via logging, where the local position reported mid-drag
+    // reached several thousand pixels off-screen and the accumulated total swung by more than a
+    // screen height for an ordinary drag, making nearest-match hunt for a target thousands of
+    // pixels away from every real candidate (so nothing but the dragged item itself ever "won").
+    // localToWindow sidesteps all of this: converting against the *current* actual layout every
+    // time yields a true window-space position regardless of how much has scrolled in between,
+    // with no running total to corrupt.
+    // Used directly (uncalibrated) as the "current position" for nearest-match against every
+    // other item's centre - deliberately NOT offset to track "the dragged card's own centre,
+    // shifted by however far the finger has moved" (an earlier version tried that, matching this
+    // feature's original pre-rewrite behaviour); on-device testing showed that made the
+    // highlighted drop target feel disconnected from the actual finger position whenever the
+    // touch didn't start exactly at the card's centre (e.g. grabbing its caption strip near the
+    // top of a multi-row cluster) - a fixed few-hundred-pixel gap between where the border lit up
+    // and where the finger visibly was. Using the raw touch point keeps the highlight tied to
+    // whatever's actually under the finger, which is what a user expects from a drag.
+    var dragTouchWindowPos by remember { mutableStateOf(Offset.Zero) }
+
     // Group drag-to-reorder state, shared across all groups (only one dragged at a time). Groups
     // vary wildly in height (collapsed, cluster count), so a uniform row-height division won't
     // work - instead this uses the same position-based nearest-match approach as cluster
@@ -224,12 +298,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // current drag position, re-read fresh at both onDrag and onDragEnd.
     var draggedGroupId by remember { mutableStateOf<String?>(null) }
     var draggedToGroupId by remember { mutableStateOf<String?>(null) }
-    var totalGroupDragOffset by remember { mutableStateOf(Offset.Zero) }
     val groupCenters = remember { mutableStateMapOf<String, Offset>() }
-    fun computeNearestGroupKey(draggedId: String): String? {
-        val draggedBaseline = groupCenters[draggedId] ?: Offset.Zero
-        val currentPosition = draggedBaseline + totalGroupDragOffset
+    // LayoutCoordinates for each group header's drag-handle node, keyed by group id - used only
+    // to convert onDrag's local touch position into window space (see dragTouchWindowPos above).
+    // Plain (non-Compose-state) map: written every layout pass but read only from inside these
+    // gesture callbacks, so it doesn't need to be observable/trigger recomposition.
+    val groupHeaderCoordinates = remember { mutableMapOf<String, LayoutCoordinates>() }
+    fun computeNearestGroupKey(draggedId: String, currentPosition: Offset): String? {
         return groupCenters.entries
+            .filter { (key, center) -> key == draggedId || isWithinTrustedBounds(center) }
             .minByOrNull { (_, center) -> (center - currentPosition).getDistance() }
             ?.key
     }
@@ -243,14 +320,83 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // scoped rather than by clusterKey alone, since two different groups can share a cluster name.
     var draggedClusterKey by remember { mutableStateOf<String?>(null) }
     var draggedToClusterKey by remember { mutableStateOf<String?>(null) }
-    var totalClusterDragOffset by remember { mutableStateOf(Offset.Zero) }
     val clusterCenters = remember { mutableStateMapOf<String, Offset>() }
-    fun computeNearestClusterKey(draggedKey: String): String? {
-        val draggedBaseline = clusterCenters[draggedKey] ?: Offset.Zero
-        val currentPosition = draggedBaseline + totalClusterDragOffset
+    // See groupHeaderCoordinates above - same purpose, for each cluster's caption row.
+    val clusterCaptionCoordinates = remember { mutableMapOf<String, LayoutCoordinates>() }
+    fun computeNearestClusterKey(draggedKey: String, currentPosition: Offset): String? {
         return clusterCenters.entries
+            .filter { (key, center) -> key == draggedKey || isWithinTrustedBounds(center) }
             .minByOrNull { (_, center) -> (center - currentPosition).getDistance() }
             ?.key
+    }
+
+    // One BringIntoViewRequester per currently-composed cluster card (keyed the same way as
+    // clusterCenters), so a completed move can precisely scroll the moved cluster itself into
+    // view - not just its group's header - once it's settled into its new spot. Set alongside
+    // (not instead of) the existing scrollToGroupId mechanism below: that coarse scroll is what
+    // actually gets a far-off-screen destination group's content composed in the first place
+    // (a LazyColumn item outside its composition window never runs, so its cluster cards - and
+    // their requesters here - wouldn't exist yet for bringIntoView to target); this then fine-
+    // tunes the final scroll position once the specific card has mounted.
+    val clusterBringIntoViewRequesters = remember { mutableStateMapOf<String, BringIntoViewRequester>() }
+    var pendingScrollToClusterKey by remember { mutableStateOf<String?>(null) }
+    LaunchedEffect(pendingScrollToClusterKey) {
+        val targetKey = pendingScrollToClusterKey ?: return@LaunchedEffect
+        // The target card may not have composed yet (e.g. its group just got expanded, or the
+        // coarse group-level scroll above is still landing) - poll briefly rather than give up
+        // on the first miss.
+        var requester: BringIntoViewRequester? = null
+        var attempts = 0
+        while (requester == null && attempts < 30) {
+            requester = clusterBringIntoViewRequesters[targetKey]
+            if (requester == null) {
+                delay(16)
+                attempts++
+            }
+        }
+        requester?.bringIntoView()
+        pendingScrollToClusterKey = null
+    }
+
+    // Auto-scrolls the LazyColumn while a group or cluster drag's virtual position nears the top/
+    // bottom edge of the viewport - without this, a drag aimed at a group scrolled out of view had
+    // no way to reach it (the list never moved), so users either gave up short of the target or
+    // kept dragging past the screen edge, at which point computeNearest*Key above would match
+    // whatever stale/off-screen entry happened to be numerically closest, dropping the cluster
+    // into an unrelated group. Speed ramps up the closer the drag sits to the edge.
+    val isDraggingGroupOrCluster = draggedGroupId != null || draggedClusterKey != null
+    val autoScrollEdgePx = with(density) { 72.dp.toPx() }
+    val autoScrollMaxSpeedPx = with(density) { 22.dp.toPx() }
+    LaunchedEffect(isDraggingGroupOrCluster) {
+        if (!isDraggingGroupOrCluster) return@LaunchedEffect
+        while (isActive) {
+            val bounds = viewportBoundsInWindow
+            val currentY = dragTouchWindowPos.y
+            if (bounds != null) {
+                val distanceFromTop = currentY - bounds.top
+                val distanceFromBottom = bounds.bottom - currentY
+                val scrollDelta = when {
+                    distanceFromTop < autoScrollEdgePx ->
+                        -autoScrollMaxSpeedPx * (1f - (distanceFromTop.coerceAtLeast(0f) / autoScrollEdgePx))
+                    distanceFromBottom < autoScrollEdgePx ->
+                        autoScrollMaxSpeedPx * (1f - (distanceFromBottom.coerceAtLeast(0f) / autoScrollEdgePx))
+                    else -> 0f
+                }
+                // dispatchRawDelta, not scrollBy - scrollBy goes through ScrollableState.scroll(),
+                // which cancels any other "ongoing scroll" at an equal-or-higher priority, and
+                // the active long-press drag gesture apparently gets caught up in that even
+                // though it never calls scroll() itself (both live under the same LazyColumn's
+                // nested-scroll machinery). With scrollBy here, on-device testing showed the
+                // drag's own pointer-event stream getting cut mid-gesture once auto-scroll
+                // kicked in near an edge - onDrag stopped firing (frozen on whichever cluster it
+                // last highlighted) while onDragEnd/onDragCancel never ran either, leaving
+                // draggedClusterKey stuck set long after the finger lifted. dispatchRawDelta is
+                // documented to bypass that mutual-exclusion path entirely and never touch an
+                // ongoing gesture, which is exactly what's needed here.
+                if (scrollDelta != 0f) listState.dispatchRawDelta(scrollDelta)
+            }
+            delay(16)
+        }
     }
 
     // Both standalone panels and cluster-card panels lay out as an exact 3-column grid. Tile
@@ -286,8 +432,24 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         floatingActionButton = {
-            FloatingActionButton(onClick = { navController.navigate("addGroup") }) {
-                Icon(Icons.Default.Add, contentDescription = "Add group")
+            Column(horizontalAlignment = Alignment.End) {
+                // Only worth showing once there's more than one group to bulk-collapse - with
+                // zero or one, per-group collapse (the header's own chevron) already covers it.
+                if (config.groups.size > 1) {
+                    val anyGroupExpanded = config.groups.any { !it.collapsed }
+                    SmallFloatingActionButton(
+                        onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) }
+                    ) {
+                        Icon(
+                            if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore,
+                            contentDescription = if (anyGroupExpanded) "Collapse all groups" else "Expand all groups"
+                        )
+                    }
+                    Spacer(Modifier.height(12.dp))
+                }
+                FloatingActionButton(onClick = { navController.navigate("addGroup") }) {
+                    Icon(Icons.Default.Add, contentDescription = "Add group")
+                }
             }
         },
         snackbarHost = { SnackbarHost(snackbarHostState) }
@@ -315,7 +477,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
         LazyColumn(
             state = listState,
-            modifier = Modifier.padding(padding).fillMaxSize(),
+            modifier = Modifier.padding(padding).fillMaxSize()
+                .onGloballyPositioned { viewportBoundsInWindow = it.boundsInWindow() },
             // Extra bottom padding so the last group's trailing icons can scroll clear of the
             // FAB, which floats on top of content without reserving space for itself.
             contentPadding = PaddingValues(bottom = 96.dp)
@@ -350,13 +513,24 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 val isDropTargetGroup = draggedGroupId != null && draggedGroupId != group.id &&
                     draggedToGroupId == group.id
                 val headerClusterKey = "${group.id}::__header__"
+                // Valid drop target for a cluster from *any* group, including this one's own -
+                // dropped on its own group's header, the cluster moves to the front of that group
+                // (see the "__header__" handling in the drop-end logic below) rather than being a
+                // no-op, so this highlights for that case too.
                 val isClusterDropTargetHeader = draggedClusterKey != null &&
-                    !draggedClusterKey!!.startsWith("${group.id}::") &&
                     draggedToClusterKey == headerClusterKey
                 // Sticky so the group's name/controls stay reachable while scrolled deep into its
                 // clusters. Wrapped in an opaque Surface since stickyHeader only pins position -
                 // without an explicit background, content underneath would show through.
                 stickyHeader(key = "${group.id}_header") {
+                LaunchedEffect(isClusterDropTargetHeader, isDropTargetGroup, draggedClusterKey, draggedToClusterKey) {
+                    Log.d(
+                        "Z2mDrag",
+                        "HEADER ${group.name} isClusterDropTargetHeader=$isClusterDropTargetHeader " +
+                            "isDropTargetGroup=$isDropTargetGroup draggedClusterKey=$draggedClusterKey " +
+                            "draggedToClusterKey=$draggedToClusterKey"
+                    )
+                }
                 Surface(color = MaterialTheme.colorScheme.background, tonalElevation = 2.dp) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
@@ -388,15 +562,17 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         Row(
                             modifier = Modifier.weight(1f)
                                 .clickable { app.configRepository.setGroupCollapsed(group.id, !group.collapsed) }
+                                .onGloballyPositioned { groupHeaderCoordinates[group.id] = it }
                                 // Long-press starts a drag-to-reorder, layered alongside the
                                 // tap-to-collapse clickable - distinguishable by Compose's gesture
                                 // system via timing (quick tap vs. sustained hold).
                                 .pointerInput(group.id) {
                                     detectDragGesturesAfterLongPress(
-                                        onDragStart = {
+                                        onDragStart = { startLocalPos ->
                                             draggedGroupId = group.id
                                             draggedToGroupId = group.id
-                                            totalGroupDragOffset = Offset.Zero
+                                            dragTouchWindowPos = groupHeaderCoordinates[group.id]
+                                                ?.localToWindow(startLocalPos) ?: Offset.Zero
                                         },
                                         onDragEnd = {
                                             val fromId = draggedGroupId
@@ -404,7 +580,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                             // last value - a quick drag-and-release might not
                                             // produce enough callbacks for a still-settling
                                             // position to have self-corrected by release time.
-                                            val toId = fromId?.let { computeNearestGroupKey(it) }
+                                            val toId = fromId?.let { computeNearestGroupKey(it, dragTouchWindowPos) }
                                             if (fromId != null && toId != null && fromId != toId) {
                                                 val previousGroups = app.configRepository.config.value.groups
                                                 val toIndex = previousGroups.indexOfFirst { it.id == toId }
@@ -425,10 +601,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                             draggedGroupId = null
                                             draggedToGroupId = null
                                         },
-                                        onDrag = { change, dragAmount ->
+                                        onDrag = { change, _ ->
                                             change.consume()
-                                            totalGroupDragOffset += dragAmount
-                                            draggedToGroupId = computeNearestGroupKey(group.id)
+                                            val coords = groupHeaderCoordinates[group.id]
+                                            if (coords != null) {
+                                                dragTouchWindowPos = coords.localToWindow(change.position)
+                                            }
+                                            draggedToGroupId = computeNearestGroupKey(group.id, dragTouchWindowPos)
                                         }
                                     )
                                 },
@@ -539,6 +718,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 )
                                             } else {
                                                 val compoundKey = "${group.id}::$name"
+                                                val clusterBringIntoViewRequester = remember(compoundKey) { BringIntoViewRequester() }
+                                                DisposableEffect(compoundKey) {
+                                                    clusterBringIntoViewRequesters[compoundKey] = clusterBringIntoViewRequester
+                                                    onDispose {
+                                                        Log.d("Z2mDrag", "DISPOSED $compoundKey draggedClusterKey=$draggedClusterKey")
+                                                        clusterBringIntoViewRequesters.remove(compoundKey)
+                                                        clusterCaptionCoordinates.remove(compoundKey)
+                                                    }
+                                                }
                                                 ClusterCard(
                                                     name = name,
                                                     panels = panelsInCluster,
@@ -582,19 +770,26 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                             topLeft.x + coordinates.size.width / 2f,
                                                             topLeft.y + coordinates.size.height / 2f
                                                         )
-                                                    },
-                                                    captionRowModifier = Modifier.pointerInput(compoundKey) {
+                                                    }
+                                                        .bringIntoViewRequester(clusterBringIntoViewRequester),
+                                                    captionRowModifier = Modifier
+                                                        .onGloballyPositioned { clusterCaptionCoordinates[compoundKey] = it }
+                                                        .pointerInput(compoundKey) {
                                                         detectDragGesturesAfterLongPress(
-                                                            onDragStart = {
+                                                            onDragStart = { startLocalPos ->
+                                                                Log.d("Z2mDrag", "START $compoundKey")
                                                                 draggedClusterKey = compoundKey
                                                                 draggedToClusterKey = compoundKey
-                                                                totalClusterDragOffset = Offset.Zero
+                                                                dragTouchWindowPos = clusterCaptionCoordinates[compoundKey]
+                                                                    ?.localToWindow(startLocalPos) ?: Offset.Zero
                                                             },
                                                             onDragEnd = {
+                                                              try {
                                                                 val fromKey = draggedClusterKey
                                                                 // Recomputed fresh here for the same reason as
                                                                 // draggedToClusterKey's own comment above.
-                                                                val toKey = fromKey?.let { computeNearestClusterKey(it) }
+                                                                val toKey = fromKey?.let { computeNearestClusterKey(it, dragTouchWindowPos) }
+                                                                Log.d("Z2mDrag", "END fromKey=$fromKey toKey=$toKey dragTouchWindowPos=$dragTouchWindowPos")
                                                                 if (fromKey != null && toKey != null && fromKey != toKey) {
                                                                     val fromGroupId = fromKey.substringBefore("::")
                                                                     val fromClusterName = fromKey.substringAfter("::")
@@ -616,7 +811,17 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                                 .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
                                                                                 .map { (key, _) -> key }
                                                                             val fromIndex = currentOrder.indexOf(fromClusterName)
-                                                                            val toIndex = currentOrder.indexOf(toClusterKey)
+                                                                            // "__header__" (the group's own header - see headerClusterKey
+                                                                            // above) never appears in currentOrder, so indexOf would return
+                                                                            // -1 and silently no-op the whole drop below - hovering the
+                                                                            // dragged cluster over its own group's label/header is a very
+                                                                            // natural way to aim for "put it first", so treat that
+                                                                            // specifically as index 0 rather than letting it fail quietly.
+                                                                            val toIndex = if (toClusterKey == "__header__") {
+                                                                                0
+                                                                            } else {
+                                                                                currentOrder.indexOf(toClusterKey)
+                                                                            }
                                                                             if (fromIndex >= 0 && toIndex >= 0) {
                                                                                 val previousGroups = app.configRepository.config.value.groups
                                                                                 val reordered = currentOrder.toMutableList()
@@ -625,9 +830,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                                 app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
                                                                                 pushGroupOrderUpdatesForClusters(app, reordered, currentGroup.panels)
                                                                                 publishAppTopicForClusterIfMissing(app, fromGroupId, fromClusterName)
-                                                                                showUndoSnackbar("Moved \"$fromClusterName\"", previousGroups) {
+                                                                                // Names the group in the confirmation and scrolls straight to it -
+                                                                                // otherwise a cluster reordered off the bottom of a tall group (or
+                                                                                // past whatever's currently on screen) just seems to vanish on
+                                                                                // release, with no indication of where it actually landed.
+                                                                                showUndoSnackbar(
+                                                                                    "Moved \"$fromClusterName\" within \"${currentGroup.name}\"",
+                                                                                    previousGroups
+                                                                                ) {
                                                                                     pushGroupOrderUpdatesForClusters(app, currentOrder, currentGroup.panels)
                                                                                 }
+                                                                                backStackEntry.savedStateHandle["scrollToGroupId"] = fromGroupId
+                                                                                pendingScrollToClusterKey = fromKey
                                                                             }
                                                                         }
                                                                     } else {
@@ -649,26 +863,48 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                             )
                                                                         }
                                                                         publishAppTopicForClusterIfMissing(app, toGroupId, fromClusterName)
-                                                                        showUndoSnackbar("Moved \"$fromClusterName\"", liveGroups) {
+                                                                        // Names the destination group in the confirmation, expands it if it
+                                                                        // was collapsed, and scrolls straight to it - a cross-group move is
+                                                                        // otherwise invisible: the cluster disappears from where it was
+                                                                        // dragged from with nothing on screen showing where it went.
+                                                                        showUndoSnackbar(
+                                                                            "Moved \"$fromClusterName\" to \"${newGroupName ?: "another group"}\"",
+                                                                            liveGroups
+                                                                        ) {
                                                                             if (oldGroupName != null) {
                                                                                 pushGroupMoveForAutoConfiguredDevices(
                                                                                     app, movedPanelIds, oldGroupName
                                                                                 )
                                                                             }
                                                                         }
+                                                                        app.configRepository.setGroupCollapsed(toGroupId, false)
+                                                                        backStackEntry.savedStateHandle["scrollToGroupId"] = toGroupId
+                                                                        pendingScrollToClusterKey = "$toGroupId::$fromClusterName"
                                                                     }
                                                                 }
+                                                              } catch (e: Exception) {
+                                                                // Guards against draggedClusterKey getting stuck set (leaving the
+                                                                // dimmed/bordered drag visuals frozen on screen) if anything above
+                                                                // throws - state still resets via finally either way.
+                                                                Log.e("Z2mDash", "Cluster drag drop failed", e)
+                                                              } finally {
+                                                                Log.d("Z2mDrag", "END-RESET (was $compoundKey)")
                                                                 draggedClusterKey = null
                                                                 draggedToClusterKey = null
+                                                              }
                                                             },
                                                             onDragCancel = {
+                                                                Log.d("Z2mDrag", "CANCEL $compoundKey")
                                                                 draggedClusterKey = null
                                                                 draggedToClusterKey = null
                                                             },
-                                                            onDrag = { change, dragAmount ->
+                                                            onDrag = { change, _ ->
                                                                 change.consume()
-                                                                totalClusterDragOffset += dragAmount
-                                                                draggedToClusterKey = computeNearestClusterKey(compoundKey)
+                                                                val coords = clusterCaptionCoordinates[compoundKey]
+                                                                if (coords != null) {
+                                                                    dragTouchWindowPos = coords.localToWindow(change.position)
+                                                                }
+                                                                draggedToClusterKey = computeNearestClusterKey(compoundKey, dragTouchWindowPos)
                                                             }
                                                         )
                                                     }

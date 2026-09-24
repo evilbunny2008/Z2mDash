@@ -248,6 +248,11 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         cfg.copy(groups = cfg.groups.map { if (it.id == groupId) it.copy(collapsed = collapsed) else it })
     }
 
+    /** Collapses or expands every group at once - the Home screen's "collapse/expand all" FAB. */
+    fun setAllGroupsCollapsed(collapsed: Boolean) = update { cfg ->
+        cfg.copy(groups = cfg.groups.map { it.copy(collapsed = collapsed) })
+    }
+
     /**
      * Reassigns displayOrder for every panel in one cluster to match [orderedPanelIds]
      * (first = lowest), leaving other clusters/panels untouched. Preserves the cluster's
