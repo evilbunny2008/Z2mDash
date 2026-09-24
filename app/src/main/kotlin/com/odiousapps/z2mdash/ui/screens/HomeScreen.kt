@@ -112,6 +112,7 @@ import com.odiousapps.z2mdash.ui.components.SensorTile
 import com.odiousapps.z2mdash.ui.components.ToggleTile
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
@@ -290,6 +291,16 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // and where the finger visibly was. Using the raw touch point keeps the highlight tied to
     // whatever's actually under the finger, which is what a user expects from a drag.
     var dragTouchWindowPos by remember { mutableStateOf(Offset.Zero) }
+    // Updated on every onDragStart/onDrag tick (group or cluster) - lets the watchdog below
+    // detect a drag whose gesture has gone silent (no further onDrag calls) and force it to
+    // end. Needed because of a confirmed-on-device Compose pointer-routing edge case: after
+    // hovering a dragged cluster over a group's own header/label for a while, onDragEnd and
+    // onDragCancel can both simply never fire for the rest of that gesture - the coroutine
+    // just stops receiving pointer events, even though the app and its other coroutines (this
+    // watchdog included) keep running completely normally. Without this, draggedClusterKey
+    // stays set forever - the drop-target border included - recoverable only by restarting
+    // the app, since nothing else ever clears it.
+    var lastDragTickAtMs by remember { mutableLongStateOf(0L) }
 
     // Group drag-to-reorder state, shared across all groups (only one dragged at a time). Groups
     // vary wildly in height (collapsed, cluster count), so a uniform row-height division won't
@@ -369,7 +380,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     val autoScrollMaxSpeedPx = with(density) { 22.dp.toPx() }
     LaunchedEffect(isDraggingGroupOrCluster) {
         if (!isDraggingGroupOrCluster) return@LaunchedEffect
+        var tick = 0
         while (isActive) {
+            tick++
+            if (tick % 60 == 0) {
+                Log.d("Z2mDrag", "HEARTBEAT tick=$tick draggedClusterKey=$draggedClusterKey")
+            }
             val bounds = viewportBoundsInWindow
             val currentY = dragTouchWindowPos.y
             if (bounds != null) {
@@ -523,14 +539,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 // clusters. Wrapped in an opaque Surface since stickyHeader only pins position -
                 // without an explicit background, content underneath would show through.
                 stickyHeader(key = "${group.id}_header") {
-                LaunchedEffect(isClusterDropTargetHeader, isDropTargetGroup, draggedClusterKey, draggedToClusterKey) {
-                    Log.d(
-                        "Z2mDrag",
-                        "HEADER ${group.name} isClusterDropTargetHeader=$isClusterDropTargetHeader " +
-                            "isDropTargetGroup=$isDropTargetGroup draggedClusterKey=$draggedClusterKey " +
-                            "draggedToClusterKey=$draggedToClusterKey"
-                    )
-                }
                 Surface(color = MaterialTheme.colorScheme.background, tonalElevation = 2.dp) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
@@ -571,6 +579,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         onDragStart = { startLocalPos ->
                                             draggedGroupId = group.id
                                             draggedToGroupId = group.id
+                                            lastDragTickAtMs = System.currentTimeMillis()
                                             dragTouchWindowPos = groupHeaderCoordinates[group.id]
                                                 ?.localToWindow(startLocalPos) ?: Offset.Zero
                                         },
@@ -789,7 +798,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                 // Recomputed fresh here for the same reason as
                                                                 // draggedToClusterKey's own comment above.
                                                                 val toKey = fromKey?.let { computeNearestClusterKey(it, dragTouchWindowPos) }
-                                                                Log.d("Z2mDrag", "END fromKey=$fromKey toKey=$toKey dragTouchWindowPos=$dragTouchWindowPos")
+                                                                Log.d("Z2mDrag", "END fromKey=$fromKey toKey=$toKey")
                                                                 if (fromKey != null && toKey != null && fromKey != toKey) {
                                                                     val fromGroupId = fromKey.substringBefore("::")
                                                                     val fromClusterName = fromKey.substringAfter("::")
@@ -882,13 +891,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                         pendingScrollToClusterKey = "$toGroupId::$fromClusterName"
                                                                     }
                                                                 }
+                                                              } catch (c: CancellationException) {
+                                                                Log.d("Z2mDrag", "END-CANCELLED $compoundKey")
+                                                                draggedClusterKey = null
+                                                                draggedToClusterKey = null
+                                                                throw c
                                                               } catch (e: Exception) {
                                                                 // Guards against draggedClusterKey getting stuck set (leaving the
                                                                 // dimmed/bordered drag visuals frozen on screen) if anything above
                                                                 // throws - state still resets via finally either way.
                                                                 Log.e("Z2mDash", "Cluster drag drop failed", e)
                                                               } finally {
-                                                                Log.d("Z2mDrag", "END-RESET (was $compoundKey)")
+                                                                Log.d("Z2mDrag", "END-RESET $compoundKey")
                                                                 draggedClusterKey = null
                                                                 draggedToClusterKey = null
                                                               }
@@ -905,6 +919,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                     dragTouchWindowPos = coords.localToWindow(change.position)
                                                                 }
                                                                 draggedToClusterKey = computeNearestClusterKey(compoundKey, dragTouchWindowPos)
+                                                                Log.d(
+                                                                    "Z2mDrag",
+                                                                    "TICK pos=${change.position} window=$dragTouchWindowPos " +
+                                                                        "target=$draggedToClusterKey pressed=${change.pressed}"
+                                                                )
                                                             }
                                                         )
                                                     }
