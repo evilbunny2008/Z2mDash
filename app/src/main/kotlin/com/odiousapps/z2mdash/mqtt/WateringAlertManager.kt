@@ -128,7 +128,7 @@ class WateringAlertManager(
             .setContentText(text)
             .setSmallIcon(android.R.drawable.ic_popup_reminder)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory(NotificationCompat.CATEGORY_STATUS)
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
@@ -152,19 +152,21 @@ class WateringAlertManager(
     private fun createChannelIfNeeded() {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
 
+        // USAGE_ALARM (not USAGE_NOTIFICATION_EVENT) deliberately - this is meant to be heard
+        // without holding or checking the phone while watering outside, so it needs the alarm
+        // stream's own (typically much higher) volume ceiling and its bypassing of silent/Do Not
+        // Disturb, the same as the smoke alert already relies on for the same reason.
         val chimeAttributes = AudioAttributes.Builder()
-            .setUsage(AudioAttributes.USAGE_NOTIFICATION_EVENT)
+            .setUsage(AudioAttributes.USAGE_ALARM)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
-        // A short, deliberately unobtrusive custom chime (res/raw/watering_alert.mp3) - this is
-        // meant to be noticed while pottering around outside, not to demand attention the way the
-        // smoke alarm sound does.
         val chimeUri = "android.resource://${context.packageName}/${R.raw.watering_alert}".toUri()
 
         val channel = NotificationChannel(
             CHANNEL_ID, "Watering alerts", NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Vibrates and chimes when a moisture sensor reaches the middle of its ideal range while rising"
+            description = "Vibrates and chimes (loudly, via the alarm volume) when a moisture sensor " +
+                "reaches the middle of its ideal range while rising"
             enableVibration(true)
             setSound(chimeUri, chimeAttributes)
         }
@@ -172,7 +174,11 @@ class WateringAlertManager(
     }
 
     companion object {
-        private const val CHANNEL_ID = "watering_alert"
+        // "_v2" deliberately - a channel's sound/importance/vibration are frozen the first time
+        // Android creates it, so bumping the id is the only way a louder sound or changed
+        // AudioAttributes actually reaches anyone who already triggered (and so already has) the
+        // original channel; reusing the old id would silently keep serving their old settings.
+        private const val CHANNEL_ID = "watering_alert_v2"
         private const val TEST_ALERT_KEY = "test|Z2mDash watering test alert"
         // In the sensor's own units (moisture is normally 0-100%, so this reads as "5%").
         private const val RISE_THRESHOLD = 5.0
