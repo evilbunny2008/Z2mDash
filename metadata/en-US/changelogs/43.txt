@@ -1,0 +1,1 @@
+- Fixed the new watering alert chime being barely audible even at max volume - it's now at a comparable level to the smoke alarm sound, just noticeably softer.
