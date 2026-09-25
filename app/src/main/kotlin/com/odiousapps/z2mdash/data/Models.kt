@@ -191,6 +191,12 @@ data class AppConfig(
     // a configured panel, so nothing is missed just because a detector wasn't added. On by default.
     val smokeAlertsEnabled: Boolean = true,
     val smokeAlertSoundEnabled: Boolean = true,
+    // Vibrates and plays a short chime when a moisture sensor's value rises up through the
+    // middle of its configured ideal range (see Panel.Sensor.idealRangeTopic) - lets you tell
+    // when a plant's had enough water without having to watch the screen the whole time. Only
+    // fires while the reading is actually increasing, not just sitting above the midpoint,
+    // and only once per rise (see WateringAlertManager). On by default.
+    val wateringAlertsEnabled: Boolean = true,
     // Whether the one-time decimals migration (see ConfigRepository.load) has already run -
     // without this flag it would re-apply every launch and overwrite a deliberate later choice.
     val decimalsMigrationApplied: Boolean = false,
@@ -199,9 +205,9 @@ data class AppConfig(
     val rememberedExportPassword: String? = null,
     // Red/blue flash on a sensor tile outside its ideal range. Does NOT control the cluster
     // card's stale-data indicator (that blink wasn't noticeable enough to be worth it, and is
-    // now always static). When false, an out-of-range tile still shows its warning colour, static
-    // rather than pulsing.
-    val staleDataBlinkEnabled: Boolean = true,
+    // now always static). Off by default - an out-of-range tile still shows its warning colour,
+    // just static rather than pulsing, unless turned on.
+    val staleDataBlinkEnabled: Boolean = false,
     // Caps each tile's width on the Home screen; the smaller of this or the even-fill-at-3-per-row
     // width is used. 110 was this app's original hardcoded constant, kept as the default.
     val tileWidthDp: Int = 110,

@@ -143,7 +143,7 @@ fun SettingsScreen(navController: NavController) {
             item {
                 ListItem(
                     headlineContent = { Text("Alarm/Alert") },
-                    supportingContent = { Text("Smoke alerts, sound, and a test notification") },
+                    supportingContent = { Text("Smoke and watering alerts, sound, and test notifications") },
                     leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },
                     modifier = Modifier.clickable { navController.navigate("alertSettings") }
                 )

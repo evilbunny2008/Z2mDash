@@ -1,0 +1,2 @@
+- Added watering alerts: vibrates and plays a short chime when a moisture sensor's reading rises up through the middle of its ideal range, so you can tell when a plant's had enough water without watching the screen. On by default, with a new "Watering Alerts" toggle and test button under Settings > Alarm/Alert to turn it off.
+- Blink Warnings (the pulsing sensor-tile alert) now defaults to off instead of on - turn it back on under Settings if you preferred the pulsing.

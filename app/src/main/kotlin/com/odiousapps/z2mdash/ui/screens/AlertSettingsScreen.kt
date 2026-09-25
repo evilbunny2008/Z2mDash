@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -90,6 +91,33 @@ fun AlertSettingsScreen(navController: NavController) {
                     "Fires a real notification (with sound, if enabled above) using the exact " +
                         "same logic as a genuine smoke alert \u2013 a good way to confirm it'll " +
                         "actually get your attention before you need it to.",
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center
+                )
+            }
+            ListItem(
+                headlineContent = { Text("Watering Alerts") },
+                supportingContent = {
+                    Text("Vibrate and chime when a moisture sensor rises through the middle of its ideal range")
+                },
+                trailingContent = { Switch(checked = config.wateringAlertsEnabled, onCheckedChange = null) },
+                modifier = Modifier.toggleableRow(config.wateringAlertsEnabled) { enabled ->
+                    app.configRepository.update { it.copy(wateringAlertsEnabled = enabled) }
+                }
+            )
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = { app.wateringAlertManager.triggerTestAlert() }) {
+                    Icon(Icons.Default.WaterDrop, contentDescription = null)
+                    Spacer(Modifier.padding(4.dp))
+                    Text("Test Notification")
+                }
+                Text(
+                    "Fires a real notification with the watering chime and vibration, regardless " +
+                        "of the toggle above \u2013 a good way to hear it before you rely on it.",
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )
