@@ -1,0 +1,1 @@
+- The watering alert is now much louder: it plays through the phone's alarm volume (like the smoke alert) instead of the quieter notification volume, and the chime itself is a fuller double-ding at close to full volume - meant to be heard without having to hold or check the phone while watering.
