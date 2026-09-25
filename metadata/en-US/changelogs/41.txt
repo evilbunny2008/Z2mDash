@@ -1,0 +1,3 @@
+- Fixed dragging groups/clusters to reorder them: the drop target no longer drifts wildly the further you drag, the list auto-scrolls near the top/bottom of the screen, and a drag that gets stuck now recovers on its own instead of needing a restart.
+- Dropping a cluster now names which group it landed in and scrolls straight to it, and dropping onto a group's own label moves it to the front of that group instead of doing nothing.
+- Added a "collapse/expand all groups" button next to "Add group", for quickly tidying up a long Home screen.

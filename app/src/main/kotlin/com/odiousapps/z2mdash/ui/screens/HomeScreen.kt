@@ -380,11 +380,21 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     val autoScrollMaxSpeedPx = with(density) { 22.dp.toPx() }
     LaunchedEffect(isDraggingGroupOrCluster) {
         if (!isDraggingGroupOrCluster) return@LaunchedEffect
-        var tick = 0
         while (isActive) {
-            tick++
-            if (tick % 60 == 0) {
-                Log.d("Z2mDrag", "HEARTBEAT tick=$tick draggedClusterKey=$draggedClusterKey")
+            // Watchdog: a genuine active drag ticks onDrag ~60 times/sec, so 1.5s of silence
+            // reliably means the gesture has gone dead - see lastDragTickAtMs's own comment for
+            // why this is needed (a confirmed-on-device Compose pointer-routing edge case where
+            // onDragEnd/onDragCancel can simply never fire again for the rest of a gesture,
+            // otherwise leaving this state - and the drop-target border with it - stuck forever
+            // with no recovery short of restarting the app). This coroutine is what's still
+            // reliably running to notice and recover from that; the drag itself is not.
+            if (System.currentTimeMillis() - lastDragTickAtMs > 1_500) {
+                Log.w("Z2mDash", "Drag watchdog: gesture went silent, forcing drag state to reset")
+                draggedGroupId = null
+                draggedToGroupId = null
+                draggedClusterKey = null
+                draggedToClusterKey = null
+                return@LaunchedEffect
             }
             val bounds = viewportBoundsInWindow
             val currentY = dragTouchWindowPos.y
@@ -612,6 +622,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         },
                                         onDrag = { change, _ ->
                                             change.consume()
+                                            lastDragTickAtMs = System.currentTimeMillis()
                                             val coords = groupHeaderCoordinates[group.id]
                                             if (coords != null) {
                                                 dragTouchWindowPos = coords.localToWindow(change.position)
@@ -731,7 +742,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 DisposableEffect(compoundKey) {
                                                     clusterBringIntoViewRequesters[compoundKey] = clusterBringIntoViewRequester
                                                     onDispose {
-                                                        Log.d("Z2mDrag", "DISPOSED $compoundKey draggedClusterKey=$draggedClusterKey")
                                                         clusterBringIntoViewRequesters.remove(compoundKey)
                                                         clusterCaptionCoordinates.remove(compoundKey)
                                                     }
@@ -786,9 +796,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         .pointerInput(compoundKey) {
                                                         detectDragGesturesAfterLongPress(
                                                             onDragStart = { startLocalPos ->
-                                                                Log.d("Z2mDrag", "START $compoundKey")
                                                                 draggedClusterKey = compoundKey
                                                                 draggedToClusterKey = compoundKey
+                                                                lastDragTickAtMs = System.currentTimeMillis()
                                                                 dragTouchWindowPos = clusterCaptionCoordinates[compoundKey]
                                                                     ?.localToWindow(startLocalPos) ?: Offset.Zero
                                                             },
@@ -798,7 +808,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                 // Recomputed fresh here for the same reason as
                                                                 // draggedToClusterKey's own comment above.
                                                                 val toKey = fromKey?.let { computeNearestClusterKey(it, dragTouchWindowPos) }
-                                                                Log.d("Z2mDrag", "END fromKey=$fromKey toKey=$toKey")
                                                                 if (fromKey != null && toKey != null && fromKey != toKey) {
                                                                     val fromGroupId = fromKey.substringBefore("::")
                                                                     val fromClusterName = fromKey.substringAfter("::")
@@ -892,7 +901,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                     }
                                                                 }
                                                               } catch (c: CancellationException) {
-                                                                Log.d("Z2mDrag", "END-CANCELLED $compoundKey")
                                                                 draggedClusterKey = null
                                                                 draggedToClusterKey = null
                                                                 throw c
@@ -902,28 +910,22 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                 // throws - state still resets via finally either way.
                                                                 Log.e("Z2mDash", "Cluster drag drop failed", e)
                                                               } finally {
-                                                                Log.d("Z2mDrag", "END-RESET $compoundKey")
                                                                 draggedClusterKey = null
                                                                 draggedToClusterKey = null
                                                               }
                                                             },
                                                             onDragCancel = {
-                                                                Log.d("Z2mDrag", "CANCEL $compoundKey")
                                                                 draggedClusterKey = null
                                                                 draggedToClusterKey = null
                                                             },
                                                             onDrag = { change, _ ->
                                                                 change.consume()
+                                                                lastDragTickAtMs = System.currentTimeMillis()
                                                                 val coords = clusterCaptionCoordinates[compoundKey]
                                                                 if (coords != null) {
                                                                     dragTouchWindowPos = coords.localToWindow(change.position)
                                                                 }
                                                                 draggedToClusterKey = computeNearestClusterKey(compoundKey, dragTouchWindowPos)
-                                                                Log.d(
-                                                                    "Z2mDrag",
-                                                                    "TICK pos=${change.position} window=$dragTouchWindowPos " +
-                                                                        "target=$draggedToClusterKey pressed=${change.pressed}"
-                                                                )
                                                             }
                                                         )
                                                     }
