@@ -191,6 +191,10 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             )
             Spacer(Modifier.height(16.dp))
 
+            // Lets Down (see onDirectionDown below) jump into the open menu - without an explicit
+            // focus target, nothing in the popup ever received D-pad focus (same gap as the
+            // "Permit join via" dropdown further down this screen).
+            val firstProtocolFocusRequester = remember { FocusRequester() }
             ExposedDropdownMenuBox(
                 expanded = protocolExpanded,
                 onExpandedChange = { protocolExpanded = it }
@@ -201,19 +205,40 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     onValueChange = {},
                     label = { Text("Protocol") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = protocolExpanded) },
-                    modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    modifier = Modifier.fillMaxWidth()
+                        .clearFocusOnBack(
+                            onDirectionDown = {
+                                if (protocolExpanded) {
+                                    firstProtocolFocusRequester.requestFocus()
+                                    true
+                                } else {
+                                    false
+                                }
+                            }
+                        )
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                 )
                 ExposedDropdownMenu(
                     expanded = protocolExpanded,
                     onDismissRequest = { protocolExpanded = false }
                 ) {
-                    MqttProtocol.entries.forEach { proto ->
+                    MqttProtocol.entries.forEachIndexed { index, proto ->
+                        val onProtoClick = {
+                            broker = broker.copy(protocol = proto, port = defaultPortFor(proto))
+                            protocolExpanded = false
+                        }
                         DropdownMenuItem(
                             text = { Text(protocolLabel(proto)) },
-                            onClick = {
-                                broker = broker.copy(protocol = proto, port = defaultPortFor(proto))
-                                protocolExpanded = false
-                            }
+                            onClick = onProtoClick,
+                            modifier = Modifier
+                                .onDpadSelect(onProtoClick)
+                                .then(
+                                    if (index == 0) {
+                                        Modifier.focusRequester(firstProtocolFocusRequester)
+                                    } else {
+                                        Modifier
+                                    }
+                                )
                         )
                     }
                 }

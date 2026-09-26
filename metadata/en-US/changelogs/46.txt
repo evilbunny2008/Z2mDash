@@ -1,0 +1,1 @@
+- Fixed a TV remote bug on the Add/Edit Broker screen where focusing the Protocol dropdown could get stuck, unable to move down to the rest of the form.
