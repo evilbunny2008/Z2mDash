@@ -54,6 +54,7 @@ import com.odiousapps.z2mdash.ui.tv.blockDirectionDown
 import com.odiousapps.z2mdash.ui.tv.isTelevision
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toTvColorScheme
+import com.odiousapps.z2mdash.ui.tv.tvLeftEdgeFallbackToRail
 
 private data class BottomTab(val route: String, val label: String, val icon: ImageVector)
 
@@ -136,12 +137,20 @@ private fun TvNavShell(
         // Focus the first rail item as soon as this shell appears - Compose doesn't autofocus
         // anything on a D-pad's first press (confirmed on-device: without this, every D-pad press
         // was inert). Every other screen is then reachable by moving focus right from here.
-        val homeItemFocusRequester = remember { FocusRequester() }
-        LaunchedEffect(Unit) { homeItemFocusRequester.requestFocus() }
+        // One requester per rail item (not just Home's) - tvLeftEdgeFallbackToRail below needs to
+        // send focus back to whichever tab is actually current, not always Home.
+        val railFocusRequesters = remember { List(bottomTabs.size) { FocusRequester() } }
+        LaunchedEffect(Unit) { railFocusRequesters[0].requestFocus() }
         // Exposed via LocalTvContentFocusRequester so AppNavGraph can focus directly into this
         // content area on a non-tab route, instead of searching from "nothing focused" - see that
         // CompositionLocal's own comment.
         val contentFocusRequester = remember { FocusRequester() }
+        // Falls back to Home's requester for a non-tab route (e.g. Settings' Alert sub-screen) -
+        // none of the 3 rail items are "current" there either, and Home is as reasonable a default
+        // as any for where Left should land.
+        val selectedRailFocusRequester = railFocusRequesters[
+            bottomTabs.indexOfFirst { it.route == currentRoute }.coerceAtLeast(0)
+        ]
         NavigationDrawer(
             drawerState = rememberDrawerState(DrawerValue.Closed),
             drawerContent = {
@@ -164,7 +173,7 @@ private fun TvNavShell(
                             },
                             modifier = Modifier
                                 .onDpadSelect(onTabClick)
-                                .then(if (index == 0) Modifier.focusRequester(homeItemFocusRequester) else Modifier)
+                                .focusRequester(railFocusRequesters[index])
                                 .then(if (index == bottomTabs.lastIndex) Modifier.blockDirectionDown() else Modifier)
                         ) {
                             androidx.tv.material3.Text(tab.label)
@@ -174,7 +183,11 @@ private fun TvNavShell(
             }
         ) {
             CompositionLocalProvider(LocalTvContentFocusRequester provides contentFocusRequester) {
-                Box(Modifier.focusRequester(contentFocusRequester).focusGroup()) {
+                Box(
+                    Modifier.focusRequester(contentFocusRequester)
+                        .focusGroup()
+                        .tvLeftEdgeFallbackToRail(selectedRailFocusRequester)
+                ) {
                     content(Modifier)
                 }
             }

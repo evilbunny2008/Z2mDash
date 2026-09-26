@@ -64,6 +64,7 @@ import com.odiousapps.z2mdash.data.MqttProtocol
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.rememberTvKeyboardGate
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
@@ -158,31 +159,37 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                 ) { Text("Import via code") }
                 Spacer(Modifier.height(16.dp))
             }
+            val nameKeyboardGate = rememberTvKeyboardGate()
             OutlinedTextField(
                 value = broker.name,
                 onValueChange = { broker = broker.copy(name = it) },
                 label = { Text("Name") },
+                readOnly = nameKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(nameKeyboardGate.modifier())
             )
             Spacer(Modifier.height(16.dp))
+            val hostKeyboardGate = rememberTvKeyboardGate()
             OutlinedTextField(
                 value = broker.host,
                 onValueChange = { broker = broker.copy(host = it) },
                 label = { Text("Host") },
                 isError = broker.host.isBlank(),
+                readOnly = hostKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(hostKeyboardGate.modifier())
             )
             Spacer(Modifier.height(16.dp))
 
+            val baseTopicKeyboardGate = rememberTvKeyboardGate()
             OutlinedTextField(
                 value = broker.baseTopic,
                 onValueChange = { broker = broker.copy(baseTopic = it) },
                 label = { Text("Base topic") },
                 placeholder = { Text("zigbee2mqtt") },
+                readOnly = baseTopicKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(baseTopicKeyboardGate.modifier())
             )
             Text(
                 "The app watches \"<base topic>/#\" for devices and their /app configs, " +
@@ -245,22 +252,26 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             }
 
             Spacer(Modifier.height(16.dp))
+            val portKeyboardGate = rememberTvKeyboardGate()
             OutlinedTextField(
                 value = broker.port.toString(),
                 onValueChange = { it.toIntOrNull()?.let { p -> broker = broker.copy(port = p) } },
                 label = { Text("Port") },
+                readOnly = portKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(portKeyboardGate.modifier())
             )
 
             if (broker.protocol == MqttProtocol.WS || broker.protocol == MqttProtocol.WSS) {
                 Spacer(Modifier.height(16.dp))
+                val webSocketPathKeyboardGate = rememberTvKeyboardGate()
                 OutlinedTextField(
                     value = broker.webSocketPath,
                     onValueChange = { broker = broker.copy(webSocketPath = it) },
                     label = { Text("WebSocket path") },
+                    readOnly = webSocketPathKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(webSocketPathKeyboardGate.modifier())
                 )
             }
 
@@ -308,14 +319,17 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             }
             if (broker.authEnabled) {
                 Spacer(Modifier.height(8.dp))
+                val usernameKeyboardGate = rememberTvKeyboardGate()
                 OutlinedTextField(
                     value = broker.username,
                     onValueChange = { broker = broker.copy(username = it) },
                     label = { Text("Username") },
+                    readOnly = usernameKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(usernameKeyboardGate.modifier())
                 )
                 Spacer(Modifier.height(8.dp))
+                val passwordKeyboardGate = rememberTvKeyboardGate()
                 OutlinedTextField(
                     value = broker.password,
                     onValueChange = { broker = broker.copy(password = it) },
@@ -326,8 +340,9 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                             Text(if (showPassword) "Hide" else "Show")
                         }
                     },
+                    readOnly = passwordKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(passwordKeyboardGate.modifier())
                 )
             }
 
@@ -342,12 +357,14 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
 
             if (showAdditional) {
                 Spacer(Modifier.height(8.dp))
+                val clientIdKeyboardGate = rememberTvKeyboardGate()
                 OutlinedTextField(
                     value = broker.clientId,
                     onValueChange = { broker = broker.copy(clientId = it) },
                     label = { Text("Client ID") },
+                    readOnly = clientIdKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(clientIdKeyboardGate.modifier())
                 )
                 Spacer(Modifier.height(16.dp))
                 Row(
@@ -365,24 +382,28 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     Switch(checked = broker.cleanSession, onCheckedChange = null)
                 }
                 Spacer(Modifier.height(16.dp))
+                val keepAliveKeyboardGate = rememberTvKeyboardGate()
                 OutlinedTextField(
                     value = broker.keepAliveSeconds.toString(),
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(keepAliveSeconds = v) } },
                     label = { Text("Keep Alive Interval") },
+                    readOnly = keepAliveKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(keepAliveKeyboardGate.modifier())
                 )
                 Text(
                     "Time interval in seconds between keep alive messages. Default: 60 seconds. Range: 5\u2013120 seconds",
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(16.dp))
+                val connectionTimeoutKeyboardGate = rememberTvKeyboardGate()
                 OutlinedTextField(
                     value = broker.connectionTimeoutSeconds.toString(),
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(connectionTimeoutSeconds = v) } },
                     label = { Text("Connection Timeout") },
+                    readOnly = connectionTimeoutKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(connectionTimeoutKeyboardGate.modifier())
                 )
                 Text(
                     "Maximum wait time for connection. Default: 30 seconds. Range: 1\u2013300 seconds",
@@ -501,6 +522,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                     // Lets Down (see onDirectionDown below) jump into the open suggestion list -
                     // without an explicit focus target, nothing in the popup ever received D-pad focus.
                     val firstSuggestionFocusRequester = remember { FocusRequester() }
+                    val permitJoinDeviceKeyboardGate = rememberTvKeyboardGate()
                     ExposedDropdownMenuBox(
                         expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
                         onExpandedChange = { permitJoinDeviceExpanded = it }
@@ -513,6 +535,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                             },
                             label = { Text("Permit join via (optional)") },
                             placeholder = { Text("Blank = whole network") },
+                            readOnly = permitJoinDeviceKeyboardGate.readOnly,
                             keyboardOptions = tvAwareKeyboardOptions(),
                             trailingIcon = if (routerFriendlyNames.isNotEmpty()) {
                                 { ExposedDropdownMenuDefaults.TrailingIcon(expanded = permitJoinDeviceExpanded) }
@@ -528,6 +551,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                                         }
                                     }
                                 )
+                                .then(permitJoinDeviceKeyboardGate.modifier())
                                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
                         )
                         ExposedDropdownMenu(

@@ -1,0 +1,1 @@
+- Fixed a TV remote bug where pressing Left on the main screen often couldn't reach the side menu (Home/Terminal/Settings) once scrolled down past the first group - it only worked near the very top of the screen before.

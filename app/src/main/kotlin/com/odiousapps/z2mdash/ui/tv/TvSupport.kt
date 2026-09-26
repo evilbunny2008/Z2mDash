@@ -19,11 +19,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
+import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
 import androidx.compose.ui.platform.LocalFocusManager
@@ -76,6 +78,38 @@ fun Modifier.horizontalSliderDpadFocusNav(): Modifier = composed {
                 true
             }
             else -> false
+        }
+    }
+}
+
+/**
+ * Falls back to focusing the TV nav rail when DirectionLeft has nowhere else to go from inside
+ * the content area. Confirmed on-device: Compose's own directional focus search only considers
+ * candidates roughly vertically aligned with the currently-focused item, so a tile several groups
+ * down Home's long scrolling list - nowhere near the rail's 3 items clustered near the top of the
+ * screen - had no valid candidate, and Left did nothing at all. That left the rail unreachable by
+ * D-pad except by scrolling all the way back to the very top first, where a tile happens to align.
+ *
+ * Uses onKeyEvent (bubble phase), not onPreviewKeyEvent, so a focused text field's own
+ * Left-as-cursor-move handling (see [clearFocusOnBack]) gets first refusal - this only engages
+ * once that's already let the key event through unconsumed (the cursor was already at the start
+ * of the field, or the focused node isn't a text field at all). Tries a normal moveFocus(Left)
+ * first and only falls back to the rail if that genuinely finds nothing, so in-row tile-to-tile
+ * Left movement is unaffected.
+ */
+@SuppressLint("UnnecessaryComposedModifier")
+fun Modifier.tvLeftEdgeFallbackToRail(railFocusRequester: FocusRequester?): Modifier = composed {
+    val focusManager = LocalFocusManager.current
+    onKeyEvent { event ->
+        if (event.type != KeyEventType.KeyDown || event.key != Key.DirectionLeft) {
+            false
+        } else if (focusManager.moveFocus(FocusDirection.Left)) {
+            true
+        } else if (railFocusRequester != null) {
+            railFocusRequester.requestFocus()
+            true
+        } else {
+            false
         }
     }
 }
@@ -144,23 +178,70 @@ fun Modifier.clearFocusOnBack(onDirectionDown: (() -> Boolean)? = null): Modifie
 }
 
 /**
- * On TV, prevents a text field from popping up the keyboard merely by *gaining focus* while
- * D-pad-navigating through a screen - confirmed-on-device annoyance where passing through fields
- * en route elsewhere briefly summoned the keyboard, needing a Back press to dismiss.
+ * Intended to prevent a text field from popping up the keyboard merely by *gaining focus* while
+ * D-pad-navigating through a screen, via `KeyboardOptions.showKeyboardOnFocus = false` - but this
+ * flag turns out to be a no-op for every field in this app: Compose's own KDoc on the classic
+ * `BasicTextField(value: String, onValueChange, ...)` overload - which every
+ * `OutlinedTextField(value, onValueChange, ...)`/`TextField(value, onValueChange, ...)` call in
+ * this codebase uses under the hood - explicitly says that overload does not support
+ * `showKeyboardOnFocus` at all (only the newer `TextFieldState`-based overload does, which nothing
+ * here has migrated to). Confirmed via a real user report that the keyboard was still
+ * auto-appearing on D-pad focus despite this being applied - see [rememberTvKeyboardGate] for the
+ * fix that actually works, which AddEditBrokerScreen now uses.
  *
- * Uses `KeyboardOptions.showKeyboardOnFocus = false`, which stops focus alone from showing the
- * keyboard but still lets a genuine tap or DPAD_CENTER/OK on an already-focused field show it
- * (Compose's own key handling calls `keyboardController.show()` regardless of this setting) -
- * exactly the desired behaviour: OK explicitly summons the keyboard, passing through does not.
- *
- * Gated on [LocalIsTv] since on phone/tablet this setting would also suppress the keyboard
- * reappearing when moving between fields via the IME's "Next" action - a real regression for
- * touch/keyboard users that TV's remote-only input doesn't have to weigh against.
+ * Kept only for the KeyboardType/other-option pass-through still needed on number fields etc. -
+ * not a real fix for the auto-keyboard problem on its own. New TV screens should pair it with
+ * [rememberTvKeyboardGate] rather than rely on this alone.
  */
 @Composable
 fun tvAwareKeyboardOptions(base: KeyboardOptions = KeyboardOptions.Default): KeyboardOptions {
     if (!LocalIsTv.current) return base
     return base.copy(showKeyboardOnFocus = false)
+}
+
+/**
+ * The actual working fix for the problem [tvAwareKeyboardOptions] was meant to solve: on TV,
+ * D-pad focus landing on a text field must not summon the on-screen keyboard by itself - only
+ * pressing OK/DPAD centre on an already-focused field should.
+ *
+ * Works around Compose's limitation (see [tvAwareKeyboardOptions]'s comment) with a well-known
+ * trick instead: the field stays [TvKeyboardGate.readOnly] until OK is pressed while it's
+ * focused, then becomes editable. Compose never starts an IME input session - and so never shows
+ * the keyboard - for a readOnly field purely on focus, so there's no flicker; toggling `readOnly`
+ * to `false` while already focused starts that session (and shows the keyboard) exactly once, on
+ * demand. Resets back to readOnly whenever focus is lost, so the same field behaves the same way
+ * again next time it's focused.
+ *
+ * Usage: pass `gate.readOnly` as the field's own `readOnly` parameter, and chain
+ * `.then(gate.modifier())` onto its `Modifier`.
+ */
+@Composable
+fun rememberTvKeyboardGate(): TvKeyboardGate {
+    val isTv = LocalIsTv.current
+    return remember(isTv) { TvKeyboardGate(isTv) }
+}
+
+class TvKeyboardGate internal constructor(private val isTv: Boolean) {
+    private var unlocked by mutableStateOf(false)
+
+    /** Pass as the guarded field's own `readOnly` parameter. */
+    val readOnly: Boolean get() = isTv && !unlocked
+
+    /** Chain onto the guarded field's own [Modifier]. */
+    fun modifier(): Modifier = if (!isTv) {
+        Modifier
+    } else {
+        Modifier
+            .onFocusChanged { if (!it.isFocused) unlocked = false }
+            .onPreviewKeyEvent { event ->
+                if (event.type == KeyEventType.KeyDown && event.key == Key.DirectionCenter) {
+                    unlocked = true
+                }
+                // Never consumed - the field's own OK/Enter handling (if any) still runs, now
+                // against the just-unlocked (editable) state from this same key press onward.
+                false
+            }
+    }
 }
 
 /**
