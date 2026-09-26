@@ -1,7 +1,9 @@
 package com.odiousapps.z2mdash.mqtt
 
+import android.util.Log
 import com.hivemq.client.mqtt.MqttGlobalPublishFilter
 import com.hivemq.client.mqtt.datatypes.MqttQos
+import com.hivemq.client.mqtt.lifecycle.MqttDisconnectSource
 import com.hivemq.client.mqtt.mqtt3.Mqtt3Client
 import com.hivemq.client.mqtt.mqtt3.Mqtt3ClientBuilder
 import com.hivemq.client.mqtt.mqtt3.Mqtt3AsyncClient
@@ -14,6 +16,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.TimeUnit
+
+private const val TAG = "MqttConnection"
 
 enum class ConnectionState { DISCONNECTED, CONNECTING, CONNECTED, FAILED }
 
@@ -38,6 +42,11 @@ class MqttConnection(private val broker: Broker) {
     private val _messages = MutableSharedFlow<IncomingMessage>(extraBufferCapacity = 128)
     val messages: SharedFlow<IncomingMessage> = _messages.asSharedFlow()
 
+    // Human-readable connection failure reasons, for surfacing on the Terminal tab - separate
+    // from `messages` (actual MQTT payloads), since these never came from the broker itself.
+    private val _connectionErrors = MutableSharedFlow<String>(extraBufferCapacity = 16)
+    val connectionErrors: SharedFlow<String> = _connectionErrors.asSharedFlow()
+
     fun connect() {
         if (client != null) return
         _connectionState.value = ConnectionState.CONNECTING
@@ -51,6 +60,26 @@ class MqttConnection(private val broker: Broker) {
             .initialDelay(1, TimeUnit.SECONDS)
             .maxDelay(30, TimeUnit.SECONDS)
             .applyAutomaticReconnect()
+
+        // These fire for the initial connect attempt as well as every background reconnect
+        // HiveMQ's automaticReconnect makes afterwards, so they're the single source of truth
+        // for connectionState/resubscription - unlike the old one-shot connectWith().send()
+        // callback, which only ever reflected the very first attempt and otherwise left the
+        // UI stuck showing whatever state that first attempt produced (e.g. "CONNECTING"
+        // forever if the broker just stayed unreachable) with no visible reason why.
+        builder.addConnectedListener {
+            _connectionState.value = ConnectionState.CONNECTED
+            subscribedTopics.toList().forEach { doSubscribe(it) }
+        }
+        builder.addDisconnectedListener { context ->
+            // Skip our own disconnect()/reconnect() calls - those already set DISCONNECTED
+            // explicitly and aren't a failure worth reporting.
+            if (context.source == MqttDisconnectSource.USER) return@addDisconnectedListener
+            _connectionState.value = ConnectionState.FAILED
+            val reason = context.cause.message ?: context.cause.javaClass.simpleName
+            Log.w(TAG, "MQTT connection failed for broker '${broker.name}': $reason", context.cause)
+            _connectionErrors.tryEmit(reason)
+        }
 
         when (broker.protocol) {
             MqttProtocol.TCP -> {}
@@ -83,14 +112,6 @@ class MqttConnection(private val broker: Broker) {
             .cleanSession(broker.cleanSession)
             .keepAlive(broker.keepAliveSeconds)
             .send()
-            .whenComplete { _, throwable ->
-                if (throwable != null) {
-                    _connectionState.value = ConnectionState.FAILED
-                } else {
-                    _connectionState.value = ConnectionState.CONNECTED
-                    subscribedTopics.toList().forEach { doSubscribe(it) }
-                }
-            }
     }
 
     private fun applyWebSocket(builder: Mqtt3ClientBuilder) {

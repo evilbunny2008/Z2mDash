@@ -1,0 +1,2 @@
+- Broker connection failures (wrong host, unreachable network, etc.) are now logged on the Terminal tab with a reason, instead of the Brokers screen sometimes just being stuck on "CONNECTING" with no explanation.
+- Fixed a bug where a broker that reconnected automatically in the background could stay silently unsubscribed from its topics.

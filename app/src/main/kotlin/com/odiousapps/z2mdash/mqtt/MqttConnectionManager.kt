@@ -171,6 +171,18 @@ class MqttConnectionManager(
                 _connectionStates.update { it + (broker.id to state) }
             }
         }
+        // Surfaces connection failures (initial and every background reconnect attempt) on the
+        // Terminal tab, since that's otherwise the only place this app logs anything visible on
+        // a TV with no logcat access - the Brokers list's state chip alone gave no reason why.
+        scope.launch(Dispatchers.Default) {
+            conn.connectionErrors.collect { reason ->
+                val entry = LoggedMessage(broker.id, "⚠ connection error", reason, System.currentTimeMillis())
+                _messageLog.update { log ->
+                    val updated = log + entry
+                    if (updated.size > MAX_LOGGED_MESSAGES) updated.takeLast(MAX_LOGGED_MESSAGES) else updated
+                }
+            }
+        }
         // limitedParallelism(1), not plain Dispatchers.Default, because the collect loop below
         // and its delayed flush() share plain (non-thread-safe) mutable buffers. On real hardware,
         // plain Default let them run concurrently and flush() hit a ConcurrentModificationException
