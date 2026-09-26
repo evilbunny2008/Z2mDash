@@ -82,7 +82,7 @@ android {
 
 // Copies the release .aab from AGP's default build output location
 // (app/build/outputs/bundle/release/app-release.aab) to
-// app/dist/<appName>-<versionName>.aab (already gitignored) -- a
+// dist/<appName>-<versionName>.aab (already gitignored) -- a
 // separate, deliberately-chosen destination outside the build/ directory,
 // so it survives a clean build. (Originally this copied to app/release/
 // instead: don't rename it back to that. app/release/ turned out to
@@ -143,7 +143,7 @@ abstract class RenameBundleTask : DefaultTask() {
 }
 
 // Copies the release APK(s) from AGP's default build output location
-// (app/build/outputs/apk/release/) to app/dist/ too, alongside the
+// (app/build/outputs/apk/release/) to dist/ too, alongside the
 // renamed bundle above. Unlike RenameBundleTask, this doesn't delete the
 // originals -- there's no equivalent reason to (no known collision with
 // anything else that writes to the APK output directory), so this is a
@@ -191,7 +191,7 @@ androidComponents {
 
         // outputFileName only renames the file within AGP's default output
         // directory (app/build/outputs/apk/release/) -- getting it into
-        // app/dist/ too still needs the separate copyApk task below, same
+        // dist/ too still needs the separate copyApk task below, same
         // as the bundle.
         variant.outputs.forEach { output ->
             output.outputFileName.set("$appName-${versionName.get()}.apk")
@@ -199,7 +199,7 @@ androidComponents {
 
         val renameBundle = tasks.register("renameBundle$variantNameCapitalized", RenameBundleTask::class.java) {
             group = "build"
-            description = "Copies the $variantNameCapitalized .aab to app/dist/$appName-<versionName>.aab"
+            description = "Copies the $variantNameCapitalized .aab to dist/$appName-<versionName>.aab"
             mustRunAfter(ideListingTaskName)
             bundleFile.set(variant.artifacts.get(SingleArtifact.BUNDLE))
             destinationFile.set(layout.projectDirectory.file("dist/$appName-${versionName.get()}.aab"))
@@ -207,7 +207,7 @@ androidComponents {
 
         val copyApk = tasks.register("copyApk$variantNameCapitalized", CopyApkTask::class.java) {
             group = "build"
-            description = "Copies the $variantNameCapitalized apk(s) to app/dist/"
+            description = "Copies the $variantNameCapitalized apk(s) to dist/"
             apkDirectory.set(variant.artifacts.get(SingleArtifact.APK))
             destinationDirectory.set(layout.projectDirectory.dir("dist"))
         }
