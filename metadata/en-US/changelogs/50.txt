@@ -1,0 +1,1 @@
+- Fixed a TV remote annoyance on the Add/Edit Broker screen where the on-screen keyboard popped up automatically just from moving between text fields with the remote - it now only opens once you press OK on a field.
