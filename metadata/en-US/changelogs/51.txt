@@ -1,0 +1,1 @@
+- Fixed dragging a cluster to reorder or move it: the drop target now registers anywhere over the target cluster's card, not just near its centre.

@@ -251,7 +251,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
     // Window-space bounds of the LazyColumn's own viewport, captured once below via
     // onGloballyPositioned on its modifier. Used by both computeNearest*Key functions to ignore
-    // stale entries in groupCenters/clusterCenters belonging to items that have since scrolled
+    // stale entries in groupCenters/clusterBounds belonging to items that have since scrolled
     // out of composition (LazyColumn disposes off-screen items, so their cached centre just
     // freezes at wherever it last was rather than updating - without this filter, a drag could
     // "snap" to one of those long-stale positions and look like it dropped somewhere random) -
@@ -331,18 +331,44 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // scoped rather than by clusterKey alone, since two different groups can share a cluster name.
     var draggedClusterKey by remember { mutableStateOf<String?>(null) }
     var draggedToClusterKey by remember { mutableStateOf<String?>(null) }
-    val clusterCenters = remember { mutableStateMapOf<String, Offset>() }
+    // Whole-card window-space bounds, not just a centre point - a dragged cluster should register
+    // as "over" a target the moment the finger is anywhere above its card, not only once it nears
+    // that card's exact centre.
+    val clusterBounds = remember { mutableStateMapOf<String, Rect>() }
     // See groupHeaderCoordinates above - same purpose, for each cluster's caption row.
     val clusterCaptionCoordinates = remember { mutableMapOf<String, LayoutCoordinates>() }
+    // Distance from a point to the nearest point ON or IN the rect - zero anywhere inside it,
+    // rather than growing the moment you're off its exact centre. A first attempt at this used
+    // "does any rect contain the point, else fall back to nearest centre" as two separate passes,
+    // but that broke on-device: whichever stale/off-screen rect happened to be first in the map's
+    // iteration order and contain the point won outright, with no comparison against how good a
+    // fit any *other* candidate was - so hovering a target cluster sometimes highlighted nothing,
+    // and releasing there could resolve to a wrong, unrelated group entirely. A single distance
+    // metric compared via one minByOrNull (same shape as the original nearest-centre code) keeps
+    // the match always the genuinely closest candidate, while still being zero - and therefore an
+    // automatic win - anywhere inside the hovered card, not just at its centre.
+    fun Rect.distanceTo(point: Offset): Float {
+        val dx = when {
+            point.x < left -> left - point.x
+            point.x > right -> point.x - right
+            else -> 0f
+        }
+        val dy = when {
+            point.y < top -> top - point.y
+            point.y > bottom -> point.y - bottom
+            else -> 0f
+        }
+        return kotlin.math.hypot(dx, dy)
+    }
     fun computeNearestClusterKey(draggedKey: String, currentPosition: Offset): String? {
-        return clusterCenters.entries
-            .filter { (key, center) -> key == draggedKey || isWithinTrustedBounds(center) }
-            .minByOrNull { (_, center) -> (center - currentPosition).getDistance() }
+        return clusterBounds.entries
+            .filter { (key, bounds) -> key == draggedKey || isWithinTrustedBounds(bounds.center) }
+            .minByOrNull { (_, bounds) -> bounds.distanceTo(currentPosition) }
             ?.key
     }
 
     // One BringIntoViewRequester per currently-composed cluster card (keyed the same way as
-    // clusterCenters), so a completed move can precisely scroll the moved cluster itself into
+    // clusterBounds), so a completed move can precisely scroll the moved cluster itself into
     // view - not just its group's header - once it's settled into its new spot. Set alongside
     // (not instead of) the existing scrollToGroupId mechanism below: that coarse scroll is what
     // actually gets a far-off-screen destination group's content composed in the first place
@@ -553,15 +579,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
                         .onGloballyPositioned { coordinates ->
-                            val topLeft = coordinates.positionInWindow()
-                            val center = Offset(
-                                topLeft.x + coordinates.size.width / 2f,
-                                topLeft.y + coordinates.size.height / 2f
-                            )
-                            groupCenters[group.id] = center
+                            val bounds = coordinates.boundsInWindow()
+                            groupCenters[group.id] = bounds.center
                             // Also a valid drop point for a dragged cluster (see headerClusterKey
                             // above) - lets a cluster be moved into an otherwise-empty group.
-                            clusterCenters[headerClusterKey] = center
+                            clusterBounds[headerClusterKey] = bounds
                         }
                         .alpha(if (isDraggingThisGroup) 0.5f else 1f)
                         .then(
@@ -671,7 +693,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             .map { bucket -> bucket.sortedBy { it.displayOrder } }
                             .sortedBy { bucket -> bucket.minOf { it.displayOrder } }
 
-                        // Cluster drag state (draggedClusterKey/clusterCenters/etc.) is declared
+                        // Cluster drag state (draggedClusterKey/clusterBounds/etc.) is declared
                         // once, shared across all groups - see the comment above its declaration.
                         // Since clusters can sit side by side in a packed row (unlike a fixed
                         // grid), "which cluster is the drag over" is tracked via nearest-centre-
@@ -784,11 +806,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         draggedToClusterKey == compoundKey,
                                                     modifier = Modifier.width(clusterCardWidth)
                                                         .onGloballyPositioned { coordinates ->
-                                                        val topLeft = coordinates.positionInWindow()
-                                                        clusterCenters[compoundKey] = Offset(
-                                                            topLeft.x + coordinates.size.width / 2f,
-                                                            topLeft.y + coordinates.size.height / 2f
-                                                        )
+                                                        clusterBounds[compoundKey] = coordinates.boundsInWindow()
                                                     }
                                                         .bringIntoViewRequester(clusterBringIntoViewRequester),
                                                     captionRowModifier = Modifier
