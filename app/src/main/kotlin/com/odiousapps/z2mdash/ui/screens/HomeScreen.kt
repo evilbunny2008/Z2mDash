@@ -944,6 +944,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                                     dragTouchWindowPos = coords.localToWindow(change.position)
                                                                 }
                                                                 draggedToClusterKey = computeNearestClusterKey(compoundKey, dragTouchWindowPos)
+                                                                // TEMPORARY diagnostic logging - remove once the downward-drag
+                                                                // highlight bug is root-caused. Dumps the touch point, every
+                                                                // candidate's bounds/distance, and which key won.
+                                                                Log.d("Z2mDashDrag", "pos=$dragTouchWindowPos won=$draggedToClusterKey " +
+                                                                    clusterBounds.entries.joinToString(" | ") { (k, b) ->
+                                                                        "$k=$b" }
+                                                                )
                                                             }
                                                         )
                                                     }
