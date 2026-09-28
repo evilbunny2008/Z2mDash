@@ -225,6 +225,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
     var showClusterSearch by remember { mutableStateOf(false) }
     var clusterSearchQuery by remember { mutableStateOf("") }
+    var showStaleSensors by remember { mutableStateOf(false) }
 
     // Undo prompt for an accidental tile/cluster/group drag. previousGroups is a full snapshot of
     // config.groups taken right before the drag's own mutation, restored wholesale on Undo rather
@@ -508,6 +509,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 if (config.groups.any { g -> g.panels.any { it.clusterName.isNotBlank() } }) {
                     SmallFloatingActionButton(onClick = { showClusterSearch = true }) {
                         Icon(Icons.Default.Search, contentDescription = "Search clusters")
+                    }
+                    Spacer(Modifier.height(12.dp))
+                }
+                // Only worth showing once there's at least one non-editable sensor to actually
+                // watch for staleness - an editable panel is a fixed preference value, not a live
+                // hardware reading, so it never genuinely "reports" and would just be noise here.
+                if (config.groups.any { g -> g.panels.any { it is Panel.Sensor && !it.editable && it.topic.isNotBlank() } }) {
+                    SmallFloatingActionButton(onClick = { showStaleSensors = true }) {
+                        Icon(Icons.Default.Warning, contentDescription = "Sensors not reporting recently")
                     }
                     Spacer(Modifier.height(12.dp))
                 }
@@ -1084,6 +1094,85 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     showClusterSearch = false
                     clusterSearchQuery = ""
                 }) { Text("Close") }
+            }
+        )
+    }
+
+    if (showStaleSensors) {
+        // Reads payloadsState/timestampsState/nowMillisState.value directly, unlike everywhere
+        // else on this screen - deliberately, and safely, since this whole block only composes
+        // while the dialog is open, rather than subscribing HomeScreen's entire scope to every
+        // MQTT message the way doing this unconditionally at the top of the composable would.
+        val payloads = payloadsState.value
+        val timestamps = timestampsState.value
+        val nowMillis = nowMillisState.value
+        val staleSensors = remember(config, payloads, timestamps, nowMillis) {
+            config.groups.flatMap { group ->
+                group.panels.filterIsInstance<Panel.Sensor>()
+                    // An editable panel is a fixed preference value an automation script
+                    // published once, not a continuously-reporting hardware sensor - it would
+                    // never look anything but "stale" here, purely as noise.
+                    .filter { !it.editable && it.topic.isNotBlank() }
+                    .mapNotNull { panel ->
+                        val key = "${panel.brokerId}|${panel.topic}"
+                        // Same last_seen-preferred-over-receipt-time precedence as ClusterCard's
+                        // own ageState, for the same reason - see that comment.
+                        val lastSeen = payloads[key]?.let { JsonPath.extract(it, "last_seen") }
+                            ?.let { JsonPath.parseIso8601(it) }
+                            ?: timestamps[key]
+                        val isStale = lastSeen == null || (nowMillis - lastSeen) > 60 * 60 * 1000L
+                        if (!isStale) return@mapNotNull null
+                        val ageText = lastSeen?.let {
+                            DateUtils.getRelativeTimeSpanString(it, nowMillis, DateUtils.SECOND_IN_MILLIS).toString()
+                        } ?: "Never reported"
+                        Triple(group.id to group.name, panel, lastSeen to ageText)
+                    }
+            }
+                // Never-reported panels (null lastSeen) sort first, then oldest-first among the rest.
+                .sortedBy { (_, _, lastSeenAndText) -> lastSeenAndText.first ?: -1L }
+        }
+        fun jumpToStalePanel(groupId: String, clusterName: String) {
+            app.configRepository.setGroupCollapsed(groupId, false)
+            backStackEntry.savedStateHandle["scrollToGroupId"] = groupId
+            // A standalone panel (blank clusterName) has no cluster card/bringIntoView requester
+            // of its own to fine-tune the scroll further - the coarse group-level scroll above is
+            // as close as this can get it.
+            if (clusterName.isNotBlank()) pendingScrollToClusterKey = "$groupId::$clusterName"
+            showStaleSensors = false
+        }
+        AlertDialog(
+            onDismissRequest = { showStaleSensors = false },
+            title = { Text("Sensors not reporting recently") },
+            text = {
+                if (staleSensors.isEmpty()) {
+                    Text("Every sensor has reported within the last hour.")
+                } else {
+                    LazyColumn(modifier = Modifier.heightIn(max = 400.dp)) {
+                        items(staleSensors, key = { (_, panel, _) -> panel.id }) { (groupIdAndName, panel, lastSeenAndText) ->
+                            val (groupId, groupName) = groupIdAndName
+                            val (_, ageText) = lastSeenAndText
+                            ListItem(
+                                headlineContent = { Text(panel.label.ifBlank { "(unnamed)" }) },
+                                supportingContent = {
+                                    Column {
+                                        Text(
+                                            if (panel.clusterName.isNotBlank()) {
+                                                "${panel.clusterName} • $groupName"
+                                            } else {
+                                                groupName
+                                            }
+                                        )
+                                        Text(ageText)
+                                    }
+                                },
+                                modifier = Modifier.clickable { jumpToStalePanel(groupId, panel.clusterName) }
+                            )
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showStaleSensors = false }) { Text("Close") }
             }
         )
     }

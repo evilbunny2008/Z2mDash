@@ -1,0 +1,1 @@
+- Added a way to see every sensor that hasn't reported in the last hour, with a tap to jump straight to it.
