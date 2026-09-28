@@ -1,0 +1,1 @@
+- Made the dashboard's floating action buttons easier to use with a TV remote: larger targets, more spacing between them, and a visible focus ring so it's clear which one is currently selected.

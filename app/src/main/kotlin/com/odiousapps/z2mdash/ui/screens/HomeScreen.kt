@@ -115,8 +115,10 @@ import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
 import com.odiousapps.z2mdash.ui.components.ToggleTile
+import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
+import com.odiousapps.z2mdash.ui.tv.tvFocusIndicator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -582,53 +584,93 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         floatingActionButton = {
+            // On TV, every FAB below gets the same two treatments a D-pad remote actually needs:
+            // full FloatingActionButton size instead of the small variant (a bigger, more legible
+            // target from a couch - D-pad selection is a discrete focus step either way, but a
+            // small target is harder to tell apart from its neighbours once focused), extra
+            // spacing between them (easier to see which one currently has focus when they're not
+            // packed tightly), and tvFocusIndicator's visible focus ring, which none of them had
+            // before - without it there was no on-screen cue for which FAB (if any) was focused,
+            // which is what made them "hard to select" in the first place, not a click that
+            // didn't register once actually focused.
+            val isTv = LocalIsTv.current
+            val fabSpacing = if (isTv) 20.dp else 12.dp
             Column(horizontalAlignment = Alignment.End) {
                 // Only worth showing once there's at least one named cluster to actually find -
                 // a dashboard of only standalone tiles has nothing for this to search.
                 if (config.groups.any { g -> g.panels.any { it.clusterName.isNotBlank() } }) {
-                    SmallFloatingActionButton(onClick = { showClusterSearch = true }) {
-                        Icon(Icons.Default.Search, contentDescription = "Search clusters")
+                    if (isTv) {
+                        FloatingActionButton(
+                            onClick = { showClusterSearch = true },
+                            modifier = Modifier.tvFocusIndicator()
+                        ) {
+                            Icon(Icons.Default.Search, contentDescription = "Search clusters")
+                        }
+                    } else {
+                        SmallFloatingActionButton(onClick = { showClusterSearch = true }) {
+                            Icon(Icons.Default.Search, contentDescription = "Search clusters")
+                        }
                     }
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(fabSpacing))
                 }
                 // Only worth showing once there's at least one non-editable sensor to actually
                 // watch for staleness - an editable panel is a fixed preference value, not a live
                 // hardware reading, so it never genuinely "reports" and would just be noise here.
                 if (config.groups.any { g -> g.panels.any { it is Panel.Sensor && !it.editable && it.topic.isNotBlank() } }) {
-                    SmallFloatingActionButton(
-                        onClick = { showOnlyStaleClusters = !showOnlyStaleClusters },
-                        containerColor = if (showOnlyStaleClusters) {
-                            MaterialTheme.colorScheme.errorContainer
-                        } else {
-                            FloatingActionButtonDefaults.containerColor
-                        }
-                    ) {
-                        Icon(
-                            Icons.Default.Warning,
-                            contentDescription = if (showOnlyStaleClusters) {
-                                "Showing only sensors not reporting recently - tap to show everything"
-                            } else {
-                                "Show only sensors not reporting recently"
-                            }
-                        )
+                    val staleToggleContainerColor = if (showOnlyStaleClusters) {
+                        MaterialTheme.colorScheme.errorContainer
+                    } else {
+                        FloatingActionButtonDefaults.containerColor
                     }
-                    Spacer(Modifier.height(12.dp))
+                    val staleToggleContentDescription = if (showOnlyStaleClusters) {
+                        "Showing only sensors not reporting recently - tap to show everything"
+                    } else {
+                        "Show only sensors not reporting recently"
+                    }
+                    if (isTv) {
+                        FloatingActionButton(
+                            onClick = { showOnlyStaleClusters = !showOnlyStaleClusters },
+                            containerColor = staleToggleContainerColor,
+                            modifier = Modifier.tvFocusIndicator()
+                        ) {
+                            Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
+                        }
+                    } else {
+                        SmallFloatingActionButton(
+                            onClick = { showOnlyStaleClusters = !showOnlyStaleClusters },
+                            containerColor = staleToggleContainerColor
+                        ) {
+                            Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
+                        }
+                    }
+                    Spacer(Modifier.height(fabSpacing))
                 }
                 // Only worth showing once there's more than one group to bulk-collapse - with
                 // zero or one, per-group collapse (the header's own chevron) already covers it.
                 if (config.groups.size > 1) {
                     val anyGroupExpanded = config.groups.any { !it.collapsed }
-                    SmallFloatingActionButton(
-                        onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) }
-                    ) {
-                        Icon(
-                            if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore,
-                            contentDescription = if (anyGroupExpanded) "Collapse all groups" else "Expand all groups"
-                        )
+                    val collapseContentDescription = if (anyGroupExpanded) "Collapse all groups" else "Expand all groups"
+                    val collapseIcon = if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore
+                    if (isTv) {
+                        FloatingActionButton(
+                            onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) },
+                            modifier = Modifier.tvFocusIndicator()
+                        ) {
+                            Icon(collapseIcon, contentDescription = collapseContentDescription)
+                        }
+                    } else {
+                        SmallFloatingActionButton(
+                            onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) }
+                        ) {
+                            Icon(collapseIcon, contentDescription = collapseContentDescription)
+                        }
                     }
-                    Spacer(Modifier.height(12.dp))
+                    Spacer(Modifier.height(fabSpacing))
                 }
-                FloatingActionButton(onClick = { navController.navigate("addGroup") }) {
+                FloatingActionButton(
+                    onClick = { navController.navigate("addGroup") },
+                    modifier = Modifier.tvFocusIndicator()
+                ) {
                     Icon(Icons.Default.Add, contentDescription = "Add group")
                 }
             }
