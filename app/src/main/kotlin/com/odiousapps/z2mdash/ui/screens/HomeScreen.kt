@@ -120,7 +120,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
-import kotlin.math.roundToInt
 import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -382,6 +381,75 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             ?.key
     }
 
+    // Panel drag-to-reorder/merge state, shared globally the same way cluster/group drag state is
+    // above - and for the same reason: this needs to live on the shared top-level detector rather
+    // than a per-tile one, so a drag that needs the list to auto-scroll to reach a distant cluster
+    // doesn't die partway through the same way a per-item detector did for clusters/groups.
+    var draggedPanelId by remember { mutableStateOf<String?>(null) }
+    // The group the dragged panel currently belongs to - needed at drop time to call the
+    // repository regardless of which group's content the finger ends up over.
+    var draggedPanelFromGroupId by remember { mutableStateOf<String?>(null) }
+    // Live target index within the dragged panel's OWN cluster (-1 when not applicable, e.g. a
+    // merge into a different cluster, or the panel has no cluster of its own) - same semantics
+    // as the old per-ClusterCard draggedToIndex, just hoisted so the top-level detector can set
+    // it regardless of which specific ClusterCard actually renders that index's highlight.
+    var draggedToPanelIndex by remember { mutableIntStateOf(-1) }
+    // True once the drag has left its own cluster's card with no other cluster's card to merge
+    // into either - released there, the panel pops out into its own new cluster, same as before.
+    var draggedPanelWillPopOut by remember { mutableStateOf(false) }
+    // Window-space bounds of every currently-composed panel tile (standalone or within a
+    // cluster), keyed by panel id - same shape/purpose as clusterBounds, used to work out which
+    // panel a long-press grabbed and, during a within-cluster reorder, which sibling tile the
+    // drag is nearest to.
+    val panelBounds = remember { mutableStateMapOf<String, Rect>() }
+
+    // Re-derives, from the live config and the drag's current window position, which of the
+    // three panel-drop outcomes currently applies - called on every onDrag tick for live
+    // highlighting, and again at onDragEnd (rather than trusting onDrag's last value, for the
+    // same reason the cluster/group drags recompute fresh there) to decide what actually commits:
+    //  - still over its own cluster's card -> reorder among siblings (draggedToPanelIndex set,
+    //    the nearest sibling tile's own bounds used the same distance metric as cluster dragging)
+    //  - over a *different* named cluster's card -> merge into it (draggedToClusterKey set)
+    //  - neither (including a standalone panel, which has no "own cluster" card to begin with) ->
+    //    pop out into its own new cluster, same as dragging it past its old cluster's edge always
+    //    did - a no-op if it's already standalone.
+    fun updatePanelDragTargets() {
+        val panelId = draggedPanelId ?: return
+        val fromGroupId = draggedPanelFromGroupId ?: return
+        val panel = app.configRepository.config.value.groups
+            .find { it.id == fromGroupId }?.panels?.find { it.id == panelId } ?: return
+        val ownClusterName = panel.clusterName
+        val ownClusterKey = ownClusterName.takeIf { it.isNotBlank() }?.let { "$fromGroupId::$it" }
+        val ownRect = ownClusterKey?.let { clusterBounds[it] }
+        if (ownRect?.contains(dragTouchWindowPos) == true) {
+            draggedToClusterKey = null
+            draggedPanelWillPopOut = false
+            val siblings = app.configRepository.config.value.groups
+                .find { it.id == fromGroupId }?.panels
+                ?.filter { it.clusterName == ownClusterName }
+                ?.sortedBy { it.displayOrder }
+                .orEmpty()
+            val nearestSiblingId = siblings
+                .mapNotNull { p -> panelBounds[p.id]?.let { p.id to it.distanceTo(dragTouchWindowPos) } }
+                .minByOrNull { (_, distance) -> distance }
+                ?.first
+            draggedToPanelIndex = siblings.indexOfFirst { it.id == nearestSiblingId }
+        } else {
+            val mergeTarget = clusterBounds.entries.firstOrNull { (key, rect) ->
+                key != ownClusterKey && key.substringAfter("::") != "__header__" &&
+                    rect.contains(dragTouchWindowPos)
+            }
+            draggedToPanelIndex = -1
+            if (mergeTarget != null) {
+                draggedToClusterKey = mergeTarget.key
+                draggedPanelWillPopOut = false
+            } else {
+                draggedToClusterKey = null
+                draggedPanelWillPopOut = ownClusterKey != null
+            }
+        }
+    }
+
     // One BringIntoViewRequester per currently-composed cluster card (keyed the same way as
     // clusterBounds), so a completed move can precisely scroll the moved cluster itself into
     // view - not just its group's header - once it's settled into its new spot. Set alongside
@@ -416,11 +484,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // kept dragging past the screen edge, at which point computeNearest*Key above would match
     // whatever stale/off-screen entry happened to be numerically closest, dropping the cluster
     // into an unrelated group. Speed ramps up the closer the drag sits to the edge.
-    val isDraggingGroupOrCluster = draggedGroupId != null || draggedClusterKey != null
+    val isDraggingAnything = draggedGroupId != null || draggedClusterKey != null || draggedPanelId != null
     val autoScrollEdgePx = with(density) { 72.dp.toPx() }
     val autoScrollMaxSpeedPx = with(density) { 22.dp.toPx() }
-    LaunchedEffect(isDraggingGroupOrCluster) {
-        if (!isDraggingGroupOrCluster) return@LaunchedEffect
+    LaunchedEffect(isDraggingAnything) {
+        if (!isDraggingAnything) return@LaunchedEffect
         while (isActive) {
             // Watchdog: a genuine active drag ticks onDrag ~60 times/sec, so 1.5s of silence
             // reliably means the gesture has gone dead - see lastDragTickAtMs's own comment for
@@ -436,6 +504,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 draggedToGroupId = null
                 draggedClusterKey = null
                 draggedToClusterKey = null
+                draggedPanelId = null
+                draggedPanelFromGroupId = null
+                draggedToPanelIndex = -1
+                draggedPanelWillPopOut = false
                 return@LaunchedEffect
             }
             val bounds = viewportBoundsInWindow
@@ -570,37 +642,51 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     listCoordinates = coordinates
                     viewportBoundsInWindow = coordinates.boundsInWindow()
                 }
-                // Group and cluster drag-to-reorder both share ONE long-press-drag detector here,
-                // on the LazyColumn itself, rather than one on each group header/cluster caption
-                // row as originally written. Confirmed on-device: a per-item detector's gesture
-                // reliably dies partway through any drag long enough to trigger auto-scroll - the
-                // drag watchdog's own diagnostic logging showed the freeze landing within
-                // milliseconds of the auto-scroll effect's last dispatchRawDelta call, every time.
-                // The LazyColumn's own node never moves or resizes when ITS CONTENT scrolls (only
-                // the items inside it do), so a detector anchored there - rather than on one of
-                // those items - never has its underlying layout node disturbed by auto-scroll, and
-                // survives for the drag's full duration. Hit-testing which item (if any) was
-                // actually grabbed happens manually below, against the same bounds/coordinates
-                // maps every item already keeps up to date for the drop-target highlighting.
-                // Presses that land on neither a cluster caption nor a group header (e.g. on a
-                // panel tile) are deliberately left untouched - no state is set and nothing is
-                // consumed - so that tile's own, separate drag-to-reorder-within-cluster detector
-                // (still present, per PanelTile's own pointerInput) recognises the long press
-                // completely independently, as if this outer detector wasn't there at all.
+                // Group, cluster AND panel drag-to-reorder/merge all share ONE long-press-drag
+                // detector here, on the LazyColumn itself, rather than one on each group header/
+                // cluster caption row/panel tile as originally written. Confirmed on-device: a
+                // per-item detector's gesture reliably dies partway through any drag long enough
+                // to trigger auto-scroll - the drag watchdog's own diagnostic logging showed the
+                // freeze landing within milliseconds of the auto-scroll effect's last
+                // dispatchRawDelta call, every time. The LazyColumn's own node never moves or
+                // resizes when ITS CONTENT scrolls (only the items inside it do), so a detector
+                // anchored there - rather than on one of those items - never has its underlying
+                // layout node disturbed by auto-scroll, and survives for the drag's full duration.
+                // Hit-testing which item (if any) was actually grabbed happens manually below,
+                // against the same bounds/coordinates maps every item already keeps up to date
+                // for the drop-target highlighting.
                 .pointerInput(Unit) {
                     detectDragGesturesAfterLongPress(
                         onDragStart = { startLocalPos ->
                             val coords = listCoordinates ?: return@detectDragGesturesAfterLongPress
                             val windowPos = coords.localToWindow(startLocalPos)
-                            val hitClusterKey = clusterCaptionCoordinates.entries
-                                .firstOrNull { (_, c) -> c.boundsInWindow().contains(windowPos) }
+                            val hitPanelId = panelBounds.entries
+                                .firstOrNull { (_, b) -> b.contains(windowPos) }
                                 ?.key
-                            val hitGroupId = if (hitClusterKey == null) {
+                            val hitClusterKey = if (hitPanelId == null) {
+                                clusterCaptionCoordinates.entries
+                                    .firstOrNull { (_, c) -> c.boundsInWindow().contains(windowPos) }
+                                    ?.key
+                            } else null
+                            val hitGroupId = if (hitPanelId == null && hitClusterKey == null) {
                                 groupHeaderCoordinates.entries
                                     .firstOrNull { (_, c) -> c.boundsInWindow().contains(windowPos) }
                                     ?.key
                             } else null
                             when {
+                                hitPanelId != null -> {
+                                    val fromGroupId = app.configRepository.config.value.groups
+                                        .find { g -> g.panels.any { it.id == hitPanelId } }?.id
+                                    if (fromGroupId != null) {
+                                        draggedPanelId = hitPanelId
+                                        draggedPanelFromGroupId = fromGroupId
+                                        draggedToPanelIndex = -1
+                                        draggedPanelWillPopOut = false
+                                        draggedToClusterKey = null
+                                        dragTouchWindowPos = windowPos
+                                        lastDragTickAtMs = System.currentTimeMillis()
+                                    }
+                                }
                                 hitClusterKey != null -> {
                                     draggedClusterKey = hitClusterKey
                                     draggedToClusterKey = hitClusterKey
@@ -746,6 +832,96 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 }
                                 draggedGroupId = null
                                 draggedToGroupId = null
+                            } else if (draggedPanelId != null) {
+                              try {
+                                updatePanelDragTargets()
+                                val panelId = draggedPanelId
+                                val fromGroupId = draggedPanelFromGroupId
+                                val mergeTargetKey = draggedToClusterKey
+                                val toPanelIndex = draggedToPanelIndex
+                                val willPopOut = draggedPanelWillPopOut
+                                val panel = if (panelId != null && fromGroupId != null) {
+                                    app.configRepository.config.value.groups
+                                        .find { it.id == fromGroupId }?.panels?.find { it.id == panelId }
+                                } else null
+                                if (panel != null && fromGroupId != null) {
+                                    when {
+                                        mergeTargetKey != null -> {
+                                            val toGroupId = mergeTargetKey.substringBefore("::")
+                                            val toClusterName = mergeTargetKey.substringAfter("::")
+                                            if (!(toGroupId == fromGroupId && toClusterName == panel.clusterName)) {
+                                                val previousGroups = app.configRepository.config.value.groups
+                                                app.configRepository.movePanelIntoCluster(
+                                                    fromGroupId, panel.id, toGroupId, toClusterName
+                                                )
+                                                pushPanelClusterOverrideIfAutoConfigured(app, panel, toClusterName)
+                                                publishAppTopicForClusterIfMissing(app, toGroupId, toClusterName)
+                                                showUndoSnackbar("Moved \"${panel.label}\" into \"$toClusterName\"", previousGroups) {
+                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.clusterName)
+                                                }
+                                                app.configRepository.setGroupCollapsed(toGroupId, false)
+                                                backStackEntry.savedStateHandle["scrollToGroupId"] = toGroupId
+                                                pendingScrollToClusterKey = "$toGroupId::$toClusterName"
+                                            }
+                                        }
+                                        willPopOut && panel.clusterName.isNotBlank() && panel.label.isNotBlank() -> {
+                                            val siblingCount = app.configRepository.config.value.groups
+                                                .find { it.id == fromGroupId }?.panels
+                                                ?.count { it.clusterName == panel.clusterName } ?: 0
+                                            if (siblingCount > 1) {
+                                                val previousGroups = app.configRepository.config.value.groups
+                                                app.configRepository.movePanelToOwnCluster(fromGroupId, panel.id, panel.label)
+                                                pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label)
+                                                publishAppTopicForClusterIfMissing(app, fromGroupId, panel.label)
+                                                showUndoSnackbar("Moved \"${panel.label}\"", previousGroups) {
+                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.clusterName)
+                                                }
+                                            }
+                                        }
+                                        toPanelIndex >= 0 && panel.clusterName.isNotBlank() -> {
+                                            val currentPanels = app.configRepository.config.value.groups
+                                                .find { it.id == fromGroupId }?.panels
+                                                ?.filter { it.clusterName == panel.clusterName }
+                                                ?.sortedBy { it.displayOrder }
+                                            if (currentPanels != null && toPanelIndex < currentPanels.size) {
+                                                val targetPanelId = currentPanels[toPanelIndex].id
+                                                val currentFromIndex = currentPanels.indexOfFirst { it.id == panel.id }
+                                                val currentToIndex = currentPanels.indexOfFirst { it.id == targetPanelId }
+                                                if (currentFromIndex >= 0 && currentToIndex >= 0 && currentFromIndex != currentToIndex) {
+                                                    val previousGroups = app.configRepository.config.value.groups
+                                                    val reordered = currentPanels.toMutableList()
+                                                    val moved = reordered.removeAt(currentFromIndex)
+                                                    reordered.add(currentToIndex, moved)
+                                                    val orderedIds = reordered.map { it.id }
+                                                    app.configRepository.reorderPanelsInCluster(fromGroupId, orderedIds)
+                                                    pushOrderUpdateIfAutoConfigured(app, orderedIds, reordered)
+                                                    publishAppTopicForClusterIfMissing(app, fromGroupId, panel.clusterName)
+                                                    showUndoSnackbar("Moved \"${panel.label}\"", previousGroups) {
+                                                        pushOrderUpdateIfAutoConfigured(
+                                                            app, currentPanels.map { it.id }, currentPanels
+                                                        )
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                              } catch (c: CancellationException) {
+                                draggedPanelId = null
+                                draggedPanelFromGroupId = null
+                                draggedToPanelIndex = -1
+                                draggedPanelWillPopOut = false
+                                draggedToClusterKey = null
+                                throw c
+                              } catch (e: Exception) {
+                                Log.e("Z2mDash", "Panel drag drop failed", e)
+                              } finally {
+                                draggedPanelId = null
+                                draggedPanelFromGroupId = null
+                                draggedToPanelIndex = -1
+                                draggedPanelWillPopOut = false
+                                draggedToClusterKey = null
+                              }
                             }
                         },
                         onDragCancel = {
@@ -753,6 +929,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             draggedToGroupId = null
                             draggedClusterKey = null
                             draggedToClusterKey = null
+                            draggedPanelId = null
+                            draggedPanelFromGroupId = null
+                            draggedToPanelIndex = -1
+                            draggedPanelWillPopOut = false
                         },
                         onDrag = { change, _ ->
                             val coords = listCoordinates
@@ -772,6 +952,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         dragTouchWindowPos = coords.localToWindow(change.position)
                                     }
                                     draggedToGroupId = computeNearestGroupKey(draggedGroupId!!, dragTouchWindowPos)
+                                }
+                                draggedPanelId != null -> {
+                                    change.consume()
+                                    lastDragTickAtMs = System.currentTimeMillis()
+                                    if (coords != null) {
+                                        dragTouchWindowPos = coords.localToWindow(change.position)
+                                    }
+                                    updatePanelDragTargets()
                                 }
                                 else -> Unit
                             }
@@ -948,8 +1136,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         // state (like ageText) when the list reorders.
                                         key(panelsInCluster.first().id) {
                                             if (name.isBlank()) {
+                                                val standalonePanel = panelsInCluster.first()
                                                 PanelTile(
-                                                    panel = panelsInCluster.first(),
+                                                    panel = standalonePanel,
                                                     groupId = group.id,
                                                     payloadsState = payloadsState,
                                                     app = app,
@@ -957,6 +1146,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     tileScale = tileScale,
                                                     onEditSensorValue = onEditSensorValue,
                                                     modifier = Modifier.width(standaloneTileWidth)
+                                                        .alpha(if (draggedPanelId == standalonePanel.id) 0.5f else 1f)
+                                                        .onGloballyPositioned { coordinates ->
+                                                            panelBounds[standalonePanel.id] = coordinates.boundsInWindow()
+                                                        }
                                                 )
                                             } else {
                                                 val compoundKey = "${group.id}::$name"
@@ -981,7 +1174,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     tileWidth = standaloneTileWidth,
                                                     tileScale = tileScale,
                                                     onEditSensorValue = onEditSensorValue,
-                                                    onUndoableMove = showUndoSnackbar,
                                                     onDelete = {
                                                         pendingClusterDelete = PendingClusterDelete(
                                                             groupId = group.id,
@@ -1001,10 +1193,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         duplicateTopicText = prefix
                                                     },
                                                     isDraggingCluster = draggedClusterKey == compoundKey,
-                                                    isClusterDropTarget = draggedClusterKey != null &&
+                                                    isClusterDropTarget = (draggedClusterKey != null &&
                                                         draggedClusterKey != compoundKey &&
-                                                        draggedToClusterKey == compoundKey,
-                                                    isAnyClusterOrGroupDragActive = draggedClusterKey != null || draggedGroupId != null,
+                                                        draggedToClusterKey == compoundKey) ||
+                                                        (draggedPanelId != null && draggedToClusterKey == compoundKey),
                                                     modifier = Modifier.width(clusterCardWidth)
                                                         .onGloballyPositioned { coordinates ->
                                                         clusterBounds[compoundKey] = coordinates.boundsInWindow()
@@ -1016,6 +1208,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     // detector doesn't survive a drag long enough to auto-scroll.
                                                     captionRowModifier = Modifier
                                                         .onGloballyPositioned { clusterCaptionCoordinates[compoundKey] = it },
+                                                    panelBounds = panelBounds,
+                                                    draggedPanelId = draggedPanelId,
+                                                    draggedToPanelIndex = if (panelsInCluster.any { it.id == draggedPanelId }) {
+                                                        draggedToPanelIndex
+                                                    } else {
+                                                        -1
+                                                    },
+                                                    draggedPanelWillPopOut = draggedPanelWillPopOut,
                                                 )
                                             }
                                         }
@@ -1482,26 +1682,21 @@ private fun ClusterCard(
     onDelete: () -> Unit,
     onDuplicate: () -> Unit,
     onEditSensorValue: (Panel.Sensor) -> Unit,
-    // See HomeScreen's own showUndoSnackbar doc - shows an "Undo" prompt for a within-cluster
-    // reorder or pop-out-to-own-cluster drag, both of which happen inside this composable.
-    onUndoableMove: (String, List<PanelGroup>, () -> Unit) -> Unit,
-    // Cross-cluster drag-to-reorder state lives one level up (the group section sees every
-    // cluster at once) and is threaded in here, same pattern as each panel tile's own modifier
-    // supplied drag detector.
+    // Cross-cluster and panel drag state all live one level up (the group section sees every
+    // cluster at once, and a dragged panel can end up merged into any of them) and is threaded
+    // in here - see the LazyColumn's own shared long-press-drag detector for why none of this
+    // lives in a gesture detector of ClusterCard's own any more.
     modifier: Modifier = Modifier,
     captionRowModifier: Modifier = Modifier,
     isDraggingCluster: Boolean = false,
     isClusterDropTarget: Boolean = false,
-    // True whenever a cluster- or group-level drag is in progress anywhere on screen (not
-    // necessarily this cluster). Compose's `detectDragGesturesAfterLongPress` gesture detectors
-    // are confirmed on-device to interfere with each other when a drag's finger passes over a
-    // *different* composable's own long-press-drag detector mid-gesture - onDrag/onDragEnd can
-    // simply stop firing for the original gesture (see the drag watchdog's own comment). Since a
-    // cluster/group drag routinely passes its finger over other clusters' panel tiles on the way
-    // to its target, each tile's own drag-to-reorder detector below is switched off for the
-    // duration of any such drag, rather than sitting there as another detector for the active
-    // gesture to collide with.
-    isAnyClusterOrGroupDragActive: Boolean = false
+    // Window-space bounds of every panel tile in this cluster, keyed by panel id - written here,
+    // read by the shared top-level drag detector for hit-testing/highlighting. Shared mutable
+    // map reference, same pattern as the cluster-level bounds maps one level up.
+    panelBounds: MutableMap<String, Rect> = mutableMapOf(),
+    draggedPanelId: String? = null,
+    draggedToPanelIndex: Int = -1,
+    draggedPanelWillPopOut: Boolean = false
 ) {
     // A single long-lived derivedStateOf (keyed only on panels; payloads/timestamps/now are read
     // from their State objects inside the lambda) so its equality check works: ageText/isStale
@@ -1550,23 +1745,6 @@ private fun ClusterCard(
     }
     val (ageText, isStale) = ageState.value
 
-    // Drag-to-reorder state, local to this cluster card. Long-press on a tile starts the drag
-    // (ahead of its plain short-press-to-edit clickable) - no separate reorder-mode toggle needed.
-    // Rows stay static during the drag (only the dragged tile dims, the drop target outlines) to
-    // avoid offset-compensation math; the actual reorder, and any auto-config /app republish,
-    // commits once on drag end.
-    var draggedPanelId by remember { mutableStateOf<String?>(null) }
-    var draggedFromIndex by remember { mutableIntStateOf(-1) }
-    var draggedToIndex by remember { mutableIntStateOf(-1) }
-    // True once the drag has moved past this cluster's own first/last tile - released there, the
-    // panel is pulled out into its own cluster (see movePanelToOwnCluster) instead of just being
-    // reordered among its current siblings. Lets a panel escape a shared card it was auto- or
-    // manually- clustered into, e.g. two unrelated relay outlets on the same physical device.
-    var draggedWillPopOut by remember { mutableStateOf(false) }
-    var dragOffsetX by remember { mutableFloatStateOf(0f) }
-    var dragOffsetY by remember { mutableFloatStateOf(0f) }
-    var tileWidthPx by remember { mutableFloatStateOf(0f) }
-    var tileHeightPx by remember { mutableFloatStateOf(0f) }
     val staleIndicatorColor = if (isStale) {
         MaterialTheme.colorScheme.error
     } else {
@@ -1602,8 +1780,8 @@ private fun ClusterCard(
                         val isDragging = draggedPanelId == panel.id
                         val isDropTarget = draggedPanelId != null &&
                             draggedPanelId != panel.id &&
-                            panelIndex == draggedToIndex
-                        val isPoppingOut = isDragging && draggedWillPopOut
+                            panelIndex == draggedToPanelIndex
+                        val isPoppingOut = isDragging && draggedPanelWillPopOut
 
                         Box(
                             modifier = Modifier
@@ -1633,108 +1811,8 @@ private fun ClusterCard(
                                     .fillMaxWidth()
                                     .alpha(if (isDragging) 0.5f else 1f)
                                     .onGloballyPositioned { coordinates ->
-                                        if (tileWidthPx == 0f) tileWidthPx = coordinates.size.width.toFloat()
-                                        if (tileHeightPx == 0f) tileHeightPx = coordinates.size.height.toFloat()
+                                        panelBounds[panel.id] = coordinates.boundsInWindow()
                                     }
-                                    .then(
-                                        if (isAnyClusterOrGroupDragActive) {
-                                            Modifier
-                                        } else {
-                                            Modifier.pointerInput(panel.id) {
-                                        detectDragGesturesAfterLongPress(
-                                            onDragStart = {
-                                                draggedPanelId = panel.id
-                                                draggedFromIndex = panelIndex
-                                                draggedToIndex = panelIndex
-                                                draggedWillPopOut = false
-                                                dragOffsetX = 0f
-                                                dragOffsetY = 0f
-                                            },
-                                            onDragEnd = {
-                                                val fromIndex = draggedFromIndex
-                                                val toIndex = draggedToIndex
-                                                val willPopOut = draggedWillPopOut
-                                                if (willPopOut && panels.size > 1 && panel.label.isNotBlank()) {
-                                                    // Pulled past this cluster's own edge - give it its
-                                                    // own titled card instead of reordering it among the
-                                                    // siblings it's leaving. Pushed to the owning device's
-                                                    // payload too (when auto-configured), so a future
-                                                    // reconcile pass doesn't silently merge it back in.
-                                                    val previousGroups = app.configRepository.config.value.groups
-                                                    app.configRepository.movePanelToOwnCluster(groupId, panel.id, panel.label)
-                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label)
-                                                    publishAppTopicForClusterIfMissing(app, groupId, panel.label)
-                                                    onUndoableMove("Moved \"${panel.label}\"", previousGroups) {
-                                                        pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.clusterName)
-                                                    }
-                                                } else if (toIndex != fromIndex && fromIndex >= 0 && toIndex >= 0 && toIndex < panels.size) {
-                                                    val targetPanelId = panels[toIndex].id
-                                                    // Read fresh from the live config rather than the
-                                                    // closure-captured `panels` list - this pointerInput
-                                                    // block launches once per tile, so that list goes
-                                                    // stale (same bug class as cluster-level drag).
-                                                    // Resolving both panels by *id* rather than the
-                                                    // drag's own (possibly-stale) index bookkeeping
-                                                    // means a stale starting point still resolves
-                                                    // correctly against the current panel list.
-                                                    val currentPanels = app.configRepository.config.value.groups
-                                                        .find { it.id == groupId }?.panels
-                                                        ?.filter { it.clusterName == name }
-                                                        ?.sortedBy { it.displayOrder }
-                                                    if (currentPanels != null) {
-                                                        val currentFromIndex = currentPanels.indexOfFirst { it.id == panel.id }
-                                                        val currentToIndex = currentPanels.indexOfFirst { it.id == targetPanelId }
-                                                        if (currentFromIndex >= 0 && currentToIndex >= 0 && currentFromIndex != currentToIndex) {
-                                                            val previousGroups = app.configRepository.config.value.groups
-                                                            val reordered = currentPanels.toMutableList()
-                                                            val moved = reordered.removeAt(currentFromIndex)
-                                                            reordered.add(currentToIndex, moved)
-                                                            val orderedIds = reordered.map { it.id }
-                                                            app.configRepository.reorderPanelsInCluster(groupId, orderedIds)
-                                                            pushOrderUpdateIfAutoConfigured(app, orderedIds, reordered)
-                                                            publishAppTopicForClusterIfMissing(app, groupId, name)
-                                                            onUndoableMove("Moved \"${panel.label}\"", previousGroups) {
-                                                                pushOrderUpdateIfAutoConfigured(
-                                                                    app, currentPanels.map { it.id }, currentPanels
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                draggedPanelId = null
-                                                draggedFromIndex = -1
-                                                draggedToIndex = -1
-                                                draggedWillPopOut = false
-                                                dragOffsetX = 0f
-                                                dragOffsetY = 0f
-                                            },
-                                            onDragCancel = {
-                                                draggedPanelId = null
-                                                draggedFromIndex = -1
-                                                draggedToIndex = -1
-                                                draggedWillPopOut = false
-                                                dragOffsetX = 0f
-                                                dragOffsetY = 0f
-                                            },
-                                            onDrag = { change, dragAmount ->
-                                                change.consume()
-                                                dragOffsetX += dragAmount.x
-                                                dragOffsetY += dragAmount.y
-                                                val w = tileWidthPx
-                                                val h = tileHeightPx
-                                                if (w > 0f && h > 0f) {
-                                                    val columnDelta = (dragOffsetX / w).roundToInt()
-                                                    val rowDelta = (dragOffsetY / h).roundToInt()
-                                                    val linearDelta = rowDelta * columns + columnDelta
-                                                    val rawIndex = draggedFromIndex + linearDelta
-                                                    draggedWillPopOut = rawIndex !in 0..panels.lastIndex
-                                                    draggedToIndex = if (draggedWillPopOut) -1 else rawIndex
-                                                }
-                                            }
-                                        )
-                                            }
-                                        }
-                                    )
                             )
                         }
                     }

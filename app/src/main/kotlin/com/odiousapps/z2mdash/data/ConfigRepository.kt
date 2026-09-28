@@ -478,6 +478,39 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         })
     }
 
+    /**
+     * Moves [panelId] from [fromGroupId] into the existing cluster [targetClusterName] within
+     * [toGroupId] (which may be the same group), appended after that cluster's current panels -
+     * the reverse of movePanelToOwnCluster above, for dragging a panel onto a cluster to join it.
+     */
+    fun movePanelIntoCluster(
+        fromGroupId: String,
+        panelId: String,
+        toGroupId: String,
+        targetClusterName: String
+    ) = update { cfg ->
+        if (targetClusterName.isBlank()) return@update cfg
+        val fromGroup = cfg.groups.find { it.id == fromGroupId } ?: return@update cfg
+        val panel = fromGroup.panels.find { it.id == panelId } ?: return@update cfg
+        val toGroup = cfg.groups.find { it.id == toGroupId } ?: return@update cfg
+        val newOrder = (toGroup.panels.filter { it.clusterName == targetClusterName }
+            .maxOfOrNull { it.displayOrder } ?: -1) + 1
+        val relocated = when (panel) {
+            is Panel.Sensor -> panel.copy(clusterName = targetClusterName, displayOrder = newOrder)
+            is Panel.Toggle -> panel.copy(clusterName = targetClusterName, displayOrder = newOrder)
+            is Panel.Button -> panel.copy(clusterName = targetClusterName, displayOrder = newOrder)
+        }
+        cfg.copy(groups = cfg.groups.map { g ->
+            when {
+                g.id == fromGroupId && g.id == toGroupId ->
+                    g.copy(panels = g.panels.map { if (it.id == panelId) relocated else it })
+                g.id == fromGroupId -> g.copy(panels = g.panels.filterNot { it.id == panelId })
+                g.id == toGroupId -> g.copy(panels = g.panels + relocated)
+                else -> g
+            }
+        })
+    }
+
     fun removePanel(groupId: String, panelId: String) = update { cfg ->
         val updatedGroups = cfg.groups.map { g ->
             if (g.id == groupId) g.copy(panels = g.panels.filterNot { it.id == panelId }) else g

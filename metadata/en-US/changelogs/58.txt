@@ -1,0 +1,1 @@
+- Dragging a panel onto an existing cluster now adds it to that cluster, in same group or a different one - previously a panel could only be split out of a cluster, not added into one.
