@@ -1100,21 +1100,21 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         // When the "only sensors not reporting recently" toggle is on, clusters
                         // (and standalone tiles, each their own single-panel bucket above) that
                         // HAVE reported within the last hour are left out of row-packing/rendering
-                        // entirely, rather than shown dimmed or in a separate dialog. Each bucket's
-                        // own derivedStateOf (same shape as ClusterCard's own ageState) keeps this
-                        // scoped to just the clusters whose OWN staleness actually flips, rather
-                        // than recomposing this whole filter on every unrelated MQTT message - the
-                        // .filter below only ever reads each derivedStateOf's already-computed
-                        // .value, never payloadsState/timestampsState directly.
+                        // entirely, rather than shown dimmed or in a separate dialog. Deliberately
+                        // NOT wrapped in remember/derivedStateOf per bucket - calling those inside
+                        // a plain .filter{} loop whose iteration count varies is a known Compose
+                        // slot-alignment hazard without an explicit key() per item, which isn't
+                        // available here. Reading payloadsState/timestampsState directly instead
+                        // means every expanded group's content recomposes on every MQTT message
+                        // while this toggle is on (unlike everywhere else on this screen), but only
+                        // for as long as it's deliberately switched on.
                         val visibleClusters = if (!showOnlyStaleClusters) {
                             orderedClusters
                         } else {
-                            orderedClusters.filter { bucket ->
-                                val isStale by remember(bucket) {
-                                    derivedStateOf { isClusterStale(bucket, payloadsState.value, timestampsState.value, nowMillisState.value) }
-                                }
-                                isStale
-                            }
+                            val payloads = payloadsState.value
+                            val timestamps = timestampsState.value
+                            val nowMillis = nowMillisState.value
+                            orderedClusters.filter { bucket -> isClusterStale(bucket, payloads, timestamps, nowMillis) }
                         }
 
                         // Cluster drag state (draggedClusterKey/clusterBounds/etc.) is declared

@@ -1,0 +1,1 @@
+- Replaced the "sensors not reporting recently" dialog with a toggle button that filters the dashboard itself down to just the clusters and sensors that haven't reported in the last hour.
