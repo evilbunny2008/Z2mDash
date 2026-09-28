@@ -1306,30 +1306,35 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val payloads = payloadsState.value
         val timestamps = timestampsState.value
         val nowMillis = nowMillisState.value
-        val staleSensors = remember(config, payloads, timestamps, nowMillis) {
-            config.groups.flatMap { group ->
-                group.panels.filterIsInstance<Panel.Sensor>()
+        fun isPanelStale(panel: Panel.Sensor): Boolean {
+            val key = "${panel.brokerId}|${panel.topic}"
+            // Same last_seen-preferred-over-receipt-time precedence as ClusterCard's own
+            // ageState, for the same reason - see that comment.
+            val lastSeen = payloads[key]?.let { JsonPath.extract(it, "last_seen") }
+                ?.let { JsonPath.parseIso8601(it) }
+                ?: timestamps[key]
+            return lastSeen == null || (nowMillis - lastSeen) > 60 * 60 * 1000L
+        }
+        // One section per group with at least one stale sensor, each broken down the same way
+        // that group's own clusters are on the dashboard - named clusters (as a list of
+        // clusterName to its stale panels only, in normal display order) plus standalone stale
+        // panels - so ClusterCard/PanelTile below render this exactly as they normally appear,
+        // just with only the stale subset of each cluster's panels included.
+        val staleSections = remember(config, payloads, timestamps, nowMillis) {
+            config.groups.mapNotNull { group ->
+                val stalePanels = group.panels.filterIsInstance<Panel.Sensor>()
                     // An editable panel is a fixed preference value an automation script
                     // published once, not a continuously-reporting hardware sensor - it would
                     // never look anything but "stale" here, purely as noise.
-                    .filter { !it.editable && it.topic.isNotBlank() }
-                    .mapNotNull { panel ->
-                        val key = "${panel.brokerId}|${panel.topic}"
-                        // Same last_seen-preferred-over-receipt-time precedence as ClusterCard's
-                        // own ageState, for the same reason - see that comment.
-                        val lastSeen = payloads[key]?.let { JsonPath.extract(it, "last_seen") }
-                            ?.let { JsonPath.parseIso8601(it) }
-                            ?: timestamps[key]
-                        val isStale = lastSeen == null || (nowMillis - lastSeen) > 60 * 60 * 1000L
-                        if (!isStale) return@mapNotNull null
-                        val ageText = lastSeen?.let {
-                            DateUtils.getRelativeTimeSpanString(it, nowMillis, DateUtils.SECOND_IN_MILLIS).toString()
-                        } ?: "Never reported"
-                        Triple(group.id to group.name, panel, lastSeen to ageText)
-                    }
+                    .filter { !it.editable && it.topic.isNotBlank() && isPanelStale(it) }
+                if (stalePanels.isEmpty()) return@mapNotNull null
+                val clusters = stalePanels.filter { it.clusterName.isNotBlank() }
+                    .groupBy { it.clusterName }
+                    .map { (clusterName, panels) -> clusterName to panels.sortedBy { it.displayOrder } }
+                    .sortedBy { (_, panels) -> panels.minOf { it.displayOrder } }
+                val standalone = stalePanels.filter { it.clusterName.isBlank() }.sortedBy { it.displayOrder }
+                Triple(group.id, group.name, clusters to standalone)
             }
-                // Never-reported panels (null lastSeen) sort first, then oldest-first among the rest.
-                .sortedBy { (_, _, lastSeenAndText) -> lastSeenAndText.first ?: -1L }
         }
         fun jumpToStalePanel(groupId: String, clusterName: String) {
             app.configRepository.setGroupCollapsed(groupId, false)
@@ -1344,29 +1349,69 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             onDismissRequest = { showStaleSensors = false },
             title = { Text("Sensors not reporting recently") },
             text = {
-                if (staleSensors.isEmpty()) {
+                if (staleSections.isEmpty()) {
                     Text("Every sensor has reported within the last hour.")
                 } else {
-                    LazyColumn(modifier = Modifier.heightIn(max = 400.dp)) {
-                        items(staleSensors, key = { (_, panel, _) -> panel.id }) { (groupIdAndName, panel, lastSeenAndText) ->
-                            val (groupId, groupName) = groupIdAndName
-                            val (_, ageText) = lastSeenAndText
-                            ListItem(
-                                headlineContent = { Text(panel.label.ifBlank { "(unnamed)" }) },
-                                supportingContent = {
-                                    Column {
-                                        Text(
-                                            if (panel.clusterName.isNotBlank()) {
-                                                "${panel.clusterName} • $groupName"
-                                            } else {
-                                                groupName
-                                            }
+                    LazyColumn(
+                        modifier = Modifier.heightIn(max = 480.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        staleSections.forEach { (groupId, groupName, clustersAndStandalone) ->
+                            val (clusters, standalone) = clustersAndStandalone
+                            item(key = "${groupId}_header") {
+                                Text(groupName, style = MaterialTheme.typography.titleSmall)
+                            }
+                            items(clusters, key = { (clusterName, _) -> "$groupId::$clusterName" }) { (clusterName, panels) ->
+                                ClusterCard(
+                                    name = clusterName,
+                                    panels = panels,
+                                    groupId = groupId,
+                                    payloadsState = payloadsState,
+                                    timestampsState = timestampsState,
+                                    nowMillisState = nowMillisState,
+                                    app = app,
+                                    navController = navController,
+                                    columns = columnsPerRow,
+                                    tileWidth = standaloneTileWidth,
+                                    tileScale = tileScale,
+                                    onEditSensorValue = onEditSensorValue,
+                                    onDelete = {
+                                        // Deletes the cluster's FULL panel list, not just the
+                                        // stale subset shown here - "delete" means the whole
+                                        // cluster, same as it does everywhere else in the app.
+                                        val fullPanelIds = app.configRepository.config.value.groups
+                                            .find { it.id == groupId }?.panels
+                                            ?.filter { it.clusterName == clusterName }
+                                            ?.map { it.id } ?: emptyList()
+                                        pendingClusterDelete = PendingClusterDelete(groupId, clusterName, fullPanelIds)
+                                    },
+                                    onDuplicate = {
+                                        val fullPanels = app.configRepository.config.value.groups
+                                            .find { it.id == groupId }?.panels
+                                            ?.filter { it.clusterName == clusterName } ?: emptyList()
+                                        val prefix = SensorDiscovery.commonTopicPrefix(fullPanels)
+                                        pendingClusterDuplicate = PendingClusterDuplicate(
+                                            groupId, clusterName, fullPanels.map { it.id }, prefix
                                         )
-                                        Text(ageText)
-                                    }
-                                },
-                                modifier = Modifier.clickable { jumpToStalePanel(groupId, panel.clusterName) }
-                            )
+                                        duplicateClusterNameText = "$clusterName copy"
+                                        duplicateTopicText = prefix
+                                    },
+                                    modifier = Modifier.clickable { jumpToStalePanel(groupId, clusterName) }
+                                )
+                            }
+                            items(standalone, key = { it.id }) { panel ->
+                                PanelTile(
+                                    panel = panel,
+                                    groupId = groupId,
+                                    payloadsState = payloadsState,
+                                    app = app,
+                                    navController = navController,
+                                    tileScale = tileScale,
+                                    onEditSensorValue = onEditSensorValue,
+                                    modifier = Modifier.width(standaloneTileWidth)
+                                        .clickable { jumpToStalePanel(groupId, "") }
+                                )
+                            }
                         }
                     }
                 }
