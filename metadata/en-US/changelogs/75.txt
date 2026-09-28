@@ -1,0 +1,1 @@
+- Fixed a watering alert that could fire incorrectly when only editing a moisture threshold, even if the reading had actually dropped, rather than genuinely risen by 5% or more.

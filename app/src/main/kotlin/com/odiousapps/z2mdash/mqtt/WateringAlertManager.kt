@@ -37,6 +37,13 @@ import kotlinx.coroutines.launch
  * stale retained value followed immediately by a fresh live one on (re)connect, and without this
  * that stale-then-fresh pair could span the midpoint by more than the threshold and read as a
  * genuine rise happening the instant the app starts, even though no watering just happened.
+ * Likewise, whenever the ideal range's own min/max changes (editing the threshold), the
+ * above/below classification and trough baseline are silently resynchronised to the new midpoint
+ * rather than compared against their last values from under the *old* one - without this, editing
+ * a threshold could make an all-but-unchanged reading (even a small drop) suddenly compute as
+ * "above" a now-lower midpoint while still being recorded as "was below", reading as a genuine
+ * rise that never happened. Confirmed by a user report: a 1% moisture *drop* alone triggered a
+ * "reached target" alert, which only a concurrent min/max edit shifting the midpoint could explain.
  */
 class WateringAlertManager(
     private val context: Context,
@@ -53,20 +60,11 @@ class WateringAlertManager(
     // the crossing rather than on every subsequent message while it stays up there.
     private val panelsAboveMidpoint = mutableSetOf<String>()
 
-    // Panel ids whose first reading this app run has already been used purely to seed the state
-    // above - see the class doc's own paragraph on why that first reading can't trigger an alert.
-    private val seenPanelIds = mutableSetOf<String>()
-
-    // The last actual moisture VALUE processed for each panel - not updated on every call, only
-    // when the value genuinely differs from this. connectionManager.latestPayloads emits its
-    // whole map on ANY topic changing, so checkMoisturePanels re-runs for every moisture panel
-    // whenever, say, its idealRangeTopic's min/max gets edited - a config change on a topic the
-    // moisture READING itself doesn't live at. Without this check, editing that threshold could
-    // shift the midpoint out from under an unchanged reading and read as a genuine rise (or even
-    // a drop) purely because of where the midpoint now sits, despite the reading never moving -
-    // confirmed by a user report where editing min/max twice fired two watering alerts with no
-    // watering, and less than the 5% rise threshold, ever having actually happened.
-    private val lastSeenValue = mutableMapOf<String, Double>()
+    // The ideal range's midpoint last used to classify each panel as above/below - absent for a
+    // panel never yet classified at all. Doubles as the "first observation" marker (see the class
+    // doc): a missing entry and a genuinely different midpoint from an edited threshold are both
+    // "resync, don't notify" cases, so one map covers both rather than needing a separate set.
+    private val lastMidpoint = mutableMapOf<String, Double>()
 
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
@@ -95,16 +93,22 @@ class WateringAlertManager(
             val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
             val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
             if (min == null || max == null) return@forEach
-            // Nothing to evaluate if this panel's own moisture reading hasn't actually changed
-            // since last time - see lastSeenValue's own doc on why this re-runs regardless.
-            if (lastSeenValue[panel.id] == currentValue) return@forEach
-            lastSeenValue[panel.id] = currentValue
             val midpoint = (min + max) / 2.0
             val isAbove = currentValue >= midpoint
 
-            if (panel.id !in seenPanelIds) {
-                seenPanelIds.add(panel.id)
-                if (isAbove) panelsAboveMidpoint.add(panel.id) else baselineLow[panel.id] = currentValue
+            // First-ever observation of this panel, or the ideal range's own threshold has moved
+            // since it was last classified - either way, resync silently against the current
+            // midpoint rather than comparing against a classification made under a different one.
+            if (lastMidpoint[panel.id] != midpoint) {
+                lastMidpoint[panel.id] = midpoint
+                if (isAbove) {
+                    panelsAboveMidpoint.add(panel.id)
+                    baselineLow.remove(panel.id)
+                } else {
+                    panelsAboveMidpoint.remove(panel.id)
+                    baselineLow[panel.id] = currentValue
+                    cancelMoistureNotification(panel.id)
+                }
                 return@forEach
             }
 
