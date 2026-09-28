@@ -1646,17 +1646,30 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         val clusterPanels = app.configRepository.config.value.groups
                             .find { it.id == pending.groupId }?.panels
                             ?.filter { it.clusterName == pending.clusterName } ?: emptyList()
+                        val brokerId = clusterPanels.firstOrNull()?.brokerId
                         val device = app.configRepository.config.value.autoConfiguredDevices
                             .find { d -> clusterPanels.any { it.id in d.createdPanelIds } }
+                        // Read the OLD "/app" payload before retopicCluster below rewrites any
+                        // panel (e.g. an editable moisture min/max threshold) that was itself
+                        // stored there - see buildAppConfigPayload's own doc on why an editable
+                        // field's topic can be the cluster's own "/app" topic. Copied verbatim
+                        // (not rebuilt) to the new address, so the actual value is carried across
+                        // rather than reset to blank the next time anything reads it there.
+                        val oldAppTopic = "${pending.currentTopicPrefix}/app"
+                        val oldAppPayload = brokerId?.let { app.connectionManager.latestPayloads.value["$it|$oldAppTopic"] }
                         app.configRepository.retopicCluster(
                             pending.groupId, pending.clusterName, pending.currentTopicPrefix, retopicNewTopicText
                         )
+                        if (brokerId != null && oldAppPayload != null) {
+                            app.connectionManager.publish(brokerId, "$retopicNewTopicText/app", oldAppPayload, retain = true)
+                        }
                         if (device != null) {
                             // The device's old retained "/app" topic now describes panels that no
                             // longer live there - clear it rather than leaving stale config
-                            // behind on the broker for another phone/scan to trip over. A fresh
-                            // one under the new topic can be published later via "Force Upload"
-                            // once the device's actually reachable there.
+                            // behind on the broker for another phone/scan to trip over. Its value
+                            // has already been copied to the new topic above; local auto-config
+                            // tracking for the new address can be (re-)established later via
+                            // "Force Upload" once the device's actually reachable there.
                             app.connectionManager.publish(device.brokerId, device.appConfigTopic, "", retain = true)
                         }
                         pendingClusterRetopic = null

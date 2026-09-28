@@ -1,0 +1,1 @@
+- Fixed changing a cluster's topic resetting any editable value stored there (e.g. a moisture min/max threshold) - it's now copied across to the new topic instead of being left behind.
