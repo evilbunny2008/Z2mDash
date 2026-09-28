@@ -57,6 +57,17 @@ class WateringAlertManager(
     // above - see the class doc's own paragraph on why that first reading can't trigger an alert.
     private val seenPanelIds = mutableSetOf<String>()
 
+    // The last actual moisture VALUE processed for each panel - not updated on every call, only
+    // when the value genuinely differs from this. connectionManager.latestPayloads emits its
+    // whole map on ANY topic changing, so checkMoisturePanels re-runs for every moisture panel
+    // whenever, say, its idealRangeTopic's min/max gets edited - a config change on a topic the
+    // moisture READING itself doesn't live at. Without this check, editing that threshold could
+    // shift the midpoint out from under an unchanged reading and read as a genuine rise (or even
+    // a drop) purely because of where the midpoint now sits, despite the reading never moving -
+    // confirmed by a user report where editing min/max twice fired two watering alerts with no
+    // watering, and less than the 5% rise threshold, ever having actually happened.
+    private val lastSeenValue = mutableMapOf<String, Double>()
+
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
             connectionManager.latestPayloads.collect { payloads ->
@@ -84,6 +95,10 @@ class WateringAlertManager(
             val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
             val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
             if (min == null || max == null) return@forEach
+            // Nothing to evaluate if this panel's own moisture reading hasn't actually changed
+            // since last time - see lastSeenValue's own doc on why this re-runs regardless.
+            if (lastSeenValue[panel.id] == currentValue) return@forEach
+            lastSeenValue[panel.id] = currentValue
             val midpoint = (min + max) / 2.0
             val isAbove = currentValue >= midpoint
 

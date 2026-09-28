@@ -634,7 +634,11 @@ object SensorDiscovery {
                     ?: rangeBase?.let { deviceConfig.rangePairs[it]!!.second } ?: "max",
                 clusterName = clusterName,
                 displayOrder = composedDisplayOrder(deviceConfig.groupOrder, deviceConfig.panelOrders.getOrNull(index), index),
-                decimals = deviceConfig.panelDecimals.getOrNull(index) ?: suggestedDecimals(field)
+                decimals = deviceConfig.panelDecimals.getOrNull(index) ?: suggestedDecimals(field),
+                // A "<base>_min"/"<base>_max" field IS the threshold itself (e.g. moisture_min),
+                // not a live hardware reading - editing it is its entire purpose, so it defaults
+                // to editable rather than requiring the user to flip that on manually every time.
+                editable = field in rangeKeys
             )
         }
 

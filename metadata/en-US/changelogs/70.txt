@@ -1,0 +1,1 @@
+- Auto-discovered "min"/"max" threshold fields (e.g. moisture_min/max) are now editable by default, instead of needing that switched on manually for every device.

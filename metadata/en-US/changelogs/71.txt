@@ -1,0 +1,1 @@
+- Fixed a watering alert notification sometimes firing just from editing a moisture threshold (min/max), even though the actual moisture reading hadn't changed at all.
