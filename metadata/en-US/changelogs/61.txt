@@ -1,0 +1,1 @@
+- Added low battery alerts: notifies (naming the cluster) when any device reports a battery level at or below 20%, with its own toggle and test button in Alarm/Alert settings.

@@ -73,6 +73,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -227,7 +228,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var clusterSearchQuery by remember { mutableStateOf("") }
     // Filters the dashboard itself down to only clusters/standalone panels that haven't reported
     // in the last hour, rather than opening a separate dialog for it - toggled by its own FAB.
-    var showOnlyStaleClusters by remember { mutableStateOf(false) }
+    // rememberSaveable, not remember - this is a deliberate, user-set filter mode, not transient
+    // dialog state, so it should survive a screen rotation (which fully recreates the Activity,
+    // since this app doesn't handle configChanges) rather than silently reverting to "off".
+    var showOnlyStaleClusters by rememberSaveable { mutableStateOf(false) }
 
     // Undo prompt for an accidental tile/cluster/group drag. previousGroups is a full snapshot of
     // config.groups taken right before the drag's own mutation, restored wholesale on Undo rather
