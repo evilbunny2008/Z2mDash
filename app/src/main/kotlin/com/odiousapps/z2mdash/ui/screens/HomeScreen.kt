@@ -2270,9 +2270,11 @@ private fun addPendingDevice(
 }
 
 /**
- * One broker's item in HomeScreen's LazyColumn - does its own narrowly-scoped derivedStateOf read
- * (same reasoning as ClusterCard/PanelTile) so the once-a-second countdown only recomposes this
- * row, not the whole screen.
+ * One broker's item(s) in HomeScreen's LazyColumn - one PermitJoinBanner per comma-separated base
+ * topic the broker declares (see PermitJoin.parseBaseTopics), since permit-join state is genuinely
+ * per-Zigbee2MQTT-namespace, not per-broker connection. Each banner does its own narrowly-scoped
+ * derivedStateOf read (same reasoning as ClusterCard/PanelTile) so its own once-a-second countdown
+ * only recomposes itself, not the whole screen or this broker's other topics.
  */
 @Composable
 private fun PermitJoinItem(
@@ -2283,28 +2285,38 @@ private fun PermitJoinItem(
     payloadsState: State<Map<String, String>>,
     nowMillisState: State<Long>
 ) {
-    val baseTopicNormalized = remember(broker.baseTopic) { PermitJoin.normalizedBaseTopic(broker.baseTopic) }
-    val status by remember(broker.id, baseTopicNormalized) {
-        derivedStateOf { PermitJoin.status(payloadsState.value, broker.id, baseTopicNormalized, nowMillisState.value) }
+    val baseTopics = remember(broker.baseTopic) { PermitJoin.parseBaseTopics(broker.baseTopic) }
+    Column {
+        baseTopics.forEach { baseTopic ->
+            key(baseTopic) {
+                val status by remember(broker.id, baseTopic) {
+                    derivedStateOf { PermitJoin.status(payloadsState.value, broker.id, baseTopic, nowMillisState.value) }
+                }
+                val title = when {
+                    showBrokerName && baseTopics.size > 1 -> "Permit Join – ${broker.name} ($baseTopic)"
+                    showBrokerName -> "Permit Join – ${broker.name}"
+                    baseTopics.size > 1 -> "Permit Join – $baseTopic"
+                    else -> "Permit Join"
+                }
+                PermitJoinBanner(
+                    title = title,
+                    status = status,
+                    onToggle = { enabled ->
+                        val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
+                        app.connectionManager.publish(broker.id, PermitJoin.requestTopic(baseTopic), payload)
+                    },
+                    // Deep-links straight to this broker's "Permit Join" section rather than the
+                    // top of its edit screen, so the user doesn't hunt through a long scrolling form.
+                    onInfoClick = { navController.navigate("broker/${broker.id}?focus=permitJoin") }
+                )
+            }
+        }
     }
-    PermitJoinBanner(
-        brokerName = broker.name,
-        showBrokerName = showBrokerName,
-        status = status,
-        onToggle = { enabled ->
-            val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
-            app.connectionManager.publish(broker.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
-        },
-        // Deep-links straight to this broker's "Permit Join" section rather than the top of its
-        // edit screen, so the user doesn't hunt through a long scrolling form.
-        onInfoClick = { navController.navigate("broker/${broker.id}?focus=permitJoin") }
-    )
 }
 
 @Composable
 private fun PermitJoinBanner(
-    brokerName: String,
-    showBrokerName: Boolean,
+    title: String,
     status: PermitJoin.Status,
     onToggle: (Boolean) -> Unit,
     onInfoClick: () -> Unit
@@ -2323,10 +2335,7 @@ private fun PermitJoinBanner(
             Column(
                 modifier = Modifier.weight(1f).clickable(onClick = onInfoClick)
             ) {
-                Text(
-                    if (showBrokerName) "Permit Join – $brokerName" else "Permit Join",
-                    style = MaterialTheme.typography.titleSmall
-                )
+                Text(title, style = MaterialTheme.typography.titleSmall)
                 Text(
                     if (status.isOn) {
                         "Open for ${PermitJoin.formatRemaining(status.remainingSeconds)} more"

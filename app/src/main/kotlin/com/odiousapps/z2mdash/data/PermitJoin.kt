@@ -13,6 +13,23 @@ object PermitJoin {
     fun normalizedBaseTopic(rawBaseTopic: String): String =
         rawBaseTopic.trim().trim('/').ifBlank { "zigbee2mqtt" }
 
+    /**
+     * Splits Broker.baseTopic on commas into one normalised topic per entry - lets a single
+     * broker connection watch/permit-join across more than one Zigbee2MQTT namespace at once
+     * (e.g. after splitting a large mesh across two bridges sharing the same MQTT broker), while
+     * a plain single value with no comma keeps behaving exactly as before (a one-element list).
+     * Blank segments (an empty field, a trailing comma, stray whitespace) are dropped rather than
+     * each separately falling back to "zigbee2mqtt" - only an entirely empty result does that,
+     * matching normalizedBaseTopic's own single-value fallback.
+     */
+    fun parseBaseTopics(rawBaseTopic: String): List<String> {
+        val topics = rawBaseTopic.split(',')
+            .map { it.trim().trim('/') }
+            .filter { it.isNotBlank() }
+            .distinct()
+        return topics.ifEmpty { listOf("zigbee2mqtt") }
+    }
+
     fun requestTopic(baseTopic: String) = "$baseTopic/bridge/request/permit_join"
     fun infoTopic(baseTopic: String) = "$baseTopic/bridge/info"
 

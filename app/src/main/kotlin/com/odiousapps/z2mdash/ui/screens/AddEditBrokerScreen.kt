@@ -193,7 +193,9 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             )
             Text(
                 "The app watches \"<base topic>/#\" for devices and their /app configs, " +
-                    "instead of every topic on the broker.",
+                    "instead of every topic on the broker. Enter a comma-separated list (e.g. " +
+                    "\"zigbee2mqtt, zigbee2mqtt2\") to watch more than one Zigbee2MQTT namespace " +
+                    "on this same broker - each gets its own Permit Join toggle below.",
                 style = MaterialTheme.typography.bodySmall
             )
             Spacer(Modifier.height(16.dp))
@@ -450,7 +452,15 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             if (existing != null) {
                 // "<baseTopic>/#" is already subscribed for every configured broker (see
                 // MqttConnectionManager.applyConfig), so bridge/info flows into latestPayloads already.
-                val baseTopicNormalized = remember(broker.baseTopic) { PermitJoin.normalizedBaseTopic(broker.baseTopic) }
+                //
+                // This embedded preview only ever targets the FIRST of a comma-separated list of
+                // base topics - reworking its "permit join via" router dropdown to repeat per
+                // topic is a bigger change than this screen's edit form warrants. HomeScreen's own
+                // Permit Join banners (PermitJoinItem) already render one full toggle per topic
+                // correctly, so a broker with more than one base topic still has real per-topic
+                // control there - this section just adds a pointer to it below.
+                val baseTopics = remember(broker.baseTopic) { PermitJoin.parseBaseTopics(broker.baseTopic) }
+                val baseTopicNormalized = baseTopics.first()
                 var nowMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
                 LaunchedEffect(Unit) {
                     while (true) {
@@ -495,6 +505,15 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
                         app.configRepository.updatePermitJoinDevice(existing.id, broker.permitJoinDevice)
                         val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
                         app.connectionManager.publish(existing.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
+                    }
+                    if (baseTopics.size > 1) {
+                        Text(
+                            "This broker has ${baseTopics.size} base topics - the toggle below is " +
+                                "just for \"$baseTopicNormalized\". Every base topic gets its own " +
+                                "Permit Join toggle on the main dashboard.",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Spacer(Modifier.height(8.dp))
                     }
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

@@ -5,6 +5,7 @@ import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.PayloadCacheEntry
 import com.odiousapps.z2mdash.data.PayloadCacheRepository
+import com.odiousapps.z2mdash.data.PermitJoin
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -71,11 +72,14 @@ class MqttConnectionManager(
 
     private fun keyFor(brokerId: String, topic: String) = "$brokerId|$topic"
 
-    /** "<baseTopic>/#", defensively trimmed/defaulted in case the field is ever blank. */
-    private fun wildcardTopicFor(broker: Broker): String {
-        val base = broker.baseTopic.trim().trim('/').ifBlank { "zigbee2mqtt" }
-        return "$base/#"
-    }
+    /**
+     * "<baseTopic>/#" for every comma-separated base topic the broker declares - see
+     * PermitJoin.parseBaseTopics's own doc on why a broker can watch more than one Zigbee2MQTT
+     * namespace at once. A plain single value with no comma yields the same one-element list as
+     * before.
+     */
+    private fun wildcardTopicsFor(broker: Broker): List<String> =
+        PermitJoin.parseBaseTopics(broker.baseTopic).map { "$it/#" }
 
     /** Call whenever the persisted config changes (brokers added/removed, panels added/removed). */
     fun applyConfig(config: AppConfig) {
@@ -90,9 +94,9 @@ class MqttConnectionManager(
             val conn = connections.getOrPut(broker.id) { createConnection(broker) }
             if (broker.autoConnect) conn.connect()
             // Subscribed continuously, not just while Discover is open, so new "<topic>/app"
-            // devices are detected in the background. Scoped to the broker's base topic, not
-            // "#", since most people only want their Zigbee2MQTT namespace on a shared broker.
-            conn.subscribe(wildcardTopicFor(broker))
+            // devices are detected in the background. Scoped to the broker's base topic(s), not
+            // "#", since most people only want their Zigbee2MQTT namespace(s) on a shared broker.
+            wildcardTopicsFor(broker).forEach { conn.subscribe(it) }
         }
 
         config.groups.flatMap { it.panels }.forEach { panel ->
@@ -122,13 +126,13 @@ class MqttConnectionManager(
     }
 
     /**
-     * Subscribes a broker to its own "<baseTopic>/#" so its retained messages
-     * flow into [latestPayloads] for the Discover Sensors screen to scan. Safe
-     * to call more than once - subscriptions are idempotent.
+     * Subscribes a broker to its own "<baseTopic>/#" (every comma-separated one) so its retained
+     * messages flow into [latestPayloads] for the Discover Sensors screen to scan. Safe to call
+     * more than once - subscriptions are idempotent.
      */
     fun discoverAll(brokerId: String) {
         val broker = brokerById[brokerId] ?: return
-        connections[brokerId]?.subscribe(wildcardTopicFor(broker))
+        wildcardTopicsFor(broker).forEach { connections[brokerId]?.subscribe(it) }
     }
 
     /** Backstop: keeps the cache fresh during long, quiet steady-state periods. */

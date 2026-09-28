@@ -1,0 +1,1 @@
+- The broker screen's base topic field now accepts a comma-separated list, so one broker can watch multiple Zigbee2MQTT namespaces at once (e.g. after splitting a network across two bridges) - each gets its own Permit Join toggle on the dashboard.
