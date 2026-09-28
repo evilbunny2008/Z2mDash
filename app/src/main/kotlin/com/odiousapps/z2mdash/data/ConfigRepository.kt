@@ -616,14 +616,33 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
      * panels - unlike applyDeviceAutoConfig, which is for when a device's payload is rebuilding
      * the panels themselves. This is for the opposite case: the panels already exist locally (a
      * duplicated cluster, say) and just need to start being tracked against a "/app" topic this
-     * phone itself just published for them (see AutoConfigPush.publishAppTopicForClusterIfMissing).
+     * phone itself just published for them (see AutoConfigPush.publishAppTopicForClusterIfMissing),
+     * or a cluster's whole group getting "Force Upload"-ed (forceRepublishGroupAppTopics) - which,
+     * unlike publishAppTopicForClusterIfMissing, runs for devices that are already tracked, not
+     * just brand-new ones.
+     *
+     * For an ALREADY-tracked device, [device]'s own lastKnownOrderVersion/lastKnownDashboardOrder
+     * are ignored in favour of the existing entry's - callers construct a fresh AutoConfiguredDevice
+     * without ever touching these fields, so they're always this class's own 0L/null defaults, and
+     * blindly overwriting the existing (correctly-tracked, likely much higher) order_version with
+     * them silently discards it. Confirmed via an on-device log capture as a real, reproducible bug:
+     * the NEXT reconcile of that topic (e.g. from an unrelated editable-value edit) then reads the
+     * retained payload's still-current, now-numerically-"newer" order_version as one this phone has
+     * never seen, adopts the freshly-rebuilt payload's own (un-set) field order for every panel, and
+     * DeviceAutoConfigManager.composedDisplayOrder's Int.MAX_VALUE fallback sorts the whole cluster
+     * to the very end of its group.
      */
     fun registerAutoConfiguredDevice(device: AutoConfiguredDevice) = update { cfg ->
         val existingIndex = cfg.autoConfiguredDevices.indexOfFirst {
             it.brokerId == device.brokerId && it.appConfigTopic == device.appConfigTopic
         }
         val updatedDevices = if (existingIndex >= 0) {
-            cfg.autoConfiguredDevices.toMutableList().also { it[existingIndex] = device }
+            val existing = cfg.autoConfiguredDevices[existingIndex]
+            val merged = device.copy(
+                lastKnownOrderVersion = existing.lastKnownOrderVersion,
+                lastKnownDashboardOrder = existing.lastKnownDashboardOrder
+            )
+            cfg.autoConfiguredDevices.toMutableList().also { it[existingIndex] = merged }
         } else {
             cfg.autoConfiguredDevices + device
         }
