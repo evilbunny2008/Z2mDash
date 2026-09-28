@@ -1,0 +1,1 @@
+- Fixed pressing OK on a toggle/button tile's remote sometimes opening its edit screen instead of triggering the switch or button - the focus ring now hugs whichever control actually has focus instead of the whole tile, so it's clear which one OK will activate.

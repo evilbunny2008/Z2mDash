@@ -233,8 +233,15 @@ fun ToggleTile(
     // touch target can swallow most of a tile this small, making a whole-card edit click
     // unreachable. Icon and label get their own clickable regions instead. Long-press anywhere
     // still reaches the drag detector from the outer modifier (clickable doesn't intercept it).
+    //
+    // tvFocusIndicator lives on the icon and the Switch individually, NOT on this outer Surface -
+    // confirmed on-device as a real bug when it did: `hasFocus` lights up the SAME whole-tile
+    // border whether the icon or the Switch is the one actually focused, so a D-pad user had no
+    // way to tell which of the two OK would trigger, and pressing OK while the border was showing
+    // often opened edit (the icon) when they expected to flip the switch. Each control now gets
+    // its own, separately-scoped ring, tight around just that control, so it's unambiguous.
     Surface(
-        modifier = modifier.heightIn(min = 120.dp * scale).tvFocusIndicator(),
+        modifier = modifier.heightIn(min = 120.dp * scale),
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 1.dp
     ) {
@@ -246,10 +253,16 @@ fun ToggleTile(
             Icon(
                 iconFor(icon),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp * scale).clickable(onClick = onEdit)
+                modifier = Modifier.size(24.dp * scale)
+                    .tvFocusIndicator(RoundedCornerShape(4.dp))
+                    .clickable(onClick = onEdit)
             )
             Spacer(Modifier.height(4.dp * scale))
-            Switch(checked = isOn, onCheckedChange = { onToggle() })
+            Switch(
+                checked = isOn,
+                onCheckedChange = { onToggle() },
+                modifier = Modifier.tvFocusIndicator(RoundedCornerShape(50))
+            )
             Spacer(Modifier.height(8.dp * scale))
             Text(
                 label,
@@ -277,8 +290,10 @@ fun ButtonTile(
     scale: Float = 1f,
     onEdit: () -> Unit = {}
 ) {
+    // See ToggleTile's own comment on tvFocusIndicator living on the icon/Button individually,
+    // not this outer Surface - same ambiguous-whole-tile-border bug applies here.
     Surface(
-        modifier = modifier.heightIn(min = 120.dp * scale).tvFocusIndicator(),
+        modifier = modifier.heightIn(min = 120.dp * scale),
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 1.dp
     ) {
@@ -292,10 +307,12 @@ fun ButtonTile(
             Icon(
                 iconFor(icon),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp * scale).clickable(onClick = onEdit)
+                modifier = Modifier.size(24.dp * scale)
+                    .tvFocusIndicator(RoundedCornerShape(4.dp))
+                    .clickable(onClick = onEdit)
             )
             Spacer(Modifier.height(8.dp * scale))
-            Button(onClick = onPress) {
+            Button(onClick = onPress, modifier = Modifier.tvFocusIndicator()) {
                 Text(label, textAlign = TextAlign.Center, maxLines = 1, overflow = TextOverflow.Ellipsis)
             }
         }
