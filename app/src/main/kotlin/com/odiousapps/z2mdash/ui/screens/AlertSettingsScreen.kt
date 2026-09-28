@@ -6,8 +6,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
@@ -51,7 +54,7 @@ fun AlertSettingsScreen(navController: NavController) {
             )
         }
     ) { padding ->
-        Column(modifier = Modifier.padding(padding)) {
+        Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState())) {
             ListItem(
                 headlineContent = { Text("Smoke Alerts") },
                 supportingContent = { Text("Notify if any device reports smoke detected") },
@@ -118,6 +121,33 @@ fun AlertSettingsScreen(navController: NavController) {
                 Text(
                     "Fires a real notification with the watering chime and vibration, regardless " +
                         "of the toggle above \u2013 a good way to hear it before you rely on it.",
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center
+                )
+            }
+            ListItem(
+                headlineContent = { Text("Low Battery Alerts") },
+                supportingContent = {
+                    Text("Notify when any device reports a battery level of 20% or below")
+                },
+                trailingContent = { Switch(checked = config.lowBatteryAlertsEnabled, onCheckedChange = null) },
+                modifier = Modifier.toggleableRow(config.lowBatteryAlertsEnabled) { enabled ->
+                    app.configRepository.update { it.copy(lowBatteryAlertsEnabled = enabled) }
+                }
+            )
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = { app.lowBatteryAlertManager.triggerTestAlert() }) {
+                    Icon(Icons.Default.BatteryAlert, contentDescription = null)
+                    Spacer(Modifier.padding(4.dp))
+                    Text("Test Notification")
+                }
+                Text(
+                    "Fires a real notification using the exact same logic as a genuine low " +
+                        "battery alert, regardless of the toggle above.",
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )

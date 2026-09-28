@@ -197,6 +197,10 @@ data class AppConfig(
     // fires while the reading is actually increasing, not just sitting above the midpoint,
     // and only once per rise (see WateringAlertManager). On by default.
     val wateringAlertsEnabled: Boolean = true,
+    // Notifies when any incoming payload's "battery" field drops into the low range (see
+    // LowBatteryAlertManager) - same "watches every payload, unscoped to a configured panel"
+    // approach as smokeAlertsEnabled. On by default.
+    val lowBatteryAlertsEnabled: Boolean = true,
     // Whether the one-time decimals migration (see ConfigRepository.load) has already run -
     // without this flag it would re-apply every launch and overwrite a deliberate later choice.
     val decimalsMigrationApplied: Boolean = false,
