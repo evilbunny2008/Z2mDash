@@ -1,6 +1,7 @@
 package com.odiousapps.z2mdash.mqtt
 
 import android.Manifest
+import android.util.Log
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -76,9 +77,31 @@ class DeviceAutoConfigManager(
             // A brand-new panel always takes its order from the payload.
             val incomingOrderVersion = deviceConfig.orderVersion
             val adoptIncomingOrder = incomingOrderVersion != null && incomingOrderVersion > device.lastKnownOrderVersion
+            // TEMPORARY diagnostic - tracking down a report of a cluster jumping to the end of its
+            // group after editing an editable value (e.g. a moisture min/max threshold). Remove
+            // once root-caused.
+            Log.d(
+                "Z2mDash",
+                "reconcile ${device.appConfigTopic}: incomingOrderVersion=$incomingOrderVersion " +
+                    "lastKnownOrderVersion=${device.lastKnownOrderVersion} adoptIncomingOrder=$adoptIncomingOrder " +
+                    "builtKeys=${builtKeys.values} existingKeys=${existingKeys.keys}"
+            )
             val newPanels = builtPanels.map { panel ->
-                val existing = existingPanels[builtKeys.getValue(panel)] ?: return@map panel
+                val existing = existingPanels[builtKeys.getValue(panel)]
+                if (existing == null) {
+                    Log.w(
+                        "Z2mDash",
+                        "reconcile ${device.appConfigTopic}: NO IDENTITY MATCH for built panel " +
+                            "key=${builtKeys.getValue(panel)} label=${panel.label} displayOrder=${panel.displayOrder}"
+                    )
+                    return@map panel
+                }
                 val displayOrder = if (adoptIncomingOrder) panel.displayOrder else existing.displayOrder
+                Log.d(
+                    "Z2mDash",
+                    "reconcile ${device.appConfigTopic}: panel label=${panel.label} " +
+                        "oldDisplayOrder=${existing.displayOrder} newDisplayOrder=$displayOrder"
+                )
                 when (panel) {
                     // editable is a local-only UI preference (see Panel.Sensor's doc) with no
                     // representation in the device's own payload - preserved the same way
