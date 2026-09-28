@@ -1,0 +1,1 @@
+- Fixed low battery notifications showing the Zigbee friendly name instead of the cluster name for a device whose dashboard panels use a "/app" companion topic rather than its raw sensor topic.

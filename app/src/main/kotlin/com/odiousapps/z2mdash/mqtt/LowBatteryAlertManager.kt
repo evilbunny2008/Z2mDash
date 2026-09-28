@@ -88,15 +88,26 @@ class LowBatteryAlertManager(
 
     /**
      * Prefers the clusterName of a dashboard panel sharing this topic (falling back to the
-     * panel's own label if it has no cluster), or the topic's own last path segment if no
-     * dashboard panel is configured for it at all.
+     * panel's own label if it has no cluster), or the topic's own last path segment (effectively
+     * the Zigbee friendly name) if no dashboard panel is configured for it at all.
+     *
+     * Matches with the "/app" suffix stripped from both sides before comparing, not an exact
+     * string match - "battery" is reported on a device's own raw sensor topic, but that topic
+     * might only appear on the dashboard as a panel's "<topic>/app" companion (e.g. an editable
+     * moisture min/max threshold, whose own topic *is* the "/app" address - see
+     * SensorDiscovery.buildAppConfigPayload's own doc), or vice versa after the cluster's topic
+     * was changed (see ConfigRepository.retopicCluster). An exact match still wins first, so this
+     * only ever widens which panel gets matched, never narrows it.
      */
     private fun deviceNameFor(compositeKey: String): String {
         val brokerId = compositeKey.substringBefore('|')
         val topic = compositeKey.substringAfter('|')
-        val matchingPanel = configRepository.config.value.groups.asSequence()
+        val topicBase = topic.removeSuffix("/app")
+        val panelsOnThisBroker = configRepository.config.value.groups.asSequence()
             .flatMap { it.panels }
-            .firstOrNull { it.brokerId == brokerId && topicFor(it) == topic }
+            .filter { it.brokerId == brokerId }
+        val matchingPanel = panelsOnThisBroker.firstOrNull { topicFor(it) == topic }
+            ?: panelsOnThisBroker.firstOrNull { topicFor(it)?.removeSuffix("/app") == topicBase }
         return matchingPanel?.clusterName?.takeIf { it.isNotBlank() }
             ?: matchingPanel?.label?.takeIf { it.isNotBlank() }
             ?: topic.substringAfterLast("/")
