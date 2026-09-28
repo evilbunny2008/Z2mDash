@@ -380,3 +380,55 @@ fun publishAppTopicForClusterIfMissing(
         )
     )
 }
+
+/**
+ * Rebuilds and republishes a fresh "<topic>/app" payload, from this phone's current local
+ * config, for every cluster (and standalone panel, each treated as its own single-panel
+ * "cluster") in [groupId] that has a coherent common topic - unlike
+ * [publishAppTopicForClusterIfMissing], overwriting whatever's already retained rather than
+ * only filling a gap. Meant for the "force upload" action on the group edit screen: the deliberate,
+ * manual fix for a group/broker that's drifted out of sync (e.g. another phone sharing the same
+ * broker published a stale or conflicting payload - see the multi-phone-deployment setup this app
+ * expects), re-asserting this phone's local config.json as the canonical source of truth for
+ * every device the group owns.
+ *
+ * A Sensor field whose own topic *is* the appTopic being republished (e.g. an editable min/max
+ * threshold - see buildAppConfigPayload's own doc) has its current value read back out of the
+ * existing retained payload first and re-seeded, so a force-republish doesn't silently reset a
+ * threshold the user had set via that field's own edit action.
+ */
+fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
+    val config = app.configRepository.config.value
+    val group = config.groups.find { it.id == groupId } ?: return
+    val clusterBuckets = group.panels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+
+    clusterBuckets.values.forEach { panels ->
+        val topic = SensorDiscovery.commonTopicPrefix(panels)
+        if (topic.isBlank()) return@forEach
+        val clusterName = panels.first().clusterName.ifBlank { panels.first().label }
+        val brokerId = panels.first().brokerId
+        val appTopic = "$topic/app"
+
+        val currentPayload = app.connectionManager.latestPayloads.value["$brokerId|$appTopic"]
+        val seedValuesByPanelId = panels.filterIsInstance<Panel.Sensor>()
+            .filter { it.topic == appTopic }
+            .mapNotNull { panel ->
+                val value = currentPayload?.let { JsonPath.extract(it, panel.jsonPath) } ?: return@mapNotNull null
+                panel.id to value
+            }.toMap()
+
+        val payload = SensorDiscovery.buildAppConfigPayload(
+            panels, clusterName, group.name, appTopic, seedValuesByPanelId
+        )
+        app.connectionManager.publish(brokerId, appTopic, payload, retain = true)
+        app.configRepository.registerAutoConfiguredDevice(
+            AutoConfiguredDevice(
+                brokerId = brokerId,
+                sensorTopic = topic,
+                appConfigTopic = appTopic,
+                lastAppliedPayload = payload,
+                createdPanelIds = panels.map { it.id }
+            )
+        )
+    }
+}

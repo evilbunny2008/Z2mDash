@@ -47,6 +47,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -107,6 +108,7 @@ import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
+import com.odiousapps.z2mdash.data.forceRepublishGroupAppTopics
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
@@ -225,6 +227,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     }
     var renamingGroup by remember { mutableStateOf<PanelGroup?>(null) }
     var renameText by remember { mutableStateOf("") }
+    // Confirmation step for the "force upload" action on the group edit dialog - kept as its own
+    // pending state (rather than a button directly inside that dialog) so the destructive-ish
+    // "overwrite whatever's on the broker" warning gets its own explicit confirm/cancel.
+    var pendingForceRepublishGroup by remember { mutableStateOf<PanelGroup?>(null) }
 
     var showClusterSearch by remember { mutableStateOf(false) }
     var clusterSearchQuery by remember { mutableStateOf("") }
@@ -1400,15 +1406,33 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     renamingGroup?.let { group ->
         AlertDialog(
             onDismissRequest = { renamingGroup = null },
-            title = { Text("Rename group") },
+            title = { Text("Edit group") },
             text = {
-                OutlinedTextField(
-                    value = renameText,
-                    onValueChange = { renameText = it },
-                    label = { Text("Name") },
-                    keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.clearFocusOnBack()
-                )
+                Column {
+                    OutlinedTextField(
+                        value = renameText,
+                        onValueChange = { renameText = it },
+                        label = { Text("Name") },
+                        keyboardOptions = tvAwareKeyboardOptions(),
+                        modifier = Modifier.clearFocusOnBack()
+                    )
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(
+                        onClick = {
+                            renamingGroup = null
+                            pendingForceRepublishGroup = group
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("Force Upload New Copy") }
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "Rebuilds and republishes every cluster in this group's device config from " +
+                            "this phone's current settings, overwriting whatever's currently on the " +
+                            "broker - use this if another phone or a broker issue left something out " +
+                            "of sync.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
             },
             confirmButton = {
                 TextButton(onClick = {
@@ -1421,6 +1445,33 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             },
             dismissButton = {
                 TextButton(onClick = { renamingGroup = null }) { Text("Cancel") }
+            }
+        )
+    }
+
+    pendingForceRepublishGroup?.let { group ->
+        AlertDialog(
+            onDismissRequest = { pendingForceRepublishGroup = null },
+            title = { Text("Force upload \"${group.name}\"?") },
+            text = {
+                Text(
+                    "This overwrites the retained device config on the broker for every cluster in " +
+                        "this group with a fresh copy built from this phone's current settings. Any " +
+                        "different config currently on the broker (e.g. from another phone) will be " +
+                        "replaced, not merged. This can't be undone automatically."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    forceRepublishGroupAppTopics(app, group.id)
+                    pendingForceRepublishGroup = null
+                    undoCoroutineScope.launch {
+                        snackbarHostState.showSnackbar("Re-published \"${group.name}\" to the broker")
+                    }
+                }) { Text("Force Upload") }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingForceRepublishGroup = null }) { Text("Cancel") }
             }
         )
     }

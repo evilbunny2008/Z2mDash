@@ -1,0 +1,1 @@
+- Added a "Force Upload New Copy" option to the group edit dialog, to republish every cluster/panel in a group's device config from this phone's current settings - useful for fixing a broker that's drifted out of sync with another phone.
