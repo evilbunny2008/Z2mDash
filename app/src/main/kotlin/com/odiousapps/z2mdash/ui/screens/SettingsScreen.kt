@@ -32,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.pm.PackageInfoCompat
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
@@ -40,10 +41,17 @@ import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
 @Composable
 fun SettingsScreen(navController: NavController) {
-    val app = LocalContext.current.applicationContext as Z2mDashApplication
+    val context = LocalContext.current
+    val app = context.applicationContext as Z2mDashApplication
     val config by app.configRepository.config.collectAsState()
     var showPruneConfirm by remember { mutableStateOf(false) }
     var pruneResultMessage by remember { mutableStateOf<String?>(null) }
+    // Read from the installed package rather than BuildConfig - the latter isn't enabled for
+    // this module, and PackageManager is the simplest way to show the actual running version.
+    val versionLabel = remember {
+        val info = context.packageManager.getPackageInfo(context.packageName, 0)
+        "Version ${info.versionName} (${PackageInfoCompat.getLongVersionCode(info)})"
+    }
     // A panel tagged with a brokerId that no longer exists can never update again - usually left
     // behind when a broker is deleted (see ConfigRepository.deleteBroker()'s own comment).
     val orphanedPanelCount = remember(config) {
@@ -171,7 +179,12 @@ fun SettingsScreen(navController: NavController) {
             item {
                 ListItem(
                     headlineContent = { Text("About") },
-                    supportingContent = { Text("Z2M Dash \u2013 no cloud, no account, no lock-in") },
+                    supportingContent = {
+                        Column {
+                            Text("Z2M Dash \u2013 no cloud, no account, no lock-in")
+                            Text(versionLabel)
+                        }
+                    },
                     leadingContent = { Icon(Icons.Default.Info, contentDescription = null) }
                 )
             }

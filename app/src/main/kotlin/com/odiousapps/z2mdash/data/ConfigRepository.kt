@@ -338,26 +338,59 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         })
     }
 
-    /** Moves every panel of [clusterName] from [fromGroupId] to the end of [toGroupId]. */
-    fun moveClusterToGroup(fromGroupId: String, toGroupId: String, clusterName: String) = update { cfg ->
+    /**
+     * Moves every panel of [clusterName] from [fromGroupId] into [toGroupId]. When
+     * [insertBeforeClusterKey] names an existing cluster (or standalone panel, keyed the same
+     * way [reorderClustersInGroup] keys them) already in the destination group, the moved
+     * cluster is inserted immediately before it there; the sentinel "__header__" (a drop onto
+     * the destination group's own header) inserts it at the very front instead. Leaving it null,
+     * or naming a cluster that's no longer there, falls back to appending at the end.
+     */
+    fun moveClusterToGroup(
+        fromGroupId: String,
+        toGroupId: String,
+        clusterName: String,
+        insertBeforeClusterKey: String? = null
+    ) = update { cfg ->
         if (fromGroupId == toGroupId || clusterName.isBlank()) return@update cfg
         val fromGroup = cfg.groups.find { it.id == fromGroupId } ?: return@update cfg
         val toGroup = cfg.groups.find { it.id == toGroupId } ?: return@update cfg
         val moving = fromGroup.panels.filter { it.clusterName == clusterName }.sortedBy { it.displayOrder }
         if (moving.isEmpty()) return@update cfg
-        val base = (toGroup.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
-        val relocated = moving.mapIndexed { index, panel ->
-            val newOrder = base + index
-            when (panel) {
-                is Panel.Sensor -> panel.copy(displayOrder = newOrder)
-                is Panel.Toggle -> panel.copy(displayOrder = newOrder)
-                is Panel.Button -> panel.copy(displayOrder = newOrder)
+
+        val destinationPanelsByKey = toGroup.panels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+        val destinationOrder = destinationPanelsByKey.entries
+            .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
+            .map { it.key }
+        val insertAt = when (insertBeforeClusterKey) {
+            null -> destinationOrder.size
+            "__header__" -> 0
+            else -> destinationOrder.indexOf(insertBeforeClusterKey).takeIf { it >= 0 } ?: destinationOrder.size
+        }
+        val newOrder = destinationOrder.toMutableList().apply { add(insertAt, clusterName) }
+
+        // Same spacing scheme as reorderClustersInGroup - each cluster (existing or newly
+        // inserted) gets a 1000-wide slot, so every one of its panels' displayOrders land
+        // consistently relative to the others regardless of where it used to sit.
+        val newOrderByPanelId = mutableMapOf<String, Int>()
+        newOrder.forEachIndexed { clusterIndex, key ->
+            val clusterPanels = if (key == clusterName) moving else destinationPanelsByKey[key].orEmpty()
+            clusterPanels.sortedBy { it.displayOrder }.forEachIndexed { withinIndex, panel ->
+                newOrderByPanelId[panel.id] = clusterIndex * 1000 + withinIndex
             }
         }
+
         cfg.copy(groups = cfg.groups.map { g ->
             when (g.id) {
                 fromGroupId -> g.copy(panels = g.panels.filterNot { it.clusterName == clusterName })
-                toGroupId -> g.copy(panels = g.panels + relocated)
+                toGroupId -> g.copy(panels = (toGroup.panels + moving).map { panel ->
+                    val newDisplayOrder = newOrderByPanelId[panel.id] ?: panel.displayOrder
+                    when (panel) {
+                        is Panel.Sensor -> panel.copy(displayOrder = newDisplayOrder)
+                        is Panel.Toggle -> panel.copy(displayOrder = newDisplayOrder)
+                        is Panel.Button -> panel.copy(displayOrder = newDisplayOrder)
+                    }
+                })
                 else -> g
             }
         })

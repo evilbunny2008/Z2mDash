@@ -1,0 +1,2 @@
+- Fixed cluster drag-and-drop: the drop target now tracks the whole card instead of just its centre, a long drag no longer freezes partway through, and moving a cluster to another group now lands it exactly where you dropped it instead of always at the end.
+- Added app version info to the About section in Settings.

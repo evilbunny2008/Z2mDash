@@ -1,0 +1,1 @@
+- Fixed watering alert notifications not naming which plant/sensor reached its target moisture level.
