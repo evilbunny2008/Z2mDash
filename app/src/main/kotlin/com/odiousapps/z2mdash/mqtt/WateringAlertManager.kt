@@ -32,7 +32,11 @@ import kotlinx.coroutines.launch
  * seen since the panel was last below the midpoint - rather than any increase at all, since
  * comparing only two adjacent MQTT messages would trigger on ordinary sensor noise (a reading
  * that's merely stopped falling, or wobbled up a fraction of a percent) as readily as on someone
- * actually watering.
+ * actually watering. A panel's very *first* observed reading each app run only seeds that
+ * baseline/above-midpoint state, and can never itself complete a rise - MQTT commonly replays a
+ * stale retained value followed immediately by a fresh live one on (re)connect, and without this
+ * that stale-then-fresh pair could span the midpoint by more than the threshold and read as a
+ * genuine rise happening the instant the app starts, even though no watering just happened.
  */
 class WateringAlertManager(
     private val context: Context,
@@ -48,6 +52,10 @@ class WateringAlertManager(
     // Panel ids currently at-or-above their ideal range's midpoint, so the alert fires once on
     // the crossing rather than on every subsequent message while it stays up there.
     private val panelsAboveMidpoint = mutableSetOf<String>()
+
+    // Panel ids whose first reading this app run has already been used purely to seed the state
+    // above - see the class doc's own paragraph on why that first reading can't trigger an alert.
+    private val seenPanelIds = mutableSetOf<String>()
 
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
@@ -77,8 +85,15 @@ class WateringAlertManager(
             val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
             if (min == null || max == null) return@forEach
             val midpoint = (min + max) / 2.0
-            val wasAbove = panel.id in panelsAboveMidpoint
             val isAbove = currentValue >= midpoint
+
+            if (panel.id !in seenPanelIds) {
+                seenPanelIds.add(panel.id)
+                if (isAbove) panelsAboveMidpoint.add(panel.id) else baselineLow[panel.id] = currentValue
+                return@forEach
+            }
+
+            val wasAbove = panel.id in panelsAboveMidpoint
 
             if (!isAbove) {
                 if (wasAbove) {

@@ -1,0 +1,1 @@
+- Fixed watering alert notifications sometimes firing right after app startup for a plant that wasn't actually just watered.
