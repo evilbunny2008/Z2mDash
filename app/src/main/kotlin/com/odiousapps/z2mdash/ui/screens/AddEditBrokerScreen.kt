@@ -14,8 +14,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -44,7 +42,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -61,29 +58,20 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.MqttProtocol
-import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.ui.components.CredentialImportDialog
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.rememberTvKeyboardGate
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
-import kotlinx.coroutines.delay
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.contentOrNull
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonPrimitive
 import java.util.UUID
-import kotlin.time.Duration.Companion.milliseconds
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSection: String? = null) {
+fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     val app = LocalContext.current.applicationContext as Z2mDashApplication
     val context = LocalContext.current
     val config by app.configRepository.config.collectAsState()
-    val latestPayloads by app.connectionManager.latestPayloads.collectAsState()
 
     val existing = remember(brokerId, config) { config.brokers.find { it.id == brokerId } }
     var showDeleteConfirm by remember { mutableStateOf(false) }
@@ -450,162 +438,10 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?, focusSe
             }
 
             if (existing != null) {
-                // "<baseTopic>/#" is already subscribed for every configured broker (see
-                // MqttConnectionManager.applyConfig), so bridge/info flows into latestPayloads already.
-                //
-                // This embedded preview only ever targets the FIRST of a comma-separated list of
-                // base topics - reworking its "permit join via" router dropdown to repeat per
-                // topic is a bigger change than this screen's edit form warrants. HomeScreen's own
-                // Permit Join banners (PermitJoinItem) already render one full toggle per topic
-                // correctly, so a broker with more than one base topic still has real per-topic
-                // control there - this section just adds a pointer to it below.
-                val baseTopics = remember(broker.baseTopic) { PermitJoin.parseBaseTopics(broker.baseTopic) }
-                val baseTopicNormalized = baseTopics.first()
-                var nowMillis by remember { mutableLongStateOf(System.currentTimeMillis()) }
-                LaunchedEffect(Unit) {
-                    while (true) {
-                        delay(1_000L.milliseconds)
-                        nowMillis = System.currentTimeMillis()
-                    }
-                }
-                val permitJoinStatus = remember(latestPayloads, existing.id, baseTopicNormalized, nowMillis) {
-                    PermitJoin.status(latestPayloads, existing.id, baseTopicNormalized, nowMillis)
-                }
-                // Only routers/coordinator can be targeted by permit_join's "device" field (end
-                // devices don't route child joins), so they're filtered from the suggestion list.
-                val routerFriendlyNames = remember(latestPayloads, existing.id, baseTopicNormalized) {
-                    val devicesPayload = latestPayloads["${existing.id}|$baseTopicNormalized/bridge/devices"]
-                    devicesPayload?.let { raw ->
-                        try {
-                            Json.parseToJsonElement(raw).jsonArray.mapNotNull { element ->
-                                val obj = element as? JsonObject ?: return@mapNotNull null
-                                val type = obj["type"]?.jsonPrimitive?.contentOrNull
-                                if (type == "Router" || type == "Coordinator") {
-                                    obj["friendly_name"]?.jsonPrimitive?.contentOrNull
-                                } else null
-                            }.sorted()
-                        } catch (_: Exception) {
-                            emptyList()
-                        }
-                    } ?: emptyList()
-                }
-
-                // Lets HomeScreen's Permit Join banner deep-link here via the "focus" nav argument,
-                // instead of the user scrolling this long form to find it.
-                val permitJoinSectionRequester = remember { BringIntoViewRequester() }
-                LaunchedEffect(focusSection) {
-                    if (focusSection == "permitJoin") {
-                        permitJoinSectionRequester.bringIntoView()
-                    }
-                }
-
-                Spacer(Modifier.height(24.dp))
-                Column(modifier = Modifier.bringIntoViewRequester(permitJoinSectionRequester)) {
-                    val onPermitJoinToggle = { enabled: Boolean ->
-                        app.configRepository.updatePermitJoinDevice(existing.id, broker.permitJoinDevice)
-                        val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
-                        app.connectionManager.publish(existing.id, PermitJoin.requestTopic(baseTopicNormalized), payload)
-                    }
-                    if (baseTopics.size > 1) {
-                        Text(
-                            "This broker has ${baseTopics.size} base topics - the toggle below is " +
-                                "just for \"$baseTopicNormalized\". Every base topic gets its own " +
-                                "Permit Join toggle on the main dashboard.",
-                            style = MaterialTheme.typography.bodySmall
-                        )
-                        Spacer(Modifier.height(8.dp))
-                    }
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.fillMaxWidth()
-                            .toggleableRow(permitJoinStatus.isOn, onCheckedChange = onPermitJoinToggle)
-                    ) {
-                        Column(Modifier.weight(1f)) {
-                            Text("Permit Join", style = MaterialTheme.typography.titleMedium)
-                            Text(
-                                if (permitJoinStatus.isOn) {
-                                    "Open for ${PermitJoin.formatRemaining(permitJoinStatus.remainingSeconds)} more"
-                                } else {
-                                    "Allow new Zigbee devices to join this network for a few minutes"
-                                },
-                                style = MaterialTheme.typography.bodySmall
-                            )
-                        }
-                        Switch(checked = permitJoinStatus.isOn, onCheckedChange = null)
-                    }
-                    Spacer(Modifier.height(8.dp))
-                    var permitJoinDeviceExpanded by remember { mutableStateOf(false) }
-                    val filteredRouterNames = remember(routerFriendlyNames, broker.permitJoinDevice) {
-                        routerFriendlyNames.filter { it.contains(broker.permitJoinDevice, ignoreCase = true) }
-                    }
-                    // Lets Down (see onDirectionDown below) jump into the open suggestion list -
-                    // without an explicit focus target, nothing in the popup ever received D-pad focus.
-                    val firstSuggestionFocusRequester = remember { FocusRequester() }
-                    val permitJoinDeviceKeyboardGate = rememberTvKeyboardGate()
-                    ExposedDropdownMenuBox(
-                        expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
-                        onExpandedChange = { permitJoinDeviceExpanded = it }
-                    ) {
-                        OutlinedTextField(
-                            value = broker.permitJoinDevice,
-                            onValueChange = {
-                                broker = broker.copy(permitJoinDevice = it)
-                                permitJoinDeviceExpanded = true
-                            },
-                            label = { Text("Permit join via (optional)") },
-                            placeholder = { Text("Blank = whole network") },
-                            readOnly = permitJoinDeviceKeyboardGate.readOnly,
-                            keyboardOptions = tvAwareKeyboardOptions(),
-                            trailingIcon = if (routerFriendlyNames.isNotEmpty()) {
-                                { ExposedDropdownMenuDefaults.TrailingIcon(expanded = permitJoinDeviceExpanded) }
-                            } else null,
-                            modifier = Modifier.fillMaxWidth()
-                                .clearFocusOnBack(
-                                    onDirectionDown = {
-                                        if (permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty()) {
-                                            firstSuggestionFocusRequester.requestFocus()
-                                            true
-                                        } else {
-                                            false
-                                        }
-                                    }
-                                )
-                                .then(permitJoinDeviceKeyboardGate.modifier())
-                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
-                        )
-                        ExposedDropdownMenu(
-                            expanded = permitJoinDeviceExpanded && filteredRouterNames.isNotEmpty(),
-                            onDismissRequest = { permitJoinDeviceExpanded = false }
-                        ) {
-                            filteredRouterNames.forEachIndexed { index, name ->
-                                val onNameClick = {
-                                    broker = broker.copy(permitJoinDevice = name)
-                                    permitJoinDeviceExpanded = false
-                                }
-                                DropdownMenuItem(
-                                    text = { Text(name) },
-                                    onClick = onNameClick,
-                                    modifier = Modifier
-                                        .onDpadSelect(onNameClick)
-                                        .then(
-                                            if (index == 0) {
-                                                Modifier.focusRequester(firstSuggestionFocusRequester)
-                                            } else {
-                                                Modifier
-                                            }
-                                        )
-                                )
-                            }
-                        }
-                    }
-                    Text(
-                        "Friendly name of a specific router to extend joining through, or \"Coordinator\" for " +
-                            "just the coordinator. Leave blank to permit joining via every router and the " +
-                            "coordinator at once.",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-
+                // Permit Join (including picking a base topic and a specific router to extend
+                // joining through) now lives entirely in a dialog on the Home screen, reachable
+                // for every broker/topic at once without navigating here - see HomeScreen's own
+                // Permit Join bar/dialog.
                 Spacer(Modifier.height(24.dp))
                 OutlinedButton(
                     onClick = { showDeleteConfirm = true },

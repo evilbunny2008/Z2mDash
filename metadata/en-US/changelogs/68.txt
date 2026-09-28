@@ -1,0 +1,1 @@
+- Reworked Permit Join into a single dashboard bar - tap it to pick any base topic (across every broker) and a router to target, all from one dialog, without visiting the broker screen. Removed the old per-broker Permit Join section from the broker edit screen.

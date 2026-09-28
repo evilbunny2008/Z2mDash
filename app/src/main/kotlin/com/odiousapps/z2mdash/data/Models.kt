@@ -34,9 +34,11 @@ data class Broker(
     // credential import's "AutoAccept" field - see CredentialImportDialog.
     val autoAcceptDiscoveredDevices: Boolean = false,
     // Friendly name last used for the "Permit Join" toggle's optional "device" field (see
-    // AddEditBrokerScreen) - blank permits joining via every router and the coordinator at once.
-    // Remembered per broker purely for convenience.
-    val permitJoinDevice: String = ""
+    // HomeScreen's Permit Join dialog), keyed by (normalised) base topic - blank permits joining
+    // via every router and the coordinator at once for that topic. Remembered per broker+topic
+    // purely for convenience, since a broker watching more than one Zigbee2MQTT namespace has an
+    // entirely separate set of routers per namespace.
+    val permitJoinDevices: Map<String, String> = emptyMap()
 )
 
 // New entries only ever get appended - stored panels reference these by name (see PanelStore/

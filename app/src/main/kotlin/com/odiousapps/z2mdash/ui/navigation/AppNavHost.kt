@@ -27,12 +27,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.tv.material3.DrawerValue
 import androidx.tv.material3.NavigationDrawer
 import androidx.tv.material3.NavigationDrawerItem
@@ -244,22 +242,9 @@ private fun AppNavGraph(navController: NavHostController, modifier: Modifier) {
             DiscoverScreen(navController, initialBrokerId = entry.arguments?.getString("brokerId"))
         }
         composable("mqttBackup") { MqttBackupScreen(navController) }
-        composable(
-            // "?focus={focus}" is optional - existing "broker/$id" calls still match unchanged.
-            // Lets a caller (e.g. HomeScreen's Permit Join banner) deep-link to a section of this
-            // screen instead of landing at the top of a long form.
-            route = "broker/{brokerId}?focus={focus}",
-            arguments = listOf(
-                navArgument("focus") {
-                    type = NavType.StringType
-                    nullable = true
-                    defaultValue = null
-                }
-            )
-        ) { entry ->
+        composable("broker/{brokerId}") { entry ->
             val id = entry.arguments?.getString("brokerId")
-            val focus = entry.arguments?.getString("focus")
-            AddEditBrokerScreen(navController, if (id == "new") null else id, focus)
+            AddEditBrokerScreen(navController, if (id == "new") null else id)
         }
         composable("addGroup") { AddGroupScreen(navController) }
         composable("group/{groupId}/panel/{panelId}") { entry ->

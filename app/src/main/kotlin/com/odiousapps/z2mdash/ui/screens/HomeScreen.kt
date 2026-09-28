@@ -42,6 +42,11 @@ import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuAnchorType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
@@ -121,7 +126,9 @@ import com.odiousapps.z2mdash.ui.components.ToggleTile
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
+import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.tvFocusIndicator
+import com.odiousapps.z2mdash.ui.tv.toggleableRow
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -243,6 +250,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // dialog state, so it should survive a screen rotation (which fully recreates the Activity,
     // since this app doesn't handle configChanges) rather than silently reverting to "off".
     var showOnlyStaleClusters by rememberSaveable { mutableStateOf(false) }
+    // Single Permit Join bar for the whole screen, regardless of how many brokers/base topics are
+    // configured - tapping its text opens a dialog to pick which (broker, base topic) to act on
+    // and, once picked, which router to extend joining through. Replaces both the old one-bar-
+    // per-broker layout and the "permit join via" section that used to live on the broker edit
+    // screen - see PermitJoinDialog's own doc.
+    var showPermitJoinDialog by remember { mutableStateOf(false) }
 
     // Undo prompt for an accidental tile/cluster/group drag. previousGroups is a full snapshot of
     // config.groups taken right before the drag's own mutation, restored wholesale on Undo rather
@@ -1042,15 +1055,36 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             // FAB, which floats on top of content without reserving space for itself.
             contentPadding = PaddingValues(bottom = 96.dp)
         ) {
-            items(config.brokers, key = { "permitJoin_${it.id}" }) { broker ->
-                PermitJoinItem(
-                    app = app,
-                    navController = navController,
-                    broker = broker,
-                    showBrokerName = config.brokers.size > 1,
-                    payloadsState = payloadsState,
-                    nowMillisState = nowMillisState
-                )
+            if (config.brokers.isNotEmpty()) {
+                item(key = "permitJoinBar") {
+                    // How many (broker, base topic) pairs currently have permit-join open - kept
+                    // as its own narrowly-scoped derivedStateOf (same reasoning as ClusterCard's
+                    // ageState) so this one bar's once-a-second countdown-adjacent recompute
+                    // doesn't touch the rest of the screen.
+                    val allTopics = remember(config.brokers) {
+                        config.brokers.flatMap { broker ->
+                            PermitJoin.parseBaseTopics(broker.baseTopic).map { broker.id to it }
+                        }
+                    }
+                    val openCount by remember(allTopics) {
+                        derivedStateOf {
+                            val payloads = payloadsState.value
+                            val nowMillis = nowMillisState.value
+                            allTopics.count { (brokerId, topic) ->
+                                PermitJoin.status(payloads, brokerId, topic, nowMillis).isOn
+                            }
+                        }
+                    }
+                    PermitJoinBanner(
+                        title = "Permit Join",
+                        subtitle = when {
+                            openCount == 0 -> "Off – new Zigbee devices can't join"
+                            openCount == 1 -> "Open on 1 network"
+                            else -> "Open on $openCount networks"
+                        },
+                        onClick = { showPermitJoinDialog = true }
+                    )
+                }
             }
             items(config.pendingAutoConfigDevices, key = { "${it.brokerId}|${it.appConfigTopic}" }) { pending ->
                 PendingDeviceBanner(
@@ -1327,6 +1361,16 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 }
             }
         }
+    }
+
+    if (showPermitJoinDialog) {
+        PermitJoinDialog(
+            app = app,
+            config = config,
+            payloadsState = payloadsState,
+            nowMillisState = nowMillisState,
+            onDismiss = { showPermitJoinDialog = false }
+        )
     }
 
     if (showClusterSearch) {
@@ -2270,84 +2314,197 @@ private fun addPendingDevice(
 }
 
 /**
- * One broker's item(s) in HomeScreen's LazyColumn - one PermitJoinBanner per comma-separated base
- * topic the broker declares (see PermitJoin.parseBaseTopics), since permit-join state is genuinely
- * per-Zigbee2MQTT-namespace, not per-broker connection. Each banner does its own narrowly-scoped
- * derivedStateOf read (same reasoning as ClusterCard/PanelTile) so its own once-a-second countdown
- * only recomposes itself, not the whole screen or this broker's other topics.
+ * A single clickable info row - used for the one whole-screen Permit Join bar, tapping its text
+ * to open [PermitJoinDialog] rather than navigating anywhere or exposing its own switch, since
+ * with more than one broker/base topic there's no longer one unambiguous thing for a switch here
+ * to control.
  */
 @Composable
-private fun PermitJoinItem(
-    app: Z2mDashApplication,
-    navController: NavController,
-    broker: Broker,
-    showBrokerName: Boolean,
-    payloadsState: State<Map<String, String>>,
-    nowMillisState: State<Long>
-) {
-    val baseTopics = remember(broker.baseTopic) { PermitJoin.parseBaseTopics(broker.baseTopic) }
-    Column {
-        baseTopics.forEach { baseTopic ->
-            key(baseTopic) {
-                val status by remember(broker.id, baseTopic) {
-                    derivedStateOf { PermitJoin.status(payloadsState.value, broker.id, baseTopic, nowMillisState.value) }
-                }
-                val title = when {
-                    showBrokerName && baseTopics.size > 1 -> "Permit Join – ${broker.name} ($baseTopic)"
-                    showBrokerName -> "Permit Join – ${broker.name}"
-                    baseTopics.size > 1 -> "Permit Join – $baseTopic"
-                    else -> "Permit Join"
-                }
-                PermitJoinBanner(
-                    title = title,
-                    status = status,
-                    onToggle = { enabled ->
-                        val payload = PermitJoin.requestPayload(broker.permitJoinDevice, if (enabled) 254 else 0)
-                        app.connectionManager.publish(broker.id, PermitJoin.requestTopic(baseTopic), payload)
-                    },
-                    // Deep-links straight to this broker's "Permit Join" section rather than the
-                    // top of its edit screen, so the user doesn't hunt through a long scrolling form.
-                    onInfoClick = { navController.navigate("broker/${broker.id}?focus=permitJoin") }
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun PermitJoinBanner(
-    title: String,
-    status: PermitJoin.Status,
-    onToggle: (Boolean) -> Unit,
-    onInfoClick: () -> Unit
-) {
+private fun PermitJoinBanner(title: String, subtitle: String, onClick: () -> Unit) {
     Surface(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 2.dp
     ) {
         Row(
-            modifier = Modifier.padding(12.dp).fillMaxWidth(),
+            modifier = Modifier.padding(12.dp).fillMaxWidth().clickable(onClick = onClick),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(Icons.Default.WifiTethering, contentDescription = null)
             Spacer(Modifier.width(12.dp))
-            Column(
-                modifier = Modifier.weight(1f).clickable(onClick = onInfoClick)
-            ) {
+            Column(modifier = Modifier.weight(1f)) {
                 Text(title, style = MaterialTheme.typography.titleSmall)
-                Text(
-                    if (status.isOn) {
-                        "Open for ${PermitJoin.formatRemaining(status.remainingSeconds)} more"
-                    } else {
-                        "Off – new Zigbee devices can't join"
-                    },
-                    style = MaterialTheme.typography.bodySmall
-                )
+                Text(subtitle, style = MaterialTheme.typography.bodySmall)
             }
-            Switch(checked = status.isOn, onCheckedChange = onToggle)
         }
     }
+}
+
+/**
+ * Picks which (broker, base topic) to act on - across every broker and every comma-separated base
+ * topic it declares, in one dropdown, since permit-join state/routers are genuinely per-topic, not
+ * per-broker connection - then, once picked, which specific router to extend joining through (its
+ * own dropdown, populated from that topic's own "bridge/devices"), with a toggle+status for
+ * whichever topic is currently selected. Replaces both the old one-bar-per-broker/topic dashboard
+ * layout and the "permit join via" section that used to live on the broker edit screen - reachable
+ * from anywhere on the dashboard now, for every network at once, without navigating away.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun PermitJoinDialog(
+    app: Z2mDashApplication,
+    config: AppConfig,
+    payloadsState: State<Map<String, String>>,
+    nowMillisState: State<Long>,
+    onDismiss: () -> Unit
+) {
+    val showBrokerName = config.brokers.size > 1
+    // (brokerId, brokerName, baseTopic) for every base topic on every broker.
+    val allTopics = remember(config.brokers) {
+        config.brokers.flatMap { broker ->
+            PermitJoin.parseBaseTopics(broker.baseTopic).map { topic -> Triple(broker.id, broker.name, topic) }
+        }
+    }
+    fun labelFor(topic: Triple<String, String, String>): String {
+        val (_, brokerName, baseTopic) = topic
+        return if (showBrokerName) "$baseTopic ($brokerName)" else baseTopic
+    }
+
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    val selected = allTopics.getOrNull(selectedIndex)
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text("Permit Join") },
+        text = {
+            if (allTopics.isEmpty()) {
+                Text("No brokers configured.")
+            } else {
+                Column {
+                    var topicExpanded by remember { mutableStateOf(false) }
+                    ExposedDropdownMenuBox(
+                        expanded = topicExpanded,
+                        onExpandedChange = { topicExpanded = it }
+                    ) {
+                        OutlinedTextField(
+                            value = selected?.let { labelFor(it) } ?: "",
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text("Base topic") },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = topicExpanded) },
+                            modifier = Modifier.fillMaxWidth()
+                                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                        )
+                        ExposedDropdownMenu(
+                            expanded = topicExpanded,
+                            onDismissRequest = { topicExpanded = false }
+                        ) {
+                            allTopics.forEachIndexed { index, topic ->
+                                val onTopicClick = {
+                                    selectedIndex = index
+                                    topicExpanded = false
+                                }
+                                DropdownMenuItem(
+                                    text = { Text(labelFor(topic)) },
+                                    onClick = onTopicClick,
+                                    modifier = Modifier.onDpadSelect(onTopicClick)
+                                )
+                            }
+                        }
+                    }
+                    if (selected != null) {
+                        val (brokerId, _, baseTopic) = selected
+                        Spacer(Modifier.height(16.dp))
+                        // Only routers/coordinator can be targeted by permit_join's "device" field
+                        // (end devices don't route child joins) - see PermitJoin.routerFriendlyNames.
+                        val routerNames by remember(brokerId, baseTopic) {
+                            derivedStateOf { PermitJoin.routerFriendlyNames(payloadsState.value, brokerId, baseTopic) }
+                        }
+                        var routerText by remember(brokerId, baseTopic) {
+                            val broker = config.brokers.find { it.id == brokerId }
+                            mutableStateOf(broker?.permitJoinDevices?.get(baseTopic).orEmpty())
+                        }
+                        var routerExpanded by remember { mutableStateOf(false) }
+                        val filteredRouterNames = remember(routerNames, routerText) {
+                            routerNames.filter { it.contains(routerText, ignoreCase = true) }
+                        }
+                        ExposedDropdownMenuBox(
+                            expanded = routerExpanded && filteredRouterNames.isNotEmpty(),
+                            onExpandedChange = { routerExpanded = it }
+                        ) {
+                            OutlinedTextField(
+                                value = routerText,
+                                onValueChange = {
+                                    routerText = it
+                                    routerExpanded = true
+                                },
+                                label = { Text("Permit join via (optional)") },
+                                placeholder = { Text("Blank = whole network") },
+                                keyboardOptions = tvAwareKeyboardOptions(),
+                                trailingIcon = if (routerNames.isNotEmpty()) {
+                                    { ExposedDropdownMenuDefaults.TrailingIcon(expanded = routerExpanded) }
+                                } else null,
+                                modifier = Modifier.fillMaxWidth()
+                                    .clearFocusOnBack()
+                                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
+                            )
+                            ExposedDropdownMenu(
+                                expanded = routerExpanded && filteredRouterNames.isNotEmpty(),
+                                onDismissRequest = { routerExpanded = false }
+                            ) {
+                                filteredRouterNames.forEach { name ->
+                                    val onNameClick = {
+                                        routerText = name
+                                        routerExpanded = false
+                                    }
+                                    DropdownMenuItem(
+                                        text = { Text(name) },
+                                        onClick = onNameClick,
+                                        modifier = Modifier.onDpadSelect(onNameClick)
+                                    )
+                                }
+                            }
+                        }
+                        Text(
+                            "Friendly name of a specific router to extend joining through, or " +
+                                "\"Coordinator\" for just the coordinator. Leave blank to permit " +
+                                "joining via every router and the coordinator at once.",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        val status by remember(brokerId, baseTopic) {
+                            derivedStateOf { PermitJoin.status(payloadsState.value, brokerId, baseTopic, nowMillisState.value) }
+                        }
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            modifier = Modifier.fillMaxWidth()
+                                .toggleableRow(status.isOn) { enabled ->
+                                    app.configRepository.updatePermitJoinDevice(brokerId, baseTopic, routerText)
+                                    val payload = PermitJoin.requestPayload(routerText, if (enabled) 254 else 0)
+                                    app.connectionManager.publish(brokerId, PermitJoin.requestTopic(baseTopic), payload)
+                                }
+                        ) {
+                            Column(Modifier.weight(1f)) {
+                                Text("Permit Join", style = MaterialTheme.typography.titleMedium)
+                                Text(
+                                    if (status.isOn) {
+                                        "Open for ${PermitJoin.formatRemaining(status.remainingSeconds)} more"
+                                    } else {
+                                        "Allow new Zigbee devices to join for a few minutes"
+                                    },
+                                    style = MaterialTheme.typography.bodySmall
+                                )
+                            }
+                            Switch(checked = status.isOn, onCheckedChange = null)
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) { Text("Close") }
+        }
+    )
 }
 
 /** A dismissible card prompting the user to accept or ignore a newly-detected auto-config device. */

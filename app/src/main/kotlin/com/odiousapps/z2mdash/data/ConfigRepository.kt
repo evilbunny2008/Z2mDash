@@ -111,8 +111,12 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
 
     // Persisted independently of upsertBroker/"Done" so flipping the Permit Join toggle is
     // remembered immediately, without needing (or triggering) the edit screen's other unsaved edits.
-    fun updatePermitJoinDevice(brokerId: String, device: String) = update { cfg ->
-        cfg.copy(brokers = cfg.brokers.map { if (it.id == brokerId) it.copy(permitJoinDevice = device) else it })
+    /** Remembers [device] as the last-used "permit join via" router for this broker+baseTopic pair. */
+    fun updatePermitJoinDevice(brokerId: String, baseTopic: String, device: String) = update { cfg ->
+        cfg.copy(brokers = cfg.brokers.map {
+            if (it.id != brokerId) return@map it
+            it.copy(permitJoinDevices = it.permitJoinDevices + (baseTopic to device))
+        })
     }
 
     fun deleteBroker(id: String) = update { cfg ->

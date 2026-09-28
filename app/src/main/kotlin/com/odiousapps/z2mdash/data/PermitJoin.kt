@@ -1,6 +1,11 @@
 package com.odiousapps.z2mdash.data
 
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.buildJsonObject
+import kotlinx.serialization.json.contentOrNull
+import kotlinx.serialization.json.jsonArray
+import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.put
 
 /**
@@ -63,5 +68,28 @@ object PermitJoin {
         val minutes = remainingSeconds / 60
         val seconds = remainingSeconds % 60
         return "%d:%02d".format(minutes, seconds)
+    }
+
+    /**
+     * Friendly names of every router/coordinator on [baseTopic]'s network, from its retained
+     * "bridge/devices" list - only routers/coordinator can be targeted by permit_join's "device"
+     * field (end devices don't route child joins), so anything else is filtered out. Empty if
+     * that topic hasn't published its device list yet, or the payload doesn't parse.
+     */
+    fun routerFriendlyNames(payloads: Map<String, String>, brokerId: String, baseTopic: String): List<String> {
+        val devicesPayload = payloads["$brokerId|$baseTopic/bridge/devices"] ?: return emptyList()
+        return try {
+            Json.parseToJsonElement(devicesPayload).jsonArray.mapNotNull { element ->
+                val obj = element as? JsonObject ?: return@mapNotNull null
+                val type = obj["type"]?.jsonPrimitive?.contentOrNull
+                if (type == "Router" || type == "Coordinator") {
+                    obj["friendly_name"]?.jsonPrimitive?.contentOrNull
+                } else {
+                    null
+                }
+            }.sorted()
+        } catch (_: Exception) {
+            emptyList()
+        }
     }
 }
