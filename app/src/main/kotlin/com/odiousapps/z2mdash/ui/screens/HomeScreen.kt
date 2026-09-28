@@ -36,6 +36,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material.icons.filled.Warning
@@ -215,6 +216,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var pendingClusterDuplicate by remember { mutableStateOf<PendingClusterDuplicate?>(null) }
     var duplicateTopicText by remember { mutableStateOf("") }
     var duplicateClusterNameText by remember { mutableStateOf("") }
+    var pendingClusterRetopic by remember { mutableStateOf<PendingClusterRetopic?>(null) }
+    var retopicNewTopicText by remember { mutableStateOf("") }
     var pendingValueEdit by remember { mutableStateOf<Panel.Sensor?>(null) }
     var valueEditText by remember { mutableStateOf("") }
     // Shared by every PanelTile (standalone or inside a ClusterCard) - reads the sensor's current
@@ -1280,6 +1283,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         duplicateClusterNameText = "$name copy"
                                                         duplicateTopicText = prefix
                                                     },
+                                                    onRetopic = {
+                                                        val prefix = SensorDiscovery.commonTopicPrefix(panelsInCluster)
+                                                        pendingClusterRetopic = PendingClusterRetopic(
+                                                            groupId = group.id,
+                                                            clusterName = name,
+                                                            currentTopicPrefix = prefix
+                                                        )
+                                                        retopicNewTopicText = prefix
+                                                    },
                                                     isDraggingCluster = draggedClusterKey == compoundKey,
                                                     isClusterDropTarget = (draggedClusterKey != null &&
                                                         draggedClusterKey != compoundKey &&
@@ -1556,6 +1568,63 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         )
     }
 
+    pendingClusterRetopic?.let { pending ->
+        AlertDialog(
+            onDismissRequest = { pendingClusterRetopic = null },
+            title = { Text("Change topic for \"${pending.clusterName}\"") },
+            text = {
+                Column {
+                    Text(
+                        "Moves every panel in this cluster onto a new MQTT topic - e.g. after " +
+                            "splitting a Zigbee network onto a second bridge, for just the devices " +
+                            "that actually moved. Other clusters are untouched.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    Text(
+                        "Current topic: ${pending.currentTopicPrefix.ifBlank { "(none)" }}",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = retopicNewTopicText,
+                        onValueChange = { retopicNewTopicText = it },
+                        label = { Text("New topic") },
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions(),
+                        modifier = Modifier.clearFocusOnBack()
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val clusterPanels = app.configRepository.config.value.groups
+                            .find { it.id == pending.groupId }?.panels
+                            ?.filter { it.clusterName == pending.clusterName } ?: emptyList()
+                        val device = app.configRepository.config.value.autoConfiguredDevices
+                            .find { d -> clusterPanels.any { it.id in d.createdPanelIds } }
+                        app.configRepository.retopicCluster(
+                            pending.groupId, pending.clusterName, pending.currentTopicPrefix, retopicNewTopicText
+                        )
+                        if (device != null) {
+                            // The device's old retained "/app" topic now describes panels that no
+                            // longer live there - clear it rather than leaving stale config
+                            // behind on the broker for another phone/scan to trip over. A fresh
+                            // one under the new topic can be published later via "Force Upload"
+                            // once the device's actually reachable there.
+                            app.connectionManager.publish(device.brokerId, device.appConfigTopic, "", retain = true)
+                        }
+                        pendingClusterRetopic = null
+                        retopicNewTopicText = ""
+                    },
+                    enabled = retopicNewTopicText.isNotBlank() && retopicNewTopicText != pending.currentTopicPrefix
+                ) { Text("Save") }
+            },
+            dismissButton = { TextButton(onClick = { pendingClusterRetopic = null }) { Text("Cancel") } }
+        )
+    }
+
     pendingValueEdit?.let { panel ->
         AlertDialog(
             onDismissRequest = { pendingValueEdit = null },
@@ -1594,6 +1663,15 @@ private data class PendingClusterDuplicate(
     // Captured once when the dialog opens - the substring duplicateTopicText's edits replace at
     // confirm time. Kept separate from duplicateTopicText itself, which the user goes on to edit.
     val originalTopicPrefix: String
+)
+
+private data class PendingClusterRetopic(
+    val groupId: String,
+    val clusterName: String,
+    // Captured once when the dialog opens, same reasoning as PendingClusterDuplicate's own
+    // originalTopicPrefix - the current shared topic prefix, replaced with retopicNewTopicText's
+    // value at confirm time.
+    val currentTopicPrefix: String
 )
 
 /**
@@ -1771,6 +1849,7 @@ private fun ClusterCard(
     tileScale: Float,
     onDelete: () -> Unit,
     onDuplicate: () -> Unit,
+    onRetopic: () -> Unit,
     onEditSensorValue: (Panel.Sensor) -> Unit,
     // Cross-cluster and panel drag state all live one level up (the group section sees every
     // cluster at once, and a dragged panel can end up merged into any of them) and is threaded
@@ -1961,6 +2040,13 @@ private fun ClusterCard(
                     Icon(
                         Icons.Default.ContentCopy,
                         contentDescription = "Duplicate $name",
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
+                IconButton(onClick = onRetopic, modifier = Modifier.size(28.dp)) {
+                    Icon(
+                        Icons.Default.SwapHoriz,
+                        contentDescription = "Change topic for $name",
                         modifier = Modifier.size(16.dp)
                     )
                 }

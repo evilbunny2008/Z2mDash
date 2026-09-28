@@ -1,0 +1,1 @@
+- Added a "change topic" option per cluster, to move just that cluster onto a new MQTT topic (e.g. after splitting a Zigbee network) without affecting any other cluster.

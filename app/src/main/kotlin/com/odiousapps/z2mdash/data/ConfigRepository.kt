@@ -456,6 +456,44 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
+     * Rewrites [oldTopicPrefix] to [newTopicPrefix] (plain substring replace, same as
+     * duplicateCluster's own retopic() above) across every topic field of every panel sharing
+     * [clusterName] in [groupId] - the in-place counterpart to duplicateCluster's own topic
+     * replacement, for moving an existing cluster onto a different MQTT topic (e.g. a Zigbee
+     * network split onto a second zigbee2mqtt instance) without cloning it. Deliberately scoped
+     * to one named cluster's own panels only, not the whole group - a network split typically
+     * only moves *some* devices, and this lets each cluster be retargeted independently.
+     */
+    fun retopicCluster(
+        groupId: String,
+        clusterName: String,
+        oldTopicPrefix: String,
+        newTopicPrefix: String
+    ) = update { cfg ->
+        if (oldTopicPrefix.isBlank() || newTopicPrefix.isBlank() || oldTopicPrefix == newTopicPrefix) {
+            return@update cfg
+        }
+        fun retopic(topic: String): String = topic.replace(oldTopicPrefix, newTopicPrefix)
+        cfg.copy(groups = cfg.groups.map { g ->
+            if (g.id != groupId) return@map g
+            g.copy(panels = g.panels.map { panel ->
+                if (panel.clusterName != clusterName) return@map panel
+                when (panel) {
+                    is Panel.Sensor -> panel.copy(
+                        topic = retopic(panel.topic),
+                        idealRangeTopic = retopic(panel.idealRangeTopic)
+                    )
+                    is Panel.Toggle -> panel.copy(
+                        commandTopic = retopic(panel.commandTopic),
+                        stateTopic = retopic(panel.stateTopic)
+                    )
+                    is Panel.Button -> panel.copy(commandTopic = retopic(panel.commandTopic))
+                }
+            })
+        })
+    }
+
+    /**
      * Pulls one panel out of whatever cluster it currently shares with siblings, giving it
      * [newClusterName] as its own - so it renders in its own titled card instead of being stuck
      * reordering only among the panels it was grouped with. Appended after every other panel in
