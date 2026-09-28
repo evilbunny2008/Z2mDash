@@ -1,0 +1,1 @@
+- Fixed a cluster jumping to the end of its group after editing an editable value (e.g. a moisture threshold) - re-publishing a device's config (via Force Upload or a topic change) was silently resetting its order tracking, making the next unrelated edit look like a brand new, unordered device.
