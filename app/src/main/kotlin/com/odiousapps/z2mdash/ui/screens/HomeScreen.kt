@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material.icons.filled.Warning
@@ -42,6 +44,7 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -219,6 +222,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     }
     var renamingGroup by remember { mutableStateOf<PanelGroup?>(null) }
     var renameText by remember { mutableStateOf("") }
+
+    var showClusterSearch by remember { mutableStateOf(false) }
+    var clusterSearchQuery by remember { mutableStateOf("") }
 
     // Undo prompt for an accidental tile/cluster/group drag. previousGroups is a full snapshot of
     // config.groups taken right before the drag's own mutation, restored wholesale on Undo rather
@@ -497,6 +503,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         floatingActionButton = {
             Column(horizontalAlignment = Alignment.End) {
+                // Only worth showing once there's at least one named cluster to actually find -
+                // a dashboard of only standalone tiles has nothing for this to search.
+                if (config.groups.any { g -> g.panels.any { it.clusterName.isNotBlank() } }) {
+                    SmallFloatingActionButton(onClick = { showClusterSearch = true }) {
+                        Icon(Icons.Default.Search, contentDescription = "Search clusters")
+                    }
+                    Spacer(Modifier.height(12.dp))
+                }
                 // Only worth showing once there's more than one group to bulk-collapse - with
                 // zero or one, per-group collapse (the header's own chevron) already covers it.
                 if (config.groups.size > 1) {
@@ -1003,6 +1017,75 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 }
             }
         }
+    }
+
+    if (showClusterSearch) {
+        // (groupId, groupName, clusterName) for every distinct non-blank cluster name across every
+        // group, matched case-insensitively as a substring - recomputed only while the dialog is
+        // actually open and the query changes, not on every recomposition of the screen itself.
+        val clusterSearchResults = remember(config, clusterSearchQuery) {
+            if (clusterSearchQuery.isBlank()) {
+                emptyList()
+            } else {
+                config.groups.flatMap { group ->
+                    group.panels.map { it.clusterName }.filter { it.isNotBlank() }.distinct()
+                        .filter { it.contains(clusterSearchQuery, ignoreCase = true) }
+                        .map { clusterName -> Triple(group.id, group.name, clusterName) }
+                }.sortedBy { (_, _, clusterName) -> clusterName.lowercase() }
+            }
+        }
+        fun jumpToCluster(groupId: String, clusterName: String) {
+            // Same scroll mechanism a cross-group cluster drag already uses to reveal where a
+            // moved cluster landed - a coarse index-based scroll to get the group's content
+            // composed, then a precise bringIntoView once the specific card has mounted.
+            app.configRepository.setGroupCollapsed(groupId, false)
+            backStackEntry.savedStateHandle["scrollToGroupId"] = groupId
+            pendingScrollToClusterKey = "$groupId::$clusterName"
+            showClusterSearch = false
+            clusterSearchQuery = ""
+        }
+        AlertDialog(
+            onDismissRequest = {
+                showClusterSearch = false
+                clusterSearchQuery = ""
+            },
+            title = { Text("Search clusters") },
+            text = {
+                Column {
+                    OutlinedTextField(
+                        value = clusterSearchQuery,
+                        onValueChange = { clusterSearchQuery = it },
+                        label = { Text("Cluster name") },
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions(),
+                        modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                    )
+                    Spacer(Modifier.height(8.dp))
+                    if (clusterSearchQuery.isNotBlank() && clusterSearchResults.isEmpty()) {
+                        Text("No matching clusters", style = MaterialTheme.typography.bodySmall)
+                    } else {
+                        LazyColumn(modifier = Modifier.heightIn(max = 320.dp)) {
+                            items(
+                                clusterSearchResults,
+                                key = { (groupId, _, clusterName) -> "$groupId::$clusterName" }
+                            ) { (groupId, groupName, clusterName) ->
+                                ListItem(
+                                    headlineContent = { Text(clusterName) },
+                                    supportingContent = { Text(groupName) },
+                                    modifier = Modifier.clickable { jumpToCluster(groupId, clusterName) }
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showClusterSearch = false
+                    clusterSearchQuery = ""
+                }) { Text("Close") }
+            }
+        )
     }
 
     pendingGroupDelete?.let { groupId ->

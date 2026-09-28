@@ -1,0 +1,1 @@
+- Added a search button for finding a cluster by name and jumping straight to it, wherever it is on the dashboard.
