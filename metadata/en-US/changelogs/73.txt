@@ -1,0 +1,1 @@
+- Low battery alerts now re-notify as a battery keeps dropping, but only once it's moved by at least another 5% since the last alert, instead of repeating for every message reporting nearly the same level.

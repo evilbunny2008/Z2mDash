@@ -22,20 +22,26 @@ import kotlinx.coroutines.launch
  * deliberately unscoped to any configured panel, the same as SmokeAlertManager, so a device's
  * battery is monitored the moment it starts reporting one, with nothing to add on the dashboard
  * for it. Posts a notification once a reading drops into the low range (above 0, at or below
- * [LOW_BATTERY_THRESHOLD]) - 0 itself is excluded since some devices report a genuine 0 before
- * they've ever sent a real reading, which would otherwise misfire as "critically low" - naming
- * whichever dashboard cluster that topic belongs to (falling back to the topic's own last
- * segment if it isn't on the dashboard at all), and clears the notification once the reading
- * recovers back above the threshold.
+ * [LOW_BATTERY_THRESHOLD]) - 0 itself is *always* excluded, never treated as low no matter how it
+ * got there: some Zigbee devices are mains/USB powered but still report a hardcoded battery of 0
+ * in their firmware, which would otherwise permanently misread as "critically low". Re-notifies
+ * (updating, not stacking, the same notification) as the reading keeps moving while still in the
+ * low range, but only once it's moved by at least [LOW_BATTERY_STEP] since the value that
+ * triggered the last notification - not on every repeated message reporting essentially the same
+ * level - naming whichever dashboard cluster that topic belongs to (falling back to the topic's
+ * own last segment if it isn't on the dashboard at all), and clears the notification once the
+ * reading recovers back above the threshold.
  */
 class LowBatteryAlertManager(
     private val context: Context,
     private val configRepository: ConfigRepository,
     private val connectionManager: MqttConnectionManager
 ) {
-    // Topics ("brokerId|topic") currently flagged low, so the alert fires once on the drop into
-    // range rather than on every repeated message while the reading stays low.
-    private val topicsLow = mutableSetOf<String>()
+    // Battery % value that triggered the last notification for each topic ("brokerId|topic") -
+    // present only while that topic is currently considered low. Re-notifying requires the
+    // reading to have moved (either direction - a partial recharge is as worth a fresh mention as
+    // a further drop) by at least LOW_BATTERY_STEP from this value, not just any change at all.
+    private val lastNotifiedValue = mutableMapOf<String, Double>()
 
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
@@ -54,22 +60,28 @@ class LowBatteryAlertManager(
         val config = configRepository.config.value
         payloads.forEach { (compositeKey, payload) ->
             val battery = JsonPath.extract(payload, "battery")?.toDoubleOrNull()
+            val wasLow = compositeKey in lastNotifiedValue
             val isLow = battery != null && battery > 0.0 && battery <= LOW_BATTERY_THRESHOLD
-            val wasLow = compositeKey in topicsLow
-            when {
-                isLow && !wasLow -> {
-                    topicsLow.add(compositeKey)
-                    // Checked here, not at the top of checkBatteryLevels, so topicsLow stays
-                    // accurate even while alerts are disabled - re-enabling shouldn't re-fire for
-                    // a low reading that was already active.
+            if (isLow) {
+                // battery is guaranteed non-null here (isLow's own condition required it) - the
+                // compiler doesn't carry that smart-cast through from the separate isLow boolean
+                // above, hence the explicit re-assertion rather than a risk of ever actually
+                // hitting a null here.
+                val currentValue = battery!!
+                val movedEnoughToRenotify = wasLow &&
+                    kotlin.math.abs(currentValue - lastNotifiedValue.getValue(compositeKey)) >= LOW_BATTERY_STEP
+                if (!wasLow || movedEnoughToRenotify) {
+                    lastNotifiedValue[compositeKey] = currentValue
+                    // Checked here, not at the top of checkBatteryLevels, so lastNotifiedValue
+                    // stays accurate even while alerts are disabled - re-enabling shouldn't
+                    // re-fire for a low reading that was already active/already notified.
                     if (config.lowBatteryAlertsEnabled) {
                         notifyLowBattery(compositeKey, deviceNameFor(compositeKey))
                     }
                 }
-                !isLow && wasLow -> {
-                    topicsLow.remove(compositeKey)
-                    cancelLowBatteryNotification(compositeKey)
-                }
+            } else if (wasLow) {
+                lastNotifiedValue.remove(compositeKey)
+                cancelLowBatteryNotification(compositeKey)
             }
         }
     }
@@ -150,5 +162,6 @@ class LowBatteryAlertManager(
         private const val CHANNEL_ID = "low_battery_alert"
         private const val TEST_ALERT_KEY = "test|Z2mDash low battery test"
         private const val LOW_BATTERY_THRESHOLD = 20.0
+        private const val LOW_BATTERY_STEP = 5.0
     }
 }
