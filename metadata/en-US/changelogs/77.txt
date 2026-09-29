@@ -1,0 +1,1 @@
+- The Permit Join bar now shows a countdown and has its own toggle switch again, so it can be flicked on/off directly using its already-saved settings without opening the picker dialog.
