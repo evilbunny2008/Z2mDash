@@ -36,8 +36,8 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 76
-        versionName = "0.0.76"
+        versionCode = 77
+        versionName = "0.0.77"
     }
 
     buildTypes {

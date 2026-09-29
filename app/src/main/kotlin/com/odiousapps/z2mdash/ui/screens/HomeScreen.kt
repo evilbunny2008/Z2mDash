@@ -256,6 +256,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // per-broker layout and the "permit join via" section that used to live on the broker edit
     // screen - see PermitJoinDialog's own doc.
     var showPermitJoinDialog by remember { mutableStateOf(false) }
+    // Which (broker, base topic) pair - by index into the flattened list built the same way in
+    // both the bar and the dialog - the bar's own switch/countdown act on directly, without
+    // opening the dialog. Selecting a different base topic inside the dialog updates this too, so
+    // the bar always reflects whichever topic/router was picked last. rememberSaveable so it
+    // survives rotation the same as showOnlyStaleClusters above, rather than always resetting back
+    // to the first topic.
+    var permitJoinTopicIndex by rememberSaveable { mutableIntStateOf(0) }
 
     // Undo prompt for an accidental tile/cluster/group drag. previousGroups is a full snapshot of
     // config.groups taken right before the drag's own mutation, restored wholesale on Undo rather
@@ -1057,30 +1064,44 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         ) {
             if (config.brokers.isNotEmpty()) {
                 item(key = "permitJoinBar") {
-                    // How many (broker, base topic) pairs currently have permit-join open - kept
-                    // as its own narrowly-scoped derivedStateOf (same reasoning as ClusterCard's
-                    // ageState) so this one bar's once-a-second countdown-adjacent recompute
-                    // doesn't touch the rest of the screen.
+                    // Same flattening the dialog uses (see PermitJoinDialog's own allTopics), kept
+                    // in lockstep by construction (both iterate config.brokers, then
+                    // PermitJoin.parseBaseTopics per broker, in the same order) so
+                    // permitJoinTopicIndex means the same pair in both places.
                     val allTopics = remember(config.brokers) {
                         config.brokers.flatMap { broker ->
                             PermitJoin.parseBaseTopics(broker.baseTopic).map { broker.id to it }
                         }
                     }
-                    val openCount by remember(allTopics) {
+                    val activeTopic = allTopics.getOrNull(permitJoinTopicIndex)
+                    val activeStatus by remember(activeTopic) {
                         derivedStateOf {
-                            val payloads = payloadsState.value
-                            val nowMillis = nowMillisState.value
-                            allTopics.count { (brokerId, topic) ->
-                                PermitJoin.status(payloads, brokerId, topic, nowMillis).isOn
+                            activeTopic?.let { (brokerId, baseTopic) ->
+                                PermitJoin.status(payloadsState.value, brokerId, baseTopic, nowMillisState.value)
                             }
                         }
                     }
+                    val statusText = when {
+                        activeTopic == null -> "No brokers configured"
+                        activeStatus?.isOn == true ->
+                            "Open for ${PermitJoin.formatRemaining(activeStatus!!.remainingSeconds)} more"
+                        else -> "Off – new Zigbee devices can't join"
+                    }
                     PermitJoinBanner(
                         title = "Permit Join",
-                        subtitle = when {
-                            openCount == 0 -> "Off – new Zigbee devices can't join"
-                            openCount == 1 -> "Open on 1 network"
-                            else -> "Open on $openCount networks"
+                        subtitle = if (allTopics.size > 1 && activeTopic != null) {
+                            "${activeTopic.second} · $statusText"
+                        } else {
+                            statusText
+                        },
+                        isOn = activeStatus?.isOn == true,
+                        onToggle = { enabled ->
+                            activeTopic?.let { (brokerId, baseTopic) ->
+                                val broker = config.brokers.find { it.id == brokerId }
+                                val routerText = broker?.permitJoinDevices?.get(baseTopic).orEmpty()
+                                val payload = PermitJoin.requestPayload(routerText, if (enabled) 254 else 0)
+                                app.connectionManager.publish(brokerId, PermitJoin.requestTopic(baseTopic), payload)
+                            }
                         },
                         onClick = { showPermitJoinDialog = true }
                     )
@@ -1369,6 +1390,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             config = config,
             payloadsState = payloadsState,
             nowMillisState = nowMillisState,
+            selectedIndex = permitJoinTopicIndex,
+            onSelectedIndexChange = { permitJoinTopicIndex = it },
             onDismiss = { showPermitJoinDialog = false }
         )
     }
@@ -2327,28 +2350,46 @@ private fun addPendingDevice(
 }
 
 /**
- * A single clickable info row - used for the one whole-screen Permit Join bar, tapping its text
- * to open [PermitJoinDialog] rather than navigating anywhere or exposing its own switch, since
- * with more than one broker/base topic there's no longer one unambiguous thing for a switch here
- * to control.
+ * The one whole-screen Permit Join bar. Its switch and countdown act directly on whichever
+ * (broker, base topic) pair is currently selected - using that topic's already-saved router, with
+ * no need to reopen the dialog just to flick it on/off - while tapping the icon/text still opens
+ * [PermitJoinDialog] to change which topic that is or which router it targets. Kept as separate
+ * clickable zones (icon+text vs. switch), the same split used to fix TV D-pad ambiguity on
+ * ToggleTile, so a D-pad "OK" on the switch toggles it rather than opening the dialog.
  */
 @Composable
-private fun PermitJoinBanner(title: String, subtitle: String, onClick: () -> Unit) {
+private fun PermitJoinBanner(
+    title: String,
+    subtitle: String,
+    isOn: Boolean,
+    onToggle: (Boolean) -> Unit,
+    onClick: () -> Unit
+) {
     Surface(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp, vertical = 4.dp),
         shape = RoundedCornerShape(12.dp),
         tonalElevation = 2.dp
     ) {
         Row(
-            modifier = Modifier.padding(12.dp).fillMaxWidth().clickable(onClick = onClick),
+            modifier = Modifier.padding(12.dp).fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Icon(Icons.Default.WifiTethering, contentDescription = null)
+            Icon(
+                Icons.Default.WifiTethering,
+                contentDescription = null,
+                modifier = Modifier.tvFocusIndicator(RoundedCornerShape(4.dp)).clickable(onClick = onClick)
+            )
             Spacer(Modifier.width(12.dp))
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f).clickable(onClick = onClick)) {
                 Text(title, style = MaterialTheme.typography.titleSmall)
                 Text(subtitle, style = MaterialTheme.typography.bodySmall)
             }
+            Spacer(Modifier.width(12.dp))
+            Switch(
+                checked = isOn,
+                onCheckedChange = onToggle,
+                modifier = Modifier.tvFocusIndicator(RoundedCornerShape(50))
+            )
         }
     }
 }
@@ -2361,6 +2402,10 @@ private fun PermitJoinBanner(title: String, subtitle: String, onClick: () -> Uni
  * whichever topic is currently selected. Replaces both the old one-bar-per-broker/topic dashboard
  * layout and the "permit join via" section that used to live on the broker edit screen - reachable
  * from anywhere on the dashboard now, for every network at once, without navigating away.
+ *
+ * [selectedIndex]/[onSelectedIndexChange] are hoisted to the caller (rather than local state here)
+ * so picking a topic in this dialog also becomes the one the dashboard's own Permit Join bar acts
+ * on directly - see permitJoinTopicIndex in HomeScreen.
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -2369,6 +2414,8 @@ private fun PermitJoinDialog(
     config: AppConfig,
     payloadsState: State<Map<String, String>>,
     nowMillisState: State<Long>,
+    selectedIndex: Int,
+    onSelectedIndexChange: (Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     val showBrokerName = config.brokers.size > 1
@@ -2383,7 +2430,6 @@ private fun PermitJoinDialog(
         return if (showBrokerName) "$baseTopic ($brokerName)" else baseTopic
     }
 
-    var selectedIndex by remember { mutableIntStateOf(0) }
     val selected = allTopics.getOrNull(selectedIndex)
 
     AlertDialog(
@@ -2414,7 +2460,7 @@ private fun PermitJoinDialog(
                         ) {
                             allTopics.forEachIndexed { index, topic ->
                                 val onTopicClick = {
-                                    selectedIndex = index
+                                    onSelectedIndexChange(index)
                                     topicExpanded = false
                                 }
                                 DropdownMenuItem(
