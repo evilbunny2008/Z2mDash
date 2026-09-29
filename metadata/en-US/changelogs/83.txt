@@ -1,0 +1,1 @@
+- Fixed low-battery notifications repeating every time the app was restarted, even for a device that had been sitting at the same low level for weeks with nothing actually changing.

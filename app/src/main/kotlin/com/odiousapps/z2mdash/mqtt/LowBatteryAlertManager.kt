@@ -32,6 +32,14 @@ import kotlinx.coroutines.launch
  * level - naming whichever dashboard cluster that topic belongs to (falling back to the topic's
  * own last segment if it isn't on the dashboard at all), and clears the notification once the
  * reading recovers back above the threshold.
+ *
+ * [lastNotifiedValue] only lives in memory, so it's empty again every time the app process
+ * restarts. A topic's very first observed reading each run - low or not - only seeds that map
+ * silently rather than being compared against it, the same treatment WateringAlertManager gives a
+ * panel's first observation and for the same reason: without it, a device that's simply been
+ * sitting at the same low battery for weeks would read as "just became low" on every single app
+ * launch and re-notify every time, rather than only when the reading actually changes - confirmed
+ * by a user report of low-battery notifications repeating on every app restart.
  */
 class LowBatteryAlertManager(
     private val context: Context,
@@ -43,6 +51,10 @@ class LowBatteryAlertManager(
     // reading to have moved (either direction - a partial recharge is as worth a fresh mention as
     // a further drop) by at least LOW_BATTERY_STEP from this value, not just any change at all.
     private val lastNotifiedValue = mutableMapOf<String, Double>()
+
+    // Topics whose first reading this app run has already been used to seed lastNotifiedValue -
+    // see the class doc's "only lives in memory" paragraph.
+    private val seenThisRun = mutableSetOf<String>()
 
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
@@ -61,8 +73,17 @@ class LowBatteryAlertManager(
         val config = configRepository.config.value
         payloads.forEach { (compositeKey, payload) ->
             val battery = JsonPath.extract(payload, "battery")?.toDoubleOrNull()
-            val wasLow = compositeKey in lastNotifiedValue
             val isLow = battery != null && battery > 0.0 && battery <= LOW_BATTERY_THRESHOLD
+
+            // First observation of this topic this app run - resync silently (see class doc)
+            // rather than risk reading an already-known-low battery as a fresh drop just because
+            // lastNotifiedValue was reset by the restart.
+            if (seenThisRun.add(compositeKey)) {
+                if (isLow) lastNotifiedValue[compositeKey] = battery!!
+                return@forEach
+            }
+
+            val wasLow = compositeKey in lastNotifiedValue
             if (isLow) {
                 // battery is guaranteed non-null here (isLow's own condition required it) - the
                 // compiler doesn't carry that smart-cast through from the separate isLow boolean
