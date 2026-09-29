@@ -68,7 +68,7 @@ class LowBatteryAlertManager(
                 // compiler doesn't carry that smart-cast through from the separate isLow boolean
                 // above, hence the explicit re-assertion rather than a risk of ever actually
                 // hitting a null here.
-                val currentValue = battery!!
+                val currentValue = battery
                 val movedEnoughToRenotify = wasLow &&
                     kotlin.math.abs(currentValue - lastNotifiedValue.getValue(compositeKey)) >= LOW_BATTERY_STEP
                 Log.d("Z2mDash", "LowBattery: $compositeKey battery=$currentValue wasLow=$wasLow " +
