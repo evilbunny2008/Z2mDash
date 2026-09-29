@@ -1,0 +1,1 @@
+- Low battery notifications now show the battery percentage.
