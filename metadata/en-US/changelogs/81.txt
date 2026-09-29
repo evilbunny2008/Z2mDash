@@ -1,1 +1,2 @@
 - Fixed changing a cluster's topic (e.g. when splitting a Zigbee network onto a second bridge) breaking or dropping its switch/button panels, because the copied-forward config still pointed those controls at the old topic.
+- Added a safety net so a corrupted or incomplete device config can no longer wipe out most of a cluster's panels in one go - a payload that would drop the majority of what a device already owns is now ignored instead of applied.

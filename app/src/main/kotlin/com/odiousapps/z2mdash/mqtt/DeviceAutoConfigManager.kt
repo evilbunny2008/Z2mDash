@@ -42,8 +42,14 @@ class DeviceAutoConfigManager(
     }
 
     private fun reconcileKnownDevices(payloads: Map<String, String>) {
-        val config = configRepository.config.value
-        config.autoConfiguredDevices.forEach { device ->
+        // The device list itself (which devices exist) is stable for the duration of one
+        // reconcile pass - only detectNewDevices (called after this, per batch) adds to it.
+        // But cfg.groups is NOT re-fetched per device below: an earlier device in this same
+        // forEach can have already mutated it via applyDeviceAutoConfig, so every group/panel
+        // lookup here re-reads configRepository.config.value fresh rather than closing over one
+        // snapshot taken before the loop started - otherwise a later device's own diff would be
+        // computed against a stale pre-batch view of cfg.groups.
+        configRepository.config.value.autoConfiguredDevices.forEach { device ->
             val currentPayload = payloads["${device.brokerId}|${device.appConfigTopic}"] ?: return@forEach
             if (currentPayload == device.lastAppliedPayload) return@forEach
 
@@ -61,13 +67,27 @@ class DeviceAutoConfigManager(
             )
             if (builtPanels.isEmpty()) return@forEach
 
-            val existingPanelsList = config.groups.asSequence()
+            val existingPanelsList = configRepository.config.value.groups.asSequence()
                 .flatMap { it.panels }
                 .filter { it.id in device.createdPanelIds }
                 .toList()
             val existingKeys = identityKeys(existingPanelsList)
             val existingPanels = existingPanelsList.associateBy { existingKeys.getValue(it) }
             val builtKeys = identityKeys(builtPanels)
+
+            // Defence in depth against a corrupted/incomplete retained payload (e.g. a race while
+            // a cluster's topic is being changed, or a device mid-reconfigure) silently wiping
+            // out most of this device's panels: if the majority of what this device currently
+            // owns has no counterpart in the freshly built set, treat the payload the same way as
+            // the builtPanels.isEmpty() case above - ignore it rather than apply it - instead of
+            // trusting it outright the way a normal, smaller edit (a field renamed or dropped on
+            // purpose) is trusted. lastAppliedPayload is deliberately left unset so a later,
+            // non-degenerate payload for this same device is still picked up normally.
+            if (existingPanelsList.isNotEmpty()) {
+                val builtKeysSet = builtKeys.values.toSet()
+                val droppedCount = existingPanelsList.count { existingKeys.getValue(it) !in builtKeysSet }
+                if (droppedCount * 2 > existingPanelsList.size) return@forEach
+            }
             // Only adopt the payload's order for an existing panel if its order_version is
             // strictly newer than what this phone last applied for the device - otherwise a
             // stale/retained redelivery (reconnect, or another phone not yet caught up) would
