@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
@@ -70,16 +71,19 @@ class LowBatteryAlertManager(
                 val currentValue = battery!!
                 val movedEnoughToRenotify = wasLow &&
                     kotlin.math.abs(currentValue - lastNotifiedValue.getValue(compositeKey)) >= LOW_BATTERY_STEP
+                Log.d("Z2mDash", "LowBattery: $compositeKey battery=$currentValue wasLow=$wasLow " +
+                    "lastNotified=${lastNotifiedValue[compositeKey]} movedEnough=$movedEnoughToRenotify")
                 if (!wasLow || movedEnoughToRenotify) {
                     lastNotifiedValue[compositeKey] = currentValue
                     // Checked here, not at the top of checkBatteryLevels, so lastNotifiedValue
                     // stays accurate even while alerts are disabled - re-enabling shouldn't
                     // re-fire for a low reading that was already active/already notified.
                     if (config.lowBatteryAlertsEnabled) {
-                        notifyLowBattery(compositeKey, deviceNameFor(compositeKey))
+                        notifyLowBattery(compositeKey, deviceNameFor(compositeKey), currentValue)
                     }
                 }
             } else if (wasLow) {
+                Log.d("Z2mDash", "LowBattery: $compositeKey cleared (battery=$battery)")
                 lastNotifiedValue.remove(compositeKey)
                 cancelLowBatteryNotification(compositeKey)
             }
@@ -108,9 +112,12 @@ class LowBatteryAlertManager(
             .filter { it.brokerId == brokerId }
         val matchingPanel = panelsOnThisBroker.firstOrNull { topicFor(it) == topic }
             ?: panelsOnThisBroker.firstOrNull { topicFor(it)?.removeSuffix("/app") == topicBase }
-        return matchingPanel?.clusterName?.takeIf { it.isNotBlank() }
+        val resolved = matchingPanel?.clusterName?.takeIf { it.isNotBlank() }
             ?: matchingPanel?.label?.takeIf { it.isNotBlank() }
             ?: topic.substringAfterLast("/")
+        Log.d("Z2mDash", "LowBattery.deviceNameFor: topic=$topic matchedPanelTopic=${matchingPanel?.let { topicFor(it) }} " +
+            "clusterName=${matchingPanel?.clusterName} label=${matchingPanel?.label} resolved=$resolved")
+        return resolved
     }
 
     private fun topicFor(panel: Panel): String? = when (panel) {
@@ -119,7 +126,12 @@ class LowBatteryAlertManager(
         is Panel.Button -> null
     }
 
-    private fun notifyLowBattery(compositeKey: String, deviceName: String, isTest: Boolean = false) {
+    private fun notifyLowBattery(
+        compositeKey: String,
+        deviceName: String,
+        batteryValue: Double? = null,
+        isTest: Boolean = false
+    ) {
         createChannelIfNeeded()
 
         val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: return
@@ -127,9 +139,12 @@ class LowBatteryAlertManager(
             context, compositeKey.hashCode(), launchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val title = if (isTest) "Test alert" else "$deviceName battery low"
+        val percentText = batteryValue?.let { "${it.toInt()}%" }
+        val title = if (isTest) "Test alert" else "$deviceName battery low" + (percentText?.let { " ($it)" } ?: "")
         val text = if (isTest) {
             "This is what a low battery notification looks like"
+        } else if (percentText != null) {
+            "Battery at $percentText – tap to open Z2M Dash"
         } else {
             "Battery is running low – tap to open Z2M Dash"
         }
