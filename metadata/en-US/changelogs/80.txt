@@ -1,0 +1,1 @@
+- Fixed a watering alert firing almost every time the app restarts - a stale cached reading loaded before the broker reconnects was being compared against the fresh live one, misread as a sudden rise.

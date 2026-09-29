@@ -37,6 +37,13 @@ import kotlinx.coroutines.launch
  * stale retained value followed immediately by a fresh live one on (re)connect, and without this
  * that stale-then-fresh pair could span the midpoint by more than the threshold and read as a
  * genuine rise happening the instant the app starts, even though no watering just happened.
+ * Readings are ignored outright until a panel's own broker is actually connected, for the same
+ * reason at a coarser grain: the payloads map is pre-seeded from yesterday's on-disk cache before
+ * any MQTT connection even starts (see MqttConnectionManager's startup cache reload), so without
+ * this gate that first-ever "observation" above could lock onto a stale cached reading, only for
+ * the genuinely live retained value to arrive moments later (once actually connected) and get
+ * compared against it as if it were a real change - confirmed by a user report of a watering alert
+ * firing on virtually every app restart.
  * Likewise, whenever the ideal range's own min/max changes (editing the threshold), the
  * above/below classification and trough baseline are silently resynchronised to the new midpoint
  * rather than compared against their last values from under the *old* one - without this, editing
@@ -86,7 +93,12 @@ class WateringAlertManager(
             .filterIsInstance<Panel.Sensor>()
             .filter { it.icon == TileIcon.MOISTURE && it.idealRangeTopic.isNotBlank() }
 
+        val connectionStates = connectionManager.connectionStates.value
         moisturePanels.forEach { panel ->
+            // See the class doc's "on virtually every app restart" paragraph - skip entirely until
+            // this panel's own broker is actually connected, so the disk-cache-only payloads
+            // snapshot loaded before any connection starts never gets treated as a real reading.
+            if (connectionStates[panel.brokerId] != ConnectionState.CONNECTED) return@forEach
             val raw = payloads["${panel.brokerId}|${panel.topic}"] ?: return@forEach
             val currentValue = JsonPath.extract(raw, panel.jsonPath)?.toDoubleOrNull() ?: return@forEach
             val idealRaw = payloads["${panel.brokerId}|${panel.idealRangeTopic}"]
