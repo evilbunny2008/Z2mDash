@@ -369,7 +369,12 @@ fun publishAppTopicForClusterIfMissing(
     val payload = SensorDiscovery.buildAppConfigPayload(
         panels, clusterName, group.name, appTopic, seedValuesByPanelId
     )
-    app.connectionManager.publish(brokerId, appTopic, payload, retain = true)
+    // Registered *before* publishing, not after - the MQTT echo of this exact publish can arrive
+    // back (via connectionManager.latestPayloads, on a background dispatcher) before the very
+    // next line here would otherwise have run, and DeviceAutoConfigManager.detectNewDevices scans
+    // every "/app" topic not yet in autoConfiguredDevices - so publishing first left a real, if
+    // narrow, window where this phone's own echo raced ahead of its own registration and got
+    // treated as an unknown device, duplicating every one of this cluster's panels.
     app.configRepository.registerAutoConfiguredDevice(
         AutoConfiguredDevice(
             brokerId = brokerId,
@@ -379,6 +384,7 @@ fun publishAppTopicForClusterIfMissing(
             createdPanelIds = panels.map { it.id }
         )
     )
+    app.connectionManager.publish(brokerId, appTopic, payload, retain = true)
 }
 
 /**
@@ -420,7 +426,9 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
         val payload = SensorDiscovery.buildAppConfigPayload(
             panels, clusterName, group.name, appTopic, seedValuesByPanelId
         )
-        app.connectionManager.publish(brokerId, appTopic, payload, retain = true)
+        // Registered before publishing - see publishAppTopicForClusterIfMissing's own comment on
+        // why the order matters (this phone's own echo can otherwise race ahead of its own
+        // registration and get mistaken for an unknown device).
         app.configRepository.registerAutoConfiguredDevice(
             AutoConfiguredDevice(
                 brokerId = brokerId,
@@ -430,5 +438,6 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
                 createdPanelIds = panels.map { it.id }
             )
         )
+        app.connectionManager.publish(brokerId, appTopic, payload, retain = true)
     }
 }

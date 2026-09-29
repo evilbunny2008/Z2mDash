@@ -1,0 +1,1 @@
+- Fixed changing a panel's topic on the Edit Panel screen (and "Force Upload New Copy") sometimes duplicating every panel in its cluster.
