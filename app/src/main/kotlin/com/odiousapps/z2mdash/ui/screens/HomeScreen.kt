@@ -1675,11 +1675,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         // Read the OLD "/app" payload before retopicCluster below rewrites any
                         // panel (e.g. an editable moisture min/max threshold) that was itself
                         // stored there - see buildAppConfigPayload's own doc on why an editable
-                        // field's topic can be the cluster's own "/app" topic. Copied verbatim
-                        // (not rebuilt) to the new address, so the actual value is carried across
-                        // rather than reset to blank the next time anything reads it there.
+                        // field's topic can be the cluster's own "/app" topic. Carried across
+                        // (not rebuilt) so the actual value survives, but with the old topic
+                        // prefix swapped for the new one wherever it appears in the JSON - a
+                        // Toggle/Button control's command_topic/state_topic is embedded literally
+                        // in this payload (see buildAppConfigPayload), and DeviceAutoConfigManager
+                        // identifies those panels by that exact topic string. Left un-rewritten,
+                        // the round-tripped payload would carry the OLD command/state topics,
+                        // which no longer match the control panels retopicCluster just moved -
+                        // reconcileKnownDevices would then treat them as unrelated, silently
+                        // swapping the just-retopicked (working) control for a "new" one still
+                        // wired to the old, now-abandoned topic.
                         val oldAppTopic = "${pending.currentTopicPrefix}/app"
                         val oldAppPayload = brokerId?.let { app.connectionManager.latestPayloads.value["$it|$oldAppTopic"] }
+                            ?.replace(pending.currentTopicPrefix, retopicNewTopicText)
                         app.configRepository.retopicCluster(
                             pending.groupId, pending.clusterName, pending.currentTopicPrefix, retopicNewTopicText
                         )

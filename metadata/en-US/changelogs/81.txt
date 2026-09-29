@@ -1,0 +1,1 @@
+- Fixed changing a cluster's topic (e.g. when splitting a Zigbee network onto a second bridge) breaking or dropping its switch/button panels, because the copied-forward config still pointed those controls at the old topic.
