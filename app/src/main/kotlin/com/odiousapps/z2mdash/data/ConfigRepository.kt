@@ -498,6 +498,32 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
+     * Re-points an auto-configured device's tracking entry at [newSensorTopic]/[newAppConfigTopic]
+     * - called right before the old "/app" payload is copied forward to the new address (see
+     * HomeScreen's Change Topic dialog). Without this, that copied-forward payload arrives at a
+     * "/app" topic no AutoConfiguredDevice yet claims, so DeviceAutoConfigManager.detectNewDevices
+     * treats it as a brand new device and builds a second, duplicate set of panels alongside the
+     * ones retopicCluster already moved in place, instead of DeviceAutoConfigManager just
+     * reconciling the copied-forward payload back onto those same (already-retopicked) panels via
+     * their now-matching (topic, jsonPath) identity.
+     */
+    fun retopicAutoConfiguredDevice(
+        brokerId: String,
+        oldAppConfigTopic: String,
+        newSensorTopic: String,
+        newAppConfigTopic: String
+    ) = update { cfg ->
+        val updatedDevices = cfg.autoConfiguredDevices.map { device ->
+            if (device.brokerId == brokerId && device.appConfigTopic == oldAppConfigTopic) {
+                device.copy(sensorTopic = newSensorTopic, appConfigTopic = newAppConfigTopic)
+            } else {
+                device
+            }
+        }
+        cfg.copy(autoConfiguredDevices = updatedDevices)
+    }
+
+    /**
      * Pulls one panel out of whatever cluster it currently shares with siblings, giving it
      * [newClusterName] as its own - so it renders in its own titled card instead of being stuck
      * reordering only among the panels it was grouped with. Appended after every other panel in

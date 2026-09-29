@@ -1683,6 +1683,17 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         app.configRepository.retopicCluster(
                             pending.groupId, pending.clusterName, pending.currentTopicPrefix, retopicNewTopicText
                         )
+                        if (device != null) {
+                            // Re-point tracking at the new address *before* the copied-forward
+                            // payload below round-trips back through MQTT, so
+                            // DeviceAutoConfigManager recognises it as this same known device
+                            // (reconciling onto the panels already moved above) rather than an
+                            // unknown one - see retopicAutoConfiguredDevice's own doc.
+                            val newSensorTopic = device.sensorTopic.replace(pending.currentTopicPrefix, retopicNewTopicText)
+                            app.configRepository.retopicAutoConfiguredDevice(
+                                device.brokerId, device.appConfigTopic, newSensorTopic, "$retopicNewTopicText/app"
+                            )
+                        }
                         if (brokerId != null && oldAppPayload != null) {
                             app.connectionManager.publish(brokerId, "$retopicNewTopicText/app", oldAppPayload, retain = true)
                         }
@@ -1690,9 +1701,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             // The device's old retained "/app" topic now describes panels that no
                             // longer live there - clear it rather than leaving stale config
                             // behind on the broker for another phone/scan to trip over. Its value
-                            // has already been copied to the new topic above; local auto-config
-                            // tracking for the new address can be (re-)established later via
-                            // "Force Upload" once the device's actually reachable there.
+                            // has already been copied to the new topic above, and tracking already
+                            // re-pointed there too.
                             app.connectionManager.publish(device.brokerId, device.appConfigTopic, "", retain = true)
                         }
                         pendingClusterRetopic = null

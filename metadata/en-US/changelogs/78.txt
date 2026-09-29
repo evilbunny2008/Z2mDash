@@ -1,0 +1,1 @@
+- Fixed changing a cluster's topic duplicating every one of its panels instead of just carrying its saved threshold values across to the new topic.
