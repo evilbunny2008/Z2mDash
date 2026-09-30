@@ -919,6 +919,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 draggedToClusterKey = null
                               }
                             } else if (draggedGroupId != null) {
+                              // Same try/catch/finally shape as the cluster branch above (and the panel
+                              // branch below) - without it, any exception here (e.g. a transient MQTT
+                              // publish failure inside pushDashboardGroupOrderUpdates) propagates straight
+                              // out of this onDragEnd callback and kills the shared pointerInput(Unit)
+                              // coroutine that hosts detectDragGesturesAfterLongPress for every group,
+                              // cluster AND panel drag on this screen - since that coroutine never restarts
+                              // (its key never changes), the entire screen would stop starting new drags of
+                              // any kind from then on, recoverable only by leaving and returning to Home.
+                              // Confirmed by a user report of drags simply no longer starting after a handful
+                              // of successful ones - this was the one drop-commit branch missing the guard
+                              // its siblings already had.
+                              try {
                                 val fromId = draggedGroupId
                                 // Recomputed fresh here rather than trusting onDrag's last value -
                                 // a quick drag-and-release might not produce enough callbacks for
@@ -937,8 +949,16 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         }
                                     }
                                 }
+                              } catch (c: CancellationException) {
                                 draggedGroupId = null
                                 draggedToGroupId = null
+                                throw c
+                              } catch (e: Exception) {
+                                Log.e("Z2mDash", "Group drag drop failed", e)
+                              } finally {
+                                draggedGroupId = null
+                                draggedToGroupId = null
+                              }
                             } else if (draggedPanelId != null) {
                               try {
                                 updatePanelDragTargets()
