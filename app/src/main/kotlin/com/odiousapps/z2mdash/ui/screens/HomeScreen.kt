@@ -1419,7 +1419,29 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                             panelIds = panelsInCluster.map { it.id },
                                                             originalTopicPrefix = prefix
                                                         )
-                                                        duplicateClusterNameText = "$name copy"
+                                                        // Disambiguated against this group's own existing
+                                                        // cluster names ("X copy", then "X copy 2", "X copy
+                                                        // 3", ...) rather than always suggesting a bare "X
+                                                        // copy" - left un-checked, confirming the dialog
+                                                        // without editing this field would silently ADD the
+                                                        // clone's panels into whatever cluster already had
+                                                        // that exact name (ClusterCard groups purely by
+                                                        // name), rather than creating a genuinely separate
+                                                        // one - confirmed by a user report of "Duplicate"
+                                                        // merging into the existing cluster instead of
+                                                        // copying it, traced back to a stale "X copy" left
+                                                        // over from this group's own earlier corruption.
+                                                        val existingNames = group.panels
+                                                            .map { it.clusterName }
+                                                            .filter { it.isNotBlank() }
+                                                            .toSet()
+                                                        var candidate = "$name copy"
+                                                        var suffix = 2
+                                                        while (candidate in existingNames) {
+                                                            candidate = "$name copy $suffix"
+                                                            suffix++
+                                                        }
+                                                        duplicateClusterNameText = candidate
                                                         duplicateTopicText = prefix
                                                     },
                                                     onRetopic = {

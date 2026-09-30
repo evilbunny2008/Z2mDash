@@ -36,8 +36,8 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 94
-        versionName = "0.0.94"
+        versionCode = 95
+        versionName = "0.0.95"
     }
 
     buildTypes {
@@ -45,6 +45,7 @@ android {
             optimization {
                 enable = true
             }
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"

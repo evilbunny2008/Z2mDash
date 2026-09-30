@@ -1,0 +1,1 @@
+- Fixed "Duplicate" silently merging the copied panels into an existing cluster instead of creating a new one, if a cluster already happened to have the suggested "<name> copy" name. The suggested name now avoids any clash with an existing cluster in the group.
