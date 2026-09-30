@@ -1741,6 +1741,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             title = { Text("Duplicate \"${pending.name}\"") },
             text = {
                 Column {
+                    if (SensorDiscovery.isSuspiciouslyBroadTopicPrefix(pending.originalTopicPrefix)) {
+                        Text(
+                            "This cluster's panels don't all share one clean device topic (only " +
+                                "\"${pending.originalTopicPrefix.ifBlank { "(nothing)" }}\" in common) - " +
+                                "likely a few mismatched panels rather than one real device. The topic " +
+                                "below replaces only that shared part, so it may not apply the way you " +
+                                "expect. Worth checking this cluster's panels individually first.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                        Spacer(Modifier.height(12.dp))
+                    }
                     OutlinedTextField(
                         value = duplicateTopicText,
                         onValueChange = { duplicateTopicText = it },
@@ -1815,6 +1827,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         "Current topic: ${pending.currentTopicPrefix.ifBlank { "(none)" }}",
                         style = MaterialTheme.typography.bodySmall
                     )
+                    if (SensorDiscovery.isSuspiciouslyBroadTopicPrefix(pending.currentTopicPrefix)) {
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "This cluster's panels don't all share one clean device topic, only that " +
+                                "bare namespace - likely a few mismatched panels rather than one real " +
+                                "device. Moving it replaces only that shared part, so it may not apply " +
+                                "the way you expect. Worth checking this cluster's panels individually " +
+                                "first.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = MaterialTheme.colorScheme.error
+                        )
+                    }
                     Spacer(Modifier.height(12.dp))
                     OutlinedTextField(
                         value = retopicNewTopicText,

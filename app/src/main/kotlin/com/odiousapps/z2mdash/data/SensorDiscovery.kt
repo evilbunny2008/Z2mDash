@@ -790,6 +790,22 @@ object SensorDiscovery {
     }
 
     /**
+     * True when [prefix] (as [commonTopicPrefix] returns it) has no "/" at all - meaning every
+     * panel's topic only agrees as far as a bare broker/bridge namespace (e.g. "zigbee2mqtt2"),
+     * never reaching a specific device. A clean, single-device cluster's topics normally share at
+     * least one full path segment past that (e.g. "zigbee2mqtt2/SoilSensor_01"), so this is a
+     * reliable sign the cluster's panels don't actually all belong to the same device - most often
+     * leftover corruption from an earlier bug (duplicate/mismatched panels mixed into one cluster)
+     * rather than a deliberate choice. Retopic/Duplicate still work with a prefix like this (it's
+     * not blocked, since a rare deliberate broad rename is possible), but a plain substring replace
+     * against it can match unrelated segments of an unrelated panel's topic - confirmed by a user
+     * report of a duplicated cluster's topic coming out mangled (an old bridge segment surviving
+     * untouched, with the new text spliced into the middle instead of replacing it) - so callers
+     * use this to warn before it's too late to notice.
+     */
+    fun isSuspiciouslyBroadTopicPrefix(prefix: String): Boolean = prefix.isBlank() || '/' !in prefix
+
+    /**
      * The write-side counterpart to [parseDeviceAppConfig]/[buildPanels]: serialises [panels]
      * (all sharing [clusterName] and, per [commonTopicPrefix], one clean common topic) into a
      * fresh "<topic>/app" payload - so a cluster that only ever existed in this phone's local
