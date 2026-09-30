@@ -1,0 +1,1 @@
+- Added a warning on "Change topic" and "Duplicate" when a cluster's panels don't actually share one clean device topic, since renaming in that state can silently mangle the result rather than apply cleanly.
