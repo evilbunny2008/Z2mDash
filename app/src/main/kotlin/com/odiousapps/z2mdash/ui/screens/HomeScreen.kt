@@ -417,6 +417,16 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         }
         return kotlin.math.hypot(dx, dy)
     }
+    // Reading-order test used to position a panel popping out into a new cluster (see the
+    // willPopOut drop handler): a cluster counts as "before" drop if its whole row sits above
+    // drop's row, or - when drop's own y falls within this cluster's vertical span, i.e. they're
+    // in the same packed row - it sits to drop's left. Rows are assumed not to vertically overlap
+    // by more than a card's own height, true for this screen's own packedRows layout.
+    fun isBeforeDropPoint(rect: Rect, drop: Offset): Boolean = when {
+        rect.bottom <= drop.y -> true
+        rect.top > drop.y -> false
+        else -> rect.right <= drop.x
+    }
     fun computeNearestClusterKey(draggedKey: String, currentPosition: Offset): String? {
         return clusterBounds.entries
             .filter { (key, bounds) -> key == draggedKey || isWithinTrustedBounds(bounds.center) }
@@ -440,15 +450,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // True once the drag has left its own cluster's card with no other cluster's card to merge
     // into either - released there, the panel pops out into its own new cluster, same as before.
     var draggedPanelWillPopOut by remember { mutableStateOf(false) }
-    // The nearest OTHER cluster (in the panel's own group) to wherever it's currently hovering
-    // while popping out - set alongside draggedPanelWillPopOut, so a drop in the gap *between* two
-    // clusters lands the new cluster right there (inserted just before this one, same convention
-    // cluster-to-cluster reordering already uses) instead of always at the very end of the group,
-    // which is where ConfigRepository.movePanelToOwnCluster's own default displayOrder puts it
-    // with no positional information to go on otherwise. Null when there's no other cluster in the
-    // group to be positioned relative to (falls back to movePanelToOwnCluster's own end-of-group
-    // default, which is then correct since there's nothing to insert "between").
-    var draggedPanelPopOutNearestClusterKey by remember { mutableStateOf<String?>(null) }
     // Window-space bounds of every currently-composed panel tile (standalone or within a
     // cluster), keyed by panel id - same shape/purpose as clusterBounds, used to work out which
     // panel a long-press grabbed and, during a within-cluster reorder, which sibling tile the
@@ -476,7 +477,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         if (ownRect?.contains(dragTouchWindowPos) == true) {
             draggedToClusterKey = null
             draggedPanelWillPopOut = false
-            draggedPanelPopOutNearestClusterKey = null
             val siblings = app.configRepository.config.value.groups
                 .find { it.id == fromGroupId }?.panels
                 ?.filter { it.clusterName == ownClusterName }
@@ -496,21 +496,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             if (mergeTarget != null) {
                 draggedToClusterKey = mergeTarget.key
                 draggedPanelWillPopOut = false
-                draggedPanelPopOutNearestClusterKey = null
             } else {
                 draggedToClusterKey = null
                 draggedPanelWillPopOut = ownClusterKey != null
-                draggedPanelPopOutNearestClusterKey = if (!draggedPanelWillPopOut) {
-                    null
-                } else {
-                    clusterBounds.entries
-                        .filter { (key, rect) ->
-                            key != ownClusterKey && key.substringBefore("::") == fromGroupId &&
-                                key.substringAfter("::") != "__header__" && isWithinTrustedBounds(rect.center)
-                        }
-                        .minByOrNull { (_, rect) -> rect.distanceTo(dragTouchWindowPos) }
-                        ?.key
-                }
             }
         }
     }
@@ -573,7 +561,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 draggedPanelFromGroupId = null
                 draggedToPanelIndex = -1
                 draggedPanelWillPopOut = false
-                draggedPanelPopOutNearestClusterKey = null
                 return@LaunchedEffect
             }
             val bounds = viewportBoundsInWindow
@@ -802,7 +789,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         draggedPanelFromGroupId = fromGroupId
                                         draggedToPanelIndex = -1
                                         draggedPanelWillPopOut = false
-                                        draggedPanelPopOutNearestClusterKey = null
                                         draggedToClusterKey = null
                                         dragTouchWindowPos = windowPos
                                         lastDragTickAtMs = System.currentTimeMillis()
@@ -961,7 +947,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 val mergeTargetKey = draggedToClusterKey
                                 val toPanelIndex = draggedToPanelIndex
                                 val willPopOut = draggedPanelWillPopOut
-                                val popOutNearestClusterKey = draggedPanelPopOutNearestClusterKey
+                                val popOutDropPos = dragTouchWindowPos
                                 val panel = if (panelId != null && fromGroupId != null) {
                                     app.configRepository.config.value.groups
                                         .find { it.id == fromGroupId }?.panels?.find { it.id == panelId }
@@ -994,30 +980,36 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 val previousGroups = app.configRepository.config.value.groups
                                                 app.configRepository.movePanelToOwnCluster(fromGroupId, panel.id, panel.label)
                                                 // movePanelToOwnCluster always appends the new cluster past every
-                                                // other one's displayOrder - correct for the popOutNearestClusterKey
-                                                // == null case (nothing to be positioned relative to), but otherwise
-                                                // immediately re-slotted into the gap the panel was actually dropped
-                                                // in (right before the nearest cluster, same convention cluster-to-
-                                                // cluster reordering already uses), rather than leaving it stuck at
-                                                // the end of the group regardless of where it was dropped.
-                                                if (popOutNearestClusterKey != null) {
-                                                    val currentGroup = app.configRepository.config.value.groups
-                                                        .find { it.id == fromGroupId }
-                                                    if (currentGroup != null) {
-                                                        val currentOrder = currentGroup.panels
-                                                            .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
-                                                            .entries.sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
-                                                            .map { (key, _) -> key }
-                                                        val nearestClusterName = popOutNearestClusterKey.substringAfter("::")
-                                                        val fromIndex = currentOrder.indexOf(panel.label)
-                                                        val toIndex = currentOrder.indexOf(nearestClusterName)
-                                                        if (fromIndex >= 0 && toIndex >= 0 && fromIndex != toIndex) {
+                                                // other one's displayOrder - immediately re-slotted here into the
+                                                // gap it was actually dropped in, rather than leaving it stuck at
+                                                // the end of the group regardless of where that was. The target
+                                                // index is every OTHER cluster (in this same group) whose last-
+                                                // known bounds read as "before" popOutDropPos in reading order -
+                                                // a whole row above it, or the same row and to its left - counted
+                                                // up; that count IS the correct 0-based insert position. A single
+                                                // "nearest cluster, insert before it" was tried first and was
+                                                // wrong whenever the nearest cluster was the one *above* the drop
+                                                // point (it needs inserting after that one, not before) - counting
+                                                // every earlier cluster handles both sides of the gap correctly.
+                                                val currentGroup = app.configRepository.config.value.groups
+                                                    .find { it.id == fromGroupId }
+                                                if (currentGroup != null) {
+                                                    val currentOrder = currentGroup.panels
+                                                        .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+                                                        .entries.sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
+                                                        .map { (key, _) -> key }
+                                                    val fromIndex = currentOrder.indexOf(panel.label)
+                                                    if (fromIndex >= 0) {
+                                                        val targetIndex = currentOrder.withIndex().count { (i, clusterKey) ->
+                                                            if (i == fromIndex) return@count false
+                                                            val rect = clusterBounds["$fromGroupId::$clusterKey"]
+                                                            rect != null && isWithinTrustedBounds(rect.center) &&
+                                                                isBeforeDropPoint(rect, popOutDropPos)
+                                                        }
+                                                        if (targetIndex != fromIndex) {
                                                             val reordered = currentOrder.toMutableList()
                                                             reordered.removeAt(fromIndex)
-                                                            reordered.add(
-                                                                if (toIndex > fromIndex) toIndex - 1 else toIndex,
-                                                                panel.label
-                                                            )
+                                                            reordered.add(targetIndex, panel.label)
                                                             app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
                                                         }
                                                     }
@@ -1062,7 +1054,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 draggedPanelFromGroupId = null
                                 draggedToPanelIndex = -1
                                 draggedPanelWillPopOut = false
-                                draggedPanelPopOutNearestClusterKey = null
                                 draggedToClusterKey = null
                                 throw c
                               } catch (e: Exception) {
@@ -1072,7 +1063,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 draggedPanelFromGroupId = null
                                 draggedToPanelIndex = -1
                                 draggedPanelWillPopOut = false
-                                draggedPanelPopOutNearestClusterKey = null
                                 draggedToClusterKey = null
                               }
                             }
@@ -1086,7 +1076,6 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             draggedPanelFromGroupId = null
                             draggedToPanelIndex = -1
                             draggedPanelWillPopOut = false
-                            draggedPanelPopOutNearestClusterKey = null
                         },
                         onDrag = { change, _ ->
                             val coords = listCoordinates
@@ -1225,20 +1214,33 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     ) {
                         Row(
                             modifier = Modifier.weight(1f)
-                                .clickable { app.configRepository.setGroupCollapsed(group.id, !group.collapsed) }
-                                // Long-press-drag itself is handled by ONE detector on the LazyColumn
-                                // as a whole (see its own modifier) rather than here - see that
-                                // detector's comment for why a per-item detector doesn't work.
+                                // Deliberately NOT .clickable on this whole Row any more. It used to be, and
+                                // that was harmless while group dragging had its own per-item detector, but
+                                // once drag detection was consolidated onto the LazyColumn's single shared
+                                // detector (see that detector's own comment), Compose's clickable consuming
+                                // the initial pointer-down for its own press/ripple handling started
+                                // starving the parent detector of the unconsumed down it needs to ever
+                                // recognise a long press here - confirmed by a user report that group
+                                // drag-and-drop stopped working outright (no drag feedback at all, unlike
+                                // the separate stuck-mid-drag watchdog issue). Cluster captions never had
+                                // this problem, since they were never given their own clickable to begin
+                                // with (see their own captionRowModifier). The collapse toggle now lives on
+                                // just the chevron icon below instead - small enough that it's not where
+                                // anyone would actually grab this row to drag it.
                                 .onGloballyPositioned { groupHeaderCoordinates[group.id] = it },
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center
                         ) {
                             Text(group.name, style = MaterialTheme.typography.titleMedium)
                             Spacer(Modifier.width(4.dp))
-                            Icon(
-                                if (group.collapsed) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                                contentDescription = null
-                            )
+                            IconButton(
+                                onClick = { app.configRepository.setGroupCollapsed(group.id, !group.collapsed) }
+                            ) {
+                                Icon(
+                                    if (group.collapsed) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
+                                    contentDescription = if (group.collapsed) "Expand ${group.name}" else "Collapse ${group.name}"
+                                )
+                            }
                         }
                         IconButton(onClick = { renamingGroup = group; renameText = group.name }) {
                             Icon(Icons.Default.Edit, contentDescription = "Rename ${group.name}")

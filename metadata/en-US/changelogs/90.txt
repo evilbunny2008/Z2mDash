@@ -1,0 +1,1 @@
+- Fixed the previous release's "drop a panel into a gap between clusters" fix only working when the gap's nearest cluster was the one below the drop point - dropping just above a cluster still sent the new cluster to the end of the group. It's now positioned correctly on either side of the gap.

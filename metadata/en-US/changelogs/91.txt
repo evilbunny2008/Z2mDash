@@ -1,0 +1,1 @@
+- Fixed dragging a group to reorder it not working at all (no long-press feedback) - a leftover tap handler on the whole header row was silently stealing the touch before the drag could ever start. Tap-to-collapse now lives on just the chevron icon instead.
