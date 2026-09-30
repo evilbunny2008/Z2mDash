@@ -6,6 +6,7 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.contentOrNull
+import kotlin.math.floor
 
 /**
  * Extracts a value from a JSON MQTT payload using a simple dot path,
@@ -76,7 +77,7 @@ object JsonPath {
         // serialises with a decimal point, which would otherwise turn a clean "40" into "40.0"
         // every time the value round-trips through this dialog.
         val leaf: JsonElement = newValue.toDoubleOrNull()?.let { d ->
-            if (d == Math.floor(d) && !d.isInfinite()) JsonPrimitive(d.toLong()) else JsonPrimitive(d)
+            if (d == floor(d) && !d.isInfinite()) JsonPrimitive(d.toLong()) else JsonPrimitive(d)
         } ?: JsonPrimitive(newValue)
         val segments = path.split(".")
 

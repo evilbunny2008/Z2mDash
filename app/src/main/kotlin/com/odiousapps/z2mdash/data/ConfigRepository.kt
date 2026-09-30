@@ -429,7 +429,7 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
 
         val base = (group.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
         val cloned = sourcePanels.mapIndexed { index, panel ->
-            val newId = java.util.UUID.randomUUID().toString()
+            val newId = UUID.randomUUID().toString()
             val newOrder = base + index
             when (panel) {
                 is Panel.Sensor -> panel.copy(
@@ -569,11 +569,12 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
             is Panel.Button -> panel.copy(clusterName = targetClusterName, displayOrder = newOrder)
         }
         cfg.copy(groups = cfg.groups.map { g ->
-            when {
-                g.id == fromGroupId && g.id == toGroupId ->
+            when (g.id) {
+                fromGroupId if g.id == toGroupId ->
                     g.copy(panels = g.panels.map { if (it.id == panelId) relocated else it })
-                g.id == fromGroupId -> g.copy(panels = g.panels.filterNot { it.id == panelId })
-                g.id == toGroupId -> g.copy(panels = g.panels + relocated)
+
+                fromGroupId -> g.copy(panels = g.panels.filterNot { it.id == panelId })
+                toGroupId -> g.copy(panels = g.panels + relocated)
                 else -> g
             }
         })

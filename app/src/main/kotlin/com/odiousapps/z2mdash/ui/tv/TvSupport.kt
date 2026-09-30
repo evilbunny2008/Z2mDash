@@ -228,7 +228,7 @@ class TvKeyboardGate internal constructor(private val isTv: Boolean) {
     val readOnly: Boolean get() = isTv && !unlocked
 
     /** Chain onto the guarded field's own [Modifier]. */
-    fun modifier(): Modifier = if (!isTv) {
+    fun Modifier.modifier(): Modifier = if (!isTv) {
         Modifier
     } else {
         Modifier

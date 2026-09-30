@@ -15,6 +15,7 @@ import kotlinx.serialization.json.put
 object PermitJoin {
 
     /** Same normalisation as MqttConnectionManager's own (private) wildcardTopicFor(). */
+    @Suppress("unused")
     fun normalizedBaseTopic(rawBaseTopic: String): String =
         rawBaseTopic.trim().trim('/').ifBlank { "zigbee2mqtt" }
 

@@ -6,9 +6,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGesturesAfterLongPress
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,7 +24,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ContentCopy
@@ -56,10 +56,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
@@ -73,7 +73,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -85,19 +84,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
@@ -106,7 +104,6 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.AppConfig
 import com.odiousapps.z2mdash.data.AutoConfiguredDevice
-import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.PanelGroup
@@ -115,22 +112,22 @@ import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.forceRepublishGroupAppTopics
-import com.odiousapps.z2mdash.data.retopicClusterAndPublish
-import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
+import com.odiousapps.z2mdash.data.retopicClusterAndPublish
+import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
 import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
 import com.odiousapps.z2mdash.ui.components.ToggleTile
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
-import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
-import com.odiousapps.z2mdash.ui.tv.tvFocusIndicator
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
+import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
+import com.odiousapps.z2mdash.ui.tv.tvFocusIndicator
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
@@ -286,7 +283,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             val seconds = app.configRepository.config.value.undoToastSeconds
             if (seconds > 0) {
                 undoCoroutineScope.launch {
-                    val result = withTimeoutOrNull(seconds * 1000L) {
+                    val result = withTimeoutOrNull((seconds * 1000L).milliseconds) {
                         snackbarHostState.showSnackbar(
                             message = message,
                             actionLabel = "Undo",
@@ -516,7 +513,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         while (requester == null && attempts < 30) {
             requester = clusterBringIntoViewRequesters[targetKey]
             if (requester == null) {
-                delay(16)
+                delay(16.milliseconds)
                 attempts++
             }
         }
@@ -584,7 +581,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     listState.dispatchRawDelta(scrollDelta)
                 }
             }
-            delay(16)
+            delay(16.milliseconds)
         }
     }
 
@@ -1085,7 +1082,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     val activeStatus by remember(activeTopic) {
                         derivedStateOf {
                             activeTopic?.let { (brokerId, baseTopic) ->
-                                PermitJoin.status(payloadsState.value, brokerId, baseTopic, nowMillisState.value)
+                                PermitJoin.status(payloadsState.value, brokerId, baseTopic, nowMillisState.longValue)
                             }
                         }
                     }
@@ -1231,7 +1228,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         } else {
                             val payloads = payloadsState.value
                             val timestamps = timestampsState.value
-                            val nowMillis = nowMillisState.value
+                            val nowMillis = nowMillisState.longValue
                             orderedClusters.filter { bucket -> isClusterStale(bucket, payloads, timestamps, nowMillis) }
                         }
 
@@ -1413,9 +1410,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 emptyList()
             } else {
                 config.groups.flatMap { group ->
-                    group.panels.map { it.clusterName }.filter { it.isNotBlank() }.distinct()
+                    group.panels.asSequence().map { it.clusterName }.filter { it.isNotBlank() }.distinct()
                         .filter { it.contains(clusterSearchQuery, ignoreCase = true) }
-                        .map { clusterName -> Triple(group.id, group.name, clusterName) }
+                        .map { clusterName -> Triple(group.id, group.name, clusterName) }.toList()
                 }.sortedBy { (_, _, clusterName) -> clusterName.lowercase() }
             }
         }
