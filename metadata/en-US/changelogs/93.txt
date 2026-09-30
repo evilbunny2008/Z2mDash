@@ -1,0 +1,1 @@
+- Fixed changing a cluster's topic silently multiplying its panels forever, one more copy every time the app restarted, when that cluster's device tracking had drifted out of sync - the retopic no longer leaves the new topic untracked, which was what kept making it look like a brand-new device on every reconnect.

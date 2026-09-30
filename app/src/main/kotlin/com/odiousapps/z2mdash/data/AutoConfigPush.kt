@@ -437,6 +437,29 @@ fun retopicClusterAndPublish(
         app.configRepository.retopicAutoConfiguredDevice(
             device.brokerId, device.appConfigTopic, newSensorTopic, "$newTopicPrefix/app"
         )
+    } else if (brokerId != null && oldAppPayload != null) {
+        // No AutoConfiguredDevice was tracking this cluster's old topic (its createdPanelIds had
+        // already drifted out of sync with clusterPanels, or it was never auto-configured to begin
+        // with) even though an old "/app" payload existed there to carry forward. Without this,
+        // the publish below would land at a "/app" topic nothing tracks, which
+        // DeviceAutoConfigManager.detectNewDevices then treats as a brand-new device on every
+        // single future reconcile - including every app restart's fresh resubscribe, since nothing
+        // ever starts tracking it to make that check stop failing - silently auto-creating another
+        // full duplicate copy of every panel in this cluster each time. Confirmed by a user report
+        // of a single toggle multiplying into a dozen, still growing on every app reopen.
+        // Registering tracking explicitly here, for the panels retopicCluster just moved onto
+        // newTopicPrefix (which is this cluster's own new common topic, so doubles as its
+        // sensorTopic), closes that gap the same way publishAppTopicForClusterIfMissing does for a
+        // cluster that was never auto-configured at all.
+        app.configRepository.registerAutoConfiguredDevice(
+            AutoConfiguredDevice(
+                brokerId = brokerId,
+                sensorTopic = newTopicPrefix,
+                appConfigTopic = "$newTopicPrefix/app",
+                lastAppliedPayload = oldAppPayload,
+                createdPanelIds = clusterPanels.map { it.id }
+            )
+        )
     }
     if (brokerId != null && oldAppPayload != null) {
         app.connectionManager.publish(brokerId, "$newTopicPrefix/app", oldAppPayload, retain = true)
