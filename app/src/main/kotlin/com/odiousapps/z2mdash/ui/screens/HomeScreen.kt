@@ -115,6 +115,8 @@ import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.forceRepublishGroupAppTopics
+import com.odiousapps.z2mdash.data.retopicClusterAndPublish
+import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
@@ -241,6 +243,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // pending state (rather than a button directly inside that dialog) so the destructive-ish
     // "overwrite whatever's on the broker" warning gets its own explicit confirm/cancel.
     var pendingForceRepublishGroup by remember { mutableStateOf<PanelGroup?>(null) }
+    // "Retopic All Clusters" on the group edit dialog - retopicGroupTopicPrefix's own UI, for
+    // moving every cluster on one old topic namespace in a group (e.g. after splitting a Zigbee
+    // network) without repeating the single-cluster "Change topic" dialog per cluster.
+    var pendingGroupRetopic by remember { mutableStateOf<PanelGroup?>(null) }
+    var groupRetopicOldTopicText by remember { mutableStateOf("") }
+    var groupRetopicNewTopicText by remember { mutableStateOf("") }
 
     var showClusterSearch by remember { mutableStateOf(false) }
     var clusterSearchQuery by remember { mutableStateOf("") }
@@ -1511,6 +1519,24 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             "of sync.",
                         style = MaterialTheme.typography.bodySmall
                     )
+                    Spacer(Modifier.height(16.dp))
+                    OutlinedButton(
+                        onClick = {
+                            renamingGroup = null
+                            groupRetopicOldTopicText = ""
+                            groupRetopicNewTopicText = ""
+                            pendingGroupRetopic = group
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) { Text("Retopic All Clusters") }
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        "Moves every cluster in this group currently on one old MQTT topic onto a " +
+                            "new one, in one go - e.g. after splitting a Zigbee network onto a " +
+                            "second bridge, for every device that moved. Clusters on a different " +
+                            "topic are untouched.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
                 }
             },
             confirmButton = {
@@ -1551,6 +1577,67 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             },
             dismissButton = {
                 TextButton(onClick = { pendingForceRepublishGroup = null }) { Text("Cancel") }
+            }
+        )
+    }
+
+    pendingGroupRetopic?.let { group ->
+        AlertDialog(
+            onDismissRequest = { pendingGroupRetopic = null },
+            title = { Text("Retopic all clusters in \"${group.name}\"?") },
+            text = {
+                Column {
+                    Text(
+                        "Moves every cluster in this group whose topic exactly matches \"Old topic\" " +
+                            "onto \"New topic\" - the rest of this group's clusters are untouched. " +
+                            "This can't be undone automatically.",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = groupRetopicOldTopicText,
+                        onValueChange = { groupRetopicOldTopicText = it },
+                        label = { Text("Old topic") },
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions(),
+                        modifier = Modifier.clearFocusOnBack()
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    OutlinedTextField(
+                        value = groupRetopicNewTopicText,
+                        onValueChange = { groupRetopicNewTopicText = it },
+                        label = { Text("New topic") },
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions(),
+                        modifier = Modifier.clearFocusOnBack()
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val movedClusters = retopicGroupTopicPrefix(
+                            app, group.id, groupRetopicOldTopicText, groupRetopicNewTopicText
+                        )
+                        pendingGroupRetopic = null
+                        undoCoroutineScope.launch {
+                            snackbarHostState.showSnackbar(
+                                if (movedClusters.isEmpty()) {
+                                    "No clusters in \"${group.name}\" were on that topic"
+                                } else {
+                                    "Moved ${movedClusters.size} cluster(s) to \"$groupRetopicNewTopicText\""
+                                }
+                            )
+                        }
+                        groupRetopicOldTopicText = ""
+                        groupRetopicNewTopicText = ""
+                    },
+                    enabled = groupRetopicOldTopicText.isNotBlank() && groupRetopicNewTopicText.isNotBlank() &&
+                        groupRetopicOldTopicText != groupRetopicNewTopicText
+                ) { Text("Retopic") }
+            },
+            dismissButton = {
+                TextButton(onClick = { pendingGroupRetopic = null }) { Text("Cancel") }
             }
         )
     }
@@ -1666,54 +1753,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             confirmButton = {
                 TextButton(
                     onClick = {
-                        val clusterPanels = app.configRepository.config.value.groups
-                            .find { it.id == pending.groupId }?.panels
-                            ?.filter { it.clusterName == pending.clusterName } ?: emptyList()
-                        val brokerId = clusterPanels.firstOrNull()?.brokerId
-                        val device = app.configRepository.config.value.autoConfiguredDevices
-                            .find { d -> clusterPanels.any { it.id in d.createdPanelIds } }
-                        // Read the OLD "/app" payload before retopicCluster below rewrites any
-                        // panel (e.g. an editable moisture min/max threshold) that was itself
-                        // stored there - see buildAppConfigPayload's own doc on why an editable
-                        // field's topic can be the cluster's own "/app" topic. Carried across
-                        // (not rebuilt) so the actual value survives, but with the old topic
-                        // prefix swapped for the new one wherever it appears in the JSON - a
-                        // Toggle/Button control's command_topic/state_topic is embedded literally
-                        // in this payload (see buildAppConfigPayload), and DeviceAutoConfigManager
-                        // identifies those panels by that exact topic string. Left un-rewritten,
-                        // the round-tripped payload would carry the OLD command/state topics,
-                        // which no longer match the control panels retopicCluster just moved -
-                        // reconcileKnownDevices would then treat them as unrelated, silently
-                        // swapping the just-retopicked (working) control for a "new" one still
-                        // wired to the old, now-abandoned topic.
-                        val oldAppTopic = "${pending.currentTopicPrefix}/app"
-                        val oldAppPayload = brokerId?.let { app.connectionManager.latestPayloads.value["$it|$oldAppTopic"] }
-                            ?.replace(pending.currentTopicPrefix, retopicNewTopicText)
-                        app.configRepository.retopicCluster(
-                            pending.groupId, pending.clusterName, pending.currentTopicPrefix, retopicNewTopicText
+                        retopicClusterAndPublish(
+                            app, pending.groupId, pending.clusterName, pending.currentTopicPrefix, retopicNewTopicText
                         )
-                        if (device != null) {
-                            // Re-point tracking at the new address *before* the copied-forward
-                            // payload below round-trips back through MQTT, so
-                            // DeviceAutoConfigManager recognises it as this same known device
-                            // (reconciling onto the panels already moved above) rather than an
-                            // unknown one - see retopicAutoConfiguredDevice's own doc.
-                            val newSensorTopic = device.sensorTopic.replace(pending.currentTopicPrefix, retopicNewTopicText)
-                            app.configRepository.retopicAutoConfiguredDevice(
-                                device.brokerId, device.appConfigTopic, newSensorTopic, "$retopicNewTopicText/app"
-                            )
-                        }
-                        if (brokerId != null && oldAppPayload != null) {
-                            app.connectionManager.publish(brokerId, "$retopicNewTopicText/app", oldAppPayload, retain = true)
-                        }
-                        if (device != null) {
-                            // The device's old retained "/app" topic now describes panels that no
-                            // longer live there - clear it rather than leaving stale config
-                            // behind on the broker for another phone/scan to trip over. Its value
-                            // has already been copied to the new topic above, and tracking already
-                            // re-pointed there too.
-                            app.connectionManager.publish(device.brokerId, device.appConfigTopic, "", retain = true)
-                        }
                         pendingClusterRetopic = null
                         retopicNewTopicText = ""
                     },

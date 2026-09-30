@@ -406,6 +406,69 @@ fun publishAppTopicForClusterIfMissing(
 }
 
 /**
+ * Moves every panel sharing [clusterName] in [groupId] from [oldTopicPrefix] onto
+ * [newTopicPrefix] - both the local rewrite (ConfigRepository.retopicCluster) and the MQTT side
+ * (re-pointing this cluster's AutoConfiguredDevice tracking, carrying its "/app" payload forward
+ * to the new topic with embedded control command/state topics rewritten too, and clearing the old
+ * topic) - the single-cluster "Change topic" dialog's own confirm action, extracted so
+ * [retopicGroupTopicPrefix] can drive the same sequence across every matching cluster in a group
+ * in one pass. See HomeScreen's "Change topic" dialog for the original per-cluster doc on why the
+ * embedded-topic rewrite and tracking re-point ordering matter.
+ */
+fun retopicClusterAndPublish(
+    app: Z2mDashApplication,
+    groupId: String,
+    clusterName: String,
+    oldTopicPrefix: String,
+    newTopicPrefix: String
+) {
+    val clusterPanels = app.configRepository.config.value.groups
+        .find { it.id == groupId }?.panels
+        ?.filter { it.clusterName == clusterName } ?: emptyList()
+    val brokerId = clusterPanels.firstOrNull()?.brokerId
+    val device = app.configRepository.config.value.autoConfiguredDevices
+        .find { d -> clusterPanels.any { it.id in d.createdPanelIds } }
+    val oldAppTopic = "$oldTopicPrefix/app"
+    val oldAppPayload = brokerId?.let { app.connectionManager.latestPayloads.value["$it|$oldAppTopic"] }
+        ?.replace(oldTopicPrefix, newTopicPrefix)
+    app.configRepository.retopicCluster(groupId, clusterName, oldTopicPrefix, newTopicPrefix)
+    if (device != null) {
+        val newSensorTopic = device.sensorTopic.replace(oldTopicPrefix, newTopicPrefix)
+        app.configRepository.retopicAutoConfiguredDevice(
+            device.brokerId, device.appConfigTopic, newSensorTopic, "$newTopicPrefix/app"
+        )
+    }
+    if (brokerId != null && oldAppPayload != null) {
+        app.connectionManager.publish(brokerId, "$newTopicPrefix/app", oldAppPayload, retain = true)
+    }
+    if (device != null) {
+        app.connectionManager.publish(device.brokerId, device.appConfigTopic, "", retain = true)
+    }
+}
+
+/**
+ * [retopicClusterAndPublish] for every named cluster in [groupId] whose own common topic (see
+ * SensorDiscovery.commonTopicPrefix) is exactly [oldTopicPrefix] - the bulk counterpart, for
+ * moving every cluster a Zigbee network split actually touched in one action instead of
+ * repeating "Change topic" per cluster. A cluster with a mixed/inconsistent topic (commonTopicPrefix
+ * blank) or already on a different topic is left untouched. A panel with no cluster name at all is
+ * skipped too - retopicClusterAndPublish matches by clusterName, which a blank-named "standalone"
+ * panel has none of to match back against. Returns the cluster names actually moved, for the
+ * caller to report back to the user.
+ */
+fun retopicGroupTopicPrefix(app: Z2mDashApplication, groupId: String, oldTopicPrefix: String, newTopicPrefix: String): List<String> {
+    val group = app.configRepository.config.value.groups.find { it.id == groupId } ?: return emptyList()
+    val clusterBuckets = group.panels.filter { it.clusterName.isNotBlank() }.groupBy { it.clusterName }
+    val matchingClusterNames = clusterBuckets.filterValues { panels ->
+        SensorDiscovery.commonTopicPrefix(panels) == oldTopicPrefix
+    }.keys.toList()
+    matchingClusterNames.forEach { clusterName ->
+        retopicClusterAndPublish(app, groupId, clusterName, oldTopicPrefix, newTopicPrefix)
+    }
+    return matchingClusterNames
+}
+
+/**
  * Rebuilds and republishes a fresh "<topic>/app" payload, from this phone's current local
  * config, for every cluster (and standalone panel, each treated as its own single-panel
  * "cluster") in [groupId] that has a coherent common topic - unlike
