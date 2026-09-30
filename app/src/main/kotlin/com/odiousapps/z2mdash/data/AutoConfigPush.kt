@@ -421,6 +421,19 @@ fun publishAppTopicForClusterIfMissing(
  * existing retained payload first and re-seeded, so a force-republish doesn't silently reset a
  * threshold the user had set via that field's own edit action.
  */
+/**
+ * [forceRepublishGroupAppTopics] for every group in the local config, one at a time - the "force
+ * upload" action on the Settings screen, for when drift isn't confined to one group (e.g. after a
+ * broker outage, or catching up a phone that's been offline for a while) and re-opening the edit
+ * dialog for each group individually would be tedious. Returns how many groups were actually
+ * processed, for the caller to report back to the user.
+ */
+fun forceRepublishAllGroupsAppTopics(app: Z2mDashApplication): Int {
+    val groupIds = app.configRepository.config.value.groups.map { it.id }
+    groupIds.forEach { groupId -> forceRepublishGroupAppTopics(app, groupId) }
+    return groupIds.size
+}
+
 fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
     val config = app.configRepository.config.value
     val group = config.groups.find { it.id == groupId } ?: return

@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Sync
+import androidx.compose.material.icons.filled.CloudUpload
 import androidx.compose.material.icons.automirrored.filled.Undo
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
@@ -35,6 +36,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
+import com.odiousapps.z2mdash.data.forceRepublishAllGroupsAppTopics
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 import com.odiousapps.z2mdash.ui.tv.horizontalSliderDpadFocusNav
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
@@ -46,6 +48,8 @@ fun SettingsScreen(navController: NavController) {
     val config by app.configRepository.config.collectAsState()
     var showPruneConfirm by remember { mutableStateOf(false) }
     var pruneResultMessage by remember { mutableStateOf<String?>(null) }
+    var showForceUploadAllConfirm by remember { mutableStateOf(false) }
+    var forceUploadAllResultMessage by remember { mutableStateOf<String?>(null) }
     // Read from the installed package rather than BuildConfig - the latter isn't enabled for
     // this module, and PackageManager is the simplest way to show the actual running version.
     val versionLabel = remember {
@@ -176,6 +180,22 @@ fun SettingsScreen(navController: NavController) {
                     modifier = Modifier.clickable { navController.navigate("backupRestore") }
                 )
             }
+            if (config.groups.isNotEmpty()) {
+                item {
+                    ListItem(
+                        headlineContent = { Text("Force Upload All Groups") },
+                        supportingContent = {
+                            Text(
+                                "Rebuilds and republishes every cluster in every group's device " +
+                                    "config from this phone's current settings - use this if a " +
+                                    "broker issue or another phone left more than one group out of sync"
+                            )
+                        },
+                        leadingContent = { Icon(Icons.Default.CloudUpload, contentDescription = null) },
+                        modifier = Modifier.clickable { showForceUploadAllConfirm = true }
+                    )
+                }
+            }
             item {
                 ListItem(
                     headlineContent = { Text("About") },
@@ -222,6 +242,42 @@ fun SettingsScreen(navController: NavController) {
             text = { Text(message) },
             confirmButton = {
                 TextButton(onClick = { pruneResultMessage = null }) { Text("OK") }
+            }
+        )
+    }
+
+    if (showForceUploadAllConfirm) {
+        AlertDialog(
+            onDismissRequest = { showForceUploadAllConfirm = false },
+            title = { Text("Force upload all groups?") },
+            text = {
+                Text(
+                    "This overwrites the retained device config on the broker for every cluster in " +
+                        "every group with a fresh copy built from this phone's current settings. Any " +
+                        "different config currently on the broker (e.g. from another phone) will be " +
+                        "replaced, not merged. This can't be undone automatically."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    val count = forceRepublishAllGroupsAppTopics(app)
+                    forceUploadAllResultMessage = "Re-published $count group(s) to the broker."
+                    showForceUploadAllConfirm = false
+                }) { Text("Force Upload") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showForceUploadAllConfirm = false }) { Text("Cancel") }
+            }
+        )
+    }
+
+    forceUploadAllResultMessage?.let { message ->
+        AlertDialog(
+            onDismissRequest = { forceUploadAllResultMessage = null },
+            title = { Text("Done") },
+            text = { Text(message) },
+            confirmButton = {
+                TextButton(onClick = { forceUploadAllResultMessage = null }) { Text("OK") }
             }
         )
     }

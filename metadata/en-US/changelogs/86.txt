@@ -1,0 +1,1 @@
+- Fixed a Force Upload on one phone never showing up on other phones - a safety net added in the previous release to guard against corrupted device configs was also permanently blocking legitimate large republishes like Force Upload, with no way to recover once blocked.

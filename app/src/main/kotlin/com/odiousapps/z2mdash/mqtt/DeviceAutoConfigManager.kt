@@ -75,19 +75,19 @@ class DeviceAutoConfigManager(
             val existingPanels = existingPanelsList.associateBy { existingKeys.getValue(it) }
             val builtKeys = identityKeys(builtPanels)
 
-            // Defence in depth against a corrupted/incomplete retained payload (e.g. a race while
-            // a cluster's topic is being changed, or a device mid-reconfigure) silently wiping
-            // out most of this device's panels: if the majority of what this device currently
-            // owns has no counterpart in the freshly built set, treat the payload the same way as
-            // the builtPanels.isEmpty() case above - ignore it rather than apply it - instead of
-            // trusting it outright the way a normal, smaller edit (a field renamed or dropped on
-            // purpose) is trusted. lastAppliedPayload is deliberately left unset so a later,
-            // non-degenerate payload for this same device is still picked up normally.
-            if (existingPanelsList.isNotEmpty()) {
-                val builtKeysSet = builtKeys.values.toSet()
-                val droppedCount = existingPanelsList.count { existingKeys.getValue(it) !in builtKeysSet }
-                if (droppedCount * 2 > existingPanelsList.size) return@forEach
-            }
+            // A payload that drops most of what this device currently owns is trusted the same as
+            // any smaller edit, not treated as suspicious - this is exactly what a deliberate,
+            // legitimate "Force Upload" from another phone looks like on the wire (its entire
+            // purpose is re-asserting that phone's config as canonical, potentially replacing most
+            // or all of what's currently retained - see AutoConfigPush.forceRepublishGroupAppTopics'
+            // own doc), and this reconciler has no way to tell that apart from a corrupted payload.
+            // An earlier version of this function tried to guard against the latter by ignoring a
+            // majority-shrink payload outright, but since it left lastAppliedPayload unset, and a
+            // genuine Force Upload's retained payload never changes again afterward, that guard
+            // could never be satisfied and permanently blocked a legitimate Force Upload from ever
+            // reaching other phones - confirmed by a user report that force-uploading a group on
+            // one phone never showed up on another.
+            //
             // Only adopt the payload's order for an existing panel if its order_version is
             // strictly newer than what this phone last applied for the device - otherwise a
             // stale/retained redelivery (reconnect, or another phone not yet caught up) would
