@@ -13,9 +13,9 @@ Repo: https://github.com/evilbunny2008/Z2mDash.git
 Binaries: https://github.com/evilbunny2008/Z2mDash/releases/download/v%v/Z2mDash-%v.apk
 
 Builds:
-  - versionName: 0.0.82
-    versionCode: 82
-    commit: bb0a939ff4e594b578f4461763cc9a7cc257ca3b
+  - versionName: 0.0.84
+    versionCode: 84
+    commit:
     subdir: app
     gradle:
       - yes
@@ -24,5 +24,5 @@ AllowedAPKSigningKeys: 6e194e3a58ba968613afc235136f63fb845e8aa0d718e70925cac04a9
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
-CurrentVersion: 0.0.82
-CurrentVersionCode: 82
+CurrentVersion: 0.0.84
+CurrentVersionCode: 84

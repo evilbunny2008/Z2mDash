@@ -79,7 +79,7 @@ class LowBatteryAlertManager(
             // rather than risk reading an already-known-low battery as a fresh drop just because
             // lastNotifiedValue was reset by the restart.
             if (seenThisRun.add(compositeKey)) {
-                if (isLow) lastNotifiedValue[compositeKey] = battery!!
+                if (isLow) lastNotifiedValue[compositeKey] = battery
                 return@forEach
             }
 
