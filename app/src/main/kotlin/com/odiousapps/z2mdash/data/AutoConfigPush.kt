@@ -482,7 +482,16 @@ fun retopicGroupTopicPrefix(app: Z2mDashApplication, groupId: String, oldTopicPr
  * A Sensor field whose own topic *is* the appTopic being republished (e.g. an editable min/max
  * threshold - see buildAppConfigPayload's own doc) has its current value read back out of the
  * existing retained payload first and re-seeded, so a force-republish doesn't silently reset a
- * threshold the user had set via that field's own edit action.
+ * threshold the user had set via that field's own edit action. If that read-back comes up empty -
+ * this topic isn't in latestPayloads at all yet, e.g. right after a broker's base topic was just
+ * widened to cover it and nothing's arrived from the broker for it yet - the whole cluster is left
+ * untouched rather than published with buildAppConfigPayload's own "0" placeholder standing in for
+ * an unknown real threshold: for an ordinary reading that "0" is harmless (it just shows "--" or
+ * gets overwritten by the next real value), but for a moisture ideal-range min/max it collapses
+ * the midpoint to 0, and since virtually any reading is "above" a midpoint of 0,
+ * WateringAlertManager would score every subsequent reading as already above target - confirmed by
+ * a user report of repeated spurious watering alerts right after a force-upload run against a
+ * topic namespace that had only just been subscribed to.
  */
 /**
  * [forceRepublishGroupAppTopics] for every group in the local config, one at a time - the "force
@@ -510,12 +519,16 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
         val appTopic = "$topic/app"
 
         val currentPayload = app.connectionManager.latestPayloads.value["$brokerId|$appTopic"]
-        val seedValuesByPanelId = panels.filterIsInstance<Panel.Sensor>()
-            .filter { it.topic == appTopic }
+        val appTopicEmbeddedFields = panels.filterIsInstance<Panel.Sensor>().filter { it.topic == appTopic }
+        val seedValuesByPanelId = appTopicEmbeddedFields
             .mapNotNull { panel ->
                 val value = currentPayload?.let { JsonPath.extract(it, panel.jsonPath) } ?: return@mapNotNull null
                 panel.id to value
             }.toMap()
+        // See this function's own doc - a field that needed seeding but didn't get one means the
+        // real current value is unknown, so this cluster is skipped rather than published with a
+        // fabricated placeholder in its place.
+        if (seedValuesByPanelId.size < appTopicEmbeddedFields.size) return@forEach
 
         val payload = SensorDiscovery.buildAppConfigPayload(
             panels, clusterName, group.name, appTopic, seedValuesByPanelId

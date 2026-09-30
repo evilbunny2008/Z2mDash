@@ -105,6 +105,15 @@ class WateringAlertManager(
             val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
             val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
             if (min == null || max == null) return@forEach
+            // A real ideal range always has some width - min == max (most commonly both 0) is
+            // never a genuine threshold, only ever a placeholder from a device/app that hasn't set
+            // its own real range yet (e.g. AutoConfigPush.forceRepublishGroupAppTopics republishing
+            // before it has a real value to seed with) or from that same corruption already having
+            // been published to the broker earlier. A midpoint of 0 in particular makes every
+            // reading "above" it, so treating a device in this state as normal would score every
+            // future reading as already at target - confirmed by a user report of repeated
+            // spurious watering alerts traced back to exactly a 0/0 ideal range on the broker.
+            if (min >= max) return@forEach
             val midpoint = (min + max) / 2.0
             val isAbove = currentValue >= midpoint
 
