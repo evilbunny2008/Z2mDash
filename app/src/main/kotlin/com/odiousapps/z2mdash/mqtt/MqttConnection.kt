@@ -47,6 +47,13 @@ class MqttConnection(private val broker: Broker) {
     private val _connectionErrors = MutableSharedFlow<String>(extraBufferCapacity = 16)
     val connectionErrors: SharedFlow<String> = _connectionErrors.asSharedFlow()
 
+    // addConnectedListener/addDisconnectedListener below return the same Mqtt3ClientBuilder
+    // instance (this call mutates it in place - confirmed by builder.buildAsync() further down
+    // using the very same `builder` reference, never reassigned from any of these calls) - so the
+    // returned value is redundant to capture, not a signal that a step was skipped. That's what
+    // @CheckResult on HiveMQ's builder methods is meant to catch (dropping a genuinely different,
+    // separately-built result, as with any immutable/copying builder), which doesn't apply here.
+    @Suppress("CheckResult")
     fun connect() {
         if (client != null) return
         _connectionState.value = ConnectionState.CONNECTING
