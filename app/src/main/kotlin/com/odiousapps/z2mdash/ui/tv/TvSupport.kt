@@ -227,8 +227,17 @@ class TvKeyboardGate internal constructor(private val isTv: Boolean) {
     /** Pass as the guarded field's own `readOnly` parameter. */
     val readOnly: Boolean get() = isTv && !unlocked
 
-    /** Chain onto the guarded field's own [Modifier]. */
-    fun Modifier.modifier(): Modifier = if (!isTv) {
+    /**
+     * The extra [Modifier] to `.then(...)` onto the guarded field's own - every call site chains
+     * it that way (e.g. `Modifier.fillMaxWidth().then(gate.modifier())`), never directly off an
+     * existing chain, so this is a plain member function rather than a `fun Modifier.modifier()`
+     * extension: as an extension it would need its own receiver folded in via `this.then(...)` to
+     * be a well-formed Modifier factory (one that composes correctly if ever chained onto
+     * directly), and `gate.modifier()` called with no such receiver in scope doesn't even resolve
+     * to it - confirmed as a real compile error on a clean build, not just a lint warning, because
+     * every place this was actually called relied on Kotlin never type-checking that call.
+     */
+    fun modifier(): Modifier = if (!isTv) {
         Modifier
     } else {
         Modifier
