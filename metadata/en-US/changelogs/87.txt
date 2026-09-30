@@ -1,0 +1,2 @@
+- Fixed Force Upload silently resetting a moisture sensor's min/max threshold to 0 when it didn't already have the real value cached (e.g. right after widening a broker's watched topics), which then caused repeated spurious watering alerts since every reading looked "above target" against a 0 threshold.
+- Added a safety check so a 0 (or otherwise invalid) ideal range is never treated as a real threshold, as a second line of defence against the same failure mode.
