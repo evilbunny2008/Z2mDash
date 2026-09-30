@@ -1,0 +1,1 @@
+- Fixed dragging a panel into a gap between clusters always creating its new cluster at the end of the group instead of in the gap it was actually dropped into.
