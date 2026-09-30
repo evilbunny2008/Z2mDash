@@ -440,6 +440,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // True once the drag has left its own cluster's card with no other cluster's card to merge
     // into either - released there, the panel pops out into its own new cluster, same as before.
     var draggedPanelWillPopOut by remember { mutableStateOf(false) }
+    // The nearest OTHER cluster (in the panel's own group) to wherever it's currently hovering
+    // while popping out - set alongside draggedPanelWillPopOut, so a drop in the gap *between* two
+    // clusters lands the new cluster right there (inserted just before this one, same convention
+    // cluster-to-cluster reordering already uses) instead of always at the very end of the group,
+    // which is where ConfigRepository.movePanelToOwnCluster's own default displayOrder puts it
+    // with no positional information to go on otherwise. Null when there's no other cluster in the
+    // group to be positioned relative to (falls back to movePanelToOwnCluster's own end-of-group
+    // default, which is then correct since there's nothing to insert "between").
+    var draggedPanelPopOutNearestClusterKey by remember { mutableStateOf<String?>(null) }
     // Window-space bounds of every currently-composed panel tile (standalone or within a
     // cluster), keyed by panel id - same shape/purpose as clusterBounds, used to work out which
     // panel a long-press grabbed and, during a within-cluster reorder, which sibling tile the
@@ -467,6 +476,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         if (ownRect?.contains(dragTouchWindowPos) == true) {
             draggedToClusterKey = null
             draggedPanelWillPopOut = false
+            draggedPanelPopOutNearestClusterKey = null
             val siblings = app.configRepository.config.value.groups
                 .find { it.id == fromGroupId }?.panels
                 ?.filter { it.clusterName == ownClusterName }
@@ -486,9 +496,21 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             if (mergeTarget != null) {
                 draggedToClusterKey = mergeTarget.key
                 draggedPanelWillPopOut = false
+                draggedPanelPopOutNearestClusterKey = null
             } else {
                 draggedToClusterKey = null
                 draggedPanelWillPopOut = ownClusterKey != null
+                draggedPanelPopOutNearestClusterKey = if (!draggedPanelWillPopOut) {
+                    null
+                } else {
+                    clusterBounds.entries
+                        .filter { (key, rect) ->
+                            key != ownClusterKey && key.substringBefore("::") == fromGroupId &&
+                                key.substringAfter("::") != "__header__" && isWithinTrustedBounds(rect.center)
+                        }
+                        .minByOrNull { (_, rect) -> rect.distanceTo(dragTouchWindowPos) }
+                        ?.key
+                }
             }
         }
     }
@@ -551,6 +573,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 draggedPanelFromGroupId = null
                 draggedToPanelIndex = -1
                 draggedPanelWillPopOut = false
+                draggedPanelPopOutNearestClusterKey = null
                 return@LaunchedEffect
             }
             val bounds = viewportBoundsInWindow
@@ -779,6 +802,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         draggedPanelFromGroupId = fromGroupId
                                         draggedToPanelIndex = -1
                                         draggedPanelWillPopOut = false
+                                        draggedPanelPopOutNearestClusterKey = null
                                         draggedToClusterKey = null
                                         dragTouchWindowPos = windowPos
                                         lastDragTickAtMs = System.currentTimeMillis()
@@ -937,6 +961,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 val mergeTargetKey = draggedToClusterKey
                                 val toPanelIndex = draggedToPanelIndex
                                 val willPopOut = draggedPanelWillPopOut
+                                val popOutNearestClusterKey = draggedPanelPopOutNearestClusterKey
                                 val panel = if (panelId != null && fromGroupId != null) {
                                     app.configRepository.config.value.groups
                                         .find { it.id == fromGroupId }?.panels?.find { it.id == panelId }
@@ -968,6 +993,35 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                             if (siblingCount > 1) {
                                                 val previousGroups = app.configRepository.config.value.groups
                                                 app.configRepository.movePanelToOwnCluster(fromGroupId, panel.id, panel.label)
+                                                // movePanelToOwnCluster always appends the new cluster past every
+                                                // other one's displayOrder - correct for the popOutNearestClusterKey
+                                                // == null case (nothing to be positioned relative to), but otherwise
+                                                // immediately re-slotted into the gap the panel was actually dropped
+                                                // in (right before the nearest cluster, same convention cluster-to-
+                                                // cluster reordering already uses), rather than leaving it stuck at
+                                                // the end of the group regardless of where it was dropped.
+                                                if (popOutNearestClusterKey != null) {
+                                                    val currentGroup = app.configRepository.config.value.groups
+                                                        .find { it.id == fromGroupId }
+                                                    if (currentGroup != null) {
+                                                        val currentOrder = currentGroup.panels
+                                                            .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+                                                            .entries.sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
+                                                            .map { (key, _) -> key }
+                                                        val nearestClusterName = popOutNearestClusterKey.substringAfter("::")
+                                                        val fromIndex = currentOrder.indexOf(panel.label)
+                                                        val toIndex = currentOrder.indexOf(nearestClusterName)
+                                                        if (fromIndex >= 0 && toIndex >= 0 && fromIndex != toIndex) {
+                                                            val reordered = currentOrder.toMutableList()
+                                                            reordered.removeAt(fromIndex)
+                                                            reordered.add(
+                                                                if (toIndex > fromIndex) toIndex - 1 else toIndex,
+                                                                panel.label
+                                                            )
+                                                            app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
+                                                        }
+                                                    }
+                                                }
                                                 pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label)
                                                 publishAppTopicForClusterIfMissing(app, fromGroupId, panel.label)
                                                 showUndoSnackbar("Moved \"${panel.label}\"", previousGroups) {
@@ -1008,6 +1062,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 draggedPanelFromGroupId = null
                                 draggedToPanelIndex = -1
                                 draggedPanelWillPopOut = false
+                                draggedPanelPopOutNearestClusterKey = null
                                 draggedToClusterKey = null
                                 throw c
                               } catch (e: Exception) {
@@ -1017,6 +1072,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 draggedPanelFromGroupId = null
                                 draggedToPanelIndex = -1
                                 draggedPanelWillPopOut = false
+                                draggedPanelPopOutNearestClusterKey = null
                                 draggedToClusterKey = null
                               }
                             }
@@ -1030,6 +1086,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             draggedPanelFromGroupId = null
                             draggedToPanelIndex = -1
                             draggedPanelWillPopOut = false
+                            draggedPanelPopOutNearestClusterKey = null
                         },
                         onDrag = { change, _ ->
                             val coords = listCoordinates
