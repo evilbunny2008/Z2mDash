@@ -13,25 +13,39 @@ import com.odiousapps.z2mdash.Z2mDashApplication
  * drag gestures there.
  */
 
-private fun deviceFor(app: Z2mDashApplication, panelId: String) =
+internal fun deviceFor(app: Z2mDashApplication, panelId: String) =
     app.configRepository.config.value.autoConfiguredDevices.find { panelId in it.createdPanelIds }
 
-private fun currentPayloadFor(app: Z2mDashApplication, device: AutoConfiguredDevice): String? =
+internal fun currentPayloadFor(app: Z2mDashApplication, device: AutoConfiguredDevice): String? =
     app.connectionManager.latestPayloads.value["${device.brokerId}|${device.appConfigTopic}"]
 
 /** A device's own panels, in the order its payload originally declared them - needed to resolve a duplicate field/command-topic to the right array index (see SensorDiscovery.sensorFieldIndex/controlIndex). */
-private fun orderedPanelsOf(app: Z2mDashApplication, device: AutoConfiguredDevice): List<Panel> {
+internal fun orderedPanelsOf(app: Z2mDashApplication, device: AutoConfiguredDevice): List<Panel> {
     val panelsById = app.configRepository.config.value.groups.asSequence().flatMap { it.panels }.associateBy { it.id }
     return device.createdPanelIds.mapNotNull { panelsById[it] }
 }
 
-private fun publishAndMarkApplied(app: Z2mDashApplication, device: AutoConfiguredDevice, updatedPayload: String) {
+// [orderVersion] defaults to the device's own last-known value (a no-op maxOf), correct for
+// every caller here except pushPanelRemovalIfAutoConfigured: that one actually stamps a fresh
+// order_version into the payload it publishes (removeSensorFieldFromAppPayload/
+// removeControlFromAppPayload), so it must pass that same value through here too - otherwise
+// this recorded device.lastKnownOrderVersion stays stale while the just-published payload's own
+// order_version has already moved past it, and the reconcile path's early-return only guards
+// against the *exact same* lastAppliedPayload string coming back (see
+// DeviceAutoConfigManager.reconcileKnownDevices), not a genuinely different later push landing
+// while the stale order_version is still on record.
+private fun publishAndMarkApplied(
+    app: Z2mDashApplication,
+    device: AutoConfiguredDevice,
+    updatedPayload: String,
+    orderVersion: Long = device.lastKnownOrderVersion
+) {
     app.connectionManager.publish(device.brokerId, device.appConfigTopic, updatedPayload, retain = true)
     // Same reasoning as the order-push helpers in HomeScreen.kt: pre-marks the payload as
     // already applied so the "#"-subscribed echo of our own publish doesn't trigger a
     // redundant (though harmless/idempotent) reconcile pass.
     app.configRepository.markAutoConfiguredDevicePayloadApplied(
-        device.brokerId, device.appConfigTopic, updatedPayload, device.lastKnownOrderVersion
+        device.brokerId, device.appConfigTopic, updatedPayload, orderVersion
     )
 }
 
@@ -46,7 +60,7 @@ fun pushLabelUpdateIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
     val orderedPanels = orderedPanelsOf(app, device)
     val updatedPayload = when (panel) {
         is Panel.Sensor -> {
-            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel) ?: return
+            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel.id, panel.jsonPath) ?: return
             SensorDiscovery.updateDescriptionInAppPayload(currentPayload, fieldLabelUpdates = mapOf(index to panel.label))
         }
         is Panel.Toggle, is Panel.Button -> {
@@ -80,7 +94,7 @@ fun pushPanelRemovalIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
     val orderVersion = System.currentTimeMillis()
     val updatedPayload = when (panel) {
         is Panel.Sensor -> {
-            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel) ?: return
+            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel.id, panel.jsonPath) ?: return
             SensorDiscovery.removeSensorFieldFromAppPayload(currentPayload, index, orderVersion)
         }
         is Panel.Toggle, is Panel.Button -> {
@@ -89,7 +103,7 @@ fun pushPanelRemovalIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
             SensorDiscovery.removeControlFromAppPayload(currentPayload, index, orderVersion)
         }
     } ?: return
-    publishAndMarkApplied(app, device, updatedPayload)
+    publishAndMarkApplied(app, device, updatedPayload, orderVersion)
     // Keeps createdPanelIds in sync too - without this, the device would still "own" a panel id
     // that no longer exists in any group, which is exactly what let it reappear in the first
     // place. A no-op if this was the device's last panel: the caller's own removePanel call
@@ -136,7 +150,11 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
     val updatedPayload = when (newPanel) {
         is Panel.Sensor -> {
             val old = oldPanel as? Panel.Sensor ?: return
-            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, newPanel) ?: return
+            // Matched on the OLD jsonPath - see sensorFieldIndex's own doc on why using the
+            // already-edited new jsonPath here would always miss and silently drop the whole
+            // update (not just a field rename), the same bug class as controlIndex's own doc.
+            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, newPanel.id, old.jsonPath) ?: return
+            val jsonPathUpdate = diffMap(index, old.jsonPath, newPanel.jsonPath)
             val unitUpdate = diffMap(index, old.unit, newPanel.unit)
             val iconUpdate = diffMap(index, old.icon.name, newPanel.icon.name)
             val decimalUpdate = diffMap(index, old.decimals, newPanel.decimals)
@@ -144,13 +162,14 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
             val idealTopicUpdate = diffMap(index, old.idealRangeTopic, newPanel.idealRangeTopic)
             val idealMinUpdate = diffMap(index, old.idealMinPath, newPanel.idealMinPath)
             val idealMaxUpdate = diffMap(index, old.idealMaxPath, newPanel.idealMaxPath)
-            if (unitUpdate.isEmpty() && iconUpdate.isEmpty() && decimalUpdate.isEmpty() && topicUpdate.isEmpty() &&
-                idealTopicUpdate.isEmpty() && idealMinUpdate.isEmpty() && idealMaxUpdate.isEmpty()
+            if (jsonPathUpdate.isEmpty() && unitUpdate.isEmpty() && iconUpdate.isEmpty() && decimalUpdate.isEmpty() &&
+                topicUpdate.isEmpty() && idealTopicUpdate.isEmpty() && idealMinUpdate.isEmpty() && idealMaxUpdate.isEmpty()
             ) {
                 return
             }
             SensorDiscovery.updateDescriptionInAppPayload(
                 currentPayload,
+                fieldJsonPathUpdates = jsonPathUpdate,
                 fieldUnitUpdates = unitUpdate,
                 fieldIconUpdates = iconUpdate,
                 fieldDecimalUpdates = decimalUpdate,
@@ -220,7 +239,7 @@ fun pushPanelClusterOverrideIfAutoConfigured(app: Z2mDashApplication, panel: Pan
     val orderedPanels = orderedPanelsOf(app, device)
     val updatedPayload = when (panel) {
         is Panel.Sensor -> {
-            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel) ?: return
+            val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel.id, panel.jsonPath) ?: return
             SensorDiscovery.updateDescriptionInAppPayload(currentPayload, fieldClusterUpdates = mapOf(index to newClusterName))
         }
         is Panel.Toggle, is Panel.Button -> {
@@ -266,7 +285,7 @@ fun pushClusterRenameForAutoConfiguredDevices(
             val panel = panelsById[panelId] ?: return@forEach
             when (panel) {
                 is Panel.Sensor -> {
-                    val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel) ?: return@forEach
+                    val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel.id, panel.jsonPath) ?: return@forEach
                     val override = deviceConfig.panelClusters.getOrNull(index)?.takeIf { it.isNotBlank() }
                     if (override != null) {
                         if (override == oldClusterName) fieldClusterUpdates[index] = newClusterName

@@ -265,10 +265,7 @@ class MqttConnectionManager(
     }
 
     fun reconnect(brokerId: String) {
-        connections[brokerId]?.apply {
-            disconnect()
-            connect()
-        }
+        connections[brokerId]?.reconnect()
     }
 
     /**

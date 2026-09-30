@@ -112,6 +112,7 @@ import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.forceRepublishGroupAppTopics
+import com.odiousapps.z2mdash.data.orderedPanelsOf
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
@@ -488,9 +489,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 ?.first
             draggedToPanelIndex = siblings.indexOfFirst { it.id == nearestSiblingId }
         } else {
+            // isWithinTrustedBounds filters the same stale/off-screen clusterBounds entries that
+            // computeNearestClusterKey/Group already guard against (see that comment) - without
+            // it, a stale frozen rect left behind by a since-scrolled-out cluster could still
+            // "contain" the touch point (e.g. a different cluster now renders at that same screen
+            // position) and win here via plain iteration order, merging the panel into the wrong
+            // cluster.
             val mergeTarget = clusterBounds.entries.firstOrNull { (key, rect) ->
                 key != ownClusterKey && key.substringAfter("::") != "__header__" &&
-                    rect.contains(dragTouchWindowPos)
+                    isWithinTrustedBounds(rect.center) && rect.contains(dragTouchWindowPos)
             }
             draggedToPanelIndex = -1
             if (mergeTarget != null) {
@@ -1956,20 +1963,39 @@ private fun pushOrderUpdateIfAutoConfigured(
     val panelIdSet = orderedPanelIds.toSet()
     val device = config.autoConfiguredDevices.find { it.createdPanelIds.any { id -> id in panelIdSet } } ?: return
     val currentPayload = payloads["${device.brokerId}|${device.appConfigTopic}"] ?: return
+    val deviceConfig = SensorDiscovery.parseDeviceAppConfig(currentPayload) ?: return
+    val orderedDevicePanels = orderedPanelsOf(app, device)
 
-    val orderByFieldOrLabel: Map<String, Int> = orderedPanelIds.withIndex().mapNotNull { (index, id) ->
-        val panel = clusterPanels.find { it.id == id } ?: return@mapNotNull null
-        val key = when (panel) {
-            is Panel.Sensor -> panel.jsonPath
-            is Panel.Toggle -> panel.label
-            is Panel.Button -> panel.label
+    // Indexed by each field/control's own position in "panels"/"controls" (sensorFieldIndex/
+    // controlIndex), not by name/label - see updateOrderingInAppPayload's doc for why keying by
+    // name collapsed duplicate field names/labels onto a single order value.
+    val panelOrderByIndex = mutableMapOf<Int, Int>()
+    val controlOrderByIndex = mutableMapOf<Int, Int>()
+    orderedPanelIds.forEachIndexed { order, id ->
+        val panel = clusterPanels.find { it.id == id } ?: return@forEachIndexed
+        when (panel) {
+            is Panel.Sensor -> {
+                val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedDevicePanels, panel.id, panel.jsonPath)
+                    ?: return@forEachIndexed
+                panelOrderByIndex[index] = order
+            }
+            is Panel.Toggle -> {
+                val index = SensorDiscovery.controlIndex(deviceConfig, orderedDevicePanels, panel.id, panel.commandTopic)
+                    ?: return@forEachIndexed
+                controlOrderByIndex[index] = order
+            }
+            is Panel.Button -> {
+                val index = SensorDiscovery.controlIndex(deviceConfig, orderedDevicePanels, panel.id, panel.commandTopic)
+                    ?: return@forEachIndexed
+                controlOrderByIndex[index] = order
+            }
         }
-        key to index
-    }.toMap()
+    }
 
     val orderVersion = System.currentTimeMillis()
-    val updatedPayload = SensorDiscovery.updateOrderingInAppPayload(currentPayload, orderByFieldOrLabel, orderVersion)
-        ?: return
+    val updatedPayload = SensorDiscovery.updateOrderingInAppPayload(
+        currentPayload, panelOrderByIndex, controlOrderByIndex, orderVersion
+    ) ?: return
     app.connectionManager.publish(device.brokerId, device.appConfigTopic, updatedPayload, retain = true)
     // See the matching comment in pushGroupOrderUpdatesForClusters below - without
     // this, the "#"-subscribed echo of our own publish (or a stale retained

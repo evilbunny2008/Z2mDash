@@ -204,7 +204,7 @@ class DeviceAutoConfigManager(
                     deviceName = deviceName
                 )
             )
-            notifyNewDeviceFound(deviceName)
+            notifyNewDeviceFound(key, deviceName)
         }
     }
 
@@ -267,15 +267,23 @@ class DeviceAutoConfigManager(
         return config.groups.find { g -> g.panels.any { it.id in ownedPanelIds } }?.id
     }
 
-    private fun notifyNewDeviceFound(deviceName: String) {
+    // [notificationKey] is "<brokerId>|<appConfigTopic>" (same dedup key reconcileKnownDevices
+    // uses), not [deviceName] - two different pending devices legitimately can share the same
+    // displayed name (a blank deviceConfig.name falls back to the topic's own last segment,
+    // e.g. two bridges each republishing a "Tap_02" - a real shape this app has hit before with
+    // duplicated clusters). Keying the notification id/request code off deviceName alone meant
+    // the second device's "New device found" notification just silently replaced the first's,
+    // even though both were correctly queued as separate pending devices in-app.
+    private fun notifyNewDeviceFound(notificationKey: String, deviceName: String) {
         val channel = NotificationChannel(
             CHANNEL_ID, "New device found", NotificationManager.IMPORTANCE_DEFAULT
         )
         context.getSystemService(NotificationManager::class.java)?.createNotificationChannel(channel)
 
         val launchIntent = context.packageManager.getLaunchIntentForPackage(context.packageName) ?: return
+        val notificationId = notificationKey.hashCode()
         val pendingIntent = PendingIntent.getActivity(
-            context, deviceName.hashCode(), launchIntent,
+            context, notificationId, launchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
@@ -292,7 +300,7 @@ class DeviceAutoConfigManager(
         if (!hasPermission) return
 
         try {
-            NotificationManagerCompat.from(context).notify(deviceName.hashCode(), notification)
+            NotificationManagerCompat.from(context).notify(notificationId, notification)
         } catch (_: SecurityException) {
             // Permission revoked between the check and this call - safe to ignore; the
             // device still shows up as a Home screen banner.

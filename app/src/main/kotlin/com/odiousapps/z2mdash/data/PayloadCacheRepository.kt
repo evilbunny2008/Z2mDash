@@ -28,9 +28,22 @@ class PayloadCacheRepository(context: Context) {
         emptyMap()
     }
 
+    // Writes to a uniquely-named sibling temp file, then atomically renames it over the real one
+    // - two MqttConnectionManager callers (the 20s backstop loop and the 2s-debounced
+    // schedulePersist, each running on Dispatchers.Default, which is a real thread pool) can
+    // genuinely call save() around the same time, and a direct file.writeText() has no
+    // protection against two such writers truncating/writing the same File concurrently, which
+    // can corrupt it (one writer's truncate landing mid-write of the other). Each writer gets its
+    // OWN temp file (a shared fixed temp name would just move the same race there instead), so
+    // its own write() call always completes in full before the rename; a same-filesystem
+    // File.renameTo is then atomic, so every reader (load()) only ever sees one writer's complete
+    // content, never a partial mix of two - this also covers the process being SIGKILLed
+    // mid-write, which this cache's own callers already call out as a real risk for this app.
     fun save(entries: Map<String, PayloadCacheEntry>) {
         try {
-            file.writeText(json.encodeToString(entriesSerializer, entries))
+            val tempFile = File(file.parentFile, "${file.name}.${System.nanoTime()}.tmp")
+            tempFile.writeText(json.encodeToString(entriesSerializer, entries))
+            tempFile.renameTo(file)
         } catch (_: Exception) {
             // Best-effort cache - fine to silently skip a write if it fails.
         }

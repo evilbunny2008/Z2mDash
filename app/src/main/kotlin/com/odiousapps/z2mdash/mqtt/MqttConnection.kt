@@ -175,4 +175,25 @@ class MqttConnection(private val broker: Broker) {
         subscribedTopics.clear()
         _connectionState.value = ConnectionState.DISCONNECTED
     }
+
+    /**
+     * Disconnects and reconnects, preserving the current topic subscriptions across the cycle -
+     * unlike a caller doing disconnect() then connect() directly, which silently leaves this
+     * connection subscribed to nothing afterward: disconnect() clears subscribedTopics (correct
+     * for its other caller, MqttConnectionManager.disconnectAll(), which backgrounds every broker
+     * expecting some later, unrelated applyConfig() call to repopulate them all from scratch), but
+     * a genuine reconnect is supposed to resume the SAME subscriptions, not start over with none.
+     * Confirmed as a real bug: the "reconnect" icon on BrokersScreen left a broker showing
+     * CONNECTED while delivering nothing, recoverable only by some unrelated config change
+     * happening to trigger MqttConnectionManager.applyConfig() again. subscribe() is safe to call
+     * immediately here even though connect() is still asynchronous at this point - it only queues
+     * each topic into the (already re-cleared) subscribedTopics set until the connection actually
+     * completes, at which point connect()'s own addConnectedListener replays it.
+     */
+    fun reconnect() {
+        val topics = subscribedTopics.toList()
+        disconnect()
+        connect()
+        topics.forEach { subscribe(it) }
+    }
 }

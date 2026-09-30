@@ -141,15 +141,24 @@ object SensorDiscovery {
 
     /**
      * Rewrites a device's "/app" payload with updated ordering - panel_order for sensor fields,
-     * order for each control - keyed by [orderByFieldOrLabel] (sensor field name or control
-     * label). Everything else in the payload passes through unchanged. Also stamps
+     * order for each control - keyed by [panelOrderByIndex]/[controlOrderByIndex], each the
+     * field/control's own position in "panels"/"controls" (as resolved by
+     * sensorFieldIndex/controlIndex), NOT its field name or control label. An earlier version
+     * keyed a single map by field name/label directly; two fields sharing the same jsonPath (or
+     * two controls sharing the same label) - a real, previously-hit data-corruption shape in this
+     * app - collapsed to one Map entry, so every payload entry with that name silently received
+     * the same order value instead of each keeping its own. Separate maps (rather than one shared
+     * Map<Int,Int>) because "panels" and "controls" are independent arrays with their own index
+     * spaces - a shared map would let a sensor at panels[2] and a control at controls[2] clobber
+     * each other's order. Everything else in the payload passes through unchanged. Also stamps
      * "order_version" with [orderVersion] (epoch-millis) so phones sharing a broker can tell a
      * genuinely newer order apart from a stale retained redelivery when reconciling - see
      * AutoConfiguredDevice.lastKnownOrderVersion. Returns null if the payload isn't a JSON object.
      */
     fun updateOrderingInAppPayload(
         currentPayload: String,
-        orderByFieldOrLabel: Map<String, Int>,
+        panelOrderByIndex: Map<Int, Int>,
+        controlOrderByIndex: Map<Int, Int>,
         orderVersion: Long
     ): String? = try {
         val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
@@ -160,9 +169,8 @@ object SensorDiscovery {
 
             val panelsArray = obj["panels"] as? JsonArray
             if (panelsArray != null) {
-                val panelOrderArray = panelsArray.map { fieldElement ->
-                    val fieldName = (fieldElement as? JsonPrimitive)?.contentOrNull
-                    val order = fieldName?.let { orderByFieldOrLabel[it] }
+                val panelOrderArray = panelsArray.mapIndexed { index, _ ->
+                    val order = panelOrderByIndex[index]
                     if (order != null) JsonPrimitive(order) else JsonNull
                 }
                 mutableFields["panel_order"] = JsonArray(panelOrderArray)
@@ -170,10 +178,9 @@ object SensorDiscovery {
 
             val controlsArray = obj["controls"] as? JsonArray
             if (controlsArray != null) {
-                val updatedControls = controlsArray.map { controlElement ->
+                val updatedControls = controlsArray.mapIndexed { index, controlElement ->
                     val controlObj = controlElement as? JsonObject
-                    val label = (controlObj?.get("label") as? JsonPrimitive)?.contentOrNull
-                    val order = label?.let { orderByFieldOrLabel[it] }
+                    val order = controlOrderByIndex[index]
                     if (controlObj != null && order != null) {
                         JsonObject(controlObj.toMutableMap().apply { put("order", JsonPrimitive(order)) })
                     } else {
@@ -306,6 +313,15 @@ object SensorDiscovery {
      */
     fun updateDescriptionInAppPayload(
         currentPayload: String,
+        // The field's own name in "panels" - the one array sensorFieldIndex's whole occurrence-
+        // matching scheme is built around, yet this had no way to actually push a rename into it
+        // until now: editing a Sensor's jsonPath (AddPanelScreen exposes it as a plain editable
+        // field with no restriction on existing panels) updated every other pushed field at the
+        // right index but silently left the payload's own field name unchanged, diverging local
+        // config from the retained payload - which the next reconcile of this device (identityKeys
+        // matches a Sensor by topic+jsonPath) would read as the edited panel no longer existing,
+        // dropping it and recreating a fresh one under the payload's still-old field name.
+        fieldJsonPathUpdates: Map<Int, String> = emptyMap(),
         fieldLabelUpdates: Map<Int, String> = emptyMap(),
         fieldClusterUpdates: Map<Int, String> = emptyMap(),
         fieldUnitUpdates: Map<Int, String> = emptyMap(),
@@ -343,6 +359,7 @@ object SensorDiscovery {
                 val merged = (0 until fieldCount).map { i -> updates[i] ?: existing?.getOrNull(i) ?: "" }
                 mutableFields[key] = JsonArray(merged.map { JsonPrimitive(it) })
             }
+            applyFieldArray("panels", fieldJsonPathUpdates)
             applyFieldArray("labels", fieldLabelUpdates)
             applyFieldArray("panel_clusters", fieldClusterUpdates)
             applyFieldArray("panel_units", fieldUnitUpdates)
@@ -397,24 +414,40 @@ object SensorDiscovery {
     }
 
     /**
-     * Finds [target]'s index into [deviceConfig].panelFields, for use with
-     * updateDescriptionInAppPayload. A field name can appear more than once (e.g. one shared
-     * "linkquality" reading shown once per outlet) - resolved by matching [target]'s occurrence
-     * among same-field siblings within [orderedDevicePanels] (that device's own panels, in
-     * original declaration order - AutoConfiguredDevice.createdPanelIds already preserves this)
-     * to the same occurrence within panelFields. Returns null if not found.
+     * Finds the panel identified by [targetId]'s index into [deviceConfig].panelFields, for use
+     * with updateDescriptionInAppPayload. [matchJsonPath] is deliberately a separate parameter
+     * from [targetId] rather than being read off the target panel itself: a caller pushing an
+     * *edit* to a panel's own jsonPath (see AutoConfigPush.pushPanelDetailsIfAutoConfigured) must
+     * pass the panel's OLD jsonPath here, because [deviceConfig] was parsed from the still-old
+     * retained payload - passing the already-changed new jsonPath would search that old payload
+     * for a field it doesn't contain yet, always missing and silently dropping the whole update
+     * (not just the field rename) - the same bug class controlIndex's own doc describes for a
+     * Toggle/Button's commandTopic.
+     *
+     * A field name can appear more than once (e.g. one shared "linkquality" reading shown once
+     * per outlet) - resolved by matching [targetId]'s occurrence among same-field siblings within
+     * [orderedDevicePanels] (that device's own panels, in original declaration order -
+     * AutoConfiguredDevice.createdPanelIds already preserves this) to the same occurrence within
+     * panelFields. [orderedDevicePanels]'s occurrence counting only looks at panels *before*
+     * [targetId] in the list, rather than requiring each one's own jsonPath to match before it's
+     * even considered - so a sibling's occurrence position is unaffected by whether the target
+     * panel's own current (possibly just-edited) jsonPath happens to match [matchJsonPath].
+     * Returns null if not found.
      */
-    fun sensorFieldIndex(deviceConfig: DeviceAppConfig, orderedDevicePanels: List<Panel>, target: Panel.Sensor): Int? {
+    fun sensorFieldIndex(
+        deviceConfig: DeviceAppConfig,
+        orderedDevicePanels: List<Panel>,
+        targetId: String,
+        matchJsonPath: String
+    ): Int? {
         var occurrence = 0
         for (p in orderedDevicePanels) {
-            if (p is Panel.Sensor && p.jsonPath == target.jsonPath) {
-                if (p.id == target.id) break
-                occurrence++
-            }
+            if (p.id == targetId) break
+            if (p is Panel.Sensor && p.jsonPath == matchJsonPath) occurrence++
         }
         var seen = 0
         deviceConfig.panelFields.forEachIndexed { index, field ->
-            if (field == target.jsonPath) {
+            if (field == matchJsonPath) {
                 if (seen == occurrence) return index
                 seen++
             }
