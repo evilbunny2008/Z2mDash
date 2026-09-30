@@ -75,6 +75,15 @@ object SensorDiscovery {
         // Optional, parallel to panelFields - icon override (TileIcon name, case-insensitive),
         // else suggestedIcon(field).
         val panelIcons: List<String> = emptyList(),
+        // Optional, parallel to panelFields - a field's own reading topic, overriding the default
+        // derivation (this device's own sensorTopic, or its appConfigTopic when the field is found
+        // there instead - see buildPanels). Blank/missing falls back to that default, so an older
+        // payload with no "panel_topics" key at all (any device/automation predating this field)
+        // behaves exactly as it always did. Exists so a Sensor panel's "Topic" field can be edited
+        // on the Edit Panel screen and have that edit actually propagate to other phones sharing
+        // the broker, the same as every other per-field override already does - without it, the
+        // field simply had no representation in this payload to push an edit into at all.
+        val panelTopics: List<String> = emptyList(),
         // Optional, parallel to panelFields - ideal-range topic/min-path/max-path overrides, each
         // taking priority over the auto-derived default (this device's own appConfigTopic, when a
         // matching "<x>_min"/"<x>_max" pair is found in rangePairs) independently of one another.
@@ -226,7 +235,7 @@ object SensorDiscovery {
     // removeSensorFieldFromAppPayload strips the same index from all of them, including any added
     // later, without a matching addition being forgotten there.
     private val sensorFieldParallelArrayKeys = listOf(
-        "labels", "panel_clusters", "panel_order", "panel_decimals",
+        "labels", "panel_clusters", "panel_order", "panel_decimals", "panel_topics",
         "panel_units", "panel_icons", "panel_ideal_topics", "panel_ideal_min_paths", "panel_ideal_max_paths"
     )
 
@@ -302,6 +311,7 @@ object SensorDiscovery {
         fieldUnitUpdates: Map<Int, String> = emptyMap(),
         fieldIconUpdates: Map<Int, String> = emptyMap(),
         fieldDecimalUpdates: Map<Int, Int> = emptyMap(),
+        fieldTopicUpdates: Map<Int, String> = emptyMap(),
         fieldIdealTopicUpdates: Map<Int, String> = emptyMap(),
         fieldIdealMinPathUpdates: Map<Int, String> = emptyMap(),
         fieldIdealMaxPathUpdates: Map<Int, String> = emptyMap(),
@@ -337,6 +347,7 @@ object SensorDiscovery {
             applyFieldArray("panel_clusters", fieldClusterUpdates)
             applyFieldArray("panel_units", fieldUnitUpdates)
             applyFieldArray("panel_icons", fieldIconUpdates)
+            applyFieldArray("panel_topics", fieldTopicUpdates)
             applyFieldArray("panel_ideal_topics", fieldIdealTopicUpdates)
             applyFieldArray("panel_ideal_min_paths", fieldIdealMinPathUpdates)
             applyFieldArray("panel_ideal_max_paths", fieldIdealMaxPathUpdates)
@@ -411,24 +422,34 @@ object SensorDiscovery {
         return null
     }
 
-    /** Same idea as sensorFieldIndex, but finds a Toggle/Button's index into [deviceConfig].controls, matched by command topic. */
-    fun controlIndex(deviceConfig: DeviceAppConfig, orderedDevicePanels: List<Panel>, target: Panel): Int? {
-        val targetCommandTopic = when (target) {
-            is Panel.Toggle -> target.commandTopic
-            is Panel.Button -> target.commandTopic
-            else -> return null
-        }
+    /**
+     * Same idea as sensorFieldIndex, but finds a Toggle/Button's index into [deviceConfig].controls,
+     * matched by command topic. [matchCommandTopic] is deliberately a separate parameter from
+     * [targetId] rather than being read off the target panel itself: a caller pushing an *edit* to
+     * a control's own commandTopic (see AutoConfigPush.pushPanelDetailsIfAutoConfigured) must pass
+     * the panel's OLD commandTopic here, because [deviceConfig] was parsed from the still-old
+     * retained payload - passing the already-changed new commandTopic would search that old payload
+     * for a topic it doesn't contain yet, always missing and silently dropping the whole update
+     * (not just the topic field). [orderedDevicePanels]'s occurrence counting only looks at panels
+     * *before* [targetId] in the list, rather than requiring each one's own commandTopic to match
+     * before it's even considered - so a sibling's occurrence position is unaffected by whether the
+     * target panel's own current (possibly just-edited) commandTopic happens to match [matchCommandTopic].
+     */
+    fun controlIndex(
+        deviceConfig: DeviceAppConfig,
+        orderedDevicePanels: List<Panel>,
+        targetId: String,
+        matchCommandTopic: String
+    ): Int? {
         var occurrence = 0
         for (p in orderedDevicePanels) {
+            if (p.id == targetId) break
             val commandTopic = (p as? Panel.Toggle)?.commandTopic ?: (p as? Panel.Button)?.commandTopic
-            if (commandTopic == targetCommandTopic) {
-                if (p.id == target.id) break
-                occurrence++
-            }
+            if (commandTopic == matchCommandTopic) occurrence++
         }
         var seen = 0
         deviceConfig.controls.forEachIndexed { index, control ->
-            if (control.commandTopic == targetCommandTopic) {
+            if (control.commandTopic == matchCommandTopic) {
                 if (seen == occurrence) return index
                 seen++
             }
@@ -463,6 +484,7 @@ object SensorDiscovery {
                 (obj[key] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull } ?: emptyList()
             val panelUnits = stringArray("panel_units")
             val panelIcons = stringArray("panel_icons")
+            val panelTopics = stringArray("panel_topics")
             val panelIdealTopics = stringArray("panel_ideal_topics")
             val panelIdealMinPaths = stringArray("panel_ideal_min_paths")
             val panelIdealMaxPaths = stringArray("panel_ideal_max_paths")
@@ -489,6 +511,7 @@ object SensorDiscovery {
                 panelDecimals = panelDecimals,
                 panelUnits = panelUnits,
                 panelIcons = panelIcons,
+                panelTopics = panelTopics,
                 panelIdealTopics = panelIdealTopics,
                 panelIdealMinPaths = panelIdealMinPaths,
                 panelIdealMaxPaths = panelIdealMaxPaths,
@@ -594,15 +617,17 @@ object SensorDiscovery {
         val deviceClusterName = deviceConfig.name.ifBlank { sensorTopic.substringAfterLast("/") }
 
         val sensorPanels: List<Panel> = deviceConfig.panelFields.mapIndexed { index, field ->
-            // Prefer the app-config topic when the field is actually found there (some devices
-            // publish live values alongside their config). Otherwise, default to the sensor topic
-            // even if it hasn't published yet - the panel shows "--" until a message arrives,
-            // rather than refusing to create the panel just because the topic was quiet.
-            val topic = if (appConfigPayload != null && JsonPath.extract(appConfigPayload, field) != null) {
-                appConfigTopic
-            } else {
-                sensorTopic
-            }
+            // An explicit panel_topics override (see DeviceAppConfig.panelTopics' own doc) always
+            // wins first. Otherwise prefer the app-config topic when the field is actually found
+            // there (some devices publish live values alongside their config); default to the
+            // sensor topic even if it hasn't published yet - the panel shows "--" until a message
+            // arrives, rather than refusing to create the panel just because the topic was quiet.
+            val topic = deviceConfig.panelTopics.getOrNull(index)?.takeIf { it.isNotBlank() }
+                ?: if (appConfigPayload != null && JsonPath.extract(appConfigPayload, field) != null) {
+                    appConfigTopic
+                } else {
+                    sensorTopic
+                }
 
             val rangeBase = if (field !in rangeKeys) {
                 deviceConfig.rangePairs.keys.find { base -> field.contains(base, ignoreCase = true) }
@@ -791,6 +816,7 @@ object SensorDiscovery {
             putJsonArray("panels") { sensors.forEach { add(it.jsonPath) } }
             putJsonArray("labels") { sensors.forEach { add(it.label) } }
             putJsonArray("panel_decimals") { sensors.forEach { add(it.decimals) } }
+            putJsonArray("panel_topics") { sensors.forEach { add(it.topic) } }
             putJsonArray("panel_units") { sensors.forEach { add(it.unit) } }
             putJsonArray("panel_icons") { sensors.forEach { add(it.icon.name) } }
             putJsonArray("panel_ideal_topics") { sensors.forEach { add(it.idealRangeTopic) } }

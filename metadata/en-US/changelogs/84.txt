@@ -1,0 +1,2 @@
+- Fixed editing a switch/button's command topic on the Edit Panel screen never propagating to other phones sharing the broker - the update was silently dropped because it searched for the field using its own new topic instead of the old one.
+- Fixed a sensor panel's own topic having no way to propagate to other phones at all when edited - the app's device config now carries each field's topic explicitly instead of always assuming one shared topic per device.

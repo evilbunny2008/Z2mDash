@@ -50,7 +50,8 @@ fun pushLabelUpdateIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
             SensorDiscovery.updateDescriptionInAppPayload(currentPayload, fieldLabelUpdates = mapOf(index to panel.label))
         }
         is Panel.Toggle, is Panel.Button -> {
-            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel) ?: return
+            val commandTopic = commandTopicOf(panel) ?: return
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel.id, commandTopic) ?: return
             SensorDiscovery.updateDescriptionInAppPayload(currentPayload, controlLabelUpdates = mapOf(index to panel.label))
         }
     } ?: return
@@ -83,7 +84,8 @@ fun pushPanelRemovalIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
             SensorDiscovery.removeSensorFieldFromAppPayload(currentPayload, index, orderVersion)
         }
         is Panel.Toggle, is Panel.Button -> {
-            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel) ?: return
+            val commandTopic = commandTopicOf(panel) ?: return
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel.id, commandTopic) ?: return
             SensorDiscovery.removeControlFromAppPayload(currentPayload, index, orderVersion)
         }
     } ?: return
@@ -99,11 +101,19 @@ fun pushPanelRemovalIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
 private fun <T> diffMap(index: Int, oldValue: T, newValue: T): Map<Int, T> =
     if (oldValue != newValue) mapOf(index to newValue) else emptyMap()
 
+/** A Toggle/Button's own commandTopic, or null for a Sensor - the identity SensorDiscovery.controlIndex matches on. */
+private fun commandTopicOf(panel: Panel): String? = when (panel) {
+    is Panel.Toggle -> panel.commandTopic
+    is Panel.Button -> panel.commandTopic
+    is Panel.Sensor -> null
+}
+
 /**
  * Pushes every appearance/detail field that differs between [oldPanel] and [newPanel] into the
- * owning device's retained payload, if it's auto-configured: unit, icon, decimals, and ideal-range
- * topic/min-path/max-path for a Sensor; command topic, on/off payload, state topic/field, and icon
- * for a Toggle; command topic, payload, and icon for a Button. Label and cluster name are pushed
+ * owning device's retained payload, if it's auto-configured: unit, icon, decimals, own reading
+ * topic, and ideal-range topic/min-path/max-path for a Sensor; command topic, on/off payload,
+ * state topic/field, and icon for a Toggle; command topic, payload, and icon for a Button. Label
+ * and cluster name are pushed
  * separately (pushLabelUpdateIfAutoConfigured, and the cluster-rename path in AddPanelScreen, since
  * a cluster rename cascades to every panel sharing the old name, not just this one).
  *
@@ -130,10 +140,11 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
             val unitUpdate = diffMap(index, old.unit, newPanel.unit)
             val iconUpdate = diffMap(index, old.icon.name, newPanel.icon.name)
             val decimalUpdate = diffMap(index, old.decimals, newPanel.decimals)
+            val topicUpdate = diffMap(index, old.topic, newPanel.topic)
             val idealTopicUpdate = diffMap(index, old.idealRangeTopic, newPanel.idealRangeTopic)
             val idealMinUpdate = diffMap(index, old.idealMinPath, newPanel.idealMinPath)
             val idealMaxUpdate = diffMap(index, old.idealMaxPath, newPanel.idealMaxPath)
-            if (unitUpdate.isEmpty() && iconUpdate.isEmpty() && decimalUpdate.isEmpty() &&
+            if (unitUpdate.isEmpty() && iconUpdate.isEmpty() && decimalUpdate.isEmpty() && topicUpdate.isEmpty() &&
                 idealTopicUpdate.isEmpty() && idealMinUpdate.isEmpty() && idealMaxUpdate.isEmpty()
             ) {
                 return
@@ -143,6 +154,7 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
                 fieldUnitUpdates = unitUpdate,
                 fieldIconUpdates = iconUpdate,
                 fieldDecimalUpdates = decimalUpdate,
+                fieldTopicUpdates = topicUpdate,
                 fieldIdealTopicUpdates = idealTopicUpdate,
                 fieldIdealMinPathUpdates = idealMinUpdate,
                 fieldIdealMaxPathUpdates = idealMaxUpdate
@@ -150,7 +162,10 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
         }
         is Panel.Toggle -> {
             val old = oldPanel as? Panel.Toggle ?: return
-            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, newPanel) ?: return
+            // Matched on the OLD commandTopic (deviceConfig was parsed from the still-old
+            // retained payload) - see controlIndex's own doc on why using the already-edited new
+            // topic here would always miss and silently drop the whole update.
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, newPanel.id, old.commandTopic) ?: return
             val commandTopicUpdate = diffMap(index, old.commandTopic, newPanel.commandTopic)
             val onPayloadUpdate = diffMap(index, old.onPayload, newPanel.onPayload)
             val offPayloadUpdate = diffMap(index, old.offPayload, newPanel.offPayload)
@@ -174,7 +189,8 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
         }
         is Panel.Button -> {
             val old = oldPanel as? Panel.Button ?: return
-            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, newPanel) ?: return
+            // Matched on the OLD commandTopic - see the Toggle branch above / controlIndex's own doc.
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, newPanel.id, old.commandTopic) ?: return
             val commandTopicUpdate = diffMap(index, old.commandTopic, newPanel.commandTopic)
             val payloadUpdate = diffMap(index, old.payload, newPanel.payload)
             val iconUpdate = diffMap(index, old.icon.name, newPanel.icon.name)
@@ -208,7 +224,8 @@ fun pushPanelClusterOverrideIfAutoConfigured(app: Z2mDashApplication, panel: Pan
             SensorDiscovery.updateDescriptionInAppPayload(currentPayload, fieldClusterUpdates = mapOf(index to newClusterName))
         }
         is Panel.Toggle, is Panel.Button -> {
-            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel) ?: return
+            val commandTopic = commandTopicOf(panel) ?: return
+            val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel.id, commandTopic) ?: return
             SensorDiscovery.updateDescriptionInAppPayload(currentPayload, controlClusterUpdates = mapOf(index to newClusterName))
         }
     } ?: return
@@ -258,7 +275,8 @@ fun pushClusterRenameForAutoConfiguredDevices(
                     }
                 }
                 is Panel.Toggle, is Panel.Button -> {
-                    val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel) ?: return@forEach
+                    val commandTopic = commandTopicOf(panel) ?: return@forEach
+                    val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel.id, commandTopic) ?: return@forEach
                     val override = deviceConfig.controls.getOrNull(index)?.cluster?.takeIf { it.isNotBlank() }
                     if (override != null) {
                         if (override == oldClusterName) controlClusterUpdates[index] = newClusterName
