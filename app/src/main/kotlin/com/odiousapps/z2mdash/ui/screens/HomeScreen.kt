@@ -169,6 +169,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         if (groupIndex >= 0) {
             // Permit-join and pending-device banners occupy LazyColumn items ahead of the
             // groups, so the target index must account for however many are currently showing.
+            // The permit-join banner is ONE item total whenever there's at least one broker (see
+            // its own "item(key = "permitJoinBar")" wrapped in "if (config.brokers.isNotEmpty())"
+            // below) - not one item per broker. Using config.brokers.size here overcounted it by
+            // (brokers.size - 1) for anyone with more than one broker configured (a normal setup
+            // in this app, e.g. two bridges on the same dashboard), landing every cross-group
+            // cluster-move's post-drop scroll consistently that many items too far down - which
+            // looks like "the wrong cluster" nearly every time rather than a one-off glitch.
             // Each group itself contributes its own sticky header item plus - only when
             // expanded - a second item for its content (see the stickyHeader/item pair below),
             // so a preceding expanded group must count as 2, not 1: undercounting here (as an
@@ -176,7 +183,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             // short of the real target by one item per expanded group in between - with several
             // expanded groups above the target, that shortfall was enough to look like it
             // scrolled to the top of the screen instead.
-            var targetIndex = config.brokers.size + config.pendingAutoConfigDevices.size
+            var targetIndex = (if (config.brokers.isNotEmpty()) 1 else 0) + config.pendingAutoConfigDevices.size
             for (i in 0 until groupIndex) {
                 targetIndex += if (config.groups[i].collapsed) 1 else 2
             }

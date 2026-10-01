@@ -1,0 +1,1 @@
+- Fixed the screen scrolling to the wrong cluster after moving one between groups, when more than one broker is configured.
