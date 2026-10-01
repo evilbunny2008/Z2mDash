@@ -98,7 +98,25 @@ class DeviceAutoConfigManager(
             val adoptIncomingOrder = incomingOrderVersion != null && incomingOrderVersion > device.lastKnownOrderVersion
             val newPanels = builtPanels.map { panel ->
                 val existing = existingPanels[builtKeys.getValue(panel)] ?: return@map panel
-                val displayOrder = if (adoptIncomingOrder) panel.displayOrder else existing.displayOrder
+                // panel.displayOrder (just computed by SensorDiscovery.composedDisplayOrder) is
+                // Int.MAX_VALUE whenever the payload has neither group_order nor a panel_order/
+                // order entry for this field - that's "this payload carries no order information
+                // at all", not a genuine instruction to sort the field last, so it's never
+                // preferred over an already-known local position even when adoptIncomingOrder is
+                // true. Without this, any device whose payload was ever published without
+                // group_order/panel_order (its own echo of ANY edit still counts as a genuinely
+                // newer order_version) would have every one of its panels silently reset to
+                // Int.MAX_VALUE on the next reconcile, dropping the whole cluster to the bottom
+                // of its group - confirmed by a user report reproduced via the editable-value
+                // dialog (HomeScreen's "Edit Min/Max" panel), which publishes straight to its
+                // own device's "/app" topic without going through AutoConfigPush's usual
+                // publishAndMarkApplied bookkeeping, so its own echo always looked like a
+                // genuinely new order_version to adopt.
+                val displayOrder = if (adoptIncomingOrder && panel.displayOrder != Int.MAX_VALUE) {
+                    panel.displayOrder
+                } else {
+                    existing.displayOrder
+                }
                 when (panel) {
                     // editable is a local-only UI preference (see Panel.Sensor's doc) with no
                     // representation in the device's own payload - preserved the same way

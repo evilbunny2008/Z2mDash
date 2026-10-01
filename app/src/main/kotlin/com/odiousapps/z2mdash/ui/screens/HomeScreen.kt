@@ -1970,6 +1970,21 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         val currentPayload = app.connectionManager.latestPayloads.value["${panel.brokerId}|${panel.topic}"]
                         val updatedPayload = JsonPath.withValueAt(currentPayload, panel.jsonPath, valueEditText)
                         app.connectionManager.publish(panel.brokerId, panel.topic, updatedPayload, retain = true)
+                        // An editable panel's own topic is often an auto-configured device's own
+                        // "/app" topic itself (a moisture min/max threshold embedded in its config
+                        // payload - see SensorDiscovery.buildAppConfigPayload's "seed value" doc).
+                        // Unlike every AutoConfigPush mutation, this publish never went through
+                        // publishAndMarkApplied, so this phone's own echo of it never matched
+                        // device.lastAppliedPayload and always triggered a full, unnecessary
+                        // reconcile of the whole device - mark it the same way here so the echo is
+                        // recognised as already applied, same as every other field push.
+                        val device = app.configRepository.config.value.autoConfiguredDevices
+                            .find { it.brokerId == panel.brokerId && it.appConfigTopic == panel.topic }
+                        if (device != null) {
+                            app.configRepository.markAutoConfiguredDevicePayloadApplied(
+                                device.brokerId, device.appConfigTopic, updatedPayload, device.lastKnownOrderVersion
+                            )
+                        }
                         pendingValueEdit = null
                     },
                     enabled = valueEditText.isNotBlank()
