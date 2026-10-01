@@ -57,10 +57,14 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SmallFloatingActionButton
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.SwipeToDismissBox
+import androidx.compose.material3.SwipeToDismissBoxValue
+import androidx.compose.material3.rememberSwipeToDismissBoxState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -748,7 +752,26 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 }
             }
         },
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        // Swipe-to-dismiss, not just the "Undo" action button - the undo snackbar's own timeout
+        // is user-configurable (undoToastSeconds) and can be set quite long, so without this the
+        // only way to clear it early (confirming "no, leave it as-is, I'm done watching this") was
+        // to wait the whole thing out. SwipeToDismissBoxValue.Settled is excluded from the dismiss
+        // check below since that's just the box's own resting state, not a swipe gesture.
+        snackbarHost = {
+            SnackbarHost(snackbarHostState) { data ->
+                val dismissState = rememberSwipeToDismissBoxState(
+                    confirmValueChange = { value ->
+                        if (value != SwipeToDismissBoxValue.Settled) {
+                            data.dismiss()
+                        }
+                        true
+                    }
+                )
+                SwipeToDismissBox(state = dismissState, backgroundContent = {}) {
+                    Snackbar(snackbarData = data)
+                }
+            }
+        }
     ) { padding ->
         if (config.groups.isEmpty()) {
             Column(

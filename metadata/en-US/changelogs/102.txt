@@ -1,1 +1,2 @@
 - Fixed an already-configured cluster jumping to the bottom of its group when editing an editable value panel (e.g. a moisture min/max threshold) on it, by no longer letting a device's reported order silently override its panels' already-correct position when that report carries no real ordering information.
+- The undo snackbar can now be swiped away to dismiss it immediately, instead of having to wait out its full timeout.
