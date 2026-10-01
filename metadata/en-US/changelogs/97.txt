@@ -1,4 +1,5 @@
 - Fixed renaming a sensor panel's field so the change is actually saved back to the device's own auto-config, preventing it from silently reverting or duplicating later.
 - Fixed dragging a panel to merge into a cluster sometimes targeting the wrong, scrolled-off cluster.
 - Fixed two discovered devices with the same name silently replacing each other's "new device found" notification.
+- Fixed dragging groups/clusters/panels sometimes stopping responding to touch-and-hold after a handful of drags, requiring an app restart to recover.
 - Various other robustness fixes to the auto-config sync and drag/reorder logic.

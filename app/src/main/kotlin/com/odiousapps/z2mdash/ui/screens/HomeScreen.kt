@@ -355,6 +355,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // stays set forever - the drop-target border included - recoverable only by restarting
     // the app, since nothing else ever clears it.
     var lastDragTickAtMs by remember { mutableLongStateOf(0L) }
+    // Bumped by the watchdog below whenever it force-ends a gesture that went silent - see its
+    // own comment for why: forcing just the draggedGroupId/draggedClusterKey/etc. state back to
+    // null clears the UI (drop-target border, highlight) but does NOT recover the ability to
+    // START a new drag, because the underlying detectDragGesturesAfterLongPress call that died
+    // mid-gesture is still the SAME suspended call governing every future touch on this
+    // pointerInput - once it's wedged (per the Compose pointer-routing edge case documented
+    // above), it never returns to await a fresh initial press, so nothing - including a brand
+    // new long-press - ever starts a drag again until the app is restarted. Keying the
+    // pointerInput block on this counter makes Compose cancel that stuck coroutine and launch a
+    // genuinely fresh one whenever the watchdog fires, which is the only way to actually recover
+    // future touches rather than just tidying up the visible state of a now-permanently-dead one.
+    var gestureDetectorGeneration by remember { mutableIntStateOf(0) }
     // TEMPORARY diagnostic - when the auto-scroll loop last actually dispatched a scroll delta,
     // so the watchdog's log line below can say whether the gesture died while auto-scroll was
     // active. Remove once the freeze is root-caused.
@@ -568,6 +580,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 draggedPanelFromGroupId = null
                 draggedToPanelIndex = -1
                 draggedPanelWillPopOut = false
+                // Forces the pointerInput below to cancel its (likely permanently wedged)
+                // coroutine and start a fresh one - see gestureDetectorGeneration's own comment.
+                gestureDetectorGeneration++
                 return@LaunchedEffect
             }
             val bounds = viewportBoundsInWindow
@@ -769,7 +784,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 // Hit-testing which item (if any) was actually grabbed happens manually below,
                 // against the same bounds/coordinates maps every item already keeps up to date
                 // for the drop-target highlighting.
-                .pointerInput(Unit) {
+                .pointerInput(gestureDetectorGeneration) {
                     detectDragGesturesAfterLongPress(
                         onDragStart = { startLocalPos ->
                             val coords = listCoordinates ?: return@detectDragGesturesAfterLongPress
@@ -1186,17 +1201,23 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 }
             }
             items(config.pendingAutoConfigDevices, key = { "${it.brokerId}|${it.appConfigTopic}" }) { pending ->
+                // Must match notifyNewDeviceFound's own notificationId exactly ("brokerId|topic",
+                // not deviceName) - two pending devices can share a displayed name (see
+                // notifyNewDeviceFound's own doc), so cancelling by name alone could dismiss the
+                // wrong device's notification, or none at all if a differently-named device
+                // happened to hash the same.
+                val pendingNotificationId = "${pending.brokerId}|${pending.appConfigTopic}".hashCode()
                 PendingDeviceBanner(
                     pending = pending,
                     onAdd = {
                         addPendingDevice(app, payloadsState.value, pending)
                         // Both actions mean the user handled this via the in-app banner, so the
-                        // matching system notification (same deviceName-based ID) shouldn't linger.
-                        NotificationManagerCompat.from(context).cancel(pending.deviceName.hashCode())
+                        // matching system notification shouldn't linger.
+                        NotificationManagerCompat.from(context).cancel(pendingNotificationId)
                     },
                     onIgnore = {
                         app.configRepository.ignoreAppConfigTopic(pending.brokerId, pending.appConfigTopic)
-                        NotificationManagerCompat.from(context).cancel(pending.deviceName.hashCode())
+                        NotificationManagerCompat.from(context).cancel(pendingNotificationId)
                     }
                 )
             }
