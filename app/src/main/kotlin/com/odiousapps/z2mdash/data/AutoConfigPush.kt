@@ -403,8 +403,20 @@ fun publishAppTopicForClusterIfMissing(
     val appTopic = "$topic/app"
     if (app.connectionManager.latestPayloads.value["$brokerId|$appTopic"] != null) return
 
+    // This cluster's current rank among its siblings in the group (same 1-indexed scheme
+    // pushGroupOrderUpdatesForClusters uses) - passed through so the freshly-built payload below
+    // round-trips back to the SAME local position once this phone's own publish echoes back and
+    // gets reconciled, rather than resetting every one of this cluster's panels to the bottom (see
+    // buildAppConfigPayload's own doc on group_order for the bug this prevents).
+    val orderedClusterKeys = group.panels
+        .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+        .entries
+        .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
+        .map { (key, _) -> key }
+    val groupOrder = orderedClusterKeys.indexOf(clusterName).takeIf { it >= 0 }?.plus(1)
+
     val payload = SensorDiscovery.buildAppConfigPayload(
-        panels, clusterName, group.name, appTopic, seedValuesByPanelId
+        panels, clusterName, group.name, appTopic, seedValuesByPanelId, groupOrder
     )
     // Registered *before* publishing, not after - the MQTT echo of this exact publish can arrive
     // back (via connectionManager.latestPayloads, on a background dispatcher) before the very
@@ -552,13 +564,21 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
     val config = app.configRepository.config.value
     val group = config.groups.find { it.id == groupId } ?: return
     val clusterBuckets = group.panels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+    // Same reasoning as publishAppTopicForClusterIfMissing's own groupOrder comment - without it,
+    // every cluster force-republished here would reset to the bottom (Int.MAX_VALUE) the instant
+    // its own echo gets reconciled, silently scrambling the whole group's order on every Force
+    // Upload rather than just republishing content.
+    val orderedClusterKeys = clusterBuckets.entries
+        .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
+        .map { (key, _) -> key }
 
-    clusterBuckets.values.forEach { panels ->
+    clusterBuckets.forEach { (clusterKey, panels) ->
         val topic = SensorDiscovery.commonTopicPrefix(panels)
         if (topic.isBlank()) return@forEach
         val clusterName = panels.first().clusterName.ifBlank { panels.first().label }
         val brokerId = panels.first().brokerId
         val appTopic = "$topic/app"
+        val groupOrder = orderedClusterKeys.indexOf(clusterKey).takeIf { it >= 0 }?.plus(1)
 
         val currentPayload = app.connectionManager.latestPayloads.value["$brokerId|$appTopic"]
         val appTopicEmbeddedFields = panels.filterIsInstance<Panel.Sensor>().filter { it.topic == appTopic }
@@ -573,7 +593,7 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
         if (seedValuesByPanelId.size < appTopicEmbeddedFields.size) return@forEach
 
         val payload = SensorDiscovery.buildAppConfigPayload(
-            panels, clusterName, group.name, appTopic, seedValuesByPanelId
+            panels, clusterName, group.name, appTopic, seedValuesByPanelId, groupOrder
         )
         // Registered before publishing - see publishAppTopicForClusterIfMissing's own comment on
         // why the order matters (this phone's own echo can otherwise race ahead of its own

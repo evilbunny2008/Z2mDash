@@ -853,7 +853,13 @@ object SensorDiscovery {
         clusterName: String,
         groupName: String,
         appTopic: String,
-        seedValuesByPanelId: Map<String, String> = emptyMap()
+        seedValuesByPanelId: Map<String, String> = emptyMap(),
+        // This cluster's rank among its siblings in the group (same 1-indexed scheme
+        // pushGroupOrderUpdatesForClusters uses), if known - stamped as "group_order" below. Both
+        // current callers (publishAppTopicForClusterIfMissing, forceRepublishGroupAppTopics)
+        // always have one to give; see the group_order doc further down for why omitting it is a
+        // real bug, not just a missing nicety.
+        groupOrder: Int? = null
     ): String {
         val ordered = panels.sortedBy { it.displayOrder }
         val sensors = ordered.filterIsInstance<Panel.Sensor>()
@@ -862,6 +868,22 @@ object SensorDiscovery {
         val obj = buildJsonObject {
             put("name", clusterName)
             put("group", groupName)
+            // group_order/panel_order/controls[].order are stamped from the panels' CURRENT local
+            // displayOrder, not left unset - composedDisplayOrder (what every reader, including
+            // this app's own reconcile of its own echo, derives a panel's displayOrder from)
+            // returns Int.MAX_VALUE for a panel whenever BOTH group_order and panel_order/order
+            // are absent. A freshly-built payload for a cluster that's only ever lived in local
+            // config.json (e.g. one just backfilled with its first-ever "/app" topic by
+            // publishAppTopicForClusterIfMissing) used to omit both entirely, so the instant this
+            // phone's own publish echoed back - which, since this is a brand-new
+            // AutoConfiguredDevice with lastKnownOrderVersion starting low, always gets adopted -
+            // every one of this cluster's panels silently reset to Int.MAX_VALUE, sorting the
+            // whole cluster to the very bottom of its group. Confirmed by a user report: editing
+            // any field (not only group_order itself) on a manually-created cluster's panel moved
+            // the whole cluster to the bottom the moment that save happened to be the one that
+            // first backfilled its "/app" topic.
+            if (groupOrder != null) put("group_order", groupOrder)
+            putJsonArray("panel_order") { sensors.indices.forEach { add(it) } }
             putJsonArray("panels") { sensors.forEach { add(it.jsonPath) } }
             putJsonArray("labels") { sensors.forEach { add(it.label) } }
             putJsonArray("panel_decimals") { sensors.forEach { add(it.decimals) } }
@@ -872,7 +894,7 @@ object SensorDiscovery {
             putJsonArray("panel_ideal_min_paths") { sensors.forEach { add(it.idealMinPath) } }
             putJsonArray("panel_ideal_max_paths") { sensors.forEach { add(it.idealMaxPath) } }
             putJsonArray("controls") {
-                controls.forEach { panel ->
+                controls.forEachIndexed { controlIndex, panel ->
                     addJsonObject {
                         when (panel) {
                             is Panel.Toggle -> {
@@ -892,6 +914,10 @@ object SensorDiscovery {
                             }
                             else -> {}
                         }
+                        // Same scheme buildPanels' own fallbackWithin uses when reading this back -
+                        // controls are numbered right after sensors in one shared "within cluster"
+                        // space, not from zero again.
+                        put("order", sensors.size + controlIndex)
                     }
                 }
             }

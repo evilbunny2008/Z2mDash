@@ -1,0 +1,1 @@
+- Fixed a manually-created cluster jumping to the bottom of its group the moment any of its fields were first synced to its own auto-config (e.g. entering an ideal moisture range). Also fixes the same scrambling happening to every cluster in a group on "Force Upload".
