@@ -1,0 +1,1 @@
+- Fixed dragging a cluster between groups landing in random, inconsistent groups. A cluster's remembered drop-target position was never cleared after it was renamed or moved, so old leftover positions could wrongly outrank the real one when deciding where a later drag actually landed.

@@ -1236,6 +1236,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 // clusters. Wrapped in an opaque Surface since stickyHeader only pins position -
                 // without an explicit background, content underneath would show through.
                 stickyHeader(key = "${group.id}_header") {
+                // Same leak class as compoundKey's own DisposableEffect below (see its comment) -
+                // group.id is normally stable, so this only matters when the group itself is
+                // deleted, but with nothing to remove these a deleted group's header position/
+                // bounds would stay in these maps forever, able to out-compete a real group/
+                // header as a drag's "nearest" match.
+                DisposableEffect(group.id) {
+                    onDispose {
+                        groupCenters.remove(group.id)
+                        groupHeaderCoordinates.remove(group.id)
+                        clusterBounds.remove(headerClusterKey)
+                    }
+                }
                 Surface(color = MaterialTheme.colorScheme.background, tonalElevation = 2.dp) {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp)
@@ -1417,6 +1429,22 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     onDispose {
                                                         clusterBringIntoViewRequesters.remove(compoundKey)
                                                         clusterCaptionCoordinates.remove(compoundKey)
+                                                        // clusterBounds was the one map NOT cleaned up here, unlike
+                                                        // its two siblings above - every cluster rename or
+                                                        // cross-group move changes compoundKey, leaving the OLD
+                                                        // key's Rect permanently stuck in the map (scrolling the
+                                                        // card off/on does the same, re-disposing and re-composing
+                                                        // under the same key, but a rename/move disposes the OLD
+                                                        // key for good with nothing ever removing it). Confirmed
+                                                        // as the cause of cluster drags landing in random, wrong
+                                                        // groups: computeNearestClusterKey's nearest-match search
+                                                        // runs over every entry in this map, so a ghost rect left
+                                                        // over from an earlier rename/move - frozen whereever that
+                                                        // cluster last rendered - could out-compete the real
+                                                        // cluster actually under the finger, with the outcome
+                                                        // depending on this session's whole drag/rename history
+                                                        // rather than anything visible on screen right now.
+                                                        clusterBounds.remove(compoundKey)
                                                     }
                                                 }
                                                 ClusterCard(
