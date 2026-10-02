@@ -2815,7 +2815,12 @@ private fun PermitJoinDialog(
                                         // still matched it instead of every router again.
                                         IconButton(onClick = {
                                             routerText = ""
-                                            routerExpanded = !routerExpanded
+                                            // Forced open, not toggled - the field already being
+                                            // focused (e.g. right after typing or picking a name)
+                                            // left routerExpanded already true, so toggling it here
+                                            // closed the menu immediately instead of opening it with
+                                            // the now-cleared, unfiltered list.
+                                            routerExpanded = true
                                         }) {
                                             ExposedDropdownMenuDefaults.TrailingIcon(expanded = routerExpanded)
                                         }
