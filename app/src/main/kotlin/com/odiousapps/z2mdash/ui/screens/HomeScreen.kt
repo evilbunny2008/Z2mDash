@@ -757,16 +757,19 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         // only way to clear it early (confirming "no, leave it as-is, I'm done watching this") was
         // to wait the whole thing out. SwipeToDismissBoxValue.Settled is excluded from the dismiss
         // check below since that's just the box's own resting state, not a swipe gesture.
+        //
+        // Watches dismissState.currentValue via LaunchedEffect rather than the simpler
+        // confirmValueChange callback - that parameter is deprecated (as of this project's current
+        // Compose BOM) with no direct replacement, in favour of reacting to the state's settled
+        // value instead of vetoing/observing each transition attempt.
         snackbarHost = {
             SnackbarHost(snackbarHostState) { data ->
-                val dismissState = rememberSwipeToDismissBoxState(
-                    confirmValueChange = { value ->
-                        if (value != SwipeToDismissBoxValue.Settled) {
-                            data.dismiss()
-                        }
-                        true
+                val dismissState = rememberSwipeToDismissBoxState()
+                LaunchedEffect(dismissState.currentValue) {
+                    if (dismissState.currentValue != SwipeToDismissBoxValue.Settled) {
+                        data.dismiss()
                     }
-                )
+                }
                 SwipeToDismissBox(state = dismissState, backgroundContent = {}) {
                     Snackbar(snackbarData = data)
                 }
