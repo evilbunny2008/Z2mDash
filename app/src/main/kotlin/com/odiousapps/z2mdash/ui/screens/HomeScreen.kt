@@ -776,9 +776,71 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             }
         }
     ) { padding ->
+        // Same flattening the dialog uses (see PermitJoinDialog's own allTopics), kept in
+        // lockstep by construction (both iterate config.brokers, then PermitJoin.parseBaseTopics
+        // per broker, in the same order) so permitJoinTopicIndex means the same pair in both
+        // places. Hoisted up here (rather than inside the LazyColumn's own content, as before) so
+        // whether join is on can decide, below, whether this renders as a normal scrolling list
+        // item or a banner fixed above the whole list - a LazyColumn stickyHeader only stays
+        // pinned until the NEXT stickyHeader (the first group's own) reaches the top and takes
+        // over that slot, which isn't "always at the top" once the user scrolls past the first
+        // group; a real always-on-top banner has to live outside the scrollable list entirely.
+        val allTopics = remember(config.brokers) {
+            config.brokers.flatMap { broker ->
+                PermitJoin.parseBaseTopics(broker.baseTopic).map { broker.id to it }
+            }
+        }
+        val activeTopic = allTopics.getOrNull(permitJoinTopicIndex)
+        val activeStatus by remember(activeTopic) {
+            derivedStateOf {
+                activeTopic?.let { (brokerId, baseTopic) ->
+                    PermitJoin.status(payloadsState.value, brokerId, baseTopic, nowMillisState.longValue)
+                }
+            }
+        }
+        // Which router (if any) permit join was last enabled through for this topic - the same
+        // value onToggle below already publishes, just surfaced here too so it's visible while
+        // join is open, not only inside the dialog that set it.
+        val activeRouterText = activeTopic?.let { (brokerId, baseTopic) ->
+            config.brokers.find { it.id == brokerId }?.permitJoinDevices?.get(baseTopic)
+        }?.takeIf { it.isNotBlank() }
+        val permitJoinIsOn = activeStatus?.isOn == true
+        val statusText = when {
+            activeTopic == null -> "No brokers configured"
+            permitJoinIsOn -> {
+                val via = activeRouterText?.let { " via $it" } ?: ""
+                "Open for ${PermitJoin.formatRemaining(activeStatus!!.remainingSeconds)} more$via"
+            }
+            else -> "Off – new Zigbee devices can't join"
+        }
+        val permitJoinBannerContent: @Composable () -> Unit = {
+            PermitJoinBanner(
+                title = "Permit Join",
+                subtitle = if (allTopics.size > 1 && activeTopic != null) {
+                    "${activeTopic.second} · $statusText"
+                } else {
+                    statusText
+                },
+                isOn = permitJoinIsOn,
+                onToggle = { enabled ->
+                    activeTopic?.let { (brokerId, baseTopic) ->
+                        val broker = config.brokers.find { it.id == brokerId }
+                        val routerText = broker?.permitJoinDevices?.get(baseTopic).orEmpty()
+                        val payload = PermitJoin.requestPayload(routerText, if (enabled) 254 else 0)
+                        app.connectionManager.publish(brokerId, PermitJoin.requestTopic(baseTopic), payload)
+                    }
+                },
+                onClick = { showPermitJoinDialog = true }
+            )
+        }
+        Column(Modifier.padding(padding).fillMaxSize()) {
+            if (config.brokers.isNotEmpty() && permitJoinIsOn) {
+                permitJoinBannerContent()
+            }
+            Box(Modifier.weight(1f)) {
         if (config.groups.isEmpty()) {
             Column(
-                modifier = Modifier.padding(padding).fillMaxSize().padding(24.dp),
+                modifier = Modifier.fillMaxSize().padding(24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -799,7 +861,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
         LazyColumn(
             state = listState,
-            modifier = Modifier.padding(padding).fillMaxSize()
+            modifier = Modifier.fillMaxSize()
                 .onGloballyPositioned { coordinates ->
                     listCoordinates = coordinates
                     viewportBoundsInWindow = coordinates.boundsInWindow()
@@ -1188,50 +1250,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             // FAB, which floats on top of content without reserving space for itself.
             contentPadding = PaddingValues(bottom = 96.dp)
         ) {
-            if (config.brokers.isNotEmpty()) {
-                item(key = "permitJoinBar") {
-                    // Same flattening the dialog uses (see PermitJoinDialog's own allTopics), kept
-                    // in lockstep by construction (both iterate config.brokers, then
-                    // PermitJoin.parseBaseTopics per broker, in the same order) so
-                    // permitJoinTopicIndex means the same pair in both places.
-                    val allTopics = remember(config.brokers) {
-                        config.brokers.flatMap { broker ->
-                            PermitJoin.parseBaseTopics(broker.baseTopic).map { broker.id to it }
-                        }
-                    }
-                    val activeTopic = allTopics.getOrNull(permitJoinTopicIndex)
-                    val activeStatus by remember(activeTopic) {
-                        derivedStateOf {
-                            activeTopic?.let { (brokerId, baseTopic) ->
-                                PermitJoin.status(payloadsState.value, brokerId, baseTopic, nowMillisState.longValue)
-                            }
-                        }
-                    }
-                    val statusText = when {
-                        activeTopic == null -> "No brokers configured"
-                        activeStatus?.isOn == true ->
-                            "Open for ${PermitJoin.formatRemaining(activeStatus!!.remainingSeconds)} more"
-                        else -> "Off – new Zigbee devices can't join"
-                    }
-                    PermitJoinBanner(
-                        title = "Permit Join",
-                        subtitle = if (allTopics.size > 1 && activeTopic != null) {
-                            "${activeTopic.second} · $statusText"
-                        } else {
-                            statusText
-                        },
-                        isOn = activeStatus?.isOn == true,
-                        onToggle = { enabled ->
-                            activeTopic?.let { (brokerId, baseTopic) ->
-                                val broker = config.brokers.find { it.id == brokerId }
-                                val routerText = broker?.permitJoinDevices?.get(baseTopic).orEmpty()
-                                val payload = PermitJoin.requestPayload(routerText, if (enabled) 254 else 0)
-                                app.connectionManager.publish(brokerId, PermitJoin.requestTopic(baseTopic), payload)
-                            }
-                        },
-                        onClick = { showPermitJoinDialog = true }
-                    )
-                }
+            // Only rendered in the list when NOT active - while active it's drawn as a fixed
+            // banner above this whole LazyColumn instead (see its own computation/doc further up,
+            // right after the Scaffold's content lambda opens), so it isn't shown twice.
+            if (config.brokers.isNotEmpty() && !permitJoinIsOn) {
+                item(key = "permitJoinBar") { permitJoinBannerContent() }
             }
             items(config.pendingAutoConfigDevices, key = { "${it.brokerId}|${it.appConfigTopic}" }) { pending ->
                 // Must match notifyNewDeviceFound's own notificationId exactly ("brokerId|topic",
@@ -1327,7 +1350,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             Text(group.name, style = MaterialTheme.typography.titleMedium)
                             Spacer(Modifier.width(4.dp))
                             IconButton(
-                                onClick = { app.configRepository.setGroupCollapsed(group.id, !group.collapsed) }
+                                onClick = {
+                                    val collapsing = !group.collapsed
+                                    app.configRepository.setGroupCollapsed(group.id, collapsing)
+                                    // Collapsing removes this group's whole content item, so
+                                    // everything below it jumps up to fill the gap - without this,
+                                    // the group (and the scroll position generally) ends up
+                                    // wherever that shift happens to land rather than staying
+                                    // anchored where the user was just looking, which could leave
+                                    // the just-collapsed group scrolled out of view entirely. Reuses
+                                    // the same scrollToGroupId mechanism the post-drag scroll uses.
+                                    if (collapsing) {
+                                        backStackEntry.savedStateHandle["scrollToGroupId"] = group.id
+                                    }
+                                }
                             ) {
                                 Icon(
                                     if (group.collapsed) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
@@ -1577,6 +1613,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 }
             }
         }
+            } // Box(weight)
+        } // Column
     }
 
     if (showPermitJoinDialog) {

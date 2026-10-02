@@ -1,0 +1,1 @@
+- Collapsing a group now scrolls it to the top of the screen, instead of leaving it wherever the content shift happened to land.

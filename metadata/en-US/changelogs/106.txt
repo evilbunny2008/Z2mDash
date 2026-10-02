@@ -1,0 +1,1 @@
+- The Permit Join banner now stays fixed at the top of the screen while joining is open, instead of scrolling away, and shows which router it's open through.
