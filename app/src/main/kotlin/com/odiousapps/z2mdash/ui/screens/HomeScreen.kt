@@ -2804,7 +2804,19 @@ private fun PermitJoinDialog(
                                 placeholder = { Text("Blank = whole network") },
                                 keyboardOptions = tvAwareKeyboardOptions(),
                                 trailingIcon = if (routerNames.isNotEmpty()) {
-                                    { ExposedDropdownMenuDefaults.TrailingIcon(expanded = routerExpanded) }
+                                    {
+                                        // Pressing the dropdown arrow clears whatever's typed, not
+                                        // just toggling the menu open - filteredRouterNames filters
+                                        // by routerText, so leftover text from an earlier selection
+                                        // otherwise left the reopened list showing only whatever
+                                        // still matched it instead of every router again.
+                                        IconButton(onClick = {
+                                            routerText = ""
+                                            routerExpanded = !routerExpanded
+                                        }) {
+                                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = routerExpanded)
+                                        }
+                                    }
                                 } else null,
                                 modifier = Modifier.fillMaxWidth()
                                     .clearFocusOnBack()

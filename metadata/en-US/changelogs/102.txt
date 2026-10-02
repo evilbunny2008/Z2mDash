@@ -1,2 +1,3 @@
 - Fixed an already-configured cluster jumping to the bottom of its group when editing an editable value panel (e.g. a moisture min/max threshold) on it, by no longer letting a device's reported order silently override its panels' already-correct position when that report carries no real ordering information.
 - The undo snackbar can now be swiped away to dismiss it immediately, instead of having to wait out its full timeout.
+- Pressing the dropdown arrow on the Permit Join dialog's router field now clears whatever's typed, so it shows every router again instead of only ones still matching the old text.
