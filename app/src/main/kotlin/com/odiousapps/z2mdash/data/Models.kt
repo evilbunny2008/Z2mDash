@@ -209,6 +209,8 @@ data class AppConfig(
     // Remembered so the export password dialog is pre-filled next time. Stored in plaintext,
     // same as broker passwords elsewhere in this config file.
     val rememberedExportPassword: String? = null,
+    // On by default since every export includes broker passwords; remembered if turned off.
+    val exportEncryptionEnabled: Boolean = true,
     // Red/blue flash on a sensor tile outside its ideal range. Does NOT control the cluster
     // card's stale-data indicator (that blink wasn't noticeable enough to be worth it, and is
     // now always static). Off by default - an out-of-range tile still shows its warning colour,

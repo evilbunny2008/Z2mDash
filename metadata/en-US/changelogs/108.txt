@@ -1,0 +1,1 @@
+- Exporting a backup without encryption now warns that it contains your broker passwords in plain text, and asks before continuing.

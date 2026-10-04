@@ -65,13 +65,16 @@ fun BackupRestoreScreen(navController: NavController) {
 
     var exportScope by remember { mutableStateOf("Full") } // "Full" or "BrokersOnly"
     var importScope by remember { mutableStateOf("Full") } // "Full" or "BrokersOnly"
-    var encryptEnabled by remember { mutableStateOf(false) }
+    val encryptEnabled = config.exportEncryptionEnabled
 
     // exportPasswordText is the dialog's live input; pendingExportPassword is the
     // confirmed value the exportLauncher callback uses once a destination is chosen.
     var showExportPasswordDialog by remember { mutableStateOf(false) }
     var exportPasswordText by remember { mutableStateOf("") }
     var pendingExportPassword by remember { mutableStateOf<String?>(null) }
+
+    // Both export scopes include brokers, so an unencrypted export always holds their passwords.
+    var showUnencryptedWarning by remember { mutableStateOf(false) }
 
     // Holds a picked file's raw bytes until the user enters a password to decrypt it.
     var pendingEncryptedBytes by remember { mutableStateOf<ByteArray?>(null) }
@@ -187,7 +190,9 @@ fun BackupRestoreScreen(navController: NavController) {
                         headlineContent = { Text("Encrypt Backup") },
                         supportingContent = { Text("Protect the exported file with a password you choose") },
                         trailingContent = { Switch(checked = encryptEnabled, onCheckedChange = null) },
-                        modifier = Modifier.toggleableRow(encryptEnabled) { encryptEnabled = it }
+                        modifier = Modifier.toggleableRow(encryptEnabled) { enabled ->
+                            app.configRepository.update { it.copy(exportEncryptionEnabled = enabled) }
+                        }
                     )
                     Spacer(Modifier.height(8.dp))
                     ListItem(
@@ -207,11 +212,7 @@ fun BackupRestoreScreen(navController: NavController) {
                                 exportPasswordText = config.rememberedExportPassword.orEmpty()
                                 showExportPasswordDialog = true
                             } else {
-                                try {
-                                    exportLauncher.launch(BackupCodec.newBackupFileName(brokersOnly = exportScope == "BrokersOnly"))
-                                } catch (_: ActivityNotFoundException) {
-                                    snackbarMessage = "No file picker app is available on this device."
-                                }
+                                showUnencryptedWarning = true
                             }
                         }
                     )
@@ -271,6 +272,33 @@ fun BackupRestoreScreen(navController: NavController) {
                 )
             }
         }
+    }
+
+    if (showUnencryptedWarning) {
+        AlertDialog(
+            onDismissRequest = { showUnencryptedWarning = false },
+            title = { Text("Export without encryption?") },
+            text = {
+                Text(
+                    "This backup includes your brokers' usernames and passwords, stored as plain " +
+                        "text. Anyone who gets hold of the file can read them. Turn on Encrypt " +
+                        "Backup to protect it with a password instead."
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showUnencryptedWarning = false
+                    try {
+                        exportLauncher.launch(BackupCodec.newBackupFileName(brokersOnly = exportScope == "BrokersOnly"))
+                    } catch (_: ActivityNotFoundException) {
+                        snackbarMessage = "No file picker app is available on this device."
+                    }
+                }) { Text("Continue") }
+            },
+            dismissButton = {
+                TextButton(onClick = { showUnencryptedWarning = false }) { Text("Cancel") }
+            }
+        )
     }
 
     if (showExportPasswordDialog) {

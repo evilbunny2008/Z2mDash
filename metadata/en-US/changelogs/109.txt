@@ -1,0 +1,1 @@
+- Backups are now encrypted by default. The Encrypt Backup setting is remembered, so if you turn it off it stays off.
