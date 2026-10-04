@@ -10,7 +10,7 @@ AutoName: Z2M Dash
 
 RepoType: git
 Repo: https://github.com/evilbunny2008/Z2mDash.git
-Binaries: https://github.com/evilbunny2008/Z2mDash/releases/download/v%v/Z2mDash-%v.apk
+Binaries: https://github.com/evilbunny2008/Z2mDash/releases/download/v%v/z2mdash-%v.apk
 
 Builds:
   - versionName: 0.0.88

@@ -37,6 +37,7 @@ import androidx.core.content.pm.PackageInfoCompat
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.forceRepublishAllGroupsAppTopics
+import com.odiousapps.z2mdash.ui.components.rememberNotificationPermissionState
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 import com.odiousapps.z2mdash.ui.tv.horizontalSliderDpadFocusNav
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
@@ -46,6 +47,7 @@ fun SettingsScreen(navController: NavController) {
     val context = LocalContext.current
     val app = context.applicationContext as Z2mDashApplication
     val config by app.configRepository.config.collectAsState()
+    val notificationPermission = rememberNotificationPermissionState()
     var showPruneConfirm by remember { mutableStateOf(false) }
     var pruneResultMessage by remember { mutableStateOf<String?>(null) }
     var showForceUploadAllConfirm by remember { mutableStateOf(false) }
@@ -82,6 +84,7 @@ fun SettingsScreen(navController: NavController) {
                     leadingContent = { Icon(Icons.Default.Sync, contentDescription = null) },
                     trailingContent = { Switch(checked = config.backgroundWorkEnabled, onCheckedChange = null) },
                     modifier = Modifier.toggleableRow(config.backgroundWorkEnabled) { enabled ->
+                        if (enabled) notificationPermission.request()
                         app.configRepository.update { it.copy(backgroundWorkEnabled = enabled) }
                     }
                 )

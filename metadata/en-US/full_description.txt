@@ -1,4 +1,6 @@
-An Android dashboard app for Zigbee2MQTT, built to replace closed-source apps. No cloud, no account, no lock-in - your whole configuration is either one plain JSON file you can export and re-import or auto-configure settings stored in MQTT.
+An Android dashboard app for Zigbee2MQTT, built to replace closed-source apps. No cloud account required and no lock-in - the app talks directly to your own MQTT broker, and your whole configuration is either one plain JSON file you can export and re-import or auto-configure settings stored in MQTT.
+
+<b>Optional online service:</b> the "Import via code" button on the Add Broker screen uses sync.odiousapps.com, a credential relay run by the developer. If you use it, you log in to an account on that site and pick a saved credential, and the broker's hostname, username and password are passed back to the app through that server. It is entirely optional - nothing is sent unless you tap the button and agree to continue - and brokers can always be entered by hand or imported from a file instead. The relay's server code is free software (Unlicense), published in the <a href="https://github.com/evilbunny2008/MX3Launcher/tree/main/website">MX3Launcher repository under website/</a>.
 
 <b>Features:</b>
 <ul>

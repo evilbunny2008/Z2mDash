@@ -34,7 +34,7 @@ import kotlin.time.Duration.Companion.milliseconds
  * Shows a code/QR to pull a broker's hostname/username/password from a saved sync.odiousapps.com
  * preset, avoiding a hand-typed or voice/chat-dictated password.
  *
- * Starts the request on composition, then polls until resolved or expired, calling [onImported]
+ * Starts the request once the user agrees to the disclosure, then polls until resolved or expired, calling [onImported]
  * with whatever fields came back (only "Hostname" is checked here - the caller interprets the
  * rest, e.g. AddEditBrokerScreen's "Username"/"Password"/"Protocol").
  */
@@ -46,8 +46,11 @@ fun CredentialImportDialog(
     var session by remember { mutableStateOf<CredentialShareClient.ImportSession?>(null) }
     var qrBitmap by remember { mutableStateOf<ImageBitmap?>(null) }
     var errorMessage by remember { mutableStateOf<String?>(null) }
+    // Nothing is sent to the relay until the user has read what it is and agreed to use it.
+    var consented by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(consented) {
+        if (!consented) return@LaunchedEffect
         val started = withContext(Dispatchers.IO) {
             CredentialShareClient.startImport(label = "New broker")
         }
@@ -92,6 +95,13 @@ fun CredentialImportDialog(
                 val error = errorMessage
                 val currentSession = session
                 when {
+                    !consented -> Text(
+                        "This optional feature uses an online service run by the developer, " +
+                            "sync.odiousapps.com. You log in to an account there and pick a saved " +
+                            "credential, and the broker's hostname, username and password are relayed " +
+                            "back to this device through that server. Nothing is sent until you continue.",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
                     error != null -> Text(error, color = MaterialTheme.colorScheme.error)
                     currentSession == null -> {
                         CircularProgressIndicator()
@@ -122,6 +132,11 @@ fun CredentialImportDialog(
             }
         },
         confirmButton = {
+            if (!consented) {
+                TextButton(onClick = { consented = true }) { Text("Continue") }
+            }
+        },
+        dismissButton = {
             TextButton(onClick = onDismiss) { Text("Cancel") }
         }
     )

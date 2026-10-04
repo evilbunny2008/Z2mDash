@@ -1,0 +1,2 @@
+- The notification permission is now only asked for when you turn on an alert, Background Work, or send a test notification, rather than on first launch. The Alarm/Alert screen shows a prompt if notifications are blocked.
+- "Import via code" now explains that it uses the sync.odiousapps.com online service, and nothing is sent until you choose to continue.

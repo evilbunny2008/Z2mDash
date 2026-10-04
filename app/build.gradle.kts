@@ -36,8 +36,8 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 106
-        versionName = "0.0.106"
+        versionCode = 107
+        versionName = "0.0.107"
     }
 
     buildTypes {
@@ -232,6 +232,7 @@ dependencies {
     implementation("androidx.core:core-ktx:1.19.1")
     implementation("androidx.activity:activity-compose:1.13.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.11.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
     // ProcessLifecycleOwner - drives connect/disconnect off whether the app as a whole (not just
     // one Activity) is actually foregrounded, so e.g. an Activity recreation on rotation doesn't
     // get mistaken for the app being backgrounded. See Z2mDashApplication's lifecycle observer.

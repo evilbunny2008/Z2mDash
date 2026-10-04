@@ -25,6 +25,7 @@ import java.nio.charset.StandardCharsets
 object CredentialShareClient {
 
     // Credentials only ever touch this relay in transit through this short-lived exchange.
+    // Server source: https://github.com/evilbunny2008/MX3Launcher/tree/main/website
     private const val START_URL = "https://sync.odiousapps.com/credential_start.php"
     private const val STATUS_URL = "https://sync.odiousapps.com/credential_status.php"
     private const val VIEW_URL_BASE = "https://sync.odiousapps.com/credential_view.php"

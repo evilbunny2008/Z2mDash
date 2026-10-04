@@ -2,6 +2,7 @@ package com.odiousapps.z2mdash.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
@@ -22,6 +24,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,6 +36,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
+import com.odiousapps.z2mdash.ui.components.rememberNotificationPermissionState
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,6 +44,8 @@ import com.odiousapps.z2mdash.ui.tv.toggleableRow
 fun AlertSettingsScreen(navController: NavController) {
     val app = LocalContext.current.applicationContext as Z2mDashApplication
     val config by app.configRepository.config.collectAsState()
+    val notificationPermission = rememberNotificationPermissionState()
+    val anyAlertEnabled = config.smokeAlertsEnabled || config.wateringAlertsEnabled || config.lowBatteryAlertsEnabled
 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -55,11 +61,27 @@ fun AlertSettingsScreen(navController: NavController) {
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState())) {
+            if (anyAlertEnabled && !notificationPermission.granted) {
+                ListItem(
+                    headlineContent = { Text("Notifications are off") },
+                    supportingContent = { Text("Alerts can't be shown until Z2M Dash is allowed to post notifications") },
+                    leadingContent = {
+                        Icon(Icons.Default.NotificationsOff, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+                    },
+                    trailingContent = {
+                        Row {
+                            TextButton(onClick = { notificationPermission.request() }) { Text("Allow") }
+                            TextButton(onClick = { notificationPermission.openAppNotificationSettings() }) { Text("Settings") }
+                        }
+                    }
+                )
+            }
             ListItem(
                 headlineContent = { Text("Smoke Alerts") },
                 supportingContent = { Text("Notify if any device reports smoke detected") },
                 trailingContent = { Switch(checked = config.smokeAlertsEnabled, onCheckedChange = null) },
                 modifier = Modifier.toggleableRow(config.smokeAlertsEnabled) { enabled ->
+                    if (enabled) notificationPermission.request()
                     app.configRepository.update { it.copy(smokeAlertsEnabled = enabled) }
                 }
             )
@@ -85,7 +107,10 @@ fun AlertSettingsScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(onClick = { app.smokeAlertManager.triggerTestAlert() }) {
+                Button(onClick = {
+                    notificationPermission.request()
+                    app.smokeAlertManager.triggerTestAlert()
+                }) {
                     Icon(Icons.Default.Warning, contentDescription = null)
                     Spacer(Modifier.padding(4.dp))
                     Text("Test Notification")
@@ -105,6 +130,7 @@ fun AlertSettingsScreen(navController: NavController) {
                 },
                 trailingContent = { Switch(checked = config.wateringAlertsEnabled, onCheckedChange = null) },
                 modifier = Modifier.toggleableRow(config.wateringAlertsEnabled) { enabled ->
+                    if (enabled) notificationPermission.request()
                     app.configRepository.update { it.copy(wateringAlertsEnabled = enabled) }
                 }
             )
@@ -113,7 +139,10 @@ fun AlertSettingsScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(onClick = { app.wateringAlertManager.triggerTestAlert() }) {
+                Button(onClick = {
+                    notificationPermission.request()
+                    app.wateringAlertManager.triggerTestAlert()
+                }) {
                     Icon(Icons.Default.WaterDrop, contentDescription = null)
                     Spacer(Modifier.padding(4.dp))
                     Text("Test Notification")
@@ -132,6 +161,7 @@ fun AlertSettingsScreen(navController: NavController) {
                 },
                 trailingContent = { Switch(checked = config.lowBatteryAlertsEnabled, onCheckedChange = null) },
                 modifier = Modifier.toggleableRow(config.lowBatteryAlertsEnabled) { enabled ->
+                    if (enabled) notificationPermission.request()
                     app.configRepository.update { it.copy(lowBatteryAlertsEnabled = enabled) }
                 }
             )
@@ -140,7 +170,10 @@ fun AlertSettingsScreen(navController: NavController) {
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                Button(onClick = { app.lowBatteryAlertManager.triggerTestAlert() }) {
+                Button(onClick = {
+                    notificationPermission.request()
+                    app.lowBatteryAlertManager.triggerTestAlert()
+                }) {
                     Icon(Icons.Default.BatteryAlert, contentDescription = null)
                     Spacer(Modifier.padding(4.dp))
                     Text("Test Notification")
