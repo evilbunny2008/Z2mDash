@@ -56,7 +56,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
@@ -663,15 +662,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         floatingActionButton = {
-            // On TV, every FAB below gets the same two treatments a D-pad remote actually needs:
-            // full FloatingActionButton size instead of the small variant (a bigger, more legible
-            // target from a couch - D-pad selection is a discrete focus step either way, but a
-            // small target is harder to tell apart from its neighbours once focused), extra
-            // spacing between them (easier to see which one currently has focus when they're not
-            // packed tightly), and tvFocusIndicator's visible focus ring, which none of them had
-            // before - without it there was no on-screen cue for which FAB (if any) was focused,
-            // which is what made them "hard to select" in the first place, not a click that
-            // didn't register once actually focused.
+            // Every FAB is the same full FloatingActionButton size, on phone and TV alike - the
+            // small variant used to be used for all but "Add group" on phones, which left a row of
+            // mismatched buttons once they moved to a single row along the bottom edge. On TV,
+            // tvFocusIndicator's visible focus ring and the wider spacing below are what a D-pad
+            // remote needs: without the ring there was no on-screen cue for which FAB (if any) was
+            // focused, which is what made them "hard to select" in the first place, and the extra
+            // spacing makes it easier to see which one currently has focus.
             val isTv = LocalIsTv.current
             // Laid out in a single row along the bottom edge rather than stacked vertically, so the
             // FABs only cover a short strip of the list instead of a tall column down its right side.
@@ -680,17 +677,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 // Only worth showing once there's at least one named cluster to actually find -
                 // a dashboard of only standalone tiles has nothing for this to search.
                 if (config.groups.any { g -> g.clusters.isNotEmpty() }) {
-                    if (isTv) {
-                        FloatingActionButton(
-                            onClick = { showClusterSearch = true },
-                            modifier = Modifier.tvFocusIndicator()
-                        ) {
-                            Icon(Icons.Default.Search, contentDescription = "Search clusters")
-                        }
-                    } else {
-                        SmallFloatingActionButton(onClick = { showClusterSearch = true }) {
-                            Icon(Icons.Default.Search, contentDescription = "Search clusters")
-                        }
+                    FloatingActionButton(
+                        onClick = { showClusterSearch = true },
+                        modifier = Modifier.tvFocusIndicator()
+                    ) {
+                        Icon(Icons.Default.Search, contentDescription = "Search clusters")
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
@@ -708,21 +699,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     } else {
                         "Show only sensors not reporting recently"
                     }
-                    if (isTv) {
-                        FloatingActionButton(
-                            onClick = { showOnlyStaleClusters = !showOnlyStaleClusters },
-                            containerColor = staleToggleContainerColor,
-                            modifier = Modifier.tvFocusIndicator()
-                        ) {
-                            Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
-                        }
-                    } else {
-                        SmallFloatingActionButton(
-                            onClick = { showOnlyStaleClusters = !showOnlyStaleClusters },
-                            containerColor = staleToggleContainerColor
-                        ) {
-                            Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
-                        }
+                    FloatingActionButton(
+                        onClick = { showOnlyStaleClusters = !showOnlyStaleClusters },
+                        containerColor = staleToggleContainerColor,
+                        modifier = Modifier.tvFocusIndicator()
+                    ) {
+                        Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
@@ -732,19 +714,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     val anyGroupExpanded = config.groups.any { !it.collapsed }
                     val collapseContentDescription = if (anyGroupExpanded) "Collapse all groups" else "Expand all groups"
                     val collapseIcon = if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore
-                    if (isTv) {
-                        FloatingActionButton(
-                            onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) },
-                            modifier = Modifier.tvFocusIndicator()
-                        ) {
-                            Icon(collapseIcon, contentDescription = collapseContentDescription)
-                        }
-                    } else {
-                        SmallFloatingActionButton(
-                            onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) }
-                        ) {
-                            Icon(collapseIcon, contentDescription = collapseContentDescription)
-                        }
+                    FloatingActionButton(
+                        onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) },
+                        modifier = Modifier.tvFocusIndicator()
+                    ) {
+                        Icon(collapseIcon, contentDescription = collapseContentDescription)
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
