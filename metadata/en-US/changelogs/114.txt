@@ -1,0 +1,2 @@
+- New button to show only devices with a weak Zigbee signal (link quality below 50).
+- Clusters with a weak signal device are now outlined in amber.

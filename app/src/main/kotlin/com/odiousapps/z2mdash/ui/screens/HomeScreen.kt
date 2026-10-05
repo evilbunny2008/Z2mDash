@@ -37,6 +37,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.SignalCellularAlt1Bar
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
@@ -126,6 +127,7 @@ import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
 import com.odiousapps.z2mdash.data.retopicClusterAndPublish
 import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
 import com.odiousapps.z2mdash.mqtt.LowBatteryAlertManager
+import com.odiousapps.z2mdash.ui.components.AlertAmber
 import com.odiousapps.z2mdash.ui.components.AlertBlue
 import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
@@ -272,8 +274,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // since this app doesn't handle configChanges) rather than silently reverting to "off".
     var showOnlyStaleClusters by rememberSaveable { mutableStateOf(false) }
     // Same idea for devices whose battery is at or below LowBatteryAlertManager's low threshold
-    // (20%) - toggled by its own FAB. With both filters on, a cluster has to match both.
+    // (20%) - toggled by its own FAB.
     var showOnlyLowBatteryClusters by rememberSaveable { mutableStateOf(false) }
+    // And again for a weak Zigbee link (linkquality below WEAK_SIGNAL_LQI). Every filter that's on
+    // has to match for a cluster to stay visible.
+    var showOnlyWeakSignalClusters by rememberSaveable { mutableStateOf(false) }
     // Single Permit Join bar for the whole screen, regardless of how many brokers/base topics are
     // configured - tapping its text opens a dialog to pick which (broker, base topic) to act on
     // and, once picked, which router to extend joining through. Replaces both the old one-bar-
@@ -714,17 +719,24 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
-                // Only worth showing once at least one dashboard device actually reports a battery
-                // level (or while the filter is on, so it can always be switched back off). A
-                // plain substring check rather than a JSON parse - this re-runs on every incoming
-                // MQTT message, and only needs to know whether a "battery" field exists at all.
-                val batteryTopicKeys = remember(config) {
-                    config.groups.asSequence().flatMap { it.panels }.flatMap { batteryTopicKeysFor(it) }.toSet()
+                // The low-battery and weak-signal FABs are only worth showing once at least one
+                // dashboard device actually reports a "battery"/"linkquality" field (or while
+                // their filter is on, so it can always be switched back off). A plain substring
+                // check rather than a JSON parse - this re-runs on every incoming MQTT message,
+                // and only needs to know whether the field exists at all.
+                val deviceTopicKeys = remember(config) {
+                    config.groups.asSequence().flatMap { it.panels }.flatMap { deviceTopicKeysFor(it) }.toSet()
                 }
-                val anyBatteryDevice by remember(batteryTopicKeys) {
+                val anyBatteryDevice by remember(deviceTopicKeys) {
                     derivedStateOf {
                         val payloads = payloadsState.value
-                        batteryTopicKeys.any { payloads[it]?.contains("\"battery\"") == true }
+                        deviceTopicKeys.any { payloads[it]?.contains("\"battery\"") == true }
+                    }
+                }
+                val anyLinkQualityDevice by remember(deviceTopicKeys) {
+                    derivedStateOf {
+                        val payloads = payloadsState.value
+                        deviceTopicKeys.any { payloads[it]?.contains("\"linkquality\"") == true }
                     }
                 }
                 if (anyBatteryDevice || showOnlyLowBatteryClusters) {
@@ -743,6 +755,27 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 "Showing only devices with 20% battery or less - tap to show everything"
                             } else {
                                 "Show only devices with 20% battery or less"
+                            }
+                        )
+                    }
+                    Spacer(Modifier.width(fabSpacing))
+                }
+                if (anyLinkQualityDevice || showOnlyWeakSignalClusters) {
+                    FloatingActionButton(
+                        onClick = { showOnlyWeakSignalClusters = !showOnlyWeakSignalClusters },
+                        containerColor = if (showOnlyWeakSignalClusters) {
+                            MaterialTheme.colorScheme.errorContainer
+                        } else {
+                            FloatingActionButtonDefaults.containerColor
+                        },
+                        modifier = Modifier.tvFocusIndicator()
+                    ) {
+                        Icon(
+                            Icons.Default.SignalCellularAlt1Bar,
+                            contentDescription = if (showOnlyWeakSignalClusters) {
+                                "Showing only devices with link quality below $WEAK_SIGNAL_LQI - tap to show everything"
+                            } else {
+                                "Show only devices with link quality below $WEAK_SIGNAL_LQI"
                             }
                         )
                     }
@@ -1431,7 +1464,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         // (and standalone tiles, each their own single-panel bucket above) that
                         // HAVE reported within the last hour are left out of row-packing/rendering
                         // entirely, rather than shown dimmed or in a separate dialog. The
-                        // low-battery toggle filters the same way, and both apply when both are on. Deliberately
+                        // low-battery and weak-signal toggles filter the same way, and every
+                        // toggle that's on has to match. Deliberately
                         // NOT wrapped in remember/derivedStateOf per bucket - calling those inside
                         // a plain .filter{} loop whose iteration count varies is a known Compose
                         // slot-alignment hazard without an explicit key() per item, which isn't
@@ -1439,7 +1473,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         // means every expanded group's content recomposes on every MQTT message
                         // while either toggle is on (unlike everywhere else on this screen), but only
                         // for as long as one is deliberately switched on.
-                        val visibleClusters = if (!showOnlyStaleClusters && !showOnlyLowBatteryClusters) {
+                        val visibleClusters = if (!showOnlyStaleClusters && !showOnlyLowBatteryClusters && !showOnlyWeakSignalClusters) {
                             orderedClusters
                         } else {
                             val payloads = payloadsState.value
@@ -1447,7 +1481,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             val nowMillis = nowMillisState.longValue
                             orderedClusters.filter { bucket ->
                                 (!showOnlyStaleClusters || isClusterStale(bucket, payloads, timestamps, nowMillis)) &&
-                                    (!showOnlyLowBatteryClusters || isClusterLowBattery(bucket, payloads))
+                                    (!showOnlyLowBatteryClusters || isClusterLowBattery(bucket, payloads)) &&
+                                    (!showOnlyWeakSignalClusters || isClusterWeakSignal(bucket, payloads))
                             }
                         }
 
@@ -2249,12 +2284,13 @@ private fun pushDashboardGroupOrderUpdates(app: Z2mDashApplication, orderedGroup
 }
 
 /**
- * "brokerId|topic" keys where [panel]'s device would report its "battery" field: the panel's own
- * reading topic, plus that topic with any "/app" suffix stripped - an editable threshold tile
- * reads from the device's "/app" config topic, while the battery itself is on the device's main
- * topic (same matching LowBatteryAlertManager.deviceNameFor does). A Button has no reading topic.
+ * "brokerId|topic" keys where [panel]'s device would report device-level fields like "battery"
+ * and "linkquality": the panel's own reading topic, plus that topic with any "/app" suffix
+ * stripped - an editable threshold tile reads from the device's "/app" config topic, while those
+ * fields are on the device's main topic (same matching LowBatteryAlertManager.deviceNameFor
+ * does). A Button has no reading topic.
  */
-private fun batteryTopicKeysFor(panel: Panel): List<String> {
+private fun deviceTopicKeysFor(panel: Panel): List<String> {
     val topic = when (panel) {
         is Panel.Sensor -> panel.topic
         is Panel.Toggle -> panel.stateTopic
@@ -2266,10 +2302,23 @@ private fun batteryTopicKeysFor(panel: Panel): List<String> {
 /** Whether any device behind [panels] reports a battery level LowBatteryAlertManager counts as low. */
 private fun isClusterLowBattery(panels: List<Panel>, payloads: Map<String, String>): Boolean =
     panels.any { panel ->
-        batteryTopicKeysFor(panel).any { key ->
+        deviceTopicKeysFor(panel).any { key ->
             LowBatteryAlertManager.isLowBattery(
                 payloads[key]?.let { JsonPath.extract(it, "battery") }?.toDoubleOrNull()
             )
+        }
+    }
+
+// Zigbee link quality (0-255) below this counts as a weak link - the weak-signal FAB's filter and
+// the amber cluster outline.
+private const val WEAK_SIGNAL_LQI = 50
+
+/** Whether any device behind [panels] reports a "linkquality" below WEAK_SIGNAL_LQI. */
+private fun isClusterWeakSignal(panels: List<Panel>, payloads: Map<String, String>): Boolean =
+    panels.any { panel ->
+        deviceTopicKeysFor(panel).any { key ->
+            val lqi = payloads[key]?.let { JsonPath.extract(it, "linkquality") }?.toDoubleOrNull()
+            lqi != null && lqi < WEAK_SIGNAL_LQI
         }
     }
 
@@ -2394,9 +2443,13 @@ private fun ClusterCard(
     val lowBatteryState = remember(panels) {
         derivedStateOf { isClusterLowBattery(panels, payloadsState.value) }
     }
-    // Staleness wins when both apply - a stale battery reading is old news anyway, and the red
-    // outline is the more urgent of the two.
+    val weakSignalState = remember(panels) {
+        derivedStateOf { isClusterWeakSignal(panels, payloadsState.value) }
+    }
+    // Only one outline at a time, most urgent first: stale (red) - a stale reading is old news
+    // anyway - then low battery (blue), then weak signal (amber).
     val showLowBattery = lowBatteryState.value && !isStale
+    val showWeakSignal = weakSignalState.value && !isStale && !showLowBattery
 
     val staleIndicatorColor = if (isStale) {
         MaterialTheme.colorScheme.error
@@ -2416,6 +2469,8 @@ private fun ClusterCard(
                     // Same outline as the stale indicator, in the same blue a sensor tile uses
                     // for a reading above its ideal range.
                     Modifier.border(2.dp, AlertBlue, RoundedCornerShape(12.dp))
+                } else if (showWeakSignal) {
+                    Modifier.border(2.dp, AlertAmber, RoundedCornerShape(12.dp))
                 } else {
                     Modifier
                 }
@@ -2530,6 +2585,15 @@ private fun ClusterCard(
                         Icons.Default.BatteryAlert,
                         contentDescription = "Battery at 20% or less",
                         tint = AlertBlue,
+                        modifier = Modifier.size(20.dp)
+                    )
+                }
+                if (showWeakSignal) {
+                    Spacer(Modifier.width(4.dp))
+                    Icon(
+                        Icons.Default.SignalCellularAlt1Bar,
+                        contentDescription = "Link quality below $WEAK_SIGNAL_LQI",
+                        tint = AlertAmber,
                         modifier = Modifier.size(20.dp)
                     )
                 }

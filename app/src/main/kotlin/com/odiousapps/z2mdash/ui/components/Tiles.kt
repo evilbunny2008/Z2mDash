@@ -74,6 +74,9 @@ enum class SensorAlert { NONE, IN_RANGE, BELOW_MIN, ABOVE_MAX }
 private val AlertRed = Color(0xFFE53935)
 // Internal so HomeScreen's low-battery cluster outline uses this exact same blue.
 internal val AlertBlue = Color(0xFF1E88E5)
+// HomeScreen's weak-signal (low LQI) cluster outline - the same Material 600 shade family as the
+// other alert colours, and distinct from red (stale), blue (low battery) and green (in range).
+internal val AlertAmber = Color(0xFFFB8C00)
 private val AlertGreen = Color(0xFF43A047)
 
 // Internal (not private) so pickers like AddPanelScreen's icon dropdown can render the same
