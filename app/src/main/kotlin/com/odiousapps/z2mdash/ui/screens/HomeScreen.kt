@@ -115,6 +115,8 @@ import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
+import com.odiousapps.z2mdash.data.clusterKey
+import com.odiousapps.z2mdash.data.clusterName
 import com.odiousapps.z2mdash.data.forceRepublishGroupAppTopics
 import com.odiousapps.z2mdash.data.orderedPanelsOf
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
@@ -407,9 +409,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // at a time) - lets a cluster be dropped either onto another cluster in the same group
     // (reorders it there) or onto a cluster/header in a different group (moves the whole
     // cluster there, inserted at the exact cluster/header hovered over).
-    // Keys are "<groupId>::<clusterKey>", clusterKey being a clusterName or "__header__" for a
+    // Keys are "<groupId>::<clusterKey>", clusterKey being a clusterId or "__header__" for a
     // group's own header (so an otherwise-empty group is still a valid drop target) - group-
-    // scoped rather than by clusterKey alone, since two different groups can share a cluster name.
+    // scoped too, so the group a drop lands in is readable straight off the key.
     var draggedClusterKey by remember { mutableStateOf<String?>(null) }
     var draggedToClusterKey by remember { mutableStateOf<String?>(null) }
     // Whole-card window-space bounds, not just a centre point - a dragged cluster should register
@@ -495,15 +497,15 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         val fromGroupId = draggedPanelFromGroupId ?: return
         val panel = app.configRepository.config.value.groups
             .find { it.id == fromGroupId }?.panels?.find { it.id == panelId } ?: return
-        val ownClusterName = panel.clusterName
-        val ownClusterKey = ownClusterName.takeIf { it.isNotBlank() }?.let { "$fromGroupId::$it" }
+        val ownClusterId = panel.clusterId
+        val ownClusterKey = ownClusterId.takeIf { it.isNotBlank() }?.let { "$fromGroupId::$it" }
         val ownRect = ownClusterKey?.let { clusterBounds[it] }
         if (ownRect?.contains(dragTouchWindowPos) == true) {
             draggedToClusterKey = null
             draggedPanelWillPopOut = false
             val siblings = app.configRepository.config.value.groups
                 .find { it.id == fromGroupId }?.panels
-                ?.filter { it.clusterName == ownClusterName }
+                ?.filter { it.clusterId == ownClusterId }
                 ?.sortedBy { it.displayOrder }
                 .orEmpty()
             val nearestSiblingId = siblings
@@ -671,11 +673,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             // which is what made them "hard to select" in the first place, not a click that
             // didn't register once actually focused.
             val isTv = LocalIsTv.current
+            // Laid out in a single row along the bottom edge rather than stacked vertically, so the
+            // FABs only cover a short strip of the list instead of a tall column down its right side.
             val fabSpacing = if (isTv) 20.dp else 12.dp
-            Column(horizontalAlignment = Alignment.End) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 // Only worth showing once there's at least one named cluster to actually find -
                 // a dashboard of only standalone tiles has nothing for this to search.
-                if (config.groups.any { g -> g.panels.any { it.clusterName.isNotBlank() } }) {
+                if (config.groups.any { g -> g.clusters.isNotEmpty() }) {
                     if (isTv) {
                         FloatingActionButton(
                             onClick = { showClusterSearch = true },
@@ -688,7 +692,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             Icon(Icons.Default.Search, contentDescription = "Search clusters")
                         }
                     }
-                    Spacer(Modifier.height(fabSpacing))
+                    Spacer(Modifier.width(fabSpacing))
                 }
                 // Only worth showing once there's at least one non-editable sensor to actually
                 // watch for staleness - an editable panel is a fixed preference value, not a live
@@ -720,7 +724,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
                         }
                     }
-                    Spacer(Modifier.height(fabSpacing))
+                    Spacer(Modifier.width(fabSpacing))
                 }
                 // Only worth showing once there's more than one group to bulk-collapse - with
                 // zero or one, per-group collapse (the header's own chevron) already covers it.
@@ -742,7 +746,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             Icon(collapseIcon, contentDescription = collapseContentDescription)
                         }
                     }
-                    Spacer(Modifier.height(fabSpacing))
+                    Spacer(Modifier.width(fabSpacing))
                 }
                 FloatingActionButton(
                     onClick = { navController.navigate("addGroup") },
@@ -936,7 +940,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 val toKey = fromKey?.let { computeNearestClusterKey(it, dragTouchWindowPos) }
                                 if (fromKey != null && toKey != null && fromKey != toKey) {
                                     val fromGroupId = fromKey.substringBefore("::")
-                                    val fromClusterName = fromKey.substringAfter("::")
+                                    val fromClusterId = fromKey.substringAfter("::")
+                                    val fromClusterName = app.configRepository.config.value.groups
+                                        .find { it.id == fromGroupId }?.clusterName(fromClusterId).orEmpty()
                                     val toGroupId = toKey.substringBefore("::")
                                     val toClusterKey = toKey.substringAfter("::")
                                     if (toGroupId == fromGroupId) {
@@ -947,12 +953,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         val currentGroup = app.configRepository.config.value
                                             .groups.find { it.id == fromGroupId }
                                         if (currentGroup != null) {
-                                            val panelsByClusterKey = currentGroup.panels
-                                                .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+                                            val panelsByClusterKey = currentGroup.panels.groupBy { it.clusterKey }
                                             val currentOrder = panelsByClusterKey.entries
                                                 .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
                                                 .map { (key, _) -> key }
-                                            val fromIndex = currentOrder.indexOf(fromClusterName)
+                                            val fromIndex = currentOrder.indexOf(fromClusterId)
                                             // "__header__" (the group's own header - see headerClusterKey
                                             // above) never appears in currentOrder, so indexOf would return
                                             // -1 and silently no-op the whole drop below - hovering the
@@ -968,10 +973,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 val previousGroups = app.configRepository.config.value.groups
                                                 val reordered = currentOrder.toMutableList()
                                                 reordered.removeAt(fromIndex)
-                                                reordered.add(toIndex, fromClusterName)
+                                                reordered.add(toIndex, fromClusterId)
                                                 app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
                                                 pushGroupOrderUpdatesForClusters(app, reordered, currentGroup.panels)
-                                                publishAppTopicForClusterIfMissing(app, fromGroupId, fromClusterName)
+                                                publishAppTopicForClusterIfMissing(app, fromGroupId, fromClusterId)
                                                 // Names the group in the confirmation and scrolls straight to it -
                                                 // otherwise a cluster reordered off the bottom of a tall group (or
                                                 // past whatever's currently on screen) just seems to vanish on
@@ -993,18 +998,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         // than always at the end.
                                         val liveGroups = app.configRepository.config.value.groups
                                         val movedPanelIds = liveGroups.find { it.id == fromGroupId }
-                                            ?.panels?.filter { it.clusterName == fromClusterName }
+                                            ?.panels?.filter { it.clusterId == fromClusterId }
                                             ?.map { it.id } ?: emptyList()
                                         val oldGroupName = liveGroups.find { it.id == fromGroupId }?.name
                                         val newGroupName = liveGroups.find { it.id == toGroupId }?.name
                                         app.configRepository.moveClusterToGroup(
-                                            fromGroupId, toGroupId, fromClusterName,
+                                            fromGroupId, toGroupId, fromClusterId,
                                             insertBeforeClusterKey = toClusterKey
                                         )
                                         if (newGroupName != null) {
-                                            pushGroupMoveForAutoConfiguredDevices(app, movedPanelIds, newGroupName)
+                                            pushGroupMoveForAutoConfiguredDevices(app, movedPanelIds, toGroupId, newGroupName)
                                         }
-                                        publishAppTopicForClusterIfMissing(app, toGroupId, fromClusterName)
+                                        publishAppTopicForClusterIfMissing(app, toGroupId, fromClusterId)
                                         // Names the destination group in the confirmation, expands it if it
                                         // was collapsed, and scrolls straight to it - a cross-group move is
                                         // otherwise invisible: the cluster disappears from where it was
@@ -1014,12 +1019,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                             liveGroups
                                         ) {
                                             if (oldGroupName != null) {
-                                                pushGroupMoveForAutoConfiguredDevices(app, movedPanelIds, oldGroupName)
+                                                pushGroupMoveForAutoConfiguredDevices(app, movedPanelIds, fromGroupId, oldGroupName)
                                             }
                                         }
                                         app.configRepository.setGroupCollapsed(toGroupId, false)
                                         backStackEntry.savedStateHandle["scrollToGroupId"] = toGroupId
-                                        pendingScrollToClusterKey = "$toGroupId::$fromClusterName"
+                                        pendingScrollToClusterKey = "$toGroupId::$fromClusterId"
                                     }
                                 }
                               } catch (c: CancellationException) {
@@ -1093,29 +1098,36 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                     when {
                                         mergeTargetKey != null -> {
                                             val toGroupId = mergeTargetKey.substringBefore("::")
-                                            val toClusterName = mergeTargetKey.substringAfter("::")
-                                            if (!(toGroupId == fromGroupId && toClusterName == panel.clusterName)) {
+                                            val toClusterId = mergeTargetKey.substringAfter("::")
+                                            if (!(toGroupId == fromGroupId && toClusterId == panel.clusterId)) {
                                                 val previousGroups = app.configRepository.config.value.groups
+                                                val toClusterName = previousGroups.find { it.id == toGroupId }
+                                                    ?.clusterName(toClusterId).orEmpty()
+                                                val oldClusterName = previousGroups.find { it.id == fromGroupId }
+                                                    ?.clusterName(panel.clusterId).orEmpty()
                                                 app.configRepository.movePanelIntoCluster(
-                                                    fromGroupId, panel.id, toGroupId, toClusterName
+                                                    fromGroupId, panel.id, toGroupId, toClusterId
                                                 )
-                                                pushPanelClusterOverrideIfAutoConfigured(app, panel, toClusterName)
-                                                publishAppTopicForClusterIfMissing(app, toGroupId, toClusterName)
+                                                pushPanelClusterOverrideIfAutoConfigured(app, panel, toClusterName, toClusterId)
+                                                publishAppTopicForClusterIfMissing(app, toGroupId, toClusterId)
                                                 showUndoSnackbar("Moved \"${panel.label}\" into \"$toClusterName\"", previousGroups) {
-                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.clusterName)
+                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, oldClusterName, panel.clusterId)
                                                 }
                                                 app.configRepository.setGroupCollapsed(toGroupId, false)
                                                 backStackEntry.savedStateHandle["scrollToGroupId"] = toGroupId
-                                                pendingScrollToClusterKey = "$toGroupId::$toClusterName"
+                                                pendingScrollToClusterKey = "$toGroupId::$toClusterId"
                                             }
                                         }
-                                        willPopOut && panel.clusterName.isNotBlank() && panel.label.isNotBlank() -> {
+                                        willPopOut && panel.clusterId.isNotBlank() && panel.label.isNotBlank() -> {
                                             val siblingCount = app.configRepository.config.value.groups
                                                 .find { it.id == fromGroupId }?.panels
-                                                ?.count { it.clusterName == panel.clusterName } ?: 0
+                                                ?.count { it.clusterId == panel.clusterId } ?: 0
                                             if (siblingCount > 1) {
                                                 val previousGroups = app.configRepository.config.value.groups
-                                                app.configRepository.movePanelToOwnCluster(fromGroupId, panel.id, panel.label)
+                                                val oldClusterName = previousGroups.find { it.id == fromGroupId }
+                                                    ?.clusterName(panel.clusterId).orEmpty()
+                                                val newClusterId = app.configRepository
+                                                    .movePanelToOwnCluster(fromGroupId, panel.id, panel.label)
                                                 // movePanelToOwnCluster always appends the new cluster past every
                                                 // other one's displayOrder - immediately re-slotted here into the
                                                 // gap it was actually dropped in, rather than leaving it stuck at
@@ -1130,12 +1142,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 // every earlier cluster handles both sides of the gap correctly.
                                                 val currentGroup = app.configRepository.config.value.groups
                                                     .find { it.id == fromGroupId }
-                                                if (currentGroup != null) {
+                                                if (currentGroup != null && newClusterId != null) {
                                                     val currentOrder = currentGroup.panels
-                                                        .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+                                                        .groupBy { it.clusterKey }
                                                         .entries.sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
                                                         .map { (key, _) -> key }
-                                                    val fromIndex = currentOrder.indexOf(panel.label)
+                                                    val fromIndex = currentOrder.indexOf(newClusterId)
                                                     if (fromIndex >= 0) {
                                                         val targetIndex = currentOrder.withIndex().count { (i, clusterKey) ->
                                                             if (i == fromIndex) return@count false
@@ -1146,22 +1158,24 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         if (targetIndex != fromIndex) {
                                                             val reordered = currentOrder.toMutableList()
                                                             reordered.removeAt(fromIndex)
-                                                            reordered.add(targetIndex, panel.label)
+                                                            reordered.add(targetIndex, newClusterId)
                                                             app.configRepository.reorderClustersInGroup(fromGroupId, reordered)
                                                         }
                                                     }
                                                 }
-                                                pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label)
-                                                publishAppTopicForClusterIfMissing(app, fromGroupId, panel.label)
+                                                if (newClusterId != null) {
+                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label, newClusterId)
+                                                    publishAppTopicForClusterIfMissing(app, fromGroupId, newClusterId)
+                                                }
                                                 showUndoSnackbar("Moved \"${panel.label}\"", previousGroups) {
-                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.clusterName)
+                                                    pushPanelClusterOverrideIfAutoConfigured(app, panel, oldClusterName, panel.clusterId)
                                                 }
                                             }
                                         }
-                                        toPanelIndex >= 0 && panel.clusterName.isNotBlank() -> {
+                                        toPanelIndex >= 0 && panel.clusterId.isNotBlank() -> {
                                             val currentPanels = app.configRepository.config.value.groups
                                                 .find { it.id == fromGroupId }?.panels
-                                                ?.filter { it.clusterName == panel.clusterName }
+                                                ?.filter { it.clusterId == panel.clusterId }
                                                 ?.sortedBy { it.displayOrder }
                                             if (currentPanels != null && toPanelIndex < currentPanels.size) {
                                                 val targetPanelId = currentPanels[toPanelIndex].id
@@ -1175,7 +1189,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     val orderedIds = reordered.map { it.id }
                                                     app.configRepository.reorderPanelsInCluster(fromGroupId, orderedIds)
                                                     pushOrderUpdateIfAutoConfigured(app, orderedIds, reordered)
-                                                    publishAppTopicForClusterIfMissing(app, fromGroupId, panel.clusterName)
+                                                    publishAppTopicForClusterIfMissing(app, fromGroupId, panel.clusterId)
                                                     showUndoSnackbar("Moved \"${panel.label}\"", previousGroups) {
                                                         pushOrderUpdateIfAutoConfigured(
                                                             app, currentPanels.map { it.id }, currentPanels
@@ -1387,12 +1401,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
                 if (!group.collapsed) {
                     item(key = "${group.id}_content") {
-                        // Panels sharing a non-blank clusterName render together in one card;
-                        // blank-clusterName panels each get their own unique bucket to stay standalone.
+                        // Panels sharing a clusterId render together in one card; standalone
+                        // (blank-clusterId) panels each get their own unique bucket.
                         val clusters = LinkedHashMap<String, MutableList<Panel>>()
                         group.panels.forEach { panel ->
-                            val key = panel.clusterName.ifBlank { "__single__${panel.id}" }
-                            clusters.getOrPut(key) { mutableListOf() }.add(panel)
+                            clusters.getOrPut(panel.clusterKey) { mutableListOf() }.add(panel)
                         }
                         // Sort clusters by lowest displayOrder (falls back to insertion order at
                         // the Int.MAX_VALUE default), and sort each cluster's panels too, so panels
@@ -1443,7 +1456,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             var currentRow = mutableListOf<List<Panel>>()
                             var usedWidth = 0.dp
                             visibleClusters.forEach { panelsInCluster ->
-                                val itemWidth = if (panelsInCluster.first().clusterName.isBlank()) {
+                                val itemWidth = if (panelsInCluster.first().clusterId.isBlank()) {
                                     standaloneTileWidth
                                 } else {
                                     clusterCardWidth
@@ -1469,12 +1482,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             packedRows.forEach { row ->
                                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                                     row.forEach { panelsInCluster ->
-                                        val name = panelsInCluster.first().clusterName
+                                        val clusterId = panelsInCluster.first().clusterId
+                                        val name = group.clusterName(clusterId)
                                         // Stable per-cluster identity, independent of list position -
                                         // without this, Compose can reuse another cluster's remembered
                                         // state (like ageText) when the list reorders.
                                         key(panelsInCluster.first().id) {
-                                            if (name.isBlank()) {
+                                            if (clusterId.isBlank()) {
                                                 val standalonePanel = panelsInCluster.first()
                                                 PanelTile(
                                                     panel = standalonePanel,
@@ -1491,7 +1505,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         }
                                                 )
                                             } else {
-                                                val compoundKey = "${group.id}::$name"
+                                                val compoundKey = "${group.id}::$clusterId"
                                                 val clusterBringIntoViewRequester = remember(compoundKey) { BringIntoViewRequester() }
                                                 DisposableEffect(compoundKey) {
                                                     clusterBringIntoViewRequesters[compoundKey] = clusterBringIntoViewRequester
@@ -1499,8 +1513,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         clusterBringIntoViewRequesters.remove(compoundKey)
                                                         clusterCaptionCoordinates.remove(compoundKey)
                                                         // clusterBounds was the one map NOT cleaned up here, unlike
-                                                        // its two siblings above - every cluster rename or
-                                                        // cross-group move changes compoundKey, leaving the OLD
+                                                        // its two siblings above - every cross-group move
+                                                        // changes compoundKey, leaving the OLD
                                                         // key's Rect permanently stuck in the map (scrolling the
                                                         // card off/on does the same, re-disposing and re-composing
                                                         // under the same key, but a rename/move disposes the OLD
@@ -1547,19 +1561,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         // Disambiguated against this group's own existing
                                                         // cluster names ("X copy", then "X copy 2", "X copy
                                                         // 3", ...) rather than always suggesting a bare "X
-                                                        // copy" - left un-checked, confirming the dialog
-                                                        // without editing this field would silently ADD the
-                                                        // clone's panels into whatever cluster already had
-                                                        // that exact name (ClusterCard groups purely by
-                                                        // name), rather than creating a genuinely separate
-                                                        // one - confirmed by a user report of "Duplicate"
-                                                        // merging into the existing cluster instead of
-                                                        // copying it, traced back to a stale "X copy" left
-                                                        // over from this group's own earlier corruption.
-                                                        val existingNames = group.panels
-                                                            .map { it.clusterName }
-                                                            .filter { it.isNotBlank() }
-                                                            .toSet()
+                                                        // copy". The clone is always its own cluster (by id)
+                                                        // either way - this just keeps the two cards
+                                                        // distinguishable on screen.
+                                                        val existingNames = group.clusters.map { it.name }.toSet()
                                                         var candidate = "$name copy"
                                                         var suffix = 2
                                                         while (candidate in existingNames) {
@@ -1573,6 +1578,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         val prefix = SensorDiscovery.commonTopicPrefix(panelsInCluster)
                                                         pendingClusterRetopic = PendingClusterRetopic(
                                                             groupId = group.id,
+                                                            clusterId = clusterId,
                                                             clusterName = name,
                                                             currentTopicPrefix = prefix
                                                         )
@@ -1630,27 +1636,27 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     }
 
     if (showClusterSearch) {
-        // (groupId, groupName, clusterName) for every distinct non-blank cluster name across every
-        // group, matched case-insensitively as a substring - recomputed only while the dialog is
-        // actually open and the query changes, not on every recomposition of the screen itself.
+        // (group, cluster) for every cluster across every group whose name matches
+        // case-insensitively as a substring - recomputed only while the dialog is actually open
+        // and the query changes, not on every recomposition of the screen itself.
         val clusterSearchResults = remember(config, clusterSearchQuery) {
             if (clusterSearchQuery.isBlank()) {
                 emptyList()
             } else {
                 config.groups.flatMap { group ->
-                    group.panels.asSequence().map { it.clusterName }.filter { it.isNotBlank() }.distinct()
-                        .filter { it.contains(clusterSearchQuery, ignoreCase = true) }
-                        .map { clusterName -> Triple(group.id, group.name, clusterName) }.toList()
-                }.sortedBy { (_, _, clusterName) -> clusterName.lowercase() }
+                    group.clusters
+                        .filter { it.name.contains(clusterSearchQuery, ignoreCase = true) }
+                        .map { cluster -> group to cluster }
+                }.sortedBy { (_, cluster) -> cluster.name.lowercase() }
             }
         }
-        fun jumpToCluster(groupId: String, clusterName: String) {
+        fun jumpToCluster(groupId: String, clusterId: String) {
             // Same scroll mechanism a cross-group cluster drag already uses to reveal where a
             // moved cluster landed - a coarse index-based scroll to get the group's content
             // composed, then a precise bringIntoView once the specific card has mounted.
             app.configRepository.setGroupCollapsed(groupId, false)
             backStackEntry.savedStateHandle["scrollToGroupId"] = groupId
-            pendingScrollToClusterKey = "$groupId::$clusterName"
+            pendingScrollToClusterKey = "$groupId::$clusterId"
             showClusterSearch = false
             clusterSearchQuery = ""
         }
@@ -1677,12 +1683,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         LazyColumn(modifier = Modifier.heightIn(max = 320.dp)) {
                             items(
                                 clusterSearchResults,
-                                key = { (groupId, _, clusterName) -> "$groupId::$clusterName" }
-                            ) { (groupId, groupName, clusterName) ->
+                                key = { (group, cluster) -> "${group.id}::${cluster.id}" }
+                            ) { (group, cluster) ->
                                 ListItem(
-                                    headlineContent = { Text(clusterName) },
-                                    supportingContent = { Text(groupName) },
-                                    modifier = Modifier.clickable { jumpToCluster(groupId, clusterName) }
+                                    headlineContent = { Text(cluster.name) },
+                                    supportingContent = { Text(group.name) },
+                                    modifier = Modifier.clickable { jumpToCluster(group.id, cluster.id) }
                                 )
                             }
                         }
@@ -1768,7 +1774,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 TextButton(onClick = {
                     if (renameText.isNotBlank() && renameText != group.name) {
                         app.configRepository.upsertGroup(group.copy(name = renameText))
-                        pushGroupRenameForAutoConfiguredDevices(app, group.name, renameText)
+                        pushGroupRenameForAutoConfiguredDevices(app, group.id, group.name, renameText)
                     }
                     renamingGroup = null
                 }) { Text("Save") }
@@ -1929,7 +1935,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             .find { it.id == pending.groupId }?.panels
                             ?.filter { it.id in pending.panelIds }
                             ?.sortedBy { it.displayOrder } ?: emptyList()
-                        app.configRepository.duplicateCluster(
+                        val newClusterId = app.configRepository.duplicateCluster(
                             groupId = pending.groupId,
                             sourcePanelIds = pending.panelIds,
                             newClusterName = duplicateClusterNameText,
@@ -1941,7 +1947,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         )
                         val newPanels = app.configRepository.config.value.groups
                             .find { it.id == pending.groupId }?.panels
-                            ?.filter { it.clusterName == duplicateClusterNameText }
+                            ?.filter { newClusterId != null && it.clusterId == newClusterId }
                             ?.sortedBy { it.displayOrder } ?: emptyList()
                         val seedValues = sourcePanels.zip(newPanels).mapNotNull { (source, new) ->
                             if (source !is Panel.Sensor) return@mapNotNull null
@@ -1949,7 +1955,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             val value = raw?.let { JsonPath.extract(it, source.jsonPath) } ?: return@mapNotNull null
                             new.id to value
                         }.toMap()
-                        publishAppTopicForClusterIfMissing(app, pending.groupId, duplicateClusterNameText, seedValues)
+                        if (newClusterId != null) {
+                            publishAppTopicForClusterIfMissing(app, pending.groupId, newClusterId, seedValues)
+                        }
                         pendingClusterDuplicate = null
                     },
                     enabled = duplicateClusterNameText.isNotBlank()
@@ -2003,7 +2011,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 TextButton(
                     onClick = {
                         retopicClusterAndPublish(
-                            app, pending.groupId, pending.clusterName, pending.currentTopicPrefix, retopicNewTopicText
+                            app, pending.groupId, pending.clusterId, pending.currentTopicPrefix, retopicNewTopicText
                         )
                         pendingClusterRetopic = null
                         retopicNewTopicText = ""
@@ -2072,6 +2080,8 @@ private data class PendingClusterDuplicate(
 
 private data class PendingClusterRetopic(
     val groupId: String,
+    val clusterId: String,
+    // Display only (the dialog title).
     val clusterName: String,
     // Captured once when the dialog opens, same reasoning as PendingClusterDuplicate's own
     // originalTopicPrefix - the current shared topic prefix, replaced with retopicNewTopicText's
@@ -2155,7 +2165,7 @@ private fun pushGroupOrderUpdatesForClusters(
 ) {
     val config = app.configRepository.config.value
     val payloads = app.connectionManager.latestPayloads.value
-    val panelsByCluster = groupPanels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+    val panelsByCluster = groupPanels.groupBy { it.clusterKey }
     // One shared timestamp for every cluster this drag touches, so a phone reconciling any of
     // them later treats the whole batch as one logical write.
     val orderVersion = System.currentTimeMillis()
@@ -2483,7 +2493,7 @@ private fun ClusterCard(
                         // doesn't exist yet - it reads them back via ITS previousBackStackEntry,
                         // which is this same entry.
                         val handle = navController.currentBackStackEntry?.savedStateHandle
-                        handle?.set("presetClusterName", name)
+                        handle?.set("presetClusterId", panels.first().clusterId)
                         panels.firstOrNull()?.brokerId?.let { handle?.set("presetBrokerId", it) }
                         SensorDiscovery.commonTopicPrefix(panels).takeIf { it.isNotBlank() }
                             ?.let { handle?.set("presetTopic", it) }
@@ -2653,21 +2663,26 @@ private fun addPendingDevice(
         val sensorPayload = payloads["${pending.brokerId}|${pending.sensorTopic}"]
         val sensorFieldKeys = sensorPayload?.let { SensorDiscovery.fieldKeysOf(it) } ?: emptySet()
 
-        val newPanels = SensorDiscovery.buildPanels(
+        val targetGroupId = app.configRepository.resolveOrCreateGroup(deviceConfig.groupId, deviceConfig.group)
+        val liveConfig = app.configRepository.config.value
+        val targetGroup = liveConfig.groups.find { it.id == targetGroupId } ?: return
+        val built = SensorDiscovery.buildPanels(
             brokerId = pending.brokerId,
             sensorTopic = pending.sensorTopic,
             sensorFieldKeys = sensorFieldKeys,
             appConfigTopic = pending.appConfigTopic,
             appConfigPayload = appConfigPayload,
-            deviceConfig = deviceConfig
+            deviceConfig = deviceConfig,
+            groupName = targetGroup.name,
+            groupClusters = targetGroup.clusters,
+            reservedPanelIds = liveConfig.groups.flatMap { g -> g.panels.map { it.id } }.toSet()
         )
+        val newPanels = built.panels
         if (newPanels.isEmpty()) {
             Log.w(tag, "buildPanels produced zero panels for ${pending.deviceName} - aborting add. " +
                 "deviceConfig.panelFields=${deviceConfig.panelFields}, sensorFieldKeys=$sensorFieldKeys")
             return
         }
-
-        val targetGroupId = app.configRepository.resolveOrCreateGroup(deviceConfig.group)
 
         val device = AutoConfiguredDevice(
             brokerId = pending.brokerId,
@@ -2681,7 +2696,8 @@ private fun addPendingDevice(
             oldPanelIds = emptySet(),
             updatedDevice = device,
             targetGroupId = targetGroupId,
-            newPanels = newPanels
+            newPanels = newPanels,
+            newClusters = built.clusters
         )
         app.configRepository.resyncDashboardGroupOrder()
         app.configRepository.removePendingAutoConfigDevice(pending.brokerId, pending.appConfigTopic)

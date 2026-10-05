@@ -1,0 +1,1 @@
+- The home screen's buttons now sit in a row along the bottom of the screen instead of stacked up the right-hand side.

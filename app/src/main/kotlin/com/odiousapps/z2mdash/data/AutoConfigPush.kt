@@ -232,7 +232,12 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
  * republish of the device's payload) would rebuild that panel back into its old shared cluster,
  * silently undoing the drag. No-op for a manually-added panel.
  */
-fun pushPanelClusterOverrideIfAutoConfigured(app: Z2mDashApplication, panel: Panel, newClusterName: String) {
+fun pushPanelClusterOverrideIfAutoConfigured(
+    app: Z2mDashApplication,
+    panel: Panel,
+    newClusterName: String,
+    newClusterId: String
+) {
     val device = deviceFor(app, panel.id) ?: return
     val currentPayload = currentPayloadFor(app, device) ?: return
     val deviceConfig = SensorDiscovery.parseDeviceAppConfig(currentPayload) ?: return
@@ -240,12 +245,20 @@ fun pushPanelClusterOverrideIfAutoConfigured(app: Z2mDashApplication, panel: Pan
     val updatedPayload = when (panel) {
         is Panel.Sensor -> {
             val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel.id, panel.jsonPath) ?: return
-            SensorDiscovery.updateDescriptionInAppPayload(currentPayload, fieldClusterUpdates = mapOf(index to newClusterName))
+            SensorDiscovery.updateDescriptionInAppPayload(
+                currentPayload,
+                fieldClusterUpdates = mapOf(index to newClusterName),
+                fieldClusterIdUpdates = mapOf(index to newClusterId)
+            )
         }
         is Panel.Toggle, is Panel.Button -> {
             val commandTopic = commandTopicOf(panel) ?: return
             val index = SensorDiscovery.controlIndex(deviceConfig, orderedPanels, panel.id, commandTopic) ?: return
-            SensorDiscovery.updateDescriptionInAppPayload(currentPayload, controlClusterUpdates = mapOf(index to newClusterName))
+            SensorDiscovery.updateDescriptionInAppPayload(
+                currentPayload,
+                controlClusterUpdates = mapOf(index to newClusterName),
+                controlClusterIdUpdates = mapOf(index to newClusterId)
+            )
         }
     } ?: return
     publishAndMarkApplied(app, device, updatedPayload)
@@ -321,32 +334,51 @@ fun pushClusterRenameForAutoConfiguredDevices(
 /**
  * Pushes a cluster's move to a different top-level group into every auto-configured device that
  * owns one of [movedPanelIds]. A device's payload has one shared "group" for every cluster it
- * describes, so this moves the whole device - every cluster it describes - to [newGroupName].
+ * describes, so this moves the whole device - every cluster it describes - to [newGroupId]
+ * (named [newGroupName]).
  */
-fun pushGroupMoveForAutoConfiguredDevices(app: Z2mDashApplication, movedPanelIds: List<String>, newGroupName: String) {
+fun pushGroupMoveForAutoConfiguredDevices(
+    app: Z2mDashApplication,
+    movedPanelIds: List<String>,
+    newGroupId: String,
+    newGroupName: String
+) {
     val config = app.configRepository.config.value
     val devices = config.autoConfiguredDevices.filter { device -> movedPanelIds.any { it in device.createdPanelIds } }
     devices.forEach { device ->
         val currentPayload = currentPayloadFor(app, device) ?: return@forEach
-        val updatedPayload = SensorDiscovery.updateDescriptionInAppPayload(currentPayload, newGroup = newGroupName)
-            ?: return@forEach
+        val updatedPayload = SensorDiscovery.updateDescriptionInAppPayload(
+            currentPayload, newGroup = newGroupName, newGroupId = newGroupId
+        ) ?: return@forEach
         publishAndMarkApplied(app, device, updatedPayload)
     }
 }
 
 /**
- * Pushes a top-level group rename into every auto-configured device whose payload currently
- * declares [oldGroupName] as its "group" (matched the same case-insensitive way
- * DeviceAutoConfigManager.resolveTargetGroupId reads it).
+ * Pushes a top-level group rename into every auto-configured device whose payload belongs to
+ * group [groupId] - by its "group_id", or for a legacy payload without one, by [oldGroupName]
+ * (case-insensitive, the way ConfigRepository.resolveOrCreateGroup matches it). Stamps
+ * "group_id" too, so a legacy payload stops depending on its name from then on.
  */
-fun pushGroupRenameForAutoConfiguredDevices(app: Z2mDashApplication, oldGroupName: String, newGroupName: String) {
+fun pushGroupRenameForAutoConfiguredDevices(
+    app: Z2mDashApplication,
+    groupId: String,
+    oldGroupName: String,
+    newGroupName: String
+) {
     val config = app.configRepository.config.value
     config.autoConfiguredDevices.forEach { device ->
         val currentPayload = currentPayloadFor(app, device) ?: return@forEach
         val deviceConfig = SensorDiscovery.parseDeviceAppConfig(currentPayload) ?: return@forEach
-        if (!deviceConfig.group.equals(oldGroupName, ignoreCase = true)) return@forEach
-        val updatedPayload = SensorDiscovery.updateDescriptionInAppPayload(currentPayload, newGroup = newGroupName)
-            ?: return@forEach
+        val belongsToGroup = if (deviceConfig.groupId != null) {
+            deviceConfig.groupId == groupId
+        } else {
+            deviceConfig.group.equals(oldGroupName, ignoreCase = true)
+        }
+        if (!belongsToGroup) return@forEach
+        val updatedPayload = SensorDiscovery.updateDescriptionInAppPayload(
+            currentPayload, newGroup = newGroupName, newGroupId = groupId
+        ) ?: return@forEach
         publishAndMarkApplied(app, device, updatedPayload)
     }
 }
@@ -373,7 +405,7 @@ fun clearRetainedAppTopicsForOrphanedDevices(app: Z2mDashApplication, devicesBef
 }
 
 /**
- * Publishes a fresh "<topic>/app" retained payload for [clusterName]'s panels (in [groupId]) if
+ * Publishes a fresh "<topic>/app" retained payload for cluster [clusterId]'s panels (in [groupId]) if
  * their shared topic doesn't already have one - e.g. right after a duplicated cluster is
  * retargeted at a topic nothing has ever described. Without this, a cluster that only ever
  * existed by duplication stays purely local: invisible to any other phone sharing the broker,
@@ -387,15 +419,16 @@ fun clearRetainedAppTopicsForOrphanedDevices(app: Z2mDashApplication, devicesBef
 fun publishAppTopicForClusterIfMissing(
     app: Z2mDashApplication,
     groupId: String,
-    clusterName: String,
+    clusterId: String,
     // Seeds a Sensor field whose own topic *is* the new "/app" topic (e.g. a min/max threshold)
     // with a starting value, keyed by that field's (new, already-cloned) panel id - see
     // SensorDiscovery.buildAppConfigPayload's own doc for why this is needed at all.
     seedValuesByPanelId: Map<String, String> = emptyMap()
 ) {
     val config = app.configRepository.config.value
+    if (clusterId.isBlank()) return
     val group = config.groups.find { it.id == groupId } ?: return
-    val panels = group.panels.filter { it.clusterName == clusterName }
+    val panels = group.panels.filter { it.clusterId == clusterId }
     if (panels.isEmpty()) return
     val topic = SensorDiscovery.commonTopicPrefix(panels)
     if (topic.isBlank()) return
@@ -409,14 +442,14 @@ fun publishAppTopicForClusterIfMissing(
     // gets reconciled, rather than resetting every one of this cluster's panels to the bottom (see
     // buildAppConfigPayload's own doc on group_order for the bug this prevents).
     val orderedClusterKeys = group.panels
-        .groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+        .groupBy { it.clusterKey }
         .entries
         .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
         .map { (key, _) -> key }
-    val groupOrder = orderedClusterKeys.indexOf(clusterName).takeIf { it >= 0 }?.plus(1)
+    val groupOrder = orderedClusterKeys.indexOf(clusterId).takeIf { it >= 0 }?.plus(1)
 
     val payload = SensorDiscovery.buildAppConfigPayload(
-        panels, clusterName, group.name, appTopic, seedValuesByPanelId, groupOrder
+        panels, group.clusterName(clusterId), clusterId, group.name, group.id, appTopic, seedValuesByPanelId, groupOrder
     )
     // Registered *before* publishing, not after - the MQTT echo of this exact publish can arrive
     // back (via connectionManager.latestPayloads, on a background dispatcher) before the very
@@ -437,7 +470,7 @@ fun publishAppTopicForClusterIfMissing(
 }
 
 /**
- * Moves every panel sharing [clusterName] in [groupId] from [oldTopicPrefix] onto
+ * Moves every panel of cluster [clusterId] in [groupId] from [oldTopicPrefix] onto
  * [newTopicPrefix] - both the local rewrite (ConfigRepository.retopicCluster) and the MQTT side
  * (re-pointing this cluster's AutoConfiguredDevice tracking, carrying its "/app" payload forward
  * to the new topic with embedded control command/state topics rewritten too, and clearing the old
@@ -449,20 +482,20 @@ fun publishAppTopicForClusterIfMissing(
 fun retopicClusterAndPublish(
     app: Z2mDashApplication,
     groupId: String,
-    clusterName: String,
+    clusterId: String,
     oldTopicPrefix: String,
     newTopicPrefix: String
 ) {
     val clusterPanels = app.configRepository.config.value.groups
         .find { it.id == groupId }?.panels
-        ?.filter { it.clusterName == clusterName } ?: emptyList()
+        ?.filter { it.clusterId == clusterId } ?: emptyList()
     val brokerId = clusterPanels.firstOrNull()?.brokerId
     val device = app.configRepository.config.value.autoConfiguredDevices
         .find { d -> clusterPanels.any { it.id in d.createdPanelIds } }
     val oldAppTopic = "$oldTopicPrefix/app"
     val oldAppPayload = brokerId?.let { app.connectionManager.latestPayloads.value["$it|$oldAppTopic"] }
         ?.replace(oldTopicPrefix, newTopicPrefix)
-    app.configRepository.retopicCluster(groupId, clusterName, oldTopicPrefix, newTopicPrefix)
+    app.configRepository.retopicCluster(groupId, clusterId, oldTopicPrefix, newTopicPrefix)
     if (device != null) {
         val newSensorTopic = device.sensorTopic.replace(oldTopicPrefix, newTopicPrefix)
         app.configRepository.retopicAutoConfiguredDevice(
@@ -505,21 +538,21 @@ fun retopicClusterAndPublish(
  * SensorDiscovery.commonTopicPrefix) is exactly [oldTopicPrefix] - the bulk counterpart, for
  * moving every cluster a Zigbee network split actually touched in one action instead of
  * repeating "Change topic" per cluster. A cluster with a mixed/inconsistent topic (commonTopicPrefix
- * blank) or already on a different topic is left untouched. A panel with no cluster name at all is
- * skipped too - retopicClusterAndPublish matches by clusterName, which a blank-named "standalone"
- * panel has none of to match back against. Returns the cluster names actually moved, for the
- * caller to report back to the user.
+ * blank) or already on a different topic is left untouched. A standalone panel (no cluster at all) is
+ * skipped too - retopicClusterAndPublish works on a whole cluster, which a standalone panel isn't
+ * part of. Returns the names of the clusters actually moved, for the caller to report back to the
+ * user.
  */
 fun retopicGroupTopicPrefix(app: Z2mDashApplication, groupId: String, oldTopicPrefix: String, newTopicPrefix: String): List<String> {
     val group = app.configRepository.config.value.groups.find { it.id == groupId } ?: return emptyList()
-    val clusterBuckets = group.panels.filter { it.clusterName.isNotBlank() }.groupBy { it.clusterName }
-    val matchingClusterNames = clusterBuckets.filterValues { panels ->
+    val clusterBuckets = group.panels.filter { it.clusterId.isNotBlank() }.groupBy { it.clusterId }
+    val matchingClusterIds = clusterBuckets.filterValues { panels ->
         SensorDiscovery.commonTopicPrefix(panels) == oldTopicPrefix
     }.keys.toList()
-    matchingClusterNames.forEach { clusterName ->
-        retopicClusterAndPublish(app, groupId, clusterName, oldTopicPrefix, newTopicPrefix)
+    matchingClusterIds.forEach { clusterId ->
+        retopicClusterAndPublish(app, groupId, clusterId, oldTopicPrefix, newTopicPrefix)
     }
-    return matchingClusterNames
+    return matchingClusterIds.map { group.clusterName(it) }
 }
 
 /**
@@ -563,7 +596,7 @@ fun forceRepublishAllGroupsAppTopics(app: Z2mDashApplication): Int {
 fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
     val config = app.configRepository.config.value
     val group = config.groups.find { it.id == groupId } ?: return
-    val clusterBuckets = group.panels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+    val clusterBuckets = group.panels.groupBy { it.clusterKey }
     // Same reasoning as publishAppTopicForClusterIfMissing's own groupOrder comment - without it,
     // every cluster force-republished here would reset to the bottom (Int.MAX_VALUE) the instant
     // its own echo gets reconciled, silently scrambling the whole group's order on every Force
@@ -575,7 +608,8 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
     clusterBuckets.forEach { (clusterKey, panels) ->
         val topic = SensorDiscovery.commonTopicPrefix(panels)
         if (topic.isBlank()) return@forEach
-        val clusterName = panels.first().clusterName.ifBlank { panels.first().label }
+        val clusterId = panels.first().clusterId
+        val clusterName = group.clusterName(clusterId).ifBlank { panels.first().label }
         val brokerId = panels.first().brokerId
         val appTopic = "$topic/app"
         val groupOrder = orderedClusterKeys.indexOf(clusterKey).takeIf { it >= 0 }?.plus(1)
@@ -593,7 +627,7 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
         if (seedValuesByPanelId.size < appTopicEmbeddedFields.size) return@forEach
 
         val payload = SensorDiscovery.buildAppConfigPayload(
-            panels, clusterName, group.name, appTopic, seedValuesByPanelId, groupOrder
+            panels, clusterName, clusterId, group.name, group.id, appTopic, seedValuesByPanelId, groupOrder
         )
         // Registered before publishing - see publishAppTopicForClusterIfMissing's own comment on
         // why the order matters (this phone's own echo can otherwise race ahead of its own

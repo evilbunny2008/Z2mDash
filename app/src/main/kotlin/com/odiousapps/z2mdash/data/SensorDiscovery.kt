@@ -49,6 +49,12 @@ object SensorDiscovery {
         // Optional. When set, panels go into a dashboard group with this name (created if
         // needed), bypassing the UI-picked group - the device fully self-configures.
         val group: String?,
+        // Optional "group_id" - the id of [group]. When present it's what decides the target
+        // group (see ConfigRepository.resolveOrCreateGroup); [group] is then display-only.
+        val groupId: String? = null,
+        // Optional "cluster_id" - the id of the device's own default cluster (named [name]), used
+        // by every field/control without a cluster override of its own.
+        val clusterId: String? = null,
         // Optional. This device's cluster/panel position within [group] (lower sorts first).
         val groupOrder: Int?,
         // Optional. [group]'s own position among every top-level dashboard group (lower sorts
@@ -64,6 +70,12 @@ object SensorDiscovery {
         // Optional, parallel to panelFields - overrides which cluster the field renders in
         // instead of [name]. Blank/missing falls back to [name].
         val panelClusters: List<String> = emptyList(),
+        // Optional, parallel to panelFields - the id of a field's own overriding cluster. Blank/
+        // missing falls back to the cluster named by panelClusters (or [clusterId]).
+        val panelClusterIds: List<String> = emptyList(),
+        // Optional, parallel to panelFields - each field's own panel id, so every phone sharing
+        // the broker gives the same tile the same id.
+        val panelIds: List<String> = emptyList(),
         // Optional, parallel to panelFields - position within its cluster (lower sorts first),
         // else falls back to [groupOrder] then declaration order.
         val panelOrders: List<Int?> = emptyList(),
@@ -119,7 +131,11 @@ object SensorDiscovery {
         // Optional. Overrides Panel.Toggle/Button's icon (TileIcon name, case-insensitive), else
         // the hardcoded TileIcon.POWER default - unlike a Sensor's icon, a control's icon has no
         // field name to derive a suggestion from.
-        val icon: String? = null
+        val icon: String? = null,
+        // Optional "id" - this control's own panel id (see DeviceAppConfig.panelIds).
+        val id: String? = null,
+        // Optional "cluster_id" - the id of [cluster] (or of the device's default cluster).
+        val clusterId: String? = null
     )
 
     // Structural topics, not sensor data - skipped even if they contain a stray number
@@ -242,7 +258,7 @@ object SensorDiscovery {
     // removeSensorFieldFromAppPayload strips the same index from all of them, including any added
     // later, without a matching addition being forgotten there.
     private val sensorFieldParallelArrayKeys = listOf(
-        "labels", "panel_clusters", "panel_order", "panel_decimals", "panel_topics",
+        "labels", "panel_clusters", "panel_cluster_ids", "panel_ids", "panel_order", "panel_decimals", "panel_topics",
         "panel_units", "panel_icons", "panel_ideal_topics", "panel_ideal_min_paths", "panel_ideal_max_paths"
     )
 
@@ -339,8 +355,13 @@ object SensorDiscovery {
         controlStateTopicUpdates: Map<Int, String> = emptyMap(),
         controlStateFieldUpdates: Map<Int, String> = emptyMap(),
         controlIconUpdates: Map<Int, String> = emptyMap(),
+        // Cluster id overrides, pushed alongside fieldClusterUpdates/controlClusterUpdates (the
+        // names) whenever a field/control moves into a different cluster.
+        fieldClusterIdUpdates: Map<Int, String> = emptyMap(),
+        controlClusterIdUpdates: Map<Int, String> = emptyMap(),
         newDeviceName: String? = null,
-        newGroup: String? = null
+        newGroup: String? = null,
+        newGroupId: String? = null
     ): String? = try {
         val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
         if (obj == null) {
@@ -362,6 +383,7 @@ object SensorDiscovery {
             applyFieldArray("panels", fieldJsonPathUpdates)
             applyFieldArray("labels", fieldLabelUpdates)
             applyFieldArray("panel_clusters", fieldClusterUpdates)
+            applyFieldArray("panel_cluster_ids", fieldClusterIdUpdates)
             applyFieldArray("panel_units", fieldUnitUpdates)
             applyFieldArray("panel_icons", fieldIconUpdates)
             applyFieldArray("panel_topics", fieldTopicUpdates)
@@ -384,6 +406,7 @@ object SensorDiscovery {
             }
             queueControlUpdates(controlLabelUpdates, "label")
             queueControlUpdates(controlClusterUpdates, "cluster")
+            queueControlUpdates(controlClusterIdUpdates, "cluster_id")
             queueControlUpdates(controlCommandTopicUpdates, "command_topic")
             queueControlUpdates(controlOnPayloadUpdates, "on_payload")
             queueControlUpdates(controlOffPayloadUpdates, "off_payload")
@@ -406,6 +429,7 @@ object SensorDiscovery {
 
             newDeviceName?.let { mutableFields["name"] = JsonPrimitive(it) }
             newGroup?.let { mutableFields["group"] = JsonPrimitive(it) }
+            newGroupId?.let { mutableFields["group_id"] = JsonPrimitive(it) }
 
             Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
         }
@@ -440,6 +464,8 @@ object SensorDiscovery {
         targetId: String,
         matchJsonPath: String
     ): Int? {
+        // A payload carrying panel ids identifies the field outright - no occurrence matching.
+        deviceConfig.panelIds.indexOf(targetId).takeIf { it >= 0 }?.let { return it }
         var occurrence = 0
         for (p in orderedDevicePanels) {
             if (p.id == targetId) break
@@ -474,6 +500,7 @@ object SensorDiscovery {
         targetId: String,
         matchCommandTopic: String
     ): Int? {
+        deviceConfig.controls.indexOfFirst { it.id == targetId }.takeIf { it >= 0 }?.let { return it }
         var occurrence = 0
         for (p in orderedDevicePanels) {
             if (p.id == targetId) break
@@ -503,6 +530,8 @@ object SensorDiscovery {
         } else {
             val name = (obj["name"] as? JsonPrimitive)?.contentOrNull ?: ""
             val group = (obj["group"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
+            val groupId = (obj["group_id"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
+            val clusterId = (obj["cluster_id"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
             val groupOrder = (obj["group_order"] as? JsonPrimitive)?.intOrNull
             val dashboardOrder = (obj["dashboard_order"] as? JsonPrimitive)?.intOrNull
             val labelsArray = obj["labels"] as? JsonArray
@@ -521,6 +550,8 @@ object SensorDiscovery {
             val panelIdealTopics = stringArray("panel_ideal_topics")
             val panelIdealMinPaths = stringArray("panel_ideal_min_paths")
             val panelIdealMaxPaths = stringArray("panel_ideal_max_paths")
+            val panelClusterIds = stringArray("panel_cluster_ids")
+            val panelIds = stringArray("panel_ids")
             val orderVersion = (obj["order_version"] as? JsonPrimitive)?.longOrNull
             val numericKeys = obj.entries
                 .filter { (_, v) -> (v as? JsonPrimitive)?.doubleOrNull != null }
@@ -534,12 +565,16 @@ object SensorDiscovery {
             DeviceAppConfig(
                 name = name,
                 group = group,
+                groupId = groupId,
+                clusterId = clusterId,
                 groupOrder = groupOrder,
                 dashboardOrder = dashboardOrder,
                 panelFields = panelFields,
                 labels = labels,
                 rangePairs = rangePairs,
                 panelClusters = panelClusters,
+                panelClusterIds = panelClusterIds,
+                panelIds = panelIds,
                 panelOrders = panelOrders,
                 panelDecimals = panelDecimals,
                 panelUnits = panelUnits,
@@ -570,12 +605,14 @@ object SensorDiscovery {
         val cluster = (obj["cluster"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
         val order = (obj["order"] as? JsonPrimitive)?.intOrNull
         val icon = (obj["icon"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
+        val id = (obj["id"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
+        val clusterId = (obj["cluster_id"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
         // Zigbee2MQTT convention: commands go to "<state topic>/set" unless the
         // device explicitly overrides it with its own command_topic.
         val commandTopic = (obj["command_topic"] as? JsonPrimitive)?.contentOrNull?.takeIf { it.isNotBlank() }
             ?: stateTopic?.let { "$it/set" }
             ?: return null
-        return ControlConfig(label, commandTopic, onPayload, offPayload, stateTopic, stateField, cluster, order, momentary, icon)
+        return ControlConfig(label, commandTopic, onPayload, offPayload, stateTopic, stateField, cluster, order, momentary, icon, id, clusterId)
     }
 
     /** A JSON string primitive is used as-is; any other element (object/array/etc.) is re-serialized to its compact form. */
@@ -637,6 +674,19 @@ object SensorDiscovery {
         return (groupOrder ?: 0) * 1000 + (within ?: fallbackWithin)
     }
 
+    /**
+     * What [buildPanels] produced: the panels themselves (sensor fields first, in "panels" order,
+     * then controls in "controls" order - the same index spaces as the payload), and an entry for
+     * every cluster they reference, named as this payload names it.
+     */
+    data class BuiltDevice(
+        val panels: List<Panel>,
+        val clusters: List<PanelCluster>,
+        // Ids taken straight from the payload's own "panel_ids"/controls[].id, rather than minted
+        // here - a reconcile keeps these as-is instead of carrying over the matched local id.
+        val payloadPanelIds: Set<String>
+    )
+
     @Suppress("unused", "RedundantSuppression")
     fun buildPanels(
         brokerId: String,
@@ -644,10 +694,38 @@ object SensorDiscovery {
         sensorFieldKeys: Set<String>,
         appConfigTopic: String,
         appConfigPayload: String?,
-        deviceConfig: DeviceAppConfig
-    ): List<Panel> {
+        deviceConfig: DeviceAppConfig,
+        // The group these panels are going into - a payload cluster with no "cluster_id" of its
+        // own (a legacy, hand-written one) is matched by name among [groupClusters], else keyed
+        // by StableIds.legacyClusterId([groupName], name), the same id ConfigMigration gave it.
+        groupName: String,
+        groupClusters: List<PanelCluster>,
+        // Panel ids already used by anything other than this device - a payload id clashing with
+        // one (e.g. a payload hand-copied from another device's topic) is ignored and a fresh id
+        // minted instead, rather than two devices fighting over the same panel.
+        reservedPanelIds: Set<String> = emptySet()
+    ): BuiltDevice {
         val rangeKeys = deviceConfig.rangePairs.values.flatMap { (min, max) -> listOf(min, max) }.toSet()
         val deviceClusterName = deviceConfig.name.ifBlank { sensorTopic.substringAfterLast("/") }
+
+        val clusterNamesById = LinkedHashMap<String, String>()
+        val legacyIdsByName = mutableMapOf<String, String>()
+        fun clusterIdFor(name: String, explicitId: String?): String {
+            val id = explicitId
+                ?: groupClusters.find { it.name == name }?.id
+                ?: legacyIdsByName.getOrPut(name) { StableIds.legacyClusterId(groupName, name) }
+            clusterNamesById.putIfAbsent(id, name)
+            return id
+        }
+        val usedPanelIds = mutableSetOf<String>()
+        val payloadPanelIds = mutableSetOf<String>()
+        fun panelIdFor(payloadId: String?): String {
+            if (payloadId != null && payloadId !in reservedPanelIds && usedPanelIds.add(payloadId)) {
+                payloadPanelIds.add(payloadId)
+                return payloadId
+            }
+            return StableIds.newId().also { usedPanelIds.add(it) }
+        }
 
         val sensorPanels: List<Panel> = deviceConfig.panelFields.mapIndexed { index, field ->
             // An explicit panel_topics override (see DeviceAppConfig.panelTopics' own doc) always
@@ -668,8 +746,12 @@ object SensorDiscovery {
 
             val label = deviceConfig.labels.getOrNull(index)?.takeIf { it.isNotBlank() }
                 ?: suggestedLabel(field)
-            val clusterName = deviceConfig.panelClusters.getOrNull(index)?.takeIf { it.isNotBlank() }
-                ?: deviceClusterName
+            val clusterOverride = deviceConfig.panelClusters.getOrNull(index)?.takeIf { it.isNotBlank() }
+            val clusterIdOverride = deviceConfig.panelClusterIds.getOrNull(index)?.takeIf { it.isNotBlank() }
+            val clusterId = clusterIdFor(
+                clusterOverride ?: deviceClusterName,
+                clusterIdOverride ?: deviceConfig.clusterId.takeIf { clusterOverride == null }
+            )
             val unit = deviceConfig.panelUnits.getOrNull(index)?.takeIf { it.isNotBlank() }
                 ?: suggestedUnit(field)
             val icon = deviceConfig.panelIcons.getOrNull(index)?.takeIf { it.isNotBlank() }
@@ -678,7 +760,7 @@ object SensorDiscovery {
             val idealTopicOverride = deviceConfig.panelIdealTopics.getOrNull(index)?.takeIf { it.isNotBlank() }
 
             Panel.Sensor(
-                id = java.util.UUID.randomUUID().toString(),
+                id = panelIdFor(deviceConfig.panelIds.getOrNull(index)?.takeIf { it.isNotBlank() }),
                 label = label,
                 brokerId = brokerId,
                 topic = topic,
@@ -690,7 +772,7 @@ object SensorDiscovery {
                     ?: rangeBase?.let { deviceConfig.rangePairs[it]!!.first } ?: "min",
                 idealMaxPath = deviceConfig.panelIdealMaxPaths.getOrNull(index)?.takeIf { it.isNotBlank() }
                     ?: rangeBase?.let { deviceConfig.rangePairs[it]!!.second } ?: "max",
-                clusterName = clusterName,
+                clusterId = clusterId,
                 displayOrder = composedDisplayOrder(deviceConfig.groupOrder, deviceConfig.panelOrders.getOrNull(index), index),
                 decimals = deviceConfig.panelDecimals.getOrNull(index) ?: suggestedDecimals(field),
                 // A "<base>_min"/"<base>_max" field IS the threshold itself (e.g. moisture_min),
@@ -706,20 +788,25 @@ object SensorDiscovery {
             val fallbackWithin = sensorPanels.size + controlIndex
             val icon = control.icon?.let { name -> TileIcon.entries.find { it.name.equals(name, ignoreCase = true) } }
                 ?: TileIcon.POWER
+            val clusterOverride = control.cluster?.takeIf { it.isNotBlank() }
+            val clusterId = clusterIdFor(
+                clusterOverride ?: deviceClusterName,
+                control.clusterId ?: deviceConfig.clusterId.takeIf { clusterOverride == null }
+            )
             if (control.momentary) {
                 Panel.Button(
-                    id = java.util.UUID.randomUUID().toString(),
+                    id = panelIdFor(control.id),
                     label = control.label,
                     brokerId = brokerId,
                     commandTopic = control.commandTopic,
                     payload = control.onPayload,
                     icon = icon,
-                    clusterName = control.cluster?.takeIf { it.isNotBlank() } ?: deviceClusterName,
+                    clusterId = clusterId,
                     displayOrder = composedDisplayOrder(deviceConfig.groupOrder, control.order, fallbackWithin)
                 )
             } else {
                 Panel.Toggle(
-                    id = java.util.UUID.randomUUID().toString(),
+                    id = panelIdFor(control.id),
                     label = control.label,
                     brokerId = brokerId,
                     commandTopic = control.commandTopic,
@@ -728,13 +815,105 @@ object SensorDiscovery {
                     stateTopic = control.stateTopic ?: "",
                     stateJsonPath = control.stateField ?: "",
                     icon = icon,
-                    clusterName = control.cluster?.takeIf { it.isNotBlank() } ?: deviceClusterName,
+                    clusterId = clusterId,
                     displayOrder = composedDisplayOrder(deviceConfig.groupOrder, control.order, fallbackWithin)
                 )
             }
         }
 
-        return sensorPanels + controlPanels
+        return BuiltDevice(
+            panels = sensorPanels + controlPanels,
+            clusters = clusterNamesById.map { (id, name) -> PanelCluster(id, name) },
+            payloadPanelIds = payloadPanelIds
+        )
+    }
+
+    /**
+     * Rewrites a device's "/app" payload so it carries every id the app now identifies things by:
+     * "group_id" (plus "group", if the payload didn't name one), the device's default "cluster_id",
+     * "panel_cluster_ids"/"panel_ids" for its fields, and "cluster_id"/"id" on each control - all
+     * taken from [panels], the panels this phone actually holds for the device (same order as
+     * [deviceConfig]'s own fields then controls, as buildPanels returns them). A field/control
+     * with no cluster override of its own (it uses the device's default cluster) gets a blank
+     * "panel_cluster_ids" entry / no control "cluster_id", rather than repeating "cluster_id".
+     * Leaves "order_version" alone - ids aren't ordering. Returns null when nothing would change
+     * (every id already present and matching) or the payload isn't a JSON object.
+     */
+    fun stampIdsInAppPayload(
+        currentPayload: String,
+        deviceConfig: DeviceAppConfig,
+        panels: List<Panel>,
+        groupId: String,
+        groupName: String
+    ): String? = try {
+        val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
+        val fieldCount = deviceConfig.panelFields.size
+        if (obj == null || panels.size != fieldCount + deviceConfig.controls.size) {
+            null
+        } else {
+            val fields = obj.toMutableMap()
+            fields["group_id"] = JsonPrimitive(groupId)
+            if (deviceConfig.group == null) fields["group"] = JsonPrimitive(groupName)
+
+            val fieldUsesDefault = (0 until fieldCount).map { i ->
+                deviceConfig.panelClusters.getOrNull(i).isNullOrBlank() &&
+                    deviceConfig.panelClusterIds.getOrNull(i).isNullOrBlank()
+            }
+            val controlUsesDefault = deviceConfig.controls.map { it.cluster.isNullOrBlank() && it.clusterId == null }
+            // The default cluster's id is whichever cluster a default-using field/control landed
+            // in - every one of them resolved the same (name, cluster_id) pair, so any will do.
+            val defaultClusterId = (0 until fieldCount).firstOrNull { fieldUsesDefault[it] }?.let { panels[it].clusterId }
+                ?: controlUsesDefault.indexOfFirst { it }.takeIf { it >= 0 }?.let { panels[fieldCount + it].clusterId }
+            defaultClusterId?.let { fields["cluster_id"] = JsonPrimitive(it) }
+
+            if (fieldCount > 0) {
+                fields["panel_ids"] = JsonArray((0 until fieldCount).map { JsonPrimitive(panels[it].id) })
+                fields["panel_cluster_ids"] = JsonArray((0 until fieldCount).map { i ->
+                    JsonPrimitive(if (fieldUsesDefault[i]) "" else panels[i].clusterId)
+                })
+            }
+            (obj["controls"] as? JsonArray)?.let { controlsArray ->
+                // Index-aligned with deviceConfig.controls only when every entry parsed - a
+                // malformed control (skipped by parseControlConfig) would shift every index after
+                // it, so the controls are left alone rather than stamped onto the wrong entries.
+                if (controlsArray.size == deviceConfig.controls.size) {
+                    fields["controls"] = JsonArray(controlsArray.mapIndexed { i, element ->
+                        val control = element as? JsonObject ?: return@mapIndexed element
+                        val panel = panels[fieldCount + i]
+                        JsonObject(control.toMutableMap().apply {
+                            put("id", JsonPrimitive(panel.id))
+                            if (!controlUsesDefault[i]) put("cluster_id", JsonPrimitive(panel.clusterId))
+                        })
+                    })
+                }
+            }
+
+            val updated = JsonObject(fields)
+            if (updated == obj) null else Json.encodeToString(JsonElement.serializer(), updated)
+        }
+    } catch (_: Exception) {
+        null
+    }
+
+    /**
+     * Whether [deviceConfig] is missing any id stampIdsInAppPayload would add - a cheap pre-check
+     * so a device whose retained payload is unchanged (and so would otherwise be skipped
+     * entirely) still gets its ids stamped once, e.g. on the first run after upgrading.
+     */
+    fun isMissingIds(deviceConfig: DeviceAppConfig): Boolean {
+        if (deviceConfig.groupId == null) return true
+        val fieldCount = deviceConfig.panelFields.size
+        if (fieldCount > 0 && (deviceConfig.panelIds.size < fieldCount || deviceConfig.panelIds.any { it.isBlank() })) return true
+        val anyFieldUsesDefault = (0 until fieldCount).any { i ->
+            deviceConfig.panelClusters.getOrNull(i).isNullOrBlank() && deviceConfig.panelClusterIds.getOrNull(i).isNullOrBlank()
+        }
+        val anyControlUsesDefault = deviceConfig.controls.any { it.cluster.isNullOrBlank() && it.clusterId == null }
+        if ((anyFieldUsesDefault || anyControlUsesDefault) && deviceConfig.clusterId == null) return true
+        if ((0 until fieldCount).any { i ->
+                !deviceConfig.panelClusters.getOrNull(i).isNullOrBlank() && deviceConfig.panelClusterIds.getOrNull(i).isNullOrBlank()
+            }
+        ) return true
+        return deviceConfig.controls.any { it.id == null || (!it.cluster.isNullOrBlank() && it.clusterId == null) }
     }
 
     fun suggestedIcon(key: String): TileIcon = when {
@@ -851,7 +1030,12 @@ object SensorDiscovery {
     fun buildAppConfigPayload(
         panels: List<Panel>,
         clusterName: String,
+        // Blank for a standalone panel being published as its own one-panel "cluster" (see
+        // forceRepublishGroupAppTopics) - no "cluster_id" is written then, so a reader falls back
+        // to matching/creating a cluster by [clusterName].
+        clusterId: String,
         groupName: String,
+        groupId: String,
         appTopic: String,
         seedValuesByPanelId: Map<String, String> = emptyMap(),
         // This cluster's rank among its siblings in the group (same 1-indexed scheme
@@ -867,7 +1051,9 @@ object SensorDiscovery {
 
         val obj = buildJsonObject {
             put("name", clusterName)
+            if (clusterId.isNotBlank()) put("cluster_id", clusterId)
             put("group", groupName)
+            put("group_id", groupId)
             // group_order/panel_order/controls[].order are stamped from the panels' CURRENT local
             // displayOrder, not left unset - composedDisplayOrder (what every reader, including
             // this app's own reconcile of its own echo, derives a panel's displayOrder from)
@@ -885,6 +1071,7 @@ object SensorDiscovery {
             if (groupOrder != null) put("group_order", groupOrder)
             putJsonArray("panel_order") { sensors.indices.forEach { add(it) } }
             putJsonArray("panels") { sensors.forEach { add(it.jsonPath) } }
+            putJsonArray("panel_ids") { sensors.forEach { add(it.id) } }
             putJsonArray("labels") { sensors.forEach { add(it.label) } }
             putJsonArray("panel_decimals") { sensors.forEach { add(it.decimals) } }
             putJsonArray("panel_topics") { sensors.forEach { add(it.topic) } }
@@ -896,6 +1083,7 @@ object SensorDiscovery {
             putJsonArray("controls") {
                 controls.forEachIndexed { controlIndex, panel ->
                     addJsonObject {
+                        put("id", panel.id)
                         when (panel) {
                             is Panel.Toggle -> {
                                 put("label", panel.label)

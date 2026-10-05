@@ -17,6 +17,7 @@ import com.odiousapps.z2mdash.data.ConfigRepository
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.TileIcon
+import com.odiousapps.z2mdash.data.clusterNameOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -153,12 +154,12 @@ class WateringAlertManager(
                 isAbove && !wasAbove && risenEnough -> {
                     panelsAboveMidpoint.add(panel.id)
                     if (config.wateringAlertsEnabled) {
-                        // clusterName carries the actual plant/device name (e.g. "Alpinia - 01");
+                        // The cluster name carries the actual plant/device name (e.g. "Alpinia - 01");
                         // the panel's own label is just its field name (e.g. "Soil Moisture", from
                         // SensorDiscovery's auto-generated default), the same for every plant - using
                         // it alone left every alert reading identically with no way to tell which
                         // sensor triggered it.
-                        notifyMoistureTarget(panel.clusterName.ifBlank { panel.label }, panel.id)
+                        notifyMoistureTarget(config.clusterNameOf(panel).ifBlank { panel.label }, panel.id)
                     }
                 }
                 !isAbove && wasAbove -> {

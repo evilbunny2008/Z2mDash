@@ -48,8 +48,10 @@ import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.AutoConfiguredDevice
 import com.odiousapps.z2mdash.data.Panel
+import com.odiousapps.z2mdash.data.PanelCluster
 import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.data.withClusterId
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import java.util.UUID
@@ -111,31 +113,33 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
         id
     } else selectedGroupId
 
-    // Finds (or creates) a group by exact name - used when a device's own
-    // "group" field should decide placement, bypassing the UI's group picker.
-    fun resolveGroupIdByName(name: String): String {
-        val existing = config.groups.find { it.name.equals(name, ignoreCase = true) }
-        if (existing != null) return existing.id
-        val id = UUID.randomUUID().toString()
-        app.configRepository.upsertGroup(PanelGroup(id = id, name = name))
-        return id
-    }
-
     // Shared by the per-device and bulk "Auto-configure" buttons. Returns false for
     // topics with no valid /app config, so a bulk pass can skip those silently.
     fun applyOneDevice(sensor: SensorDiscovery.DiscoveredSensor): Boolean {
         val appConfigTopic = sensor.appConfigTopic ?: return false
         val appConfigPayload = brokerPayloads[appConfigTopic] ?: return false
         val deviceConfig = SensorDiscovery.parseDeviceAppConfig(appConfigPayload) ?: return false
-        val targetGroupId = deviceConfig.group?.let { resolveGroupIdByName(it) } ?: resolveTargetGroupId()
-        val newPanels = SensorDiscovery.buildPanels(
+        // A device's own "group_id"/"group" decides placement when it declares one, bypassing
+        // the UI's group picker.
+        val targetGroupId = if (deviceConfig.groupId != null || deviceConfig.group != null) {
+            app.configRepository.resolveOrCreateGroup(deviceConfig.groupId, deviceConfig.group)
+        } else {
+            resolveTargetGroupId()
+        }
+        val liveConfig = app.configRepository.config.value
+        val targetGroup = liveConfig.groups.find { it.id == targetGroupId } ?: return false
+        val built = SensorDiscovery.buildPanels(
             brokerId = selectedBrokerId,
             sensorTopic = sensor.topic,
             sensorFieldKeys = sensor.fields.map { it.key }.toSet(),
             appConfigTopic = appConfigTopic,
             appConfigPayload = appConfigPayload,
-            deviceConfig = deviceConfig
+            deviceConfig = deviceConfig,
+            groupName = targetGroup.name,
+            groupClusters = targetGroup.clusters,
+            reservedPanelIds = liveConfig.groups.flatMap { g -> g.panels.map { it.id } }.toSet()
         )
+        val newPanels = built.panels
         if (newPanels.isEmpty()) return false
         val device = AutoConfiguredDevice(
             brokerId = selectedBrokerId,
@@ -148,7 +152,8 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
             oldPanelIds = emptySet(),
             updatedDevice = device,
             targetGroupId = targetGroupId,
-            newPanels = newPanels
+            newPanels = newPanels,
+            newClusters = built.clusters
         )
         return true
     }
@@ -189,6 +194,10 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                 Button(
                     onClick = {
                         val targetGroupId = resolveTargetGroupId()
+                        // One cluster per sensor topic, named after the topic's last segment -
+                        // joining an existing same-named cluster in the target group, as typing
+                        // that name on the Add Panel screen would.
+                        val clusterIdsByTopic = mutableMapOf<String, Pair<String, PanelCluster?>>()
                         visibleSensors.forEach { sensor ->
                             sensor.fields.forEach { field ->
                                 val key = "${sensor.topic}|${field.key}"
@@ -203,9 +212,12 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                                         unit = SensorDiscovery.suggestedUnit(field.key),
                                         icon = SensorDiscovery.suggestedIcon(field.key),
                                         idealRangeTopic = sensor.idealRangeTopic?.takeIf { useIdeal } ?: "",
-                                        clusterName = sensor.topic.substringAfterLast("/")
+                                        clusterId = ""
                                     )
-                                    app.configRepository.addPanelToGroup(targetGroupId, panel)
+                                    val (clusterId, newCluster) = clusterIdsByTopic[sensor.topic]?.let { it.first to null }
+                                        ?: app.configRepository.clusterForName(targetGroupId, sensor.topic.substringAfterLast("/"))
+                                            .also { clusterIdsByTopic[sensor.topic] = it }
+                                    app.configRepository.addPanelToGroup(targetGroupId, panel.withClusterId(clusterId), newCluster)
                                 }
                             }
                         }

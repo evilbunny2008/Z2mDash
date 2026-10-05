@@ -55,9 +55,12 @@ sealed class Panel {
     abstract val id: String
     abstract val label: String
     abstract val brokerId: String
-    // Optional. Panels sharing the same non-blank clusterName within a group render together in
-    // one bordered card named underneath - e.g. all tiles for one physical sensor device.
-    abstract val clusterName: String
+    // Optional. Panels sharing the same non-blank clusterId within a group render together in
+    // one bordered card named underneath (the PanelCluster's own name, looked up via the owning
+    // PanelGroup.clusters) - e.g. all tiles for one physical sensor device. Blank = standalone.
+    // An id rather than the display name itself, so two clusters can share a name without
+    // silently merging, and a rename is a single edit rather than a rewrite of every member panel.
+    abstract val clusterId: String
     // Left-to-right/top-to-bottom position within a group (lower sorts first). Unordered
     // panels/clusters default to Int.MAX_VALUE, falling in after anything explicitly ordered.
     abstract val displayOrder: Int
@@ -87,7 +90,7 @@ sealed class Panel {
         // Off by default: flipping it on for a genuine sensor reading would just get overwritten
         // by the next real update, so it's an opt-in per panel via AddPanelScreen.
         val editable: Boolean = false,
-        override val clusterName: String = "",
+        override val clusterId: String = "",
         override val displayOrder: Int = Int.MAX_VALUE
     ) : Panel()
 
@@ -105,7 +108,7 @@ sealed class Panel {
         val stateTopic: String = "",
         val stateJsonPath: String = "",
         val icon: TileIcon = TileIcon.POWER,
-        override val clusterName: String = "",
+        override val clusterId: String = "",
         override val displayOrder: Int = Int.MAX_VALUE
     ) : Panel()
 
@@ -120,18 +123,96 @@ sealed class Panel {
         val commandTopic: String,
         val payload: String = "",
         val icon: TileIcon = TileIcon.POWER,
-        override val clusterName: String = "",
+        override val clusterId: String = "",
         override val displayOrder: Int = Int.MAX_VALUE
     ) : Panel()
 }
+
+/**
+ * A named card of panels within a group. Panels join one by its [id] (Panel.clusterId), never by
+ * [name] - see Panel.clusterId's own doc. Shared with other phones via the device's "/app"
+ * payload ("cluster_id"/"panel_cluster_ids"/controls[].cluster_id), so the same physical cluster
+ * keeps one id everywhere.
+ */
+@Serializable
+data class PanelCluster(
+    val id: String,
+    val name: String
+)
 
 @Serializable
 data class PanelGroup(
     val id: String,
     val name: String,
     val panels: List<Panel> = emptyList(),
+    // Every cluster any of [panels] belongs to, kept sorted in display order (lowest member
+    // displayOrder first) by ConfigRepository's own normalisation after every update - so a
+    // backup's clusters list reads in the same order the dashboard shows them.
+    val clusters: List<PanelCluster> = emptyList(),
     val collapsed: Boolean = false
 )
+
+/** Display name of [clusterId] within this group, or "" for a standalone panel / unknown id. */
+fun PanelGroup.clusterName(clusterId: String): String =
+    if (clusterId.isBlank()) "" else clusters.find { it.id == clusterId }?.name.orEmpty()
+
+/** Display name of the cluster [panel] belongs to, searched across every group - "" if standalone. */
+fun AppConfig.clusterNameOf(panel: Panel): String {
+    if (panel.clusterId.isBlank()) return ""
+    return groups.firstNotNullOfOrNull { g -> g.clusters.find { it.id == panel.clusterId } }?.name.orEmpty()
+}
+
+/**
+ * The key a group's dashboard layout buckets this panel under: its clusterId, or a per-panel
+ * "__single__<id>" so each standalone panel gets its own one-tile bucket.
+ */
+val Panel.clusterKey: String get() = clusterId.ifBlank { "__single__$id" }
+
+fun Panel.withClusterId(clusterId: String): Panel = when (this) {
+    is Panel.Sensor -> copy(clusterId = clusterId)
+    is Panel.Toggle -> copy(clusterId = clusterId)
+    is Panel.Button -> copy(clusterId = clusterId)
+}
+
+fun Panel.withDisplayOrder(displayOrder: Int): Panel = when (this) {
+    is Panel.Sensor -> copy(displayOrder = displayOrder)
+    is Panel.Toggle -> copy(displayOrder = displayOrder)
+    is Panel.Button -> copy(displayOrder = displayOrder)
+}
+
+fun Panel.withId(id: String): Panel = when (this) {
+    is Panel.Sensor -> copy(id = id)
+    is Panel.Toggle -> copy(id = id)
+    is Panel.Button -> copy(id = id)
+}
+
+/**
+ * Group/cluster/panel ids. Brand-new ones are random UUIDs. Ids for things that predate ids
+ * (an old config.json/backup being migrated, or a hand-written "/app" payload that doesn't carry
+ * one yet) are instead derived deterministically from the names that used to identify them - so
+ * every phone sharing a broker independently arrives at the SAME id for the same legacy
+ * group/cluster/panel, with no coordination needed, and two phones racing to stamp ids into the
+ * same legacy payload write identical values rather than fighting over them.
+ */
+object StableIds {
+    fun newId(): String = java.util.UUID.randomUUID().toString()
+
+    private fun derived(seed: String): String =
+        java.util.UUID.nameUUIDFromBytes(seed.toByteArray(Charsets.UTF_8)).toString()
+
+    // Group names have always matched case-insensitively (see the old resolveOrCreateGroup), so
+    // the derivation is too.
+    fun legacyGroupId(groupName: String): String = derived("z2mdash-group:${groupName.trim().lowercase()}")
+
+    // Cluster names have always matched exactly, and only within one group.
+    fun legacyClusterId(groupName: String, clusterName: String): String =
+        derived("z2mdash-cluster:${groupName.trim().lowercase()}/$clusterName")
+
+    // [identityKey] is DeviceAutoConfigManager's own per-device panel identity (field/command
+    // topic plus occurrence), scoped by the device's "/app" topic.
+    fun legacyPanelId(appConfigTopic: String, identityKey: String): String =
+        derived("z2mdash-panel:$appConfigTopic|$identityKey")
+}
 
 /**
  * Tracks a device configured via its own "<topic>/app" payload, so the app can keep watching

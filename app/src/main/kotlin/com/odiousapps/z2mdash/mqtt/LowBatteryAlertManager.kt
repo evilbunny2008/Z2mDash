@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import com.odiousapps.z2mdash.data.ConfigRepository
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
+import com.odiousapps.z2mdash.data.clusterNameOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -112,7 +113,7 @@ class LowBatteryAlertManager(
     }
 
     /**
-     * Prefers the clusterName of a dashboard panel sharing this topic (falling back to the
+     * Prefers the cluster name of a dashboard panel sharing this topic (falling back to the
      * panel's own label if it has no cluster), or the topic's own last path segment (effectively
      * the Zigbee friendly name) if no dashboard panel is configured for it at all.
      *
@@ -133,11 +134,12 @@ class LowBatteryAlertManager(
             .filter { it.brokerId == brokerId }
         val matchingPanel = panelsOnThisBroker.firstOrNull { topicFor(it) == topic }
             ?: panelsOnThisBroker.firstOrNull { topicFor(it)?.removeSuffix("/app") == topicBase }
-        val resolved = matchingPanel?.clusterName?.takeIf { it.isNotBlank() }
+        val clusterName = matchingPanel?.let { configRepository.config.value.clusterNameOf(it) }
+        val resolved = clusterName?.takeIf { it.isNotBlank() }
             ?: matchingPanel?.label?.takeIf { it.isNotBlank() }
             ?: topic.substringAfterLast("/")
         Log.d("Z2mDash", "LowBattery.deviceNameFor: topic=$topic matchedPanelTopic=${matchingPanel?.let { topicFor(it) }} " +
-            "clusterName=${matchingPanel?.clusterName} label=${matchingPanel?.label} resolved=$resolved")
+            "clusterName=$clusterName label=${matchingPanel?.label} resolved=$resolved")
         return resolved
     }
 

@@ -16,10 +16,11 @@ import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.data.StableIds
+import com.odiousapps.z2mdash.data.withId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.UUID
 
 /**
  * Keeps auto-configured devices' panels in sync with their "<topic>/app" retained
@@ -41,6 +42,11 @@ class DeviceAutoConfigManager(
         }
     }
 
+    // "brokerId|appConfigTopic" -> the payload most recently confirmed to already carry every id
+    // (see SensorDiscovery.isMissingIds/stampIdsInAppPayload), so an unchanged payload is only
+    // parsed for that check once per session rather than on every incoming MQTT message.
+    private val idsVerifiedPayloads = java.util.concurrent.ConcurrentHashMap<String, String>()
+
     private fun reconcileKnownDevices(payloads: Map<String, String>) {
         // The device list itself (which devices exist) is stable for the duration of one
         // reconcile pass - only detectNewDevices (called after this, per batch) adds to it.
@@ -50,27 +56,54 @@ class DeviceAutoConfigManager(
         // snapshot taken before the loop started - otherwise a later device's own diff would be
         // computed against a stale pre-batch view of cfg.groups.
         configRepository.config.value.autoConfiguredDevices.forEach { device ->
-            val currentPayload = payloads["${device.brokerId}|${device.appConfigTopic}"] ?: return@forEach
-            if (currentPayload == device.lastAppliedPayload) return@forEach
+            val payloadKey = "${device.brokerId}|${device.appConfigTopic}"
+            val currentPayload = payloads[payloadKey] ?: return@forEach
+            if (currentPayload == device.lastAppliedPayload && idsVerifiedPayloads[payloadKey] == currentPayload) return@forEach
 
             val deviceConfig = SensorDiscovery.parseDeviceAppConfig(currentPayload) ?: return@forEach
+            // An unchanged payload only needs reconciling at all if it still lacks ids - typically
+            // the first run after upgrading, when every hand-written payload predates them. The
+            // full pass below then stamps them in.
+            if (currentPayload == device.lastAppliedPayload && !SensorDiscovery.isMissingIds(deviceConfig)) {
+                idsVerifiedPayloads[payloadKey] = currentPayload
+                return@forEach
+            }
             val sensorPayload = payloads["${device.brokerId}|${device.sensorTopic}"]
             val sensorFieldKeys = sensorPayload?.let { SensorDiscovery.fieldKeysOf(it) } ?: emptySet()
 
-            val builtPanels = SensorDiscovery.buildPanels(
+            val ownedPanelIds = device.createdPanelIds.toSet()
+            val currentGroupId = configRepository.config.value.groups
+                .find { g -> g.panels.any { it.id in ownedPanelIds } }?.id
+            val targetGroupId = configRepository.resolveOrCreateGroup(deviceConfig.groupId, deviceConfig.group, currentGroupId)
+            var targetGroup = configRepository.config.value.groups.find { it.id == targetGroupId } ?: return@forEach
+            // Same group (by id) but a different name than this phone has for it - another phone
+            // renamed the group, so follow it here too.
+            if (deviceConfig.groupId == targetGroupId && deviceConfig.group != null && deviceConfig.group != targetGroup.name) {
+                targetGroup = targetGroup.copy(name = deviceConfig.group)
+                configRepository.upsertGroup(targetGroup)
+            }
+
+            val reservedPanelIds = configRepository.config.value.groups.asSequence()
+                .flatMap { it.panels }.map { it.id }.filter { it !in ownedPanelIds }.toSet()
+            val built = SensorDiscovery.buildPanels(
                 brokerId = device.brokerId,
                 sensorTopic = device.sensorTopic,
                 sensorFieldKeys = sensorFieldKeys,
                 appConfigTopic = device.appConfigTopic,
                 appConfigPayload = currentPayload,
-                deviceConfig = deviceConfig
+                deviceConfig = deviceConfig,
+                groupName = targetGroup.name,
+                groupClusters = targetGroup.clusters,
+                reservedPanelIds = reservedPanelIds
             )
+            val builtPanels = built.panels
             if (builtPanels.isEmpty()) return@forEach
 
             val existingPanelsList = configRepository.config.value.groups.asSequence()
                 .flatMap { it.panels }
-                .filter { it.id in device.createdPanelIds }
+                .filter { it.id in ownedPanelIds }
                 .toList()
+            val existingById = existingPanelsList.associateBy { it.id }
             val existingKeys = identityKeys(existingPanelsList)
             val existingPanels = existingPanelsList.associateBy { existingKeys.getValue(it) }
             val builtKeys = identityKeys(builtPanels)
@@ -91,13 +124,29 @@ class DeviceAutoConfigManager(
             // Only adopt the payload's order for an existing panel if its order_version is
             // strictly newer than what this phone last applied for the device - otherwise a
             // stale/retained redelivery (reconnect, or another phone not yet caught up) would
-            // silently undo the user's local reorder. The id is always carried over via
-            // identity match (not buildPanels fresh random id) so Compose keeps panel state.
-            // A brand-new panel always takes its order from the payload.
+            // silently undo the user's local reorder. A brand-new panel always takes its order
+            // from the payload.
+            //
+            // Ids: a payload-declared id always wins (that's what keeps every phone on the same
+            // id). A legacy payload with none gets StableIds.legacyPanelId instead - derived from
+            // the same identity key on every phone, so the ids each phone stamps back below agree.
+            // Matching to the existing local panel (for order/editable carry-over) is by id first,
+            // falling back to that identity key.
             val incomingOrderVersion = deviceConfig.orderVersion
             val adoptIncomingOrder = incomingOrderVersion != null && incomingOrderVersion > device.lastKnownOrderVersion
+            val usedIds = mutableSetOf<String>()
             val newPanels = builtPanels.map { panel ->
-                val existing = existingPanels[builtKeys.getValue(panel)] ?: return@map panel
+                val identityKey = builtKeys.getValue(panel)
+                val fromPayload = panel.id in built.payloadPanelIds
+                val existing = (if (fromPayload) existingById[panel.id] else null) ?: existingPanels[identityKey]
+                val id = when {
+                    fromPayload -> panel.id
+                    else -> StableIds.legacyPanelId(device.appConfigTopic, identityKey)
+                        .takeIf { it !in reservedPanelIds }
+                        ?: existing?.id
+                        ?: panel.id
+                }.let { candidate -> if (usedIds.add(candidate)) candidate else StableIds.newId().also { usedIds.add(it) } }
+                if (existing == null) return@map panel.withId(id)
                 // panel.displayOrder (just computed by SensorDiscovery.composedDisplayOrder) is
                 // Int.MAX_VALUE whenever the payload has neither group_order nor a panel_order/
                 // order entry for this field - that's "this payload carries no order information
@@ -122,16 +171,14 @@ class DeviceAutoConfigManager(
                     // representation in the device's own payload - preserved the same way
                     // displayOrder is, so a rebuilt panel doesn't silently lose it.
                     is Panel.Sensor -> panel.copy(
-                        id = existing.id,
+                        id = id,
                         displayOrder = displayOrder,
                         editable = (existing as? Panel.Sensor)?.editable ?: false
                     )
-                    is Panel.Toggle -> panel.copy(id = existing.id, displayOrder = displayOrder)
-                    is Panel.Button -> panel.copy(id = existing.id, displayOrder = displayOrder)
+                    is Panel.Toggle -> panel.copy(id = id, displayOrder = displayOrder)
+                    is Panel.Button -> panel.copy(id = id, displayOrder = displayOrder)
                 }
             }
-
-            val targetGroupId = resolveTargetGroupId(deviceConfig.group, device) ?: return@forEach
 
             // Same last-writer-wins gate as panel/cluster order above: only adopt this payload's
             // dashboard_order when its order_version is genuinely newer, so a stale retained
@@ -147,13 +194,43 @@ class DeviceAutoConfigManager(
                 }
             )
             configRepository.applyDeviceAutoConfig(
-                oldPanelIds = device.createdPanelIds.toSet(),
+                oldPanelIds = ownedPanelIds,
                 updatedDevice = updatedDevice,
                 targetGroupId = targetGroupId,
-                newPanels = newPanels
+                newPanels = newPanels,
+                newClusters = built.clusters
             )
             configRepository.resyncDashboardGroupOrder()
+            stampIdsIfMissing(updatedDevice, currentPayload, deviceConfig, newPanels, targetGroup)
         }
+    }
+
+    /**
+     * Writes every id this phone just resolved for [device] (group, clusters, panels) back into
+     * its retained "/app" payload if [payload] doesn't already carry them all - the "assign &
+     * republish" half of legacy payload handling, so every phone sharing the broker converges on
+     * the ids in the payload rather than each keeping its own. Pre-marked as applied (keeping the
+     * device's existing order_version - ids aren't ordering), same as every other app-side
+     * publish, so this phone's own echo is skipped. A no-op once the payload already matches.
+     */
+    private fun stampIdsIfMissing(
+        device: AutoConfiguredDevice,
+        payload: String,
+        deviceConfig: SensorDiscovery.DeviceAppConfig,
+        panels: List<Panel>,
+        group: PanelGroup
+    ) {
+        val payloadKey = "${device.brokerId}|${device.appConfigTopic}"
+        val stamped = SensorDiscovery.stampIdsInAppPayload(payload, deviceConfig, panels, group.id, group.name)
+        if (stamped == null) {
+            idsVerifiedPayloads[payloadKey] = payload
+            return
+        }
+        connectionManager.publish(device.brokerId, device.appConfigTopic, stamped, retain = true)
+        configRepository.markAutoConfiguredDevicePayloadApplied(
+            device.brokerId, device.appConfigTopic, stamped, device.lastKnownOrderVersion
+        )
+        idsVerifiedPayloads[payloadKey] = stamped
     }
 
     /**
@@ -243,17 +320,23 @@ class DeviceAutoConfigManager(
         val sensorPayload = payloads["$brokerId|$sensorTopic"]
         val sensorFieldKeys = sensorPayload?.let { SensorDiscovery.fieldKeysOf(it) } ?: emptySet()
 
-        val newPanels = SensorDiscovery.buildPanels(
+        val targetGroupId = configRepository.resolveOrCreateGroup(deviceConfig.groupId, deviceConfig.group)
+        val targetGroup = configRepository.config.value.groups.find { it.id == targetGroupId } ?: return
+        val reservedPanelIds = configRepository.config.value.groups.asSequence()
+            .flatMap { it.panels }.map { it.id }.toSet()
+        val built = SensorDiscovery.buildPanels(
             brokerId = brokerId,
             sensorTopic = sensorTopic,
             sensorFieldKeys = sensorFieldKeys,
             appConfigTopic = appConfigTopic,
             appConfigPayload = appConfigPayload,
-            deviceConfig = deviceConfig
+            deviceConfig = deviceConfig,
+            groupName = targetGroup.name,
+            groupClusters = targetGroup.clusters,
+            reservedPanelIds = reservedPanelIds
         )
+        val newPanels = built.panels
         if (newPanels.isEmpty()) return
-
-        val targetGroupId = configRepository.resolveOrCreateGroup(deviceConfig.group)
 
         val device = AutoConfiguredDevice(
             brokerId = brokerId,
@@ -267,22 +350,10 @@ class DeviceAutoConfigManager(
             oldPanelIds = emptySet(),
             updatedDevice = device,
             targetGroupId = targetGroupId,
-            newPanels = newPanels
+            newPanels = newPanels,
+            newClusters = built.clusters
         )
         configRepository.resyncDashboardGroupOrder()
-    }
-
-    private fun resolveTargetGroupId(declaredGroupName: String?, device: AutoConfiguredDevice): String? {
-        val config = configRepository.config.value
-        if (!declaredGroupName.isNullOrBlank()) {
-            val existing = config.groups.find { it.name.equals(declaredGroupName, ignoreCase = true) }
-            if (existing != null) return existing.id
-            val id = UUID.randomUUID().toString()
-            configRepository.upsertGroup(PanelGroup(id = id, name = declaredGroupName))
-            return id
-        }
-        val ownedPanelIds = device.createdPanelIds.toSet()
-        return config.groups.find { g -> g.panels.any { it.id in ownedPanelIds } }?.id
     }
 
     // [notificationKey] is "<brokerId>|<appConfigTopic>" (same dedup key reconcileKnownDevices

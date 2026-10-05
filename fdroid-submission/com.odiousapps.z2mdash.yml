@@ -15,7 +15,7 @@ Binaries: https://github.com/evilbunny2008/Z2mDash/releases/download/v%v/z2mdash
 Builds:
   - versionName: 0.0.109
     versionCode: 109
-    commit:
+    commit: 49566eb5fdc3dcccdf41d0a18ab705f6c73fd2c1
     subdir: app
     gradle:
       - yes

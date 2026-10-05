@@ -50,9 +50,11 @@ import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
+import com.odiousapps.z2mdash.data.clusterName
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
 import com.odiousapps.z2mdash.data.pushClusterRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushLabelUpdateIfAutoConfigured
+import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
 import com.odiousapps.z2mdash.ui.components.iconFor
 import com.odiousapps.z2mdash.data.pushPanelDetailsIfAutoConfigured
 import com.odiousapps.z2mdash.data.pushPanelRemovalIfAutoConfigured
@@ -78,9 +80,9 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
     // tile to an existing device's card doesn't mean re-typing them. Read once and cleared
     // immediately so a later, unrelated navigation to this screen (e.g. the group header's plain
     // "Add" button, which never sets these) doesn't pick up a stale value from a previous visit.
-    val presetClusterName = remember {
-        navController.previousBackStackEntry?.savedStateHandle?.get<String>("presetClusterName").also {
-            navController.previousBackStackEntry?.savedStateHandle?.set<String?>("presetClusterName", null)
+    val presetClusterId = remember {
+        navController.previousBackStackEntry?.savedStateHandle?.get<String>("presetClusterId").also {
+            navController.previousBackStackEntry?.savedStateHandle?.set<String?>("presetClusterId", null)
         }
     }
     val presetBrokerId = remember {
@@ -107,7 +109,14 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
         mutableStateOf(existing?.brokerId ?: presetBrokerId ?: config.brokers.firstOrNull()?.id ?: "")
     }
     var label by remember(existing) { mutableStateOf(existing?.label ?: "") }
-    var clusterName by remember(existing) { mutableStateOf(existing?.clusterName ?: presetClusterName ?: "") }
+    // The cluster this panel starts out in - its own when editing, or the one whose "+" was tapped.
+    // The field below edits a name, but the panel is saved against a cluster id (see the save
+    // handler): leaving the name as-is keeps this exact cluster even if another one shares its name.
+    val originalClusterId = remember(existing) { existing?.clusterId ?: presetClusterId ?: "" }
+    val originalClusterName = remember(existing, config) {
+        config.groups.find { it.id == groupId }?.clusterName(originalClusterId).orEmpty()
+    }
+    var clusterName by remember(existing) { mutableStateOf(originalClusterName) }
     var displayOrderText by remember(existing) {
         mutableStateOf(existing?.displayOrder?.takeIf { it != Int.MAX_VALUE }?.toString() ?: "")
     }
@@ -177,6 +186,17 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                 Button(
                     onClick = {
                         val displayOrderValue = displayOrderText.toIntOrNull() ?: Int.MAX_VALUE
+                        // Renaming the cluster an existing panel already belongs to renames that
+                        // cluster (every member follows); otherwise a typed name joins the
+                        // group's existing cluster of that name, or starts a new one.
+                        val renamingOwnCluster = isEditing && existing.clusterId.isNotBlank() &&
+                            clusterName.isNotBlank() && clusterName != originalClusterName
+                        val (clusterId, newCluster) = when {
+                            clusterName.isBlank() -> "" to null
+                            originalClusterId.isNotBlank() && clusterName == originalClusterName -> originalClusterId to null
+                            renamingOwnCluster -> existing.clusterId to null
+                            else -> app.configRepository.clusterForName(groupId, clusterName)
+                        }
                         val panel: Panel = when (panelType) {
                             "Sensor" -> Panel.Sensor(
                                 id = existing?.id ?: UUID.randomUUID().toString(),
@@ -190,7 +210,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 idealMinPath = idealMinPath,
                                 idealMaxPath = idealMaxPath,
                                 editable = editableValue,
-                                clusterName = clusterName,
+                                clusterId = clusterId,
                                 displayOrder = displayOrderValue,
                                 decimals = decimalsText.toIntOrNull() ?: 0
                             )
@@ -204,7 +224,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 stateTopic = stateTopic,
                                 stateJsonPath = stateJsonPath,
                                 icon = icon,
-                                clusterName = clusterName,
+                                clusterId = clusterId,
                                 displayOrder = displayOrderValue
                             )
                             else -> Panel.Button(
@@ -214,28 +234,31 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 commandTopic = commandTopic,
                                 payload = buttonPayload,
                                 icon = icon,
-                                clusterName = clusterName,
+                                clusterId = clusterId,
                                 displayOrder = displayOrderValue
                             )
                         }
                         if (isEditing) {
-                            app.configRepository.updatePanel(groupId, panel)
+                            app.configRepository.updatePanel(groupId, panel, newCluster)
                             if (existing.label != panel.label) {
                                 pushLabelUpdateIfAutoConfigured(app, panel)
                             }
                             pushPanelDetailsIfAutoConfigured(app, existing, panel)
-                            val oldClusterName = existing.clusterName
-                            if (oldClusterName.isNotBlank() && oldClusterName != clusterName) {
+                            if (renamingOwnCluster) {
                                 val renamedPanelIds = config.groups.find { it.id == groupId }
-                                    ?.panels?.filter { it.clusterName == oldClusterName }?.map { it.id }
+                                    ?.panels?.filter { it.clusterId == existing.clusterId }?.map { it.id }
                                     ?: emptyList()
-                                app.configRepository.renameCluster(groupId, oldClusterName, clusterName)
+                                app.configRepository.renameCluster(groupId, existing.clusterId, clusterName)
                                 pushClusterRenameForAutoConfiguredDevices(
-                                    app, renamedPanelIds, oldClusterName, clusterName
+                                    app, renamedPanelIds, originalClusterName, clusterName
                                 )
+                            } else if (clusterId.isNotBlank() && clusterId != existing.clusterId) {
+                                // Moved into a different (existing or brand-new) cluster - same
+                                // payload push as dragging it there on the Home screen.
+                                pushPanelClusterOverrideIfAutoConfigured(app, panel, clusterName, clusterId)
                             }
                         } else {
-                            app.configRepository.addPanelToGroup(groupId, panel)
+                            app.configRepository.addPanelToGroup(groupId, panel, newCluster)
                             // Signal back to HomeScreen which group to scroll to - a newly-added
                             // panel's cluster is likely to be scrolled out of view already.
                             navController.previousBackStackEntry
@@ -246,8 +269,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         // just-renamed) cluster if its topic doesn't already have one - see
                         // AutoConfigPush's own doc. A no-op for a standalone (blank-cluster) panel,
                         // or one whose cluster already has a config topic.
-                        if (clusterName.isNotBlank()) {
-                            publishAppTopicForClusterIfMissing(app, groupId, clusterName)
+                        if (clusterId.isNotBlank()) {
+                            publishAppTopicForClusterIfMissing(app, groupId, clusterId)
                         }
                         navController.popBackStack()
                     },

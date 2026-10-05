@@ -11,7 +11,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.Json
 import java.io.File
-import java.util.UUID
 import kotlin.time.Duration.Companion.milliseconds
 
 /**
@@ -48,12 +47,33 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     private fun load(): AppConfig = try {
-        val loaded = if (file.exists()) json.decodeFromString(AppConfig.serializer(), file.readText())
-            else AppConfig()
-        migrateDecimalsIfNeeded(loaded)
+        if (!file.exists()) {
+            AppConfig()
+        } else {
+            val raw = file.readText()
+            val migratedText = ConfigMigration.migrate(raw)
+            val loaded = decodeMigrated(migratedText)
+            if (migratedText != raw) {
+                // Keeps the pre-migration file around untouched - the id migration rewrites every
+                // group/panel, and load()'s own catch below falls back to an empty config, so a
+                // migration bug would otherwise leave nothing to recover the dashboard from.
+                try {
+                    File(context.filesDir, "config.pre-ids.json").let { if (!it.exists()) it.writeText(raw) }
+                } catch (_: Exception) {
+                }
+                persist(loaded)
+            }
+            migrateDecimalsIfNeeded(loaded)
+        }
     } catch (_: Exception) {
         AppConfig()
     }
+
+    /** Decodes any config/backup JSON, upgrading a pre-id one first - see ConfigMigration. */
+    private fun decode(text: String): AppConfig = decodeMigrated(ConfigMigration.migrate(text))
+
+    private fun decodeMigrated(text: String): AppConfig =
+        normalizeClusters(json.decodeFromString(AppConfig.serializer(), text))
 
     /**
      * One-time migration: sensor panels still on the old uniform default of 1 decimal get
@@ -98,7 +118,7 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     fun update(transform: (AppConfig) -> AppConfig) {
-        _config.update(transform)
+        _config.update { previous -> normalizeClusters(transform(previous), previous) }
         schedulePersist()
     }
 
@@ -205,22 +225,41 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * Resolves the target group for a device's declared "group" name (case-insensitive), creating
-     * one if none exists yet - the shared fallback chain every first-time auto-config entry point
-     * (DeviceAutoConfigManager.autoAcceptDevice, HomeScreen.addPendingDevice) uses: the declared
-     * group if named, else the first existing group, else a fresh "Discovered Sensors". Callers
-     * that also learned a dashboard_order for this device should call resyncDashboardGroupOrder()
-     * afterward, once the device is actually registered (see that function's doc).
+     * Resolves the target group for a device's declared "group_id"/"group", creating one if none
+     * exists yet - the shared fallback chain every auto-config entry point (DeviceAutoConfigManager,
+     * HomeScreen.addPendingDevice, DiscoverScreen) uses:
+     *  - a declared group_id always wins: that exact group, created under that id (named from
+     *    [declaredGroupName]) if this phone hasn't seen it yet - never matched by name, so two
+     *    same-named groups stay distinct;
+     *  - else a legacy, name-only payload: the group with that name (case-insensitive), else a new
+     *    one keyed by StableIds.legacyGroupId so every phone creates it under the same id;
+     *  - else [fallbackGroupId] (e.g. wherever the device's panels already live), else the first
+     *    existing group, else a fresh "Discovered Sensors".
+     * Callers that also learned a dashboard_order for this device should call
+     * resyncDashboardGroupOrder() afterward, once the device is actually registered.
      */
-    fun resolveOrCreateGroup(declaredGroupName: String?): String {
+    fun resolveOrCreateGroup(
+        declaredGroupId: String?,
+        declaredGroupName: String?,
+        fallbackGroupId: String? = null
+    ): String {
         val cfg = _config.value
-        return if (!declaredGroupName.isNullOrBlank()) {
-            cfg.groups.find { it.name.equals(declaredGroupName, ignoreCase = true) }?.id
-                ?: UUID.randomUUID().toString().also { upsertGroup(PanelGroup(id = it, name = declaredGroupName)) }
-        } else {
-            cfg.groups.firstOrNull()?.id
-                ?: UUID.randomUUID().toString().also { upsertGroup(PanelGroup(id = it, name = "Discovered Sensors")) }
+        if (!declaredGroupId.isNullOrBlank()) {
+            if (cfg.groups.none { it.id == declaredGroupId }) {
+                upsertGroup(PanelGroup(id = declaredGroupId, name = declaredGroupName?.takeIf { it.isNotBlank() } ?: "Discovered Sensors"))
+            }
+            return declaredGroupId
         }
+        if (!declaredGroupName.isNullOrBlank()) {
+            cfg.groups.find { it.name.equals(declaredGroupName, ignoreCase = true) }?.let { return it.id }
+            val derived = StableIds.legacyGroupId(declaredGroupName)
+            val id = if (cfg.groups.any { it.id == derived }) StableIds.newId() else derived
+            upsertGroup(PanelGroup(id = id, name = declaredGroupName))
+            return id
+        }
+        fallbackGroupId?.takeIf { id -> cfg.groups.any { it.id == id } }?.let { return it }
+        return cfg.groups.firstOrNull()?.id
+            ?: StableIds.newId().also { upsertGroup(PanelGroup(id = it, name = "Discovered Sensors")) }
     }
 
     /**
@@ -272,27 +311,22 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
             val newOrderByPanelId = orderedPanelIds.withIndex()
                 .associate { (index, id) -> id to (baseOrder + index) }
             g.copy(panels = g.panels.map { panel ->
-                val newOrder = newOrderByPanelId[panel.id] ?: return@map panel
-                when (panel) {
-                    is Panel.Sensor -> panel.copy(displayOrder = newOrder)
-                    is Panel.Toggle -> panel.copy(displayOrder = newOrder)
-                    is Panel.Button -> panel.copy(displayOrder = newOrder)
-                }
+                newOrderByPanelId[panel.id]?.let { panel.withDisplayOrder(it) } ?: panel
             })
         }
         cfg.copy(groups = updatedGroups)
     }
 
     /**
-     * Reassigns displayOrder so a group's clusters follow [orderedClusterKeys] (clusterName, or
-     * "__single__<panelId>" for a standalone panel - same convention HomeScreen uses). Panels
-     * keep their relative order within each cluster. A step of 1000 between clusters leaves
-     * room for later within-cluster reordering without renumbering neighbours.
+     * Reassigns displayOrder so a group's clusters follow [orderedClusterKeys] (Panel.clusterKey:
+     * a clusterId, or "__single__<panelId>" for a standalone panel). Panels keep their relative
+     * order within each cluster. A step of 1000 between clusters leaves room for later
+     * within-cluster reordering without renumbering neighbours.
      */
     fun reorderClustersInGroup(groupId: String, orderedClusterKeys: List<String>) = update { cfg ->
         val updatedGroups = cfg.groups.map { g ->
             if (g.id != groupId) return@map g
-            val panelsByCluster = g.panels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+            val panelsByCluster = g.panels.groupBy { it.clusterKey }
             val newOrderByPanelId = mutableMapOf<String, Int>()
             orderedClusterKeys.forEachIndexed { clusterIndex, clusterKey ->
                 val clusterPanels = panelsByCluster[clusterKey] ?: return@forEachIndexed
@@ -303,66 +337,82 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
                 }
             }
             g.copy(panels = g.panels.map { panel ->
-                val newOrder = newOrderByPanelId[panel.id] ?: return@map panel
-                when (panel) {
-                    is Panel.Sensor -> panel.copy(displayOrder = newOrder)
-                    is Panel.Toggle -> panel.copy(displayOrder = newOrder)
-                    is Panel.Button -> panel.copy(displayOrder = newOrder)
-                }
+                newOrderByPanelId[panel.id]?.let { panel.withDisplayOrder(it) } ?: panel
             })
         }
         cfg.copy(groups = updatedGroups)
     }
 
-    fun addPanelToGroup(groupId: String, panel: Panel) = update { cfg ->
+    /**
+     * Adds [panel] to [groupId]. [newCluster] is the entry for a cluster created alongside it (see
+     * clusterForName) - added in this same update, since normalizeClusters would otherwise have no
+     * name to give the brand-new clusterId [panel] references.
+     */
+    fun addPanelToGroup(groupId: String, panel: Panel, newCluster: PanelCluster? = null) = update { cfg ->
         cfg.copy(groups = cfg.groups.map { g ->
-            if (g.id == groupId) g.copy(panels = g.panels + panel) else g
+            if (g.id == groupId) g.copy(panels = g.panels + panel, clusters = g.clusters + listOfNotNull(newCluster)) else g
         })
     }
 
-    fun updatePanel(groupId: String, panel: Panel) = update { cfg ->
+    /** Replaces [panel] (matched by id) within [groupId]. [newCluster]: see addPanelToGroup. */
+    fun updatePanel(groupId: String, panel: Panel, newCluster: PanelCluster? = null) = update { cfg ->
         cfg.copy(groups = cfg.groups.map { g ->
-            if (g.id == groupId) g.copy(panels = g.panels.map { if (it.id == panel.id) panel else it }) else g
-        })
-    }
-
-    /** Renames a cluster: every panel in [groupId] named [oldClusterName] switches to [newClusterName]. */
-    fun renameCluster(groupId: String, oldClusterName: String, newClusterName: String) = update { cfg ->
-        if (oldClusterName.isBlank() || oldClusterName == newClusterName) return@update cfg
-        cfg.copy(groups = cfg.groups.map { g ->
-            if (g.id != groupId) return@map g
-            g.copy(panels = g.panels.map { panel ->
-                if (panel.clusterName != oldClusterName) return@map panel
-                when (panel) {
-                    is Panel.Sensor -> panel.copy(clusterName = newClusterName)
-                    is Panel.Toggle -> panel.copy(clusterName = newClusterName)
-                    is Panel.Button -> panel.copy(clusterName = newClusterName)
-                }
-            })
+            if (g.id == groupId) {
+                g.copy(
+                    panels = g.panels.map { if (it.id == panel.id) panel else it },
+                    clusters = g.clusters + listOfNotNull(newCluster)
+                )
+            } else {
+                g
+            }
         })
     }
 
     /**
-     * Moves every panel of [clusterName] from [fromGroupId] into [toGroupId]. When
-     * [insertBeforeClusterKey] names an existing cluster (or standalone panel, keyed the same
-     * way [reorderClustersInGroup] keys them) already in the destination group, the moved
-     * cluster is inserted immediately before it there; the sentinel "__header__" (a drop onto
-     * the destination group's own header) inserts it at the very front instead. Leaving it null,
-     * or naming a cluster that's no longer there, falls back to appending at the end.
+     * The clusterId a panel typed into [groupId] under cluster name [name] should get: "" for a
+     * blank name (standalone), else the first existing cluster there with exactly that name, else a
+     * brand-new cluster - returned as the second value, for the caller to hand to
+     * addPanelToGroup/updatePanel alongside the panel. Typing an existing cluster's name to join it
+     * is the Add/Edit Panel screen's own long-standing behaviour, kept as-is.
+     */
+    fun clusterForName(groupId: String, name: String): Pair<String, PanelCluster?> {
+        if (name.isBlank()) return "" to null
+        val group = _config.value.groups.find { it.id == groupId }
+        group?.clusters?.find { it.name == name }?.let { return it.id to null }
+        val created = PanelCluster(StableIds.newId(), name)
+        return created.id to created
+    }
+
+    /** Renames cluster [clusterId] in [groupId] - one edit to its entry, every member panel follows. */
+    fun renameCluster(groupId: String, clusterId: String, newClusterName: String) = update { cfg ->
+        if (clusterId.isBlank() || newClusterName.isBlank()) return@update cfg
+        cfg.copy(groups = cfg.groups.map { g ->
+            if (g.id != groupId) return@map g
+            g.copy(clusters = g.clusters.map { if (it.id == clusterId) it.copy(name = newClusterName) else it })
+        })
+    }
+
+    /**
+     * Moves every panel of cluster [clusterId] from [fromGroupId] into [toGroupId] (its cluster
+     * entry follows - see normalizeClusters). When [insertBeforeClusterKey] names an existing
+     * cluster (or standalone panel, keyed by Panel.clusterKey) already in the destination group,
+     * the moved cluster is inserted immediately before it there; the sentinel "__header__" (a drop
+     * onto the destination group's own header) inserts it at the very front instead. Leaving it
+     * null, or naming a cluster that's no longer there, falls back to appending at the end.
      */
     fun moveClusterToGroup(
         fromGroupId: String,
         toGroupId: String,
-        clusterName: String,
+        clusterId: String,
         insertBeforeClusterKey: String? = null
     ) = update { cfg ->
-        if (fromGroupId == toGroupId || clusterName.isBlank()) return@update cfg
+        if (fromGroupId == toGroupId || clusterId.isBlank()) return@update cfg
         val fromGroup = cfg.groups.find { it.id == fromGroupId } ?: return@update cfg
         val toGroup = cfg.groups.find { it.id == toGroupId } ?: return@update cfg
-        val moving = fromGroup.panels.filter { it.clusterName == clusterName }.sortedBy { it.displayOrder }
+        val moving = fromGroup.panels.filter { it.clusterId == clusterId }.sortedBy { it.displayOrder }
         if (moving.isEmpty()) return@update cfg
 
-        val destinationPanelsByKey = toGroup.panels.groupBy { it.clusterName.ifBlank { "__single__${it.id}" } }
+        val destinationPanelsByKey = toGroup.panels.groupBy { it.clusterKey }
         val destinationOrder = destinationPanelsByKey.entries
             .sortedBy { (_, ps) -> ps.minOf { it.displayOrder } }
             .map { it.key }
@@ -371,14 +421,14 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
             "__header__" -> 0
             else -> destinationOrder.indexOf(insertBeforeClusterKey).takeIf { it >= 0 } ?: destinationOrder.size
         }
-        val newOrder = destinationOrder.toMutableList().apply { add(insertAt, clusterName) }
+        val newOrder = destinationOrder.toMutableList().apply { add(insertAt, clusterId) }
 
         // Same spacing scheme as reorderClustersInGroup - each cluster (existing or newly
         // inserted) gets a 1000-wide slot, so every one of its panels' displayOrders land
         // consistently relative to the others regardless of where it used to sit.
         val newOrderByPanelId = mutableMapOf<String, Int>()
         newOrder.forEachIndexed { clusterIndex, key ->
-            val clusterPanels = if (key == clusterName) moving else destinationPanelsByKey[key].orEmpty()
+            val clusterPanels = if (key == clusterId) moving else destinationPanelsByKey[key].orEmpty()
             clusterPanels.sortedBy { it.displayOrder }.forEachIndexed { withinIndex, panel ->
                 newOrderByPanelId[panel.id] = clusterIndex * 1000 + withinIndex
             }
@@ -386,14 +436,9 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
 
         cfg.copy(groups = cfg.groups.map { g ->
             when (g.id) {
-                fromGroupId -> g.copy(panels = g.panels.filterNot { it.clusterName == clusterName })
+                fromGroupId -> g.copy(panels = g.panels.filterNot { it.clusterId == clusterId })
                 toGroupId -> g.copy(panels = (toGroup.panels + moving).map { panel ->
-                    val newDisplayOrder = newOrderByPanelId[panel.id] ?: panel.displayOrder
-                    when (panel) {
-                        is Panel.Sensor -> panel.copy(displayOrder = newDisplayOrder)
-                        is Panel.Toggle -> panel.copy(displayOrder = newDisplayOrder)
-                        is Panel.Button -> panel.copy(displayOrder = newDisplayOrder)
-                    }
+                    panel.withDisplayOrder(newOrderByPanelId[panel.id] ?: panel.displayOrder)
                 })
                 else -> g
             }
@@ -401,24 +446,27 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * Clones the panels identified by [sourcePanelIds] into a new cluster named [newClusterName],
-     * appended after everything else already in [groupId]. When [topicReplacement] (old, new) is
-     * given, that exact substring is replaced in every clone's topic-like fields
-     * (Sensor.topic/idealRangeTopic, Toggle.commandTopic/stateTopic, Button.commandTopic) - lets a
-     * duplicate be retargeted at a different physical device/topic in one step instead of editing
-     * each tile individually afterward. The clone is always a plain, independent cluster (never
-     * auto-configured) even if the source was, since it has no device payload of its own to track.
+     * Clones the panels identified by [sourcePanelIds] into a brand-new cluster named
+     * [newClusterName], appended after everything else already in [groupId], and returns that new
+     * cluster's id (or null if nothing was cloned). Always a separate cluster even when another
+     * one in the group already has that name - clusters are matched by id, never by name. When
+     * [topicReplacement] (old, new) is given, that exact substring is replaced in every clone's
+     * topic-like fields (Sensor.topic/idealRangeTopic, Toggle.commandTopic/stateTopic,
+     * Button.commandTopic) - lets a duplicate be retargeted at a different physical device/topic
+     * in one step instead of editing each tile individually afterward. The clone is always a
+     * plain, independent cluster (never auto-configured) even if the source was, since it has no
+     * device payload of its own to track.
      */
     fun duplicateCluster(
         groupId: String,
         sourcePanelIds: List<String>,
         newClusterName: String,
         topicReplacement: Pair<String, String>?
-    ) = update { cfg ->
-        if (newClusterName.isBlank()) return@update cfg
-        val group = cfg.groups.find { it.id == groupId } ?: return@update cfg
-        val sourcePanels = group.panels.filter { it.id in sourcePanelIds }.sortedBy { it.displayOrder }
-        if (sourcePanels.isEmpty()) return@update cfg
+    ): String? {
+        if (newClusterName.isBlank()) return null
+        val group = _config.value.groups.find { it.id == groupId } ?: return null
+        if (group.panels.none { it.id in sourcePanelIds }) return null
+        val newCluster = PanelCluster(StableIds.newId(), newClusterName)
 
         fun retopic(topic: String): String =
             if (topicReplacement != null && topicReplacement.first.isNotEmpty()) {
@@ -427,50 +475,56 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
                 topic
             }
 
-        val base = (group.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
-        val cloned = sourcePanels.mapIndexed { index, panel ->
-            val newId = UUID.randomUUID().toString()
-            val newOrder = base + index
-            when (panel) {
-                is Panel.Sensor -> panel.copy(
-                    id = newId,
-                    clusterName = newClusterName,
-                    displayOrder = newOrder,
-                    topic = retopic(panel.topic),
-                    idealRangeTopic = retopic(panel.idealRangeTopic)
-                )
-                is Panel.Toggle -> panel.copy(
-                    id = newId,
-                    clusterName = newClusterName,
-                    displayOrder = newOrder,
-                    commandTopic = retopic(panel.commandTopic),
-                    stateTopic = retopic(panel.stateTopic)
-                )
-                is Panel.Button -> panel.copy(
-                    id = newId,
-                    clusterName = newClusterName,
-                    displayOrder = newOrder,
-                    commandTopic = retopic(panel.commandTopic)
-                )
+        update { cfg ->
+            val liveGroup = cfg.groups.find { it.id == groupId } ?: return@update cfg
+            val sourcePanels = liveGroup.panels.filter { it.id in sourcePanelIds }.sortedBy { it.displayOrder }
+            if (sourcePanels.isEmpty()) return@update cfg
+            val base = (liveGroup.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
+            val cloned = sourcePanels.mapIndexed { index, panel ->
+                val newId = StableIds.newId()
+                val newOrder = base + index
+                when (panel) {
+                    is Panel.Sensor -> panel.copy(
+                        id = newId,
+                        clusterId = newCluster.id,
+                        displayOrder = newOrder,
+                        topic = retopic(panel.topic),
+                        idealRangeTopic = retopic(panel.idealRangeTopic)
+                    )
+                    is Panel.Toggle -> panel.copy(
+                        id = newId,
+                        clusterId = newCluster.id,
+                        displayOrder = newOrder,
+                        commandTopic = retopic(panel.commandTopic),
+                        stateTopic = retopic(panel.stateTopic)
+                    )
+                    is Panel.Button -> panel.copy(
+                        id = newId,
+                        clusterId = newCluster.id,
+                        displayOrder = newOrder,
+                        commandTopic = retopic(panel.commandTopic)
+                    )
+                }
             }
+            cfg.copy(groups = cfg.groups.map { g ->
+                if (g.id == groupId) g.copy(panels = g.panels + cloned, clusters = g.clusters + newCluster) else g
+            })
         }
-        cfg.copy(groups = cfg.groups.map { g ->
-            if (g.id == groupId) g.copy(panels = g.panels + cloned) else g
-        })
+        return newCluster.id
     }
 
     /**
      * Rewrites [oldTopicPrefix] to [newTopicPrefix] (plain substring replace, same as
-     * duplicateCluster's own retopic() above) across every topic field of every panel sharing
-     * [clusterName] in [groupId] - the in-place counterpart to duplicateCluster's own topic
+     * duplicateCluster's own retopic() above) across every topic field of every panel in cluster
+     * [clusterId] in [groupId] - the in-place counterpart to duplicateCluster's own topic
      * replacement, for moving an existing cluster onto a different MQTT topic (e.g. a Zigbee
      * network split onto a second zigbee2mqtt instance) without cloning it. Deliberately scoped
-     * to one named cluster's own panels only, not the whole group - a network split typically
+     * to one cluster's own panels only, not the whole group - a network split typically
      * only moves *some* devices, and this lets each cluster be retargeted independently.
      */
     fun retopicCluster(
         groupId: String,
-        clusterName: String,
+        clusterId: String,
         oldTopicPrefix: String,
         newTopicPrefix: String
     ) = update { cfg ->
@@ -481,7 +535,7 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         cfg.copy(groups = cfg.groups.map { g ->
             if (g.id != groupId) return@map g
             g.copy(panels = g.panels.map { panel ->
-                if (panel.clusterName != clusterName) return@map panel
+                if (panel.clusterId != clusterId) return@map panel
                 when (panel) {
                     is Panel.Sensor -> panel.copy(
                         topic = retopic(panel.topic),
@@ -524,30 +578,34 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     /**
-     * Pulls one panel out of whatever cluster it currently shares with siblings, giving it
-     * [newClusterName] as its own - so it renders in its own titled card instead of being stuck
-     * reordering only among the panels it was grouped with. Appended after every other panel in
-     * the group (a fresh displayOrder past the current max), so it lands at the end rather than
-     * wherever its old cluster happened to sort.
+     * Pulls one panel out of whatever cluster it currently shares with siblings into a brand-new
+     * cluster named [newClusterName] - so it renders in its own titled card instead of being
+     * stuck reordering only among the panels it was grouped with. Appended after every other
+     * panel in the group (a fresh displayOrder past the current max), so it lands at the end
+     * rather than wherever its old cluster happened to sort. Returns the new cluster's id, or null
+     * if nothing changed.
      */
-    fun movePanelToOwnCluster(groupId: String, panelId: String, newClusterName: String) = update { cfg ->
-        if (newClusterName.isBlank()) return@update cfg
-        cfg.copy(groups = cfg.groups.map { g ->
-            if (g.id != groupId) return@map g
-            val newOrder = (g.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
-            g.copy(panels = g.panels.map { panel ->
-                if (panel.id != panelId) return@map panel
-                when (panel) {
-                    is Panel.Sensor -> panel.copy(clusterName = newClusterName, displayOrder = newOrder)
-                    is Panel.Toggle -> panel.copy(clusterName = newClusterName, displayOrder = newOrder)
-                    is Panel.Button -> panel.copy(clusterName = newClusterName, displayOrder = newOrder)
-                }
+    fun movePanelToOwnCluster(groupId: String, panelId: String, newClusterName: String): String? {
+        if (newClusterName.isBlank()) return null
+        if (_config.value.groups.find { it.id == groupId }?.panels?.none { it.id == panelId } != false) return null
+        val newCluster = PanelCluster(StableIds.newId(), newClusterName)
+        update { cfg ->
+            cfg.copy(groups = cfg.groups.map { g ->
+                if (g.id != groupId) return@map g
+                val newOrder = (g.panels.filter { it.displayOrder != Int.MAX_VALUE }.maxOfOrNull { it.displayOrder } ?: -1) + 1
+                g.copy(
+                    panels = g.panels.map { panel ->
+                        if (panel.id != panelId) panel else panel.withClusterId(newCluster.id).withDisplayOrder(newOrder)
+                    },
+                    clusters = g.clusters + newCluster
+                )
             })
-        })
+        }
+        return newCluster.id
     }
 
     /**
-     * Moves [panelId] from [fromGroupId] into the existing cluster [targetClusterName] within
+     * Moves [panelId] from [fromGroupId] into the existing cluster [targetClusterId] within
      * [toGroupId] (which may be the same group), appended after that cluster's current panels -
      * the reverse of movePanelToOwnCluster above, for dragging a panel onto a cluster to join it.
      */
@@ -555,19 +613,15 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         fromGroupId: String,
         panelId: String,
         toGroupId: String,
-        targetClusterName: String
+        targetClusterId: String
     ) = update { cfg ->
-        if (targetClusterName.isBlank()) return@update cfg
+        if (targetClusterId.isBlank()) return@update cfg
         val fromGroup = cfg.groups.find { it.id == fromGroupId } ?: return@update cfg
         val panel = fromGroup.panels.find { it.id == panelId } ?: return@update cfg
         val toGroup = cfg.groups.find { it.id == toGroupId } ?: return@update cfg
-        val newOrder = (toGroup.panels.filter { it.clusterName == targetClusterName }
+        val newOrder = (toGroup.panels.filter { it.clusterId == targetClusterId }
             .maxOfOrNull { it.displayOrder } ?: -1) + 1
-        val relocated = when (panel) {
-            is Panel.Sensor -> panel.copy(clusterName = targetClusterName, displayOrder = newOrder)
-            is Panel.Toggle -> panel.copy(clusterName = targetClusterName, displayOrder = newOrder)
-            is Panel.Button -> panel.copy(clusterName = targetClusterName, displayOrder = newOrder)
-        }
+        val relocated = panel.withClusterId(targetClusterId).withDisplayOrder(newOrder)
         cfg.copy(groups = cfg.groups.map { g ->
             when (g.id) {
                 fromGroupId if g.id == toGroupId ->
@@ -608,20 +662,30 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     /**
      * Atomically replaces everything owned by an auto-configured device: strips [oldPanelIds]
      * out of every group (wherever they live, in case the device's group changed), adds
-     * [newPanels] into [targetGroupId], and updates the tracking entry ([updatedDevice],
-     * whose createdPanelIds should be the new panels' IDs) - all in one state transition.
+     * [newPanels] into [targetGroupId], upserts [newClusters] (the clusters those panels
+     * reference, named as the device's payload currently names them - so a cluster renamed on
+     * another phone is renamed here too) into that group, and updates the tracking entry
+     * ([updatedDevice], whose createdPanelIds should be the new panels' IDs) - all in one state
+     * transition.
      */
     fun applyDeviceAutoConfig(
         oldPanelIds: Set<String>,
         updatedDevice: AutoConfiguredDevice,
         targetGroupId: String,
-        newPanels: List<Panel>
+        newPanels: List<Panel>,
+        newClusters: List<PanelCluster> = emptyList()
     ) = update { cfg ->
         val strippedGroups = cfg.groups.map { g ->
             if (oldPanelIds.isEmpty()) g else g.copy(panels = g.panels.filterNot { it.id in oldPanelIds })
         }
+        val newClustersById = newClusters.associateBy { it.id }
         val groupsWithNewPanels = if (strippedGroups.any { it.id == targetGroupId }) {
-            strippedGroups.map { g -> if (g.id == targetGroupId) g.copy(panels = g.panels + newPanels) else g }
+            strippedGroups.map { g ->
+                if (g.id != targetGroupId) return@map g
+                val renamed = g.clusters.map { newClustersById[it.id] ?: it }
+                val added = newClusters.filter { c -> renamed.none { it.id == c.id } }
+                g.copy(panels = g.panels + newPanels, clusters = renamed + added)
+            }
         } else {
             strippedGroups
         }
@@ -774,7 +838,7 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     }
 
     fun importJson(text: String) {
-        val imported = json.decodeFromString(AppConfig.serializer(), text)
+        val imported = decode(text)
         persist(imported)
         _config.value = imported
     }
@@ -785,7 +849,7 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
      * mentioned in the import are left untouched.
      */
     fun importBrokersOnlyJson(text: String) {
-        val imported = json.decodeFromString(AppConfig.serializer(), text)
+        val imported = decode(text)
         val importedById = imported.brokers.associateBy { it.id }
         val mergedBrokers = _config.value.brokers.map { existing -> importedById[existing.id] ?: existing } +
             imported.brokers.filter { it.id !in _config.value.brokers.map { b -> b.id } }
@@ -800,9 +864,41 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
      * still reference the original brokerId, so a different device's brokers won't reconnect them.
      */
     fun importJsonPreservingBrokers(text: String) {
-        val imported = json.decodeFromString(AppConfig.serializer(), text)
+        val imported = decode(text)
         val merged = imported.copy(brokers = _config.value.brokers)
         persist(merged)
         _config.value = merged
     }
+}
+
+/**
+ * Keeps every group's [PanelGroup.clusters] in step with its panels: exactly one entry per
+ * clusterId its panels reference (an entry no panel uses any more is dropped; one a panel
+ * references but the group lacks - e.g. a cluster just moved in from another group - is carried
+ * over by id from wherever it was, in [previous] or elsewhere in [cfg]), sorted into display
+ * order (lowest member displayOrder first). Run after every ConfigRepository update, so no
+ * individual mutation has to remember to tidy cluster entries up itself.
+ */
+internal fun normalizeClusters(cfg: AppConfig, previous: AppConfig? = null): AppConfig {
+    val knownNames = HashMap<String, String>()
+    previous?.groups?.forEach { g -> g.clusters.forEach { knownNames[it.id] = it.name } }
+    cfg.groups.forEach { g -> g.clusters.forEach { knownNames[it.id] = it.name } }
+    var changed = false
+    val groups = cfg.groups.map { g ->
+        // LinkedHashMap, so clusters tying on displayOrder (both Int.MAX_VALUE, say) keep
+        // first-appearance order through the stable sort below.
+        val minOrderById = LinkedHashMap<String, Int>()
+        g.panels.forEach { p ->
+            if (p.clusterId.isNotBlank()) minOrderById.merge(p.clusterId, p.displayOrder, ::minOf)
+        }
+        val ownById = g.clusters.associateBy { it.id }
+        val normalized = minOrderById.keys
+            .map { id -> ownById[id] ?: PanelCluster(id, knownNames[id].orEmpty()) }
+            .sortedBy { minOrderById.getValue(it.id) }
+        if (normalized == g.clusters) g else {
+            changed = true
+            g.copy(clusters = normalized)
+        }
+    }
+    return if (changed) cfg.copy(groups = groups) else cfg
 }

@@ -1,0 +1,2 @@
+- Groups, clusters and tiles now have their own permanent IDs instead of being matched by name, so two clusters can share a name without merging and renames are more reliable.
+- Device configs on the MQTT server now carry these IDs too (added automatically the first time each one is seen), keeping every phone in sync, and backups keep group and cluster order.
