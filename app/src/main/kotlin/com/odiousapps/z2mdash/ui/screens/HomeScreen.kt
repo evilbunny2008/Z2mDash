@@ -30,6 +30,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
@@ -124,6 +125,8 @@ import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
 import com.odiousapps.z2mdash.data.retopicClusterAndPublish
 import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
+import com.odiousapps.z2mdash.mqtt.LowBatteryAlertManager
+import com.odiousapps.z2mdash.ui.components.AlertBlue
 import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
@@ -268,6 +271,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // dialog state, so it should survive a screen rotation (which fully recreates the Activity,
     // since this app doesn't handle configChanges) rather than silently reverting to "off".
     var showOnlyStaleClusters by rememberSaveable { mutableStateOf(false) }
+    // Same idea for devices whose battery is at or below LowBatteryAlertManager's low threshold
+    // (20%) - toggled by its own FAB. With both filters on, a cluster has to match both.
+    var showOnlyLowBatteryClusters by rememberSaveable { mutableStateOf(false) }
     // Single Permit Join bar for the whole screen, regardless of how many brokers/base topics are
     // configured - tapping its text opens a dialog to pick which (broker, base topic) to act on
     // and, once picked, which router to extend joining through. Replaces both the old one-bar-
@@ -705,6 +711,40 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         modifier = Modifier.tvFocusIndicator()
                     ) {
                         Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
+                    }
+                    Spacer(Modifier.width(fabSpacing))
+                }
+                // Only worth showing once at least one dashboard device actually reports a battery
+                // level (or while the filter is on, so it can always be switched back off). A
+                // plain substring check rather than a JSON parse - this re-runs on every incoming
+                // MQTT message, and only needs to know whether a "battery" field exists at all.
+                val batteryTopicKeys = remember(config) {
+                    config.groups.asSequence().flatMap { it.panels }.flatMap { batteryTopicKeysFor(it) }.toSet()
+                }
+                val anyBatteryDevice by remember(batteryTopicKeys) {
+                    derivedStateOf {
+                        val payloads = payloadsState.value
+                        batteryTopicKeys.any { payloads[it]?.contains("\"battery\"") == true }
+                    }
+                }
+                if (anyBatteryDevice || showOnlyLowBatteryClusters) {
+                    FloatingActionButton(
+                        onClick = { showOnlyLowBatteryClusters = !showOnlyLowBatteryClusters },
+                        containerColor = if (showOnlyLowBatteryClusters) {
+                            MaterialTheme.colorScheme.errorContainer
+                        } else {
+                            FloatingActionButtonDefaults.containerColor
+                        },
+                        modifier = Modifier.tvFocusIndicator()
+                    ) {
+                        Icon(
+                            Icons.Default.BatteryAlert,
+                            contentDescription = if (showOnlyLowBatteryClusters) {
+                                "Showing only devices with 20% battery or less - tap to show everything"
+                            } else {
+                                "Show only devices with 20% battery or less"
+                            }
+                        )
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
@@ -1390,21 +1430,25 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         // When the "only sensors not reporting recently" toggle is on, clusters
                         // (and standalone tiles, each their own single-panel bucket above) that
                         // HAVE reported within the last hour are left out of row-packing/rendering
-                        // entirely, rather than shown dimmed or in a separate dialog. Deliberately
+                        // entirely, rather than shown dimmed or in a separate dialog. The
+                        // low-battery toggle filters the same way, and both apply when both are on. Deliberately
                         // NOT wrapped in remember/derivedStateOf per bucket - calling those inside
                         // a plain .filter{} loop whose iteration count varies is a known Compose
                         // slot-alignment hazard without an explicit key() per item, which isn't
                         // available here. Reading payloadsState/timestampsState directly instead
                         // means every expanded group's content recomposes on every MQTT message
-                        // while this toggle is on (unlike everywhere else on this screen), but only
-                        // for as long as it's deliberately switched on.
-                        val visibleClusters = if (!showOnlyStaleClusters) {
+                        // while either toggle is on (unlike everywhere else on this screen), but only
+                        // for as long as one is deliberately switched on.
+                        val visibleClusters = if (!showOnlyStaleClusters && !showOnlyLowBatteryClusters) {
                             orderedClusters
                         } else {
                             val payloads = payloadsState.value
                             val timestamps = timestampsState.value
                             val nowMillis = nowMillisState.longValue
-                            orderedClusters.filter { bucket -> isClusterStale(bucket, payloads, timestamps, nowMillis) }
+                            orderedClusters.filter { bucket ->
+                                (!showOnlyStaleClusters || isClusterStale(bucket, payloads, timestamps, nowMillis)) &&
+                                    (!showOnlyLowBatteryClusters || isClusterLowBattery(bucket, payloads))
+                            }
                         }
 
                         // Cluster drag state (draggedClusterKey/clusterBounds/etc.) is declared
@@ -2205,6 +2249,31 @@ private fun pushDashboardGroupOrderUpdates(app: Z2mDashApplication, orderedGroup
 }
 
 /**
+ * "brokerId|topic" keys where [panel]'s device would report its "battery" field: the panel's own
+ * reading topic, plus that topic with any "/app" suffix stripped - an editable threshold tile
+ * reads from the device's "/app" config topic, while the battery itself is on the device's main
+ * topic (same matching LowBatteryAlertManager.deviceNameFor does). A Button has no reading topic.
+ */
+private fun batteryTopicKeysFor(panel: Panel): List<String> {
+    val topic = when (panel) {
+        is Panel.Sensor -> panel.topic
+        is Panel.Toggle -> panel.stateTopic
+        is Panel.Button -> ""
+    }.takeIf { it.isNotBlank() } ?: return emptyList()
+    return listOf(topic, topic.removeSuffix("/app")).distinct().map { "${panel.brokerId}|$it" }
+}
+
+/** Whether any device behind [panels] reports a battery level LowBatteryAlertManager counts as low. */
+private fun isClusterLowBattery(panels: List<Panel>, payloads: Map<String, String>): Boolean =
+    panels.any { panel ->
+        batteryTopicKeysFor(panel).any { key ->
+            LowBatteryAlertManager.isLowBattery(
+                payloads[key]?.let { JsonPath.extract(it, "battery") }?.toDoubleOrNull()
+            )
+        }
+    }
+
+/**
  * Whether [panels]' most recent reading (preferring each panel's own device-reported "last_seen"
  * over receipt time, falling back to receipt time only when none of them have one) is more than
  * an hour old, or there's no reading for any of them at all. Same precedence/threshold as
@@ -2321,6 +2390,13 @@ private fun ClusterCard(
         }
     }
     val (ageText, isStale) = ageState.value
+    // Keyed/derived the same way as ageState, so it only recomposes when the result flips.
+    val lowBatteryState = remember(panels) {
+        derivedStateOf { isClusterLowBattery(panels, payloadsState.value) }
+    }
+    // Staleness wins when both apply - a stale battery reading is old news anyway, and the red
+    // outline is the more urgent of the two.
+    val showLowBattery = lowBatteryState.value && !isStale
 
     val staleIndicatorColor = if (isStale) {
         MaterialTheme.colorScheme.error
@@ -2336,6 +2412,10 @@ private fun ClusterCard(
                     Modifier.border(2.dp, MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
                 } else if (isStale) {
                     Modifier.border(2.dp, staleIndicatorColor, RoundedCornerShape(12.dp))
+                } else if (showLowBattery) {
+                    // Same outline as the stale indicator, in the same blue a sensor tile uses
+                    // for a reading above its ideal range.
+                    Modifier.border(2.dp, AlertBlue, RoundedCornerShape(12.dp))
                 } else {
                     Modifier
                 }
@@ -2443,6 +2523,15 @@ private fun ClusterCard(
                             modifier = Modifier.size(20.dp)
                         )
                     }
+                }
+                if (showLowBattery) {
+                    Spacer(Modifier.width(4.dp))
+                    Icon(
+                        Icons.Default.BatteryAlert,
+                        contentDescription = "Battery at 20% or less",
+                        tint = AlertBlue,
+                        modifier = Modifier.size(20.dp)
+                    )
                 }
                 IconButton(onClick = onDuplicate, modifier = Modifier.size(28.dp)) {
                     Icon(

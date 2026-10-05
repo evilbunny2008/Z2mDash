@@ -74,7 +74,8 @@ class LowBatteryAlertManager(
         val config = configRepository.config.value
         payloads.forEach { (compositeKey, payload) ->
             val battery = JsonPath.extract(payload, "battery")?.toDoubleOrNull()
-            val isLow = battery != null && battery > 0.0 && battery <= LOW_BATTERY_THRESHOLD
+            // Explicit null check kept so battery smart-casts to non-null below.
+            val isLow = battery != null && isLowBattery(battery)
 
             // First observation of this topic this app run - resync silently (see class doc)
             // rather than risk reading an already-known-low battery as a fresh drop just because
@@ -212,5 +213,13 @@ class LowBatteryAlertManager(
         private const val TEST_ALERT_KEY = "test|Z2mDash low battery test"
         private const val LOW_BATTERY_THRESHOLD = 20.0
         private const val LOW_BATTERY_STEP = 5.0
+
+        /**
+         * The one definition of "low battery" - shared with the Home screen's low-battery filter
+         * FAB and cluster outline, so what's flagged on screen always matches what notifies.
+         * 0 is never low (see this class's own doc: mains-powered devices report a fixed 0).
+         */
+        fun isLowBattery(battery: Double?): Boolean =
+            battery != null && battery > 0.0 && battery <= LOW_BATTERY_THRESHOLD
     }
 }

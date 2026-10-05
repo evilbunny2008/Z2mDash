@@ -1,0 +1,2 @@
+- New button to show only devices with 20% battery or less.
+- Clusters with a low battery device are now outlined in blue (red still shows for devices that haven't reported in over an hour).
