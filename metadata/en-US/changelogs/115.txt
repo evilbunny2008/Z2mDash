@@ -1,0 +1,2 @@
+- The weak signal button and outline icon now use the same signal icon as link quality tiles.
+- The home screen's bottom buttons are spaced a little closer together and no longer get cut off on narrower screens.

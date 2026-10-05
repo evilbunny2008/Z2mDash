@@ -37,7 +37,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.SignalCellularAlt1Bar
+import androidx.compose.material.icons.filled.SignalWifi4Bar
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
@@ -681,13 +681,54 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             // focused, which is what made them "hard to select" in the first place, and the extra
             // spacing makes it easier to see which one currently has focus.
             val isTv = LocalIsTv.current
+            // Only worth showing once there's at least one named cluster to actually find - a
+            // dashboard of only standalone tiles has nothing for this to search.
+            val showSearchFab = config.groups.any { g -> g.clusters.isNotEmpty() }
+            // Only worth showing once there's at least one non-editable sensor to actually watch
+            // for staleness - an editable panel is a fixed preference value, not a live hardware
+            // reading, so it never genuinely "reports" and would just be noise here.
+            val showStaleFab = config.groups.any { g -> g.panels.any { it is Panel.Sensor && !it.editable && it.topic.isNotBlank() } }
+            // The low-battery and weak-signal FABs are only worth showing once at least one
+            // dashboard device actually reports a "battery"/"linkquality" field (or while
+            // their filter is on, so it can always be switched back off). A plain substring
+            // check rather than a JSON parse - this re-runs on every incoming MQTT message,
+            // and only needs to know whether the field exists at all.
+            val deviceTopicKeys = remember(config) {
+                config.groups.asSequence().flatMap { it.panels }.flatMap { deviceTopicKeysFor(it) }.toSet()
+            }
+            val anyBatteryDevice by remember(deviceTopicKeys) {
+                derivedStateOf {
+                    val payloads = payloadsState.value
+                    deviceTopicKeys.any { payloads[it]?.contains("\"battery\"") == true }
+                }
+            }
+            val anyLinkQualityDevice by remember(deviceTopicKeys) {
+                derivedStateOf {
+                    val payloads = payloadsState.value
+                    deviceTopicKeys.any { payloads[it]?.contains("\"linkquality\"") == true }
+                }
+            }
+            val showLowBatteryFab = anyBatteryDevice || showOnlyLowBatteryClusters
+            val showWeakSignalFab = anyLinkQualityDevice || showOnlyWeakSignalClusters
+            // Only worth showing once there's more than one group to bulk-collapse - with zero or
+            // one, per-group collapse (the header's own chevron) already covers it.
+            val showCollapseFab = config.groups.size > 1
+            // 8dp between FABs on a phone, shrunk further if even that won't fit across the
+            // screen - Scaffold end-aligns the FAB slot with a 16dp margin, so a row wider than
+            // the space left of that just runs off the left edge, clipping the first FAB (six
+            // FABs at the old 12dp spacing did exactly that on a 411dp-wide phone). TV keeps its
+            // wider 20dp D-pad spacing - a TV screen has room to spare.
+            val fabCount = 1 + listOf(showSearchFab, showStaleFab, showLowBatteryFab, showWeakSignalFab, showCollapseFab).count { it }
+            val fabSpacing = if (isTv) {
+                20.dp
+            } else {
+                val fabRowRoom = screenWidthDp - 16.dp * 2 - 56.dp * fabCount
+                if (fabCount > 1) (fabRowRoom / (fabCount - 1)).coerceIn(0.dp, 8.dp) else 8.dp
+            }
             // Laid out in a single row along the bottom edge rather than stacked vertically, so the
             // FABs only cover a short strip of the list instead of a tall column down its right side.
-            val fabSpacing = if (isTv) 20.dp else 12.dp
             Row(verticalAlignment = Alignment.CenterVertically) {
-                // Only worth showing once there's at least one named cluster to actually find -
-                // a dashboard of only standalone tiles has nothing for this to search.
-                if (config.groups.any { g -> g.clusters.isNotEmpty() }) {
+                if (showSearchFab) {
                     FloatingActionButton(
                         onClick = { showClusterSearch = true },
                         modifier = Modifier.tvFocusIndicator()
@@ -696,10 +737,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
-                // Only worth showing once there's at least one non-editable sensor to actually
-                // watch for staleness - an editable panel is a fixed preference value, not a live
-                // hardware reading, so it never genuinely "reports" and would just be noise here.
-                if (config.groups.any { g -> g.panels.any { it is Panel.Sensor && !it.editable && it.topic.isNotBlank() } }) {
+                if (showStaleFab) {
                     val staleToggleContainerColor = if (showOnlyStaleClusters) {
                         MaterialTheme.colorScheme.errorContainer
                     } else {
@@ -719,27 +757,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
-                // The low-battery and weak-signal FABs are only worth showing once at least one
-                // dashboard device actually reports a "battery"/"linkquality" field (or while
-                // their filter is on, so it can always be switched back off). A plain substring
-                // check rather than a JSON parse - this re-runs on every incoming MQTT message,
-                // and only needs to know whether the field exists at all.
-                val deviceTopicKeys = remember(config) {
-                    config.groups.asSequence().flatMap { it.panels }.flatMap { deviceTopicKeysFor(it) }.toSet()
-                }
-                val anyBatteryDevice by remember(deviceTopicKeys) {
-                    derivedStateOf {
-                        val payloads = payloadsState.value
-                        deviceTopicKeys.any { payloads[it]?.contains("\"battery\"") == true }
-                    }
-                }
-                val anyLinkQualityDevice by remember(deviceTopicKeys) {
-                    derivedStateOf {
-                        val payloads = payloadsState.value
-                        deviceTopicKeys.any { payloads[it]?.contains("\"linkquality\"") == true }
-                    }
-                }
-                if (anyBatteryDevice || showOnlyLowBatteryClusters) {
+                if (showLowBatteryFab) {
                     FloatingActionButton(
                         onClick = { showOnlyLowBatteryClusters = !showOnlyLowBatteryClusters },
                         containerColor = if (showOnlyLowBatteryClusters) {
@@ -760,7 +778,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
-                if (anyLinkQualityDevice || showOnlyWeakSignalClusters) {
+                if (showWeakSignalFab) {
                     FloatingActionButton(
                         onClick = { showOnlyWeakSignalClusters = !showOnlyWeakSignalClusters },
                         containerColor = if (showOnlyWeakSignalClusters) {
@@ -771,7 +789,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         modifier = Modifier.tvFocusIndicator()
                     ) {
                         Icon(
-                            Icons.Default.SignalCellularAlt1Bar,
+                            Icons.Default.SignalWifi4Bar,
                             contentDescription = if (showOnlyWeakSignalClusters) {
                                 "Showing only devices with link quality below $WEAK_SIGNAL_LQI - tap to show everything"
                             } else {
@@ -781,9 +799,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     }
                     Spacer(Modifier.width(fabSpacing))
                 }
-                // Only worth showing once there's more than one group to bulk-collapse - with
-                // zero or one, per-group collapse (the header's own chevron) already covers it.
-                if (config.groups.size > 1) {
+                if (showCollapseFab) {
                     val anyGroupExpanded = config.groups.any { !it.collapsed }
                     val collapseContentDescription = if (anyGroupExpanded) "Collapse all groups" else "Expand all groups"
                     val collapseIcon = if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore
@@ -2591,7 +2607,7 @@ private fun ClusterCard(
                 if (showWeakSignal) {
                     Spacer(Modifier.width(4.dp))
                     Icon(
-                        Icons.Default.SignalCellularAlt1Bar,
+                        Icons.Default.SignalWifi4Bar,
                         contentDescription = "Link quality below $WEAK_SIGNAL_LQI",
                         tint = AlertAmber,
                         modifier = Modifier.size(20.dp)
