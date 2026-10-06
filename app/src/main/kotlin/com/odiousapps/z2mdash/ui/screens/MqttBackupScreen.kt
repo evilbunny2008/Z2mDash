@@ -48,6 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
+import com.odiousapps.z2mdash.data.restoreConfig
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 
@@ -213,7 +214,7 @@ fun MqttBackupScreen(navController: NavController) {
                                         restoringTopic = null
                                     } else {
                                         try {
-                                            app.configRepository.importJsonPreservingBrokers(BackupCodec.decompressFromBase64(raw))
+                                            restoreConfig(app, BackupCodec.decompressFromBase64(raw), preserveBrokers = true)
                                             statusMessage = "Restored from $displayTime"
                                         } catch (_: Exception) {
                                             statusMessage = "Restore failed: that topic's payload wasn't a valid backup"

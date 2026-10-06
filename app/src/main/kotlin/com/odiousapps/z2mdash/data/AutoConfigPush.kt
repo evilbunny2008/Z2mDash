@@ -644,3 +644,80 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
         app.connectionManager.publish(brokerId, appTopic, payload, retain = true)
     }
 }
+
+/**
+ * Restores a backup and makes its layout stick. Imports [json] (keeping this phone's own brokers
+ * when [preserveBrokers], as an MQTT backup has none), then pushes the restored layout into every
+ * auto-configured device's retained "/app" payload, all while holding
+ * ConfigRepository.reconcileLock so no reconcile pass can run in between.
+ *
+ * The push is what makes the restore authoritative rather than a short-lived local overwrite:
+ * the broker's retained payloads (and every other phone sharing it) still describe whatever
+ * layout was current before the restore, with newer order_versions than the backup's own - so
+ * without this, the next reconcile on this phone, and every reconcile on the others, put that
+ * older layout straight back. Stamped with the same order_version the import gave every restored
+ * device (see ConfigRepository.prepareRestored), so this phone's own echo is recognised as the
+ * order it already has, while every other phone sees a genuinely newer one and adopts it. Device
+ * content (labels, units, ...) still comes from the broker, as it always has - only layout is
+ * re-asserted: which group a device sits in, that group's place on the dashboard, the device's
+ * cluster rank within it, and its panels' order within their cluster.
+ */
+fun restoreConfig(app: Z2mDashApplication, json: String, preserveBrokers: Boolean) {
+    synchronized(app.configRepository.reconcileLock) {
+        val restoredAt = if (preserveBrokers) {
+            app.configRepository.importJsonPreservingBrokers(json)
+        } else {
+            app.configRepository.importJson(json)
+        }
+        pushRestoredLayout(app, restoredAt)
+    }
+}
+
+private fun pushRestoredLayout(app: Z2mDashApplication, orderVersion: Long) {
+    val config = app.configRepository.config.value
+    config.groups.forEachIndexed { groupIndex, group ->
+        val clusterOrder = group.panels.groupBy { it.clusterKey }.entries
+            .sortedBy { (_, panels) -> panels.minOf { it.displayOrder } }
+            .map { it.key }
+        config.autoConfiguredDevices.forEach { device ->
+            val devicePanels = group.panels.filter { it.id in device.createdPanelIds }
+            if (devicePanels.isEmpty()) return@forEach
+            var payload = currentPayloadFor(app, device) ?: return@forEach
+            val deviceConfig = SensorDiscovery.parseDeviceAppConfig(payload) ?: return@forEach
+            val orderedDevicePanels = orderedPanelsOf(app, device)
+
+            // Each panel's position within its own cluster - same numbering
+            // pushOrderUpdateIfAutoConfigured writes after a within-cluster drag.
+            val panelOrderByIndex = mutableMapOf<Int, Int>()
+            val controlOrderByIndex = mutableMapOf<Int, Int>()
+            devicePanels.forEach { panel ->
+                val withinCluster = group.panels.filter { it.clusterKey == panel.clusterKey }
+                    .sortedBy { it.displayOrder }.indexOfFirst { it.id == panel.id }
+                when (panel) {
+                    is Panel.Sensor -> SensorDiscovery.sensorFieldIndex(deviceConfig, orderedDevicePanels, panel.id, panel.jsonPath)
+                        ?.let { panelOrderByIndex[it] = withinCluster }
+                    is Panel.Toggle, is Panel.Button -> commandTopicOf(panel)
+                        ?.let { SensorDiscovery.controlIndex(deviceConfig, orderedDevicePanels, panel.id, it) }
+                        ?.let { controlOrderByIndex[it] = withinCluster }
+                }
+            }
+            // A device's group_order ranks the cluster its first panel sits in - the same single
+            // value buildPanels composes every one of the device's panels' displayOrders from.
+            val clusterRank = clusterOrder.indexOf(devicePanels.minBy { it.displayOrder }.clusterKey) + 1
+
+            payload = SensorDiscovery.updateDescriptionInAppPayload(payload, newGroup = group.name, newGroupId = group.id)
+                ?: return@forEach
+            payload = SensorDiscovery.updateDashboardGroupOrderInAppPayload(payload, groupIndex + 1, orderVersion)
+                ?: return@forEach
+            payload = SensorDiscovery.updateGroupOrderInAppPayload(payload, clusterRank, orderVersion)
+                ?: return@forEach
+            payload = SensorDiscovery.updateOrderingInAppPayload(payload, panelOrderByIndex, controlOrderByIndex, orderVersion)
+                ?: return@forEach
+            // Deliberately not pre-marked as applied: the echo should still reconcile, so this
+            // phone's restored panels get rebuilt from the broker's current content (and ids) -
+            // replacing them rather than sitting alongside - while its order_version, equal to
+            // what prepareRestored stamped, keeps the restored layout in place.
+            app.connectionManager.publish(device.brokerId, device.appConfigTopic, payload, retain = true)
+        }
+    }
+}

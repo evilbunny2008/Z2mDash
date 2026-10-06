@@ -951,22 +951,30 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         onDragStart = { startLocalPos ->
                             val coords = listCoordinates ?: return@detectDragGesturesAfterLongPress
                             val windowPos = coords.localToWindow(startLocalPos)
-                            val hitPanelId = panelBounds.entries
-                                .firstOrNull { (_, b) -> b.contains(windowPos) }
+                            // Group headers are hit-tested first: the sticky header is drawn on top of
+                            // whatever content has scrolled underneath it, so a press on it must never
+                            // fall through to a tile/caption beneath. Only attached (currently laid
+                            // out) coordinates count, and only tiles in an expanded group - a tile in
+                            // a collapsed group isn't on screen, so it can't be what was pressed.
+                            val liveGroups = app.configRepository.config.value.groups
+                            val hitGroupId = groupHeaderCoordinates.entries
+                                .firstOrNull { (_, c) -> c.isAttached && c.boundsInWindow().contains(windowPos) }
                                 ?.key
-                            val hitClusterKey = if (hitPanelId == null) {
+                            val hitClusterKey = if (hitGroupId == null) {
                                 clusterCaptionCoordinates.entries
-                                    .firstOrNull { (_, c) -> c.boundsInWindow().contains(windowPos) }
+                                    .firstOrNull { (_, c) -> c.isAttached && c.boundsInWindow().contains(windowPos) }
                                     ?.key
                             } else null
-                            val hitGroupId = if (hitPanelId == null && hitClusterKey == null) {
-                                groupHeaderCoordinates.entries
-                                    .firstOrNull { (_, c) -> c.boundsInWindow().contains(windowPos) }
+                            val expandedPanelIds = liveGroups.asSequence().filter { !it.collapsed }
+                                .flatMap { it.panels }.map { it.id }.toSet()
+                            val hitPanelId = if (hitGroupId == null && hitClusterKey == null) {
+                                panelBounds.entries
+                                    .firstOrNull { (id, b) -> id in expandedPanelIds && b.contains(windowPos) }
                                     ?.key
                             } else null
                             when {
                                 hitPanelId != null -> {
-                                    val fromGroupId = app.configRepository.config.value.groups
+                                    val fromGroupId = liveGroups
                                         .find { g -> g.panels.any { it.id == hitPanelId } }?.id
                                     if (fromGroupId != null) {
                                         draggedPanelId = hitPanelId
@@ -1559,6 +1567,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         key(panelsInCluster.first().id) {
                                             if (clusterId.isBlank()) {
                                                 val standalonePanel = panelsInCluster.first()
+                                                // Same leak as clusterBounds below - see that comment.
+                                                DisposableEffect(standalonePanel.id) {
+                                                    onDispose { panelBounds.remove(standalonePanel.id) }
+                                                }
                                                 PanelTile(
                                                     panel = standalonePanel,
                                                     groupId = group.id,
@@ -2511,6 +2523,14 @@ private fun ClusterCard(
                             panelIndex == draggedToPanelIndex
                         val isPoppingOut = isDragging && draggedPanelWillPopOut
 
+                        // Without this a tile's last rect stayed in panelBounds forever once it
+                        // left composition (its group collapsed, it scrolled away, or a restore
+                        // replaced it) - and since a long-press hit-tests panelBounds, that
+                        // invisible ghost rect could be grabbed instead of whatever was really
+                        // under the finger, e.g. a group header, dragging a hidden tile instead.
+                        DisposableEffect(panel.id) {
+                            onDispose { panelBounds.remove(panel.id) }
+                        }
                         Box(
                             modifier = Modifier
                                 .width(tileWidth)
@@ -2840,7 +2860,8 @@ private fun addPendingDevice(
             updatedDevice = device,
             targetGroupId = targetGroupId,
             newPanels = newPanels,
-            newClusters = built.clusters
+            newClusters = built.clusters,
+            isLiveDevice = { app.connectionManager.isLive("${it.brokerId}|${it.appConfigTopic}") }
         )
         app.configRepository.resyncDashboardGroupOrder()
         app.configRepository.removePendingAutoConfigDevice(pending.brokerId, pending.appConfigTopic)

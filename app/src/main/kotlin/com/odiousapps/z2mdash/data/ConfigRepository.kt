@@ -27,6 +27,14 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         encodeDefaults = true
     }
 
+    /**
+     * Held by DeviceAutoConfigManager for each whole reconcile/detect pass, and by a restore
+     * (AutoConfigPush.restoreConfig) across its import AND its push of the restored layout to the
+     * broker - so a reconcile pass can never run in between and re-apply the broker's older
+     * layout onto a just-restored config before the restore has had the chance to replace it.
+     */
+    val reconcileLock = Any()
+
     private val _config = MutableStateFlow(AppConfig())
     val config: StateFlow<AppConfig> = _config
 
@@ -265,8 +273,8 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
     /**
      * Resorts top-level dashboard groups to match every auto-configured device's
      * lastKnownDashboardOrder (lowest first) - a group missing that info entirely (manually
-     * created, or none of its member devices has adopted one yet) keeps its current relative
-     * position, interleaved wherever a plain sort-by-key naturally puts it. Recomputed fresh from
+     * created, or none of its member devices has adopted one yet) stays right after whichever
+     * group currently precedes it. Recomputed fresh from
      * scratch each call (a full stable resort, not moving one group at a time to a fixed index),
      * so the result doesn't depend on what order devices/groups happened to be discovered or
      * reconciled in - important right after wiping app data, when a flood of retained "/app"
@@ -283,7 +291,16 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
             if (existing == null || order < existing) orderByGroupId[groupId] = order
         }
         if (orderByGroupId.isEmpty()) return@update cfg
-        val sorted = cfg.groups.sortedBy { orderByGroupId[it.id] ?: Int.MAX_VALUE }
+        // A group with no known order (manually built, or none of its devices has one yet) sorts
+        // with whatever group precedes it, rather than being pushed to the very end - otherwise
+        // every manual-only group sank to the bottom on each resync, scrambling a restored or
+        // hand-arranged order.
+        var previousOrder = Int.MIN_VALUE
+        val effectiveOrder = cfg.groups.associate { g ->
+            orderByGroupId[g.id]?.let { previousOrder = it }
+            g.id to previousOrder
+        }
+        val sorted = cfg.groups.sortedBy { effectiveOrder.getValue(it.id) }
         if (sorted.map { it.id } == cfg.groups.map { it.id }) cfg else cfg.copy(groups = sorted)
     }
 
@@ -667,14 +684,55 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
      * another phone is renamed here too) into that group, and updates the tracking entry
      * ([updatedDevice], whose createdPanelIds should be the new panels' IDs) - all in one state
      * transition.
+     *
+     * [isLiveDevice] (passed by every auto-config path) turns on duplicate
+     * replacement: an existing panel showing exactly the same data as one of [newPanels] (same
+     * Panel.sourceKey) is replaced by it - keeping the old panel's position (and a Sensor's
+     * editable flag) - instead of the device's tiles landing alongside it as duplicates, unless
+     * that existing panel belongs to another device [isLiveDevice] says is still live on the
+     * broker. A device left owning nothing is dropped. Without this, any device that comes back
+     * "new" while its tiles still exist (a restored backup tracking a cluster's old topic while
+     * the broker now has it on a new one; a cached "/app" payload that was cleared on the broker
+     * while this phone was offline; a manually-added tile for the same field) doubled up its tiles.
      */
     fun applyDeviceAutoConfig(
         oldPanelIds: Set<String>,
         updatedDevice: AutoConfiguredDevice,
         targetGroupId: String,
         newPanels: List<Panel>,
-        newClusters: List<PanelCluster> = emptyList()
-    ) = update { cfg ->
+        newClusters: List<PanelCluster> = emptyList(),
+        isLiveDevice: ((AutoConfiguredDevice) -> Boolean)? = null
+    ) = update { previous ->
+        var cfg = previous
+        var panelsToAdd = newPanels
+        if (isLiveDevice != null) {
+            val newIds = newPanels.map { it.id }.toSet()
+            val ownerByPanelId = previous.autoConfiguredDevices
+                .flatMap { d -> d.createdPanelIds.map { it to d } }.toMap()
+            val candidates = previous.groups.asSequence().flatMap { it.panels }
+                .filter { p ->
+                    p.id !in oldPanelIds && p.id !in newIds &&
+                        ownerByPanelId[p.id]?.let { owner -> !isLiveDevice(owner) } != false
+                }
+                .groupByTo(mutableMapOf()) { it.sourceKey }
+            val replacedIds = mutableSetOf<String>()
+            panelsToAdd = newPanels.map { panel ->
+                val duplicate = candidates[panel.sourceKey]?.removeFirstOrNull() ?: return@map panel
+                replacedIds += duplicate.id
+                val carried = panel.withDisplayOrder(duplicate.displayOrder)
+                if (carried is Panel.Sensor && duplicate is Panel.Sensor) carried.copy(editable = duplicate.editable) else carried
+            }
+            if (replacedIds.isNotEmpty()) {
+                cfg = cfg.copy(
+                    groups = cfg.groups.map { g -> g.copy(panels = g.panels.filterNot { it.id in replacedIds }) },
+                    autoConfiguredDevices = cfg.autoConfiguredDevices.mapNotNull { d ->
+                        if (d.createdPanelIds.none { it in replacedIds }) return@mapNotNull d
+                        val remaining = d.createdPanelIds - replacedIds
+                        if (remaining.isEmpty()) null else d.copy(createdPanelIds = remaining)
+                    }
+                )
+            }
+        }
         val strippedGroups = cfg.groups.map { g ->
             if (oldPanelIds.isEmpty()) g else g.copy(panels = g.panels.filterNot { it.id in oldPanelIds })
         }
@@ -684,7 +742,7 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
                 if (g.id != targetGroupId) return@map g
                 val renamed = g.clusters.map { newClustersById[it.id] ?: it }
                 val added = newClusters.filter { c -> renamed.none { it.id == c.id } }
-                g.copy(panels = g.panels + newPanels, clusters = renamed + added)
+                g.copy(panels = g.panels + panelsToAdd, clusters = renamed + added)
             }
         } else {
             strippedGroups
@@ -837,10 +895,16 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         return json.encodeToString(AppConfig.serializer(), brokersOnly)
     }
 
-    fun importJson(text: String) {
-        val imported = decode(text)
+    /**
+     * Replaces the whole config with [text]'s. Returns the restore's order_version - see
+     * prepareRestored - for the caller to stamp onto the layout it pushes to the broker.
+     */
+    fun importJson(text: String): Long {
+        val restoredAt = System.currentTimeMillis()
+        val imported = prepareRestored(decode(text), restoredAt)
         persist(imported)
         _config.value = imported
+        return restoredAt
     }
 
     /**
@@ -863,11 +927,33 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
      * device's brokers are kept. Only round-trips cleanly on the same device/broker setup - panels
      * still reference the original brokerId, so a different device's brokers won't reconnect them.
      */
-    fun importJsonPreservingBrokers(text: String) {
-        val imported = decode(text)
+    fun importJsonPreservingBrokers(text: String): Long {
+        val restoredAt = System.currentTimeMillis()
+        val imported = prepareRestored(decode(text), restoredAt)
         val merged = imported.copy(brokers = _config.value.brokers)
         persist(merged)
         _config.value = merged
+        return restoredAt
+    }
+
+    /**
+     * Makes a restored config's layout win over whatever's on the broker. A backup's devices carry
+     * the order_version they last saw, which the broker's retained payloads have almost always
+     * moved past since - so the very next reconcile would adopt the broker's (newer-looking)
+     * order and group placement right back over the restored one. Stamping [restoredAt] as every
+     * device's lastKnownOrderVersion makes the restore the newest order this phone knows of, and
+     * resetting lastKnownDashboardOrder from the backup's own group list order keeps
+     * resyncDashboardGroupOrder from re-sorting groups by stale per-device values.
+     */
+    private fun prepareRestored(cfg: AppConfig, restoredAt: Long): AppConfig {
+        val groupIndexByPanelId = cfg.groups.flatMapIndexed { index, g -> g.panels.map { it.id to index } }.toMap()
+        return cfg.copy(autoConfiguredDevices = cfg.autoConfiguredDevices.map { device ->
+            val groupIndex = device.createdPanelIds.firstNotNullOfOrNull { groupIndexByPanelId[it] }
+            device.copy(
+                lastKnownOrderVersion = maxOf(device.lastKnownOrderVersion, restoredAt),
+                lastKnownDashboardOrder = groupIndex?.plus(1) ?: device.lastKnownDashboardOrder
+            )
+        })
     }
 }
 

@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
+import com.odiousapps.z2mdash.data.restoreConfig
 
 /**
  * Shown instead of an empty Home screen when there are no brokers configured yet - offers Add a
@@ -64,7 +65,7 @@ fun WelcomeScreen(navController: NavController) {
                             text
                         }
                     }
-                    app.configRepository.importJson(json)
+                    restoreConfig(app, json, preserveBrokers = false)
                     navController.popBackStack()
                 }
             } catch (_: Exception) {

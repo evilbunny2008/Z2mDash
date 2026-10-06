@@ -47,6 +47,20 @@ class MqttConnectionManager(
     private val _latestPayloadTimestamps = MutableStateFlow<Map<String, Long>>(emptyMap())
     val latestPayloadTimestamps: StateFlow<Map<String, Long>> = _latestPayloadTimestamps
 
+    // Anything in latestPayloads timestamped before this was only replayed from the on-disk cache,
+    // not (yet) received from a broker this session - see isLive.
+    private val sessionStartMillis = System.currentTimeMillis()
+
+    /**
+     * Whether [key]'s payload has actually arrived from its broker since the app started, rather
+     * than only being replayed from the on-disk cache. A retained topic cleared on the broker
+     * while this phone was offline never gets its empty "cleared" message redelivered, so its
+     * stale cached payload would otherwise linger forever looking current - a broker redelivers
+     * every retained topic that still exists the moment it's subscribed to, so one not refreshed
+     * this session is either gone or not yet redelivered.
+     */
+    fun isLive(key: String): Boolean = (_latestPayloadTimestamps.value[key] ?: 0L) >= sessionStartMillis
+
     init {
         // Seeded from disk so the dashboard shows correct "updated N ago" data before any MQTT
         // traffic arrives this session, instead of blank. Loaded on a background dispatcher, not

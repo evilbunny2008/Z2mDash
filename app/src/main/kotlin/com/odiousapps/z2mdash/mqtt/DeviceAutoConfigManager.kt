@@ -36,8 +36,11 @@ class DeviceAutoConfigManager(
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
             connectionManager.latestPayloads.collect { payloads ->
-                reconcileKnownDevices(payloads)
-                detectNewDevices(payloads)
+                // See ConfigRepository.reconcileLock - keeps a restore from interleaving with a pass.
+                synchronized(configRepository.reconcileLock) {
+                    reconcileKnownDevices(payloads)
+                    detectNewDevices(payloads)
+                }
             }
         }
     }
@@ -193,12 +196,17 @@ class DeviceAutoConfigManager(
                     device.lastKnownDashboardOrder
                 }
             )
+            // Duplicate replacement on here too, not only for brand-new devices - a restored
+            // backup can hold tiles no device tracks any more (left behind by older bugs) showing
+            // the same data as this device's, which this rebuild would otherwise sit right
+            // alongside. See applyDeviceAutoConfig's own doc.
             configRepository.applyDeviceAutoConfig(
                 oldPanelIds = ownedPanelIds,
                 updatedDevice = updatedDevice,
                 targetGroupId = targetGroupId,
                 newPanels = newPanels,
-                newClusters = built.clusters
+                newClusters = built.clusters,
+                isLiveDevice = { connectionManager.isLive("${it.brokerId}|${it.appConfigTopic}") }
             )
             configRepository.resyncDashboardGroupOrder()
             stampIdsIfMissing(updatedDevice, currentPayload, deviceConfig, newPanels, targetGroup)
@@ -281,6 +289,11 @@ class DeviceAutoConfigManager(
 
             val key = "$brokerId|$topic"
             if (key in trackedKeys || key in pendingKeys || key in ignoredKeys) return@forEach
+            // Only a payload genuinely received this session counts as a device to offer - a
+            // cache-only one may be a retained topic since cleared on the broker (see
+            // MqttConnectionManager.isLive), which would otherwise resurface as a "new" device and
+            // duplicate tiles that already exist under its replacement topic.
+            if (!connectionManager.isLive(key)) return@forEach
 
             val deviceConfig = SensorDiscovery.parseDeviceAppConfig(payload) ?: return@forEach
             val sensorTopic = topic.removeSuffix("/app")
@@ -351,7 +364,8 @@ class DeviceAutoConfigManager(
             updatedDevice = device,
             targetGroupId = targetGroupId,
             newPanels = newPanels,
-            newClusters = built.clusters
+            newClusters = built.clusters,
+            isLiveDevice = { connectionManager.isLive("${it.brokerId}|${it.appConfigTopic}") }
         )
         configRepository.resyncDashboardGroupOrder()
     }

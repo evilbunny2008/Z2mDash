@@ -1,0 +1,3 @@
+- Restoring a backup now restores the order of groups and clusters, and keeps it on every phone sharing the broker.
+- Fixed duplicate tiles appearing in a cluster after restoring a backup.
+- Fixed dragging groups after a restore or with groups collapsed: the wrong tile or cluster could be moved instead, with no sign a drag had started.

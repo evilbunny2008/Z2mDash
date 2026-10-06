@@ -168,6 +168,18 @@ fun AppConfig.clusterNameOf(panel: Panel): String {
  */
 val Panel.clusterKey: String get() = clusterId.ifBlank { "__single__$id" }
 
+/**
+ * What a panel actually shows, independent of its id: broker plus field/command topic. Two
+ * panels with the same source key display exactly the same data - see
+ * ConfigRepository.applyDeviceAutoConfig's duplicate replacement.
+ */
+val Panel.sourceKey: String
+    get() = when (this) {
+        is Panel.Sensor -> "$brokerId|sensor|$topic|$jsonPath"
+        is Panel.Toggle -> "$brokerId|toggle|$commandTopic|$stateJsonPath"
+        is Panel.Button -> "$brokerId|button|$commandTopic"
+    }
+
 fun Panel.withClusterId(clusterId: String): Panel = when (this) {
     is Panel.Sensor -> copy(clusterId = clusterId)
     is Panel.Toggle -> copy(clusterId = clusterId)

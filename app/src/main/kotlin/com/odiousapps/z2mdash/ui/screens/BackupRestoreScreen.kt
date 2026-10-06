@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
+import com.odiousapps.z2mdash.data.restoreConfig
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
@@ -87,7 +88,7 @@ fun BackupRestoreScreen(navController: NavController) {
                 app.configRepository.importBrokersOnlyJson(json)
                 snackbarMessage = "Brokers imported"
             } else {
-                app.configRepository.importJson(json)
+                restoreConfig(app, json, preserveBrokers = false)
                 snackbarMessage = "Configuration imported"
             }
         } catch (_: Exception) {

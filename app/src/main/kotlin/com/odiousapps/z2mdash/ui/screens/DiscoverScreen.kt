@@ -153,7 +153,8 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
             updatedDevice = device,
             targetGroupId = targetGroupId,
             newPanels = newPanels,
-            newClusters = built.clusters
+            newClusters = built.clusters,
+            isLiveDevice = { app.connectionManager.isLive("${it.brokerId}|${it.appConfigTopic}") }
         )
         return true
     }
