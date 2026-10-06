@@ -712,11 +712,12 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // The dashboard filters live behind one "filter" FAB's menu rather than a FAB each - four
     // more always-visible FABs didn't fit along the bottom. Each is offered while there's
     // something for it to find, or while it's the active one, so it can always be switched back off.
+    // Listed in menu order - low moisture first, as the one checked most often.
     val filterOptions = listOf(
+        FilterOption(DashboardFilter.LOW_MOISTURE, iconFor(TileIcon.MOISTURE), "Moisture below ideal range", hasMoistureSensors),
         FilterOption(DashboardFilter.STALE, Icons.Default.Warning, "Not reporting recently", hasStaleCandidates),
         FilterOption(DashboardFilter.LOW_BATTERY, Icons.Default.BatteryAlert, "Battery 20% or less", anyBatteryDevice),
-        FilterOption(DashboardFilter.WEAK_SIGNAL, iconFor(TileIcon.SIGNAL), "Link quality below $WEAK_SIGNAL_LQI", anyLinkQualityDevice),
-        FilterOption(DashboardFilter.LOW_MOISTURE, iconFor(TileIcon.MOISTURE), "Moisture below ideal range", hasMoistureSensors)
+        FilterOption(DashboardFilter.WEAK_SIGNAL, iconFor(TileIcon.SIGNAL), "Link quality below $WEAK_SIGNAL_LQI", anyLinkQualityDevice)
     ).filter { it.available || it.filter == activeFilter }
     val activeFilterOption = filterOptions.find { it.filter == activeFilter }
     // The filter FAB's own menu, shown above it - see filterFab below.
