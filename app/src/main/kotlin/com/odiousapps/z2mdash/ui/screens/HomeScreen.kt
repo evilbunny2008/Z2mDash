@@ -31,9 +31,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.FilterList
+import androidx.compose.material.icons.filled.FilterListOff
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Search
@@ -44,6 +47,7 @@ import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
@@ -51,6 +55,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
@@ -272,12 +277,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var clusterSearchQuery by remember { mutableStateOf("") }
     // Filters the dashboard itself down to only the clusters/standalone panels matching one
     // DashboardFilter (not reporting recently, low battery, weak signal, low moisture), rather
-    // than opening a separate dialog for it - each toggled by its own FAB. Only one at a time:
+    // than opening a separate dialog for it - picked from the filter FAB's menu. Only one at a time:
     // picking another replaces it. rememberSaveable, not remember - this is a deliberate,
     // user-set filter mode, not transient dialog state, so it should survive a screen rotation
     // (which fully recreates the Activity, since this app doesn't handle configChanges) rather
     // than silently reverting to "off".
     var activeFilter by rememberSaveable { mutableStateOf<DashboardFilter?>(null) }
+    var showFilterMenu by remember { mutableStateOf(false) }
     // Single Permit Join bar for the whole screen, regardless of how many brokers/base topics are
     // configured - tapping its text opens a dialog to pick which (broker, base topic) to act on
     // and, once picked, which router to extend joining through. Replaces both the old one-bar-
@@ -703,30 +709,68 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         }
     }
     val hasMoistureSensors = config.groups.any { g -> g.panels.any { isMoistureSensor(it) } }
-    // One FAB per dashboard filter, each available while there's something for it to find - or
-    // while it's the active filter, so it can always be switched back off.
-    fun filterFab(filter: DashboardFilter, available: Boolean, icon: ImageVector, description: String): FabSpec? {
-        if (!available && activeFilter != filter) return null
-        val active = activeFilter == filter
-        return FabSpec(
-            key = filter.name,
-            icon = icon,
-            contentDescription = if (active) "Showing only $description - tap to show everything" else "Show only $description",
-            highlighted = active,
-            // Picking a filter replaces whichever one was active; picking the active one clears it.
-            onClick = { activeFilter = if (active) null else filter }
-        )
+    // The dashboard filters live behind one "filter" FAB's menu rather than a FAB each - four
+    // more always-visible FABs didn't fit along the bottom. Each is offered while there's
+    // something for it to find, or while it's the active one, so it can always be switched back off.
+    val filterOptions = listOf(
+        FilterOption(DashboardFilter.STALE, Icons.Default.Warning, "Not reporting recently", hasStaleCandidates),
+        FilterOption(DashboardFilter.LOW_BATTERY, Icons.Default.BatteryAlert, "Battery 20% or less", anyBatteryDevice),
+        FilterOption(DashboardFilter.WEAK_SIGNAL, iconFor(TileIcon.SIGNAL), "Link quality below $WEAK_SIGNAL_LQI", anyLinkQualityDevice),
+        FilterOption(DashboardFilter.LOW_MOISTURE, iconFor(TileIcon.MOISTURE), "Moisture below ideal range", hasMoistureSensors)
+    ).filter { it.available || it.filter == activeFilter }
+    val activeFilterOption = filterOptions.find { it.filter == activeFilter }
+    // The filter FAB's own menu, shown above it - see filterFab below.
+    val filterMenu: @Composable () -> Unit = {
+        DropdownMenu(expanded = showFilterMenu, onDismissRequest = { showFilterMenu = false }) {
+            filterOptions.forEach { option ->
+                val active = option.filter == activeFilter
+                DropdownMenuItem(
+                    text = { Text(option.label) },
+                    leadingIcon = { Icon(option.icon, contentDescription = null) },
+                    trailingIcon = if (active) {
+                        { Icon(Icons.Default.Check, contentDescription = "Active") }
+                    } else {
+                        null
+                    },
+                    // Picking a filter replaces whichever one was active; picking the active one
+                    // clears it.
+                    onClick = {
+                        activeFilter = if (active) null else option.filter
+                        showFilterMenu = false
+                    }
+                )
+            }
+            if (activeFilter != null) {
+                HorizontalDivider()
+                DropdownMenuItem(
+                    text = { Text("Show everything") },
+                    leadingIcon = { Icon(Icons.Default.FilterListOff, contentDescription = null) },
+                    onClick = {
+                        activeFilter = null
+                        showFilterMenu = false
+                    }
+                )
+            }
+        }
     }
+    // Shows the active filter's own icon (highlighted, like any active filter) in place of the
+    // plain filter icon, so which filter is narrowing the dashboard is visible at a glance.
+    val filterFab = FabSpec(
+        key = "filter",
+        icon = activeFilterOption?.icon ?: Icons.Default.FilterList,
+        contentDescription = activeFilterOption?.let { "Filter: showing only ${it.label.lowercase()} - tap to change" }
+            ?: "Filter the dashboard",
+        highlighted = activeFilterOption != null,
+        onClick = { showFilterMenu = true },
+        menu = filterMenu
+    ).takeIf { filterOptions.isNotEmpty() }
     val anyGroupExpanded = config.groups.any { !it.collapsed }
     val fabSpecs = listOfNotNull(
         // Only worth showing once there's at least one named cluster to actually find - a
         // dashboard of only standalone tiles has nothing for this to search.
         FabSpec("search", Icons.Default.Search, "Search clusters", onClick = { showClusterSearch = true })
             .takeIf { config.groups.any { g -> g.clusters.isNotEmpty() } },
-        filterFab(DashboardFilter.STALE, hasStaleCandidates, Icons.Default.Warning, "sensors not reporting recently"),
-        filterFab(DashboardFilter.LOW_BATTERY, anyBatteryDevice, Icons.Default.BatteryAlert, "devices with 20% battery or less"),
-        filterFab(DashboardFilter.WEAK_SIGNAL, anyLinkQualityDevice, iconFor(TileIcon.SIGNAL), "devices with link quality below $WEAK_SIGNAL_LQI"),
-        filterFab(DashboardFilter.LOW_MOISTURE, hasMoistureSensors, iconFor(TileIcon.MOISTURE), "moisture sensors below their ideal range"),
+        filterFab,
         // Only worth showing once there's more than one group to bulk-collapse - with zero or one,
         // per-group collapse (the header's own chevron) already covers it.
         FabSpec(
@@ -758,16 +802,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     Row(horizontalArrangement = Arrangement.spacedBy(fabSpacing)) {
                         row.forEach { fab ->
                             key(fab.key) {
-                                FloatingActionButton(
-                                    onClick = fab.onClick,
-                                    containerColor = if (fab.highlighted) {
-                                        MaterialTheme.colorScheme.errorContainer
-                                    } else {
-                                        FloatingActionButtonDefaults.containerColor
-                                    },
-                                    modifier = Modifier.tvFocusIndicator()
-                                ) {
-                                    Icon(fab.icon, contentDescription = fab.contentDescription)
+                                // Box so a FAB's own menu (the filter FAB's) anchors to it.
+                                Box {
+                                    FloatingActionButton(
+                                        onClick = fab.onClick,
+                                        containerColor = if (fab.highlighted) {
+                                            MaterialTheme.colorScheme.errorContainer
+                                        } else {
+                                            FloatingActionButtonDefaults.containerColor
+                                        },
+                                        modifier = Modifier.tvFocusIndicator()
+                                    ) {
+                                        Icon(fab.icon, contentDescription = fab.contentDescription)
+                                    }
+                                    fab.menu?.invoke()
                                 }
                             }
                         }
@@ -2299,13 +2347,22 @@ private fun isClusterLowBattery(panels: List<Panel>, payloads: Map<String, Strin
 /** The dashboard filters the Home screen's filter FABs switch between - at most one at a time. */
 private enum class DashboardFilter { STALE, LOW_BATTERY, WEAK_SIGNAL, LOW_MOISTURE }
 
-/** One Home screen FAB; [highlighted] marks an active filter. */
+/** One Home screen FAB; [highlighted] marks an active filter, [menu] is a dropdown anchored to it. */
 private class FabSpec(
     val key: String,
     val icon: ImageVector,
     val contentDescription: String,
     val highlighted: Boolean = false,
-    val onClick: () -> Unit
+    val onClick: () -> Unit,
+    val menu: (@Composable () -> Unit)? = null
+)
+
+/** One entry in the filter FAB's menu; [available] when there's anything on the dashboard for it to find. */
+private class FilterOption(
+    val filter: DashboardFilter,
+    val icon: ImageVector,
+    val label: String,
+    val available: Boolean
 )
 
 /**

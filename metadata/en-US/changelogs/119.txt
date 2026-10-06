@@ -1,0 +1,1 @@
+- The filter buttons are now grouped behind a single filter button with a menu, which shows the active filter's icon while one is on.
