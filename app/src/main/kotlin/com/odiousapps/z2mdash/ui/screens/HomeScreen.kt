@@ -127,8 +127,8 @@ import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
 import com.odiousapps.z2mdash.data.retopicClusterAndPublish
 import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
 import com.odiousapps.z2mdash.mqtt.LowBatteryAlertManager
-import com.odiousapps.z2mdash.ui.components.AlertAmber
 import com.odiousapps.z2mdash.ui.components.AlertBlue
+import com.odiousapps.z2mdash.ui.components.AlertYellow
 import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
@@ -2338,7 +2338,7 @@ private fun isClusterLowBattery(panels: List<Panel>, payloads: Map<String, Strin
     }
 
 // Zigbee link quality (0-255) below this counts as a weak link - the weak-signal FAB's filter and
-// the amber cluster outline.
+// the dark yellow cluster outline.
 private const val WEAK_SIGNAL_LQI = 50
 
 /** Whether any device behind [panels] reports a "linkquality" below WEAK_SIGNAL_LQI. */
@@ -2475,7 +2475,7 @@ private fun ClusterCard(
         derivedStateOf { isClusterWeakSignal(panels, payloadsState.value) }
     }
     // Only one outline at a time, most urgent first: stale (red) - a stale reading is old news
-    // anyway - then low battery (blue), then weak signal (amber).
+    // anyway - then low battery (blue), then weak signal (dark yellow).
     val showLowBattery = lowBatteryState.value && !isStale
     val showWeakSignal = weakSignalState.value && !isStale && !showLowBattery
 
@@ -2498,7 +2498,7 @@ private fun ClusterCard(
                     // for a reading above its ideal range.
                     Modifier.border(2.dp, AlertBlue, RoundedCornerShape(12.dp))
                 } else if (showWeakSignal) {
-                    Modifier.border(2.dp, AlertAmber, RoundedCornerShape(12.dp))
+                    Modifier.border(2.dp, AlertYellow, RoundedCornerShape(12.dp))
                 } else {
                     Modifier
                 }
@@ -2629,7 +2629,7 @@ private fun ClusterCard(
                     Icon(
                         Icons.Default.SignalWifi4Bar,
                         contentDescription = "Link quality below $WEAK_SIGNAL_LQI",
-                        tint = AlertAmber,
+                        tint = AlertYellow,
                         modifier = Modifier.size(20.dp)
                     )
                 }

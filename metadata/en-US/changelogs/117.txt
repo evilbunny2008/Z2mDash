@@ -1,0 +1,1 @@
+- Clusters with a weak signal device are now outlined in dark yellow instead of orange, so they're easier to tell apart from the red outline for devices that haven't reported recently.
