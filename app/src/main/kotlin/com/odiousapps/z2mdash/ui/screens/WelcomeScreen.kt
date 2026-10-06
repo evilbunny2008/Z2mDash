@@ -28,8 +28,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
 import com.odiousapps.z2mdash.data.restoreConfig
@@ -69,7 +71,7 @@ fun WelcomeScreen(navController: NavController) {
                     navController.popBackStack()
                 }
             } catch (_: Exception) {
-                errorMessage = "Import failed: not a valid config file"
+                errorMessage = app.getString(R.string.import_failed_invalid)
             }
         }
     }
@@ -90,29 +92,28 @@ fun WelcomeScreen(navController: NavController) {
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text("Welcome", style = MaterialTheme.typography.headlineSmall)
+            Text(stringResource(R.string.welcome_title), style = MaterialTheme.typography.headlineSmall)
             Spacer(Modifier.height(8.dp))
             Text(
-                "You'll need at least one MQTT broker to get started \u2013 add one now, " +
-                    "or restore a config you've previously backed up.",
+                stringResource(R.string.welcome_intro),
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(Modifier.height(32.dp))
             Button(
                 onClick = { navController.navigate("broker/new") },
                 modifier = Modifier.fillMaxWidth()
-            ) { Text("Add a Broker") }
+            ) { Text(stringResource(R.string.welcome_add_broker)) }
             Spacer(Modifier.height(12.dp))
             OutlinedButton(
                 onClick = {
                     try {
                         importLauncher.launch(arrayOf("*/*"))
                     } catch (_: ActivityNotFoundException) {
-                        errorMessage = "No file picker app is available on this device."
+                        errorMessage = app.getString(R.string.no_file_picker)
                     }
                 },
                 modifier = Modifier.fillMaxWidth()
-            ) { Text("Restore from Backup") }
+            ) { Text(stringResource(R.string.welcome_restore)) }
         }
     }
 }

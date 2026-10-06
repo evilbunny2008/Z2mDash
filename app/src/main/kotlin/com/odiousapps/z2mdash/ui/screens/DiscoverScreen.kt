@@ -43,8 +43,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.AutoConfiguredDevice
 import com.odiousapps.z2mdash.data.Panel
@@ -163,10 +166,10 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text("Discover Sensors") },
+                title = { Text(stringResource(R.string.discover_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 },
                 actions = {
@@ -178,14 +181,14 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                         }) {
                             Icon(
                                 if (allExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore,
-                                contentDescription = if (allExpanded) "Collapse all" else "Expand all"
+                                contentDescription = stringResource(if (allExpanded) R.string.common_collapse_all else R.string.common_expand_all)
                             )
                         }
                     }
                     IconButton(onClick = {
                         if (selectedBrokerId.isNotBlank()) app.connectionManager.discoverAll(selectedBrokerId)
                     }) {
-                        Icon(Icons.Default.Refresh, contentDescription = "Rescan")
+                        Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.discover_rescan))
                     }
                 }
             )
@@ -225,13 +228,13 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                         navController.popBackStack()
                     },
                     modifier = Modifier.fillMaxWidth().padding(16.dp)
-                ) { Text("Add $selectedCount panel${if (selectedCount == 1) "" else "s"}") }
+                ) { Text(pluralStringResource(R.plurals.discover_add_panels, selectedCount, selectedCount)) }
             }
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(16.dp)) {
             if (config.brokers.isEmpty()) {
-                Text("Add a broker first (Settings \u2192 Brokers) before discovering sensors.")
+                Text(stringResource(R.string.discover_no_broker))
                 return@Column
             }
 
@@ -242,7 +245,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                     readOnly = true,
                     value = selectedBrokerName,
                     onValueChange = {},
-                    label = { Text("Broker") },
+                    label = { Text(stringResource(R.string.terminal_broker)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = brokerExpanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                 )
@@ -258,17 +261,18 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
 
             Spacer(Modifier.height(16.dp))
             var groupExpanded by remember { mutableStateOf(false) }
+            val newGroupLabel = stringResource(R.string.discover_new_group)
             val selectedGroupName = if (selectedGroupId == NEW_GROUP_ID) {
-                "+ New group"
+                newGroupLabel
             } else {
-                config.groups.find { it.id == selectedGroupId }?.name ?: "+ New group"
+                config.groups.find { it.id == selectedGroupId }?.name ?: newGroupLabel
             }
             ExposedDropdownMenuBox(expanded = groupExpanded, onExpandedChange = { groupExpanded = it }) {
                 OutlinedTextField(
                     readOnly = true,
                     value = selectedGroupName,
                     onValueChange = {},
-                    label = { Text("Add panels to group") },
+                    label = { Text(stringResource(R.string.discover_target_group)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = groupExpanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                 )
@@ -279,7 +283,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                             groupExpanded = false
                         })
                     }
-                    DropdownMenuItem(text = { Text("+ New group") }, onClick = {
+                    DropdownMenuItem(text = { Text(newGroupLabel) }, onClick = {
                         selectedGroupId = NEW_GROUP_ID
                         groupExpanded = false
                     })
@@ -290,7 +294,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                 OutlinedTextField(
                     value = newGroupName,
                     onValueChange = { newGroupName = it },
-                    label = { Text("New group name") },
+                    label = { Text(stringResource(R.string.discover_new_group_name)) },
                     keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
@@ -298,17 +302,12 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
 
             Spacer(Modifier.height(24.dp))
             if (discovered.isEmpty()) {
-                Text(
-                    "No sensor-shaped topics found yet. Retained messages can take a " +
-                        "moment to arrive after subscribing - try the refresh icon above, " +
-                        "or check the broker is actually retaining messages on those topics."
-                )
+                Text(stringResource(R.string.discover_none_found))
             } else if (visibleSensors.isEmpty()) {
-                Text("All discovered devices have been applied \u2013 nothing left to configure here.")
+                Text(stringResource(R.string.discover_all_applied))
             } else {
                 Text(
-                    "Tick the fields you want as dashboard tiles, or use \"Apply device config\" " +
-                        "if the device publishes its own <topic>/app config.",
+                    stringResource(R.string.discover_instructions),
                     style = MaterialTheme.typography.bodySmall
                 )
                 if (visibleSensors.any { it.appConfigTopic != null }) {
@@ -319,14 +318,13 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                             lastBulkApplyCount = applied
                         },
                         modifier = Modifier.fillMaxWidth()
-                    ) { Text("Auto-configure all found devices") }
+                    ) { Text(stringResource(R.string.discover_auto_all)) }
                     lastBulkApplyCount?.let { count ->
                         Text(
                             if (count == 0) {
-                                "No devices with a valid config were ready yet \u2013 try again in a moment, " +
-                                    "or use the refresh icon above."
+                                stringResource(R.string.discover_auto_none)
                             } else {
-                                "Auto-configured $count device${if (count == 1) "" else "s"}."
+                                pluralStringResource(R.plurals.discover_auto_done, count, count)
                             },
                             style = MaterialTheme.typography.bodySmall
                         )
@@ -346,14 +344,14 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                             Text(sensor.topic, style = MaterialTheme.typography.titleSmall)
                             if (!isExpanded && selectedInTopic > 0) {
                                 Text(
-                                    "$selectedInTopic of ${sensor.fields.size} selected",
+                                    pluralStringResource(R.plurals.discover_selected, sensor.fields.size, selectedInTopic, sensor.fields.size),
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }
                         }
                         Icon(
                             if (isExpanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = if (isExpanded) "Collapse" else "Expand"
+                            contentDescription = stringResource(if (isExpanded) R.string.common_collapse else R.string.common_expand)
                         )
                     }
 
@@ -369,23 +367,30 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                                 modifier = Modifier.fillMaxWidth()
                             ) {
                                 Text(
-                                    "Apply device config" +
-                                        if (deviceConfig.name.isNotBlank()) ": ${deviceConfig.name}" else ""
+                                    if (deviceConfig.name.isNotBlank()) {
+                                        stringResource(R.string.discover_apply_named, deviceConfig.name)
+                                    } else {
+                                        stringResource(R.string.discover_apply)
+                                    }
                                 )
                             }
                             Text(
-                                "Creates ${deviceConfig.panelFields.size} panel(s) exactly as listed in " +
-                                    appConfigTopic +
-                                    (deviceConfig.group?.let { " into group \"$it\"" } ?: "") +
-                                    ", skipping the checkboxes below.",
+                                deviceConfig.group?.let { group ->
+                                    pluralStringResource(
+                                        R.plurals.discover_apply_detail_group, deviceConfig.panelFields.size,
+                                        deviceConfig.panelFields.size, appConfigTopic, group
+                                    )
+                                } ?: pluralStringResource(
+                                    R.plurals.discover_apply_detail, deviceConfig.panelFields.size,
+                                    deviceConfig.panelFields.size, appConfigTopic
+                                ),
                                 style = MaterialTheme.typography.bodySmall
                             )
                             Spacer(Modifier.height(8.dp))
                         } else if (appConfigTopic != null && appConfigPayload != null) {
                             Spacer(Modifier.height(4.dp))
                             Text(
-                                "Found $appConfigTopic but couldn't read it as a device config " +
-                                    "\u2013 check it's valid JSON with a non-empty \"panels\" array.",
+                                stringResource(R.string.discover_bad_config, appConfigTopic),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.error
                             )
@@ -400,15 +405,15 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                                     onCheckedChange = { checked -> selections[key] = checked }
                                 )
                                 Column(Modifier.weight(1f)) {
-                                    Text("${SensorDiscovery.suggestedLabel(field.key)} (${field.key})")
+                                    Text(stringResource(R.string.discover_field, SensorDiscovery.suggestedLabel(field.key), field.key))
                                     Text(
-                                        "sample: ${field.sampleValue}",
+                                        stringResource(R.string.discover_sample, field.sampleValue.toString()),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
                                 if (sensor.idealRangeTopic != null) {
                                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                                        Text("ideal range", style = MaterialTheme.typography.labelSmall)
+                                        Text(stringResource(R.string.discover_ideal_range), style = MaterialTheme.typography.labelSmall)
                                         Checkbox(
                                             checked = useIdealRange[key] ?: defaultUsesIdealRange(field.key),
                                             onCheckedChange = { checked -> useIdealRange[key] = checked },

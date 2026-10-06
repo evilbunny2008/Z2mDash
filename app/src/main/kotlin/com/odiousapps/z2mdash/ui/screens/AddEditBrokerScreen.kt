@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Base64
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,11 +50,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Broker
 import com.odiousapps.z2mdash.data.MqttProtocol
@@ -70,6 +74,7 @@ import java.util.UUID
 fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     val app = LocalContext.current.applicationContext as Z2mDashApplication
     val context = LocalContext.current
+    val resources = LocalResources.current
     val config by app.configRepository.config.collectAsState()
 
     val existing = remember(brokerId, config) { config.brokers.find { it.id == brokerId } }
@@ -80,7 +85,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
         mutableStateOf(
             existing ?: Broker(
                 id = UUID.randomUUID().toString(),
-                name = "My MQTT broker",
+                name = resources.getString(R.string.broker_default_name),
                 host = ""
             )
         )
@@ -105,10 +110,10 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text(if (existing == null) "Add Broker" else "Edit Broker") },
+                title = { Text(stringResource(if (existing == null) R.string.broker_add_title else R.string.broker_edit_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 }
             )
@@ -130,7 +135,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 },
                 enabled = broker.host.isNotBlank(),
                 modifier = Modifier.fillMaxWidth().padding(16.dp)
-            ) { Text("Done") }
+            ) { Text(stringResource(R.string.common_done)) }
         }
     ) { padding ->
         Column(
@@ -143,14 +148,14 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedButton(
                     onClick = { showImportDialog = true },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Import via code") }
+                ) { Text(stringResource(R.string.broker_import_code)) }
                 Spacer(Modifier.height(16.dp))
             }
             val nameKeyboardGate = rememberTvKeyboardGate()
             OutlinedTextField(
                 value = broker.name,
                 onValueChange = { broker = broker.copy(name = it) },
-                label = { Text("Name") },
+                label = { Text(stringResource(R.string.broker_name)) },
                 readOnly = nameKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(nameKeyboardGate.modifier())
@@ -160,7 +165,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
             OutlinedTextField(
                 value = broker.host,
                 onValueChange = { broker = broker.copy(host = it) },
-                label = { Text("Host") },
+                label = { Text(stringResource(R.string.broker_host)) },
                 isError = broker.host.isBlank(),
                 readOnly = hostKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
@@ -172,17 +177,14 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
             OutlinedTextField(
                 value = broker.baseTopic,
                 onValueChange = { broker = broker.copy(baseTopic = it) },
-                label = { Text("Base topic") },
+                label = { Text(stringResource(R.string.broker_base_topic)) },
                 placeholder = { Text("zigbee2mqtt") },
                 readOnly = baseTopicKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(baseTopicKeyboardGate.modifier())
             )
             Text(
-                "The app watches \"<base topic>/#\" for devices and their /app configs, " +
-                    "instead of every topic on the broker. Enter a comma-separated list (e.g. " +
-                    "\"zigbee2mqtt, zigbee2mqtt2\") to watch more than one Zigbee2MQTT namespace " +
-                    "on this same broker - each gets its own Permit Join toggle below.",
+                stringResource(R.string.broker_base_topic_help),
                 style = MaterialTheme.typography.bodySmall
             )
             Spacer(Modifier.height(16.dp))
@@ -197,9 +199,9 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
             ) {
                 OutlinedTextField(
                     readOnly = true,
-                    value = protocolLabel(broker.protocol),
+                    value = stringResource(protocolLabel(broker.protocol)),
                     onValueChange = {},
-                    label = { Text("Protocol") },
+                    label = { Text(stringResource(R.string.broker_protocol)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = protocolExpanded) },
                     modifier = Modifier.fillMaxWidth()
                         .clearFocusOnBack(
@@ -224,7 +226,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                             protocolExpanded = false
                         }
                         DropdownMenuItem(
-                            text = { Text(protocolLabel(proto)) },
+                            text = { Text(stringResource(protocolLabel(proto))) },
                             onClick = onProtoClick,
                             modifier = Modifier
                                 .onDpadSelect(onProtoClick)
@@ -245,7 +247,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
             OutlinedTextField(
                 value = broker.port.toString(),
                 onValueChange = { it.toIntOrNull()?.let { p -> broker = broker.copy(port = p) } },
-                label = { Text("Port") },
+                label = { Text(stringResource(R.string.broker_port)) },
                 readOnly = portKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(portKeyboardGate.modifier())
@@ -257,7 +259,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedTextField(
                     value = broker.webSocketPath,
                     onValueChange = { broker = broker.copy(webSocketPath = it) },
-                    label = { Text("WebSocket path") },
+                    label = { Text(stringResource(R.string.broker_ws_path)) },
                     readOnly = webSocketPathKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(webSocketPathKeyboardGate.modifier())
@@ -272,8 +274,8 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                         .toggleableRow(broker.selfSignedCert) { broker = broker.copy(selfSignedCert = it) }
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("This broker uses self-signed SSL/TLS certificate.")
-                        Text("Use at your own risk.", style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(R.string.broker_self_signed))
+                        Text(stringResource(R.string.broker_self_signed_risk), style = MaterialTheme.typography.bodySmall)
                     }
                     Switch(checked = broker.selfSignedCert, onCheckedChange = null)
                 }
@@ -286,11 +288,11 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                             pickerUnavailable = true
                         }
                     }) {
-                        Text(if (broker.selfSignedCertBase64 == null) "Select certificate file" else "Certificate selected \u2713")
+                        Text(stringResource(if (broker.selfSignedCertBase64 == null) R.string.broker_select_cert else R.string.broker_cert_selected))
                     }
                     if (pickerUnavailable) {
                         Text(
-                            "No file picker app is available on this device.",
+                            stringResource(R.string.no_file_picker),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -303,7 +305,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 modifier = Modifier.fillMaxWidth()
                     .toggleableRow(broker.authEnabled) { broker = broker.copy(authEnabled = it) }
             ) {
-                Text("Authentication", modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.broker_auth), modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
                 Switch(checked = broker.authEnabled, onCheckedChange = null)
             }
             if (broker.authEnabled) {
@@ -312,7 +314,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedTextField(
                     value = broker.username,
                     onValueChange = { broker = broker.copy(username = it) },
-                    label = { Text("Username") },
+                    label = { Text(stringResource(R.string.broker_username)) },
                     readOnly = usernameKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(usernameKeyboardGate.modifier())
@@ -322,11 +324,11 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedTextField(
                     value = broker.password,
                     onValueChange = { broker = broker.copy(password = it) },
-                    label = { Text("Password") },
+                    label = { Text(stringResource(R.string.backup_password)) },
                     visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
                     trailingIcon = {
                         TextButton(onClick = { showPassword = !showPassword }) {
-                            Text(if (showPassword) "Hide" else "Show")
+                            Text(stringResource(if (showPassword) R.string.broker_hide else R.string.broker_show))
                         }
                     },
                     readOnly = passwordKeyboardGate.readOnly,
@@ -340,7 +342,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 modifier = Modifier.fillMaxWidth().clickable { showAdditional = !showAdditional },
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Text("Additional Parameters", modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.broker_additional), modifier = Modifier.weight(1f), style = MaterialTheme.typography.titleMedium)
                 Icon(if (showAdditional) Icons.Default.ExpandLess else Icons.Default.ExpandMore, contentDescription = null)
             }
 
@@ -350,7 +352,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedTextField(
                     value = broker.clientId,
                     onValueChange = { broker = broker.copy(clientId = it) },
-                    label = { Text("Client ID") },
+                    label = { Text(stringResource(R.string.broker_client_id)) },
                     readOnly = clientIdKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(clientIdKeyboardGate.modifier())
@@ -362,9 +364,9 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                         .toggleableRow(broker.cleanSession) { broker = broker.copy(cleanSession = it) }
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("Clean Session")
+                        Text(stringResource(R.string.broker_clean_session))
                         Text(
-                            "Start a new session on each connection (messages not retained)",
+                            stringResource(R.string.broker_clean_session_detail),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -375,13 +377,13 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedTextField(
                     value = broker.keepAliveSeconds.toString(),
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(keepAliveSeconds = v) } },
-                    label = { Text("Keep Alive Interval") },
+                    label = { Text(stringResource(R.string.broker_keep_alive)) },
                     readOnly = keepAliveKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(keepAliveKeyboardGate.modifier())
                 )
                 Text(
-                    "Time interval in seconds between keep alive messages. Default: 60 seconds. Range: 5\u2013120 seconds",
+                    stringResource(R.string.broker_keep_alive_help),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(16.dp))
@@ -389,13 +391,13 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedTextField(
                     value = broker.connectionTimeoutSeconds.toString(),
                     onValueChange = { it.toIntOrNull()?.let { v -> broker = broker.copy(connectionTimeoutSeconds = v) } },
-                    label = { Text("Connection Timeout") },
+                    label = { Text(stringResource(R.string.broker_timeout)) },
                     readOnly = connectionTimeoutKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(connectionTimeoutKeyboardGate.modifier())
                 )
                 Text(
-                    "Maximum wait time for connection. Default: 30 seconds. Range: 1\u2013300 seconds",
+                    stringResource(R.string.broker_timeout_help),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(16.dp))
@@ -404,7 +406,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     modifier = Modifier.fillMaxWidth()
                         .toggleableRow(broker.autoConnect) { broker = broker.copy(autoConnect = it) }
                 ) {
-                    Text("Auto Connect", modifier = Modifier.weight(1f))
+                    Text(stringResource(R.string.broker_auto_connect), modifier = Modifier.weight(1f))
                     Switch(checked = broker.autoConnect, onCheckedChange = null)
                 }
                 Spacer(Modifier.height(8.dp))
@@ -414,8 +416,8 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                         .toggleableRow(broker.showReconnectionStatus) { broker = broker.copy(showReconnectionStatus = it) }
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("Show Reconnection Status")
-                        Text("Show reconnection notifications on main screen", style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(R.string.broker_show_reconnect))
+                        Text(stringResource(R.string.broker_show_reconnect_detail), style = MaterialTheme.typography.bodySmall)
                     }
                     Switch(checked = broker.showReconnectionStatus, onCheckedChange = null)
                 }
@@ -426,9 +428,9 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                         .toggleableRow(broker.autoAcceptDiscoveredDevices) { broker = broker.copy(autoAcceptDiscoveredDevices = it) }
                 ) {
                     Column(Modifier.weight(1f)) {
-                        Text("Auto-Accept Discovered Devices")
+                        Text(stringResource(R.string.broker_auto_accept))
                         Text(
-                            "Add a newly-seen device's group/clusters/panels immediately, instead of prompting to accept each one",
+                            stringResource(R.string.broker_auto_accept_detail),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -445,7 +447,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 OutlinedButton(
                     onClick = { showDeleteConfirm = true },
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Delete broker") }
+                ) { Text(stringResource(R.string.broker_delete)) }
             }
 
             Spacer(Modifier.height(32.dp))
@@ -455,17 +457,17 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     if (showDeleteConfirm && existing != null) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("Delete broker?") },
-            text = { Text("This removes \"${existing.name}\" and disconnects from it. Panels linked to it will stop updating.") },
+            title = { Text(stringResource(R.string.broker_delete_title)) },
+            text = { Text(stringResource(R.string.broker_delete_text, existing.name)) },
             confirmButton = {
                 TextButton(onClick = {
                     app.configRepository.deleteBroker(existing.id)
                     showDeleteConfirm = false
                     navController.popBackStack()
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -481,11 +483,12 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
     }
 }
 
-private fun protocolLabel(protocol: MqttProtocol): String = when (protocol) {
-    MqttProtocol.TCP -> "TCP - Transmission Control Protocol"
-    MqttProtocol.SSL -> "SSL - Secure Sockets Layer"
-    MqttProtocol.WS -> "WS - Web Sockets"
-    MqttProtocol.WSS -> "WSS - Web Sockets Secure"
+@StringRes
+private fun protocolLabel(protocol: MqttProtocol): Int = when (protocol) {
+    MqttProtocol.TCP -> R.string.protocol_tcp
+    MqttProtocol.SSL -> R.string.protocol_ssl
+    MqttProtocol.WS -> R.string.protocol_ws
+    MqttProtocol.WSS -> R.string.protocol_wss
 }
 
 /**

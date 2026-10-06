@@ -23,8 +23,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
@@ -41,10 +43,10 @@ fun AddGroupScreen(navController: NavController) {
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text("Add Group") },
+                title = { Text(stringResource(R.string.add_group_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 }
             )
@@ -54,7 +56,7 @@ fun AddGroupScreen(navController: NavController) {
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Group name") },
+                label = { Text(stringResource(R.string.add_group_name)) },
                 keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
@@ -68,7 +70,7 @@ fun AddGroupScreen(navController: NavController) {
                 },
                 enabled = name.isNotBlank(),
                 modifier = Modifier.fillMaxWidth()
-            ) { Text("Create") }
+            ) { Text(stringResource(R.string.add_group_create)) }
         }
     }
 }

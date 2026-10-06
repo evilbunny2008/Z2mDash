@@ -32,9 +32,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.ui.components.rememberNotificationPermissionState
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
@@ -51,10 +53,10 @@ fun AlertSettingsScreen(navController: NavController) {
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text("Alarm/Alert") },
+                title = { Text(stringResource(R.string.alerts_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 }
             )
@@ -63,22 +65,22 @@ fun AlertSettingsScreen(navController: NavController) {
         Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState())) {
             if (anyAlertEnabled && !notificationPermission.granted) {
                 ListItem(
-                    headlineContent = { Text("Notifications are off") },
-                    supportingContent = { Text("Alerts can't be shown until Z2M Dash is allowed to post notifications") },
+                    headlineContent = { Text(stringResource(R.string.alerts_notifications_off)) },
+                    supportingContent = { Text(stringResource(R.string.alerts_notifications_off_detail)) },
                     leadingContent = {
                         Icon(Icons.Default.NotificationsOff, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                     },
                     trailingContent = {
                         Row {
-                            TextButton(onClick = { notificationPermission.request() }) { Text("Allow") }
-                            TextButton(onClick = { notificationPermission.openAppNotificationSettings() }) { Text("Settings") }
+                            TextButton(onClick = { notificationPermission.request() }) { Text(stringResource(R.string.alerts_allow)) }
+                            TextButton(onClick = { notificationPermission.openAppNotificationSettings() }) { Text(stringResource(R.string.alerts_open_settings)) }
                         }
                     }
                 )
             }
             ListItem(
-                headlineContent = { Text("Smoke Alerts") },
-                supportingContent = { Text("Notify if any device reports smoke detected") },
+                headlineContent = { Text(stringResource(R.string.alerts_smoke)) },
+                supportingContent = { Text(stringResource(R.string.alerts_smoke_detail)) },
                 trailingContent = { Switch(checked = config.smokeAlertsEnabled, onCheckedChange = null) },
                 modifier = Modifier.toggleableRow(config.smokeAlertsEnabled) { enabled ->
                     if (enabled) notificationPermission.request()
@@ -86,8 +88,8 @@ fun AlertSettingsScreen(navController: NavController) {
                 }
             )
             ListItem(
-                headlineContent = { Text("Alert Sound") },
-                supportingContent = { Text("Play a loud alarm-style sound alongside the notification") },
+                headlineContent = { Text(stringResource(R.string.alerts_sound)) },
+                supportingContent = { Text(stringResource(R.string.alerts_sound_detail)) },
                 trailingContent = {
                     Switch(
                         checked = config.smokeAlertSoundEnabled,
@@ -113,20 +115,18 @@ fun AlertSettingsScreen(navController: NavController) {
                 }) {
                     Icon(Icons.Default.Warning, contentDescription = null)
                     Spacer(Modifier.padding(4.dp))
-                    Text("Test Notification")
+                    Text(stringResource(R.string.alerts_test))
                 }
                 Text(
-                    "Fires a real notification (with sound, if enabled above) using the exact " +
-                        "same logic as a genuine smoke alert \u2013 a good way to confirm it'll " +
-                        "actually get your attention before you need it to.",
+                    stringResource(R.string.alerts_smoke_test_detail),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )
             }
             ListItem(
-                headlineContent = { Text("Watering Alerts") },
+                headlineContent = { Text(stringResource(R.string.alerts_watering)) },
                 supportingContent = {
-                    Text("Vibrate and chime when a moisture sensor rises through the middle of its ideal range")
+                    Text(stringResource(R.string.alerts_watering_detail))
                 },
                 trailingContent = { Switch(checked = config.wateringAlertsEnabled, onCheckedChange = null) },
                 modifier = Modifier.toggleableRow(config.wateringAlertsEnabled) { enabled ->
@@ -145,19 +145,18 @@ fun AlertSettingsScreen(navController: NavController) {
                 }) {
                     Icon(Icons.Default.WaterDrop, contentDescription = null)
                     Spacer(Modifier.padding(4.dp))
-                    Text("Test Notification")
+                    Text(stringResource(R.string.alerts_test))
                 }
                 Text(
-                    "Fires a real notification with the watering chime and vibration, regardless " +
-                        "of the toggle above \u2013 a good way to hear it before you rely on it.",
+                    stringResource(R.string.alerts_watering_test_detail),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )
             }
             ListItem(
-                headlineContent = { Text("Low Battery Alerts") },
+                headlineContent = { Text(stringResource(R.string.alerts_battery)) },
                 supportingContent = {
-                    Text("Notify when any device reports a battery level of 20% or below")
+                    Text(stringResource(R.string.alerts_battery_detail))
                 },
                 trailingContent = { Switch(checked = config.lowBatteryAlertsEnabled, onCheckedChange = null) },
                 modifier = Modifier.toggleableRow(config.lowBatteryAlertsEnabled) { enabled ->
@@ -176,11 +175,10 @@ fun AlertSettingsScreen(navController: NavController) {
                 }) {
                     Icon(Icons.Default.BatteryAlert, contentDescription = null)
                     Spacer(Modifier.padding(4.dp))
-                    Text("Test Notification")
+                    Text(stringResource(R.string.alerts_test))
                 }
                 Text(
-                    "Fires a real notification using the exact same logic as a genuine low " +
-                        "battery alert, regardless of the toggle above.",
+                    stringResource(R.string.alerts_battery_test_detail),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )

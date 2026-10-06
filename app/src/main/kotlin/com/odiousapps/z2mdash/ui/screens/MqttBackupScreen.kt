@@ -44,8 +44,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
 import com.odiousapps.z2mdash.data.restoreConfig
@@ -84,10 +86,10 @@ fun MqttBackupScreen(navController: NavController) {
         modifier = Modifier.imePadding(),
         topBar = {
             TopAppBar(
-                title = { Text("Backup / Restore via MQTT") },
+                title = { Text(stringResource(R.string.mqtt_backup_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 }
             )
@@ -96,7 +98,7 @@ fun MqttBackupScreen(navController: NavController) {
     ) { padding ->
         Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(16.dp)) {
             if (config.brokers.isEmpty()) {
-                Text("Add a broker first (Settings \u2192 Brokers) before using this.")
+                Text(stringResource(R.string.mqtt_backup_no_broker))
                 return@Column
             }
 
@@ -105,12 +107,12 @@ fun MqttBackupScreen(navController: NavController) {
                     selected = mode == "Backup",
                     onClick = { mode = "Backup"; statusMessage = null },
                     shape = SegmentedButtonDefaults.itemShape(0, 2)
-                ) { Text("Backup") }
+                ) { Text(stringResource(R.string.mqtt_backup_mode_backup)) }
                 SegmentedButton(
                     selected = mode == "Restore",
                     onClick = { mode = "Restore"; statusMessage = null },
                     shape = SegmentedButtonDefaults.itemShape(1, 2)
-                ) { Text("Restore") }
+                ) { Text(stringResource(R.string.mqtt_backup_mode_restore)) }
             }
 
             Spacer(Modifier.height(16.dp))
@@ -121,7 +123,7 @@ fun MqttBackupScreen(navController: NavController) {
                     readOnly = true,
                     value = selectedBrokerName,
                     onValueChange = {},
-                    label = { Text("Broker") },
+                    label = { Text(stringResource(R.string.terminal_broker)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = brokerExpanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                 )
@@ -140,7 +142,7 @@ fun MqttBackupScreen(navController: NavController) {
             OutlinedTextField(
                 value = topicPrefix,
                 onValueChange = { topicPrefix = it; hasScanned = false },
-                label = { Text("Backup topic prefix") },
+                label = { Text(stringResource(R.string.mqtt_backup_prefix)) },
                 placeholder = { Text(DEFAULT_BACKUP_PREFIX) },
                 keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
@@ -149,10 +151,7 @@ fun MqttBackupScreen(navController: NavController) {
             Spacer(Modifier.height(24.dp))
             if (mode == "Backup") {
                 Text(
-                    "Publishes your groups and panels (not broker host/username/password - those " +
-                        "stay on this device) - gzip compressed, then base64-encoded so it travels as " +
-                        "a normal MQTT payload - as a new retained message under \"$prefix/<timestamp>\", " +
-                        "keeping every previous backup intact.",
+                    stringResource(R.string.mqtt_backup_explain, prefix),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(16.dp))
@@ -161,17 +160,14 @@ fun MqttBackupScreen(navController: NavController) {
                         val fullTopic = BackupCodec.newBackupTopic(prefix)
                         val compressed = BackupCodec.compressToBase64(app.configRepository.exportJson(includeBrokers = false))
                         app.connectionManager.publish(selectedBrokerId, fullTopic, compressed, retain = true)
-                        statusMessage = "Published (${compressed.length} bytes) to $fullTopic"
+                        statusMessage = app.resources.getQuantityString(R.plurals.mqtt_backup_published, compressed.length, compressed.length, fullTopic)
                     },
                     enabled = prefix.isNotBlank(),
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Publish Backup") }
+                ) { Text(stringResource(R.string.mqtt_backup_publish)) }
             } else {
                 Text(
-                    "Scans \"$prefix/#\" for every backup that broker has retained, newest first. " +
-                        "Restoring replaces your groups and panels, but keeps your current brokers as-is " +
-                        "(they weren't included in the backup) - so this only reconnects cleanly on the " +
-                        "same broker setup the backup was taken from.",
+                    stringResource(R.string.mqtt_restore_explain, prefix),
                     style = MaterialTheme.typography.bodySmall
                 )
                 Spacer(Modifier.height(16.dp))
@@ -183,18 +179,17 @@ fun MqttBackupScreen(navController: NavController) {
                     },
                     enabled = prefix.isNotBlank(),
                     modifier = Modifier.fillMaxWidth()
-                ) { Text("Scan for Backups") }
+                ) { Text(stringResource(R.string.mqtt_restore_scan)) }
 
                 Spacer(Modifier.height(16.dp))
                 if (!hasScanned) {
                     Text(
-                        "Tap \"Scan for Backups\" to look for retained backups on this broker.",
+                        stringResource(R.string.mqtt_restore_scan_hint),
                         style = MaterialTheme.typography.bodySmall
                     )
                 } else if (discoveredBackups.isEmpty()) {
                     Text(
-                        "No backups found yet under \"$prefix/\" - retained messages can take a " +
-                            "moment to arrive after scanning, or there may not be any published there.",
+                        stringResource(R.string.mqtt_restore_none, prefix),
                         style = MaterialTheme.typography.bodySmall
                     )
                 } else {
@@ -210,14 +205,14 @@ fun MqttBackupScreen(navController: NavController) {
                                     restoringTopic = backupTopic
                                     val raw = payloads["$selectedBrokerId|$backupTopic"]
                                     if (raw == null) {
-                                        statusMessage = "That backup's data isn't loaded yet - try scanning again."
+                                        statusMessage = app.getString(R.string.mqtt_restore_not_loaded)
                                         restoringTopic = null
                                     } else {
                                         try {
                                             restoreConfig(app, BackupCodec.decompressFromBase64(raw), preserveBrokers = true)
-                                            statusMessage = "Restored from $displayTime"
+                                            statusMessage = app.getString(R.string.mqtt_restore_done, displayTime)
                                         } catch (_: Exception) {
-                                            statusMessage = "Restore failed: that topic's payload wasn't a valid backup"
+                                            statusMessage = app.getString(R.string.mqtt_restore_failed)
                                         } finally {
                                             restoringTopic = null
                                         }
@@ -230,13 +225,13 @@ fun MqttBackupScreen(navController: NavController) {
                             ) {
                                 Text(displayTime, modifier = Modifier.weight(1f))
                                 if (restoringTopic == backupTopic) {
-                                    Text("Restoring\u2026", style = MaterialTheme.typography.bodySmall)
+                                    Text(stringResource(R.string.mqtt_restore_restoring), style = MaterialTheme.typography.bodySmall)
                                 }
                                 IconButton(
                                     enabled = restoringTopic == null,
                                     onClick = { pendingDeleteTopic = backupTopic }
                                 ) {
-                                    Icon(Icons.Default.Delete, contentDescription = "Delete backup from $displayTime")
+                                    Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.mqtt_backup_delete_description, displayTime))
                                 }
                             }
                         }
@@ -248,19 +243,19 @@ fun MqttBackupScreen(navController: NavController) {
                 val displayTime = BackupCodec.displayTimestamp(topicToDelete) ?: topicToDelete
                 AlertDialog(
                     onDismissRequest = { pendingDeleteTopic = null },
-                    title = { Text("Delete this backup?") },
-                    text = { Text("Removes the retained backup from $displayTime. This can't be undone.") },
+                    title = { Text(stringResource(R.string.mqtt_backup_delete_title)) },
+                    text = { Text(stringResource(R.string.mqtt_backup_delete_text, displayTime)) },
                     confirmButton = {
                         TextButton(onClick = {
                             // Empty retained message is the standard MQTT way to clear a
                             // retained value - our subscription echoes it back, removing it
                             // from latestPayloads (see MqttConnectionManager) and this list.
                             app.connectionManager.publish(selectedBrokerId, topicToDelete, "", retain = true)
-                            statusMessage = "Deleted backup from $displayTime"
+                            statusMessage = app.getString(R.string.mqtt_backup_deleted, displayTime)
                             pendingDeleteTopic = null
-                        }) { Text("Delete") }
+                        }) { Text(stringResource(R.string.common_delete)) }
                     },
-                    dismissButton = { TextButton(onClick = { pendingDeleteTopic = null }) { Text("Cancel") } }
+                    dismissButton = { TextButton(onClick = { pendingDeleteTopic = null }) { Text(stringResource(R.string.common_cancel)) } }
                 )
             }
 

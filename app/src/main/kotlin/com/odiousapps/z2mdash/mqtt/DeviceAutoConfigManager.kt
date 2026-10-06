@@ -10,6 +10,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.data.AutoConfiguredDevice
 import com.odiousapps.z2mdash.data.ConfigRepository
 import com.odiousapps.z2mdash.data.Panel
@@ -379,7 +380,7 @@ class DeviceAutoConfigManager(
     // even though both were correctly queued as separate pending devices in-app.
     private fun notifyNewDeviceFound(notificationKey: String, deviceName: String) {
         val channel = NotificationChannel(
-            CHANNEL_ID, "New device found", NotificationManager.IMPORTANCE_DEFAULT
+            CHANNEL_ID, context.getString(R.string.new_device_channel), NotificationManager.IMPORTANCE_DEFAULT
         )
         context.getSystemService(NotificationManager::class.java)?.createNotificationChannel(channel)
 
@@ -390,8 +391,8 @@ class DeviceAutoConfigManager(
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle("New device found")
-            .setContentText("$deviceName published its own dashboard config \u2013 open Z2M Dash to add it")
+            .setContentTitle(context.getString(R.string.new_device_title))
+            .setContentText(context.getString(R.string.new_device_text, deviceName))
             .setSmallIcon(android.R.drawable.stat_notify_sync)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

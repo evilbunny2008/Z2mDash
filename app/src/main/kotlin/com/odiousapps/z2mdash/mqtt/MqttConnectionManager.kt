@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
 /** Cap on how many recent messages the Terminal tab keeps around, oldest dropped first. */
-private const val MAX_LOGGED_MESSAGES = 300
+internal const val MAX_LOGGED_MESSAGES = 300
 
 /** See createConnection()'s own comment on why incoming messages are batched at all. */
 private val BATCH_INTERVAL_MS = 200.milliseconds
@@ -45,7 +45,10 @@ data class LoggedMessage(
  */
 class MqttConnectionManager(
     private val scope: CoroutineScope,
-    private val payloadCacheRepository: PayloadCacheRepository
+    private val payloadCacheRepository: PayloadCacheRepository,
+    // Shown in the Terminal in place of a topic for a connection failure (a string resource,
+    // passed in since this class otherwise has no Context).
+    private val connectionErrorLabel: String
 ) {
 
     private val connections = mutableMapOf<String, MqttConnection>()
@@ -206,7 +209,7 @@ class MqttConnectionManager(
         // a TV with no logcat access - the Brokers list's state chip alone gave no reason why.
         scope.launch(Dispatchers.Default) {
             conn.connectionErrors.collect { reason ->
-                val entry = LoggedMessage(broker.id, "⚠ connection error", reason, System.currentTimeMillis())
+                val entry = LoggedMessage(broker.id, connectionErrorLabel, reason, System.currentTimeMillis())
                 _messageLog.update { log ->
                     val updated = log + entry
                     if (updated.size > MAX_LOGGED_MESSAGES) updated.takeLast(MAX_LOGGED_MESSAGES) else updated

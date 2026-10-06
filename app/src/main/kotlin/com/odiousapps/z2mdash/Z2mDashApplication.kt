@@ -36,7 +36,7 @@ class Z2mDashApplication : Application() {
         super.onCreate()
         configRepository = ConfigRepository(this, appScope)
         val payloadCacheRepository = PayloadCacheRepository(this)
-        connectionManager = MqttConnectionManager(appScope, payloadCacheRepository)
+        connectionManager = MqttConnectionManager(appScope, payloadCacheRepository, getString(R.string.terminal_connection_error))
         deviceAutoConfigManager = DeviceAutoConfigManager(this, configRepository, connectionManager)
         smokeAlertManager = SmokeAlertManager(this, configRepository, connectionManager)
         wateringAlertManager = WateringAlertManager(this, configRepository, connectionManager)

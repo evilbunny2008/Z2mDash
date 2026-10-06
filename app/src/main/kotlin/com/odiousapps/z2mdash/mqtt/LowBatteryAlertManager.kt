@@ -11,6 +11,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.data.ConfigRepository
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
@@ -67,7 +68,7 @@ class LowBatteryAlertManager(
 
     /** Same rationale as SmokeAlertManager.triggerTestAlert - verifies the notification for real. */
     fun triggerTestAlert() {
-        notifyLowBattery(TEST_ALERT_KEY, "Test Device", isTest = true)
+        notifyLowBattery(TEST_ALERT_KEY, context.getString(R.string.battery_test_device), isTest = true)
     }
 
     private fun checkBatteryLevels(payloads: Map<String, String>) {
@@ -163,14 +164,18 @@ class LowBatteryAlertManager(
             context, compositeKey.hashCode(), launchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val percentText = batteryValue?.let { "${it.toInt()}%" }
-        val title = if (isTest) "Test alert" else "$deviceName battery low" + (percentText?.let { " ($it)" } ?: "")
+        val percent = batteryValue?.toInt()
+        val title = when {
+            isTest -> context.getString(R.string.notif_test_title)
+            percent != null -> context.getString(R.string.battery_notif_title_percent, deviceName, percent)
+            else -> context.getString(R.string.battery_notif_title, deviceName)
+        }
         val text = if (isTest) {
-            "This is what a low battery notification looks like"
-        } else if (percentText != null) {
-            "Battery at $percentText – tap to open Z2M Dash"
+            context.getString(R.string.battery_notif_test_text)
+        } else if (percent != null) {
+            context.getString(R.string.battery_notif_text_percent, percent)
         } else {
-            "Battery is running low – tap to open Z2M Dash"
+            context.getString(R.string.battery_notif_text)
         }
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
@@ -201,9 +206,9 @@ class LowBatteryAlertManager(
     private fun createChannelIfNeeded() {
         val manager = context.getSystemService(NotificationManager::class.java) ?: return
         val channel = NotificationChannel(
-            CHANNEL_ID, "Low battery alerts", NotificationManager.IMPORTANCE_DEFAULT
+            CHANNEL_ID, context.getString(R.string.battery_channel), NotificationManager.IMPORTANCE_DEFAULT
         ).apply {
-            description = "Alerts when a device's battery reading drops low"
+            description = context.getString(R.string.battery_channel_desc)
         }
         manager.createNotificationChannel(channel)
     }

@@ -43,9 +43,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.TileIcon
@@ -173,10 +175,10 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text(if (isEditing) "Edit Panel" else "Add Panel") },
+                title = { Text(stringResource(if (isEditing) R.string.panel_edit_title else R.string.panel_add_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 }
             )
@@ -277,34 +279,34 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     enabled = selectedBrokerId.isNotBlank() &&
                         (if (panelType == "Sensor") topic.isNotBlank() else commandTopic.isNotBlank()),
                     modifier = Modifier.fillMaxWidth().padding(16.dp)
-                ) { Text(if (isEditing) "Save" else "Add") }
+                ) { Text(stringResource(if (isEditing) R.string.common_save else R.string.common_add)) }
             }
         }
     ) { padding ->
         Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(16.dp)) {
             if (config.brokers.isEmpty()) {
-                Text("Add a broker first (Settings \u2192 Brokers) before creating panels.")
+                Text(stringResource(R.string.panel_no_broker))
             } else {
                 SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                     SegmentedButton(
                         selected = panelType == "Sensor",
                         onClick = { if (!isEditing) panelType = "Sensor" },
                         shape = SegmentedButtonDefaults.itemShape(0, 3)
-                    ) { Text("Sensor") }
+                    ) { Text(stringResource(R.string.panel_type_sensor)) }
                     SegmentedButton(
                         selected = panelType == "Toggle",
                         onClick = { if (!isEditing) panelType = "Toggle" },
                         shape = SegmentedButtonDefaults.itemShape(1, 3)
-                    ) { Text("Toggle") }
+                    ) { Text(stringResource(R.string.panel_type_toggle)) }
                     SegmentedButton(
                         selected = panelType == "Button",
                         onClick = { if (!isEditing) panelType = "Button" },
                         shape = SegmentedButtonDefaults.itemShape(2, 3)
-                    ) { Text("Button") }
+                    ) { Text(stringResource(R.string.panel_type_button)) }
                 }
                 if (isEditing) {
                     Text(
-                        "Panel type can't be changed once created \u2013 delete and re-add instead.",
+                        stringResource(R.string.panel_type_locked),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
@@ -317,7 +319,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         readOnly = true,
                         value = selectedBrokerName,
                         onValueChange = {},
-                        label = { Text("Broker") },
+                        label = { Text(stringResource(R.string.terminal_broker)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = brokerExpanded) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                     )
@@ -335,7 +337,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                 OutlinedTextField(
                     value = label,
                     onValueChange = { label = it },
-                    label = { Text("Label") },
+                    label = { Text(stringResource(R.string.panel_label)) },
                     keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
@@ -344,8 +346,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                 OutlinedTextField(
                     value = clusterName,
                     onValueChange = { clusterName = it },
-                    label = { Text("Cluster name (optional)") },
-                    placeholder = { Text("e.g. Soil Sensor 1 \u2013 groups this with other panels of the same name") },
+                    label = { Text(stringResource(R.string.panel_cluster)) },
+                    placeholder = { Text(stringResource(R.string.panel_cluster_hint)) },
                     keyboardOptions = tvAwareKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
@@ -354,8 +356,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                 OutlinedTextField(
                     value = displayOrderText,
                     onValueChange = { displayOrderText = it.filter { c -> c.isDigit() } },
-                    label = { Text("Display order (optional)") },
-                    placeholder = { Text("Lower numbers appear first within the group") },
+                    label = { Text(stringResource(R.string.panel_order)) },
+                    placeholder = { Text(stringResource(R.string.panel_order_hint)) },
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
@@ -367,7 +369,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         readOnly = true,
                         value = icon.name,
                         onValueChange = {},
-                        label = { Text("Icon") },
+                        label = { Text(stringResource(R.string.panel_icon)) },
                         leadingIcon = { Icon(iconFor(icon), contentDescription = null) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = iconExpanded) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
@@ -389,8 +391,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = topic,
                             onValueChange = { topic = it },
-                            label = { Text("Topic") },
-                            placeholder = { Text("e.g. zigbee2mqtt/Soil Sensor 1") },
+                            label = { Text(stringResource(R.string.panel_topic)) },
+                            placeholder = { Text(stringResource(R.string.panel_topic_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -398,8 +400,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = jsonPath,
                             onValueChange = { jsonPath = it },
-                            label = { Text("JSON field (blank = raw payload)") },
-                            placeholder = { Text("e.g. temperature or state.battery") },
+                            label = { Text(stringResource(R.string.panel_json_field)) },
+                            placeholder = { Text(stringResource(R.string.panel_json_field_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -407,7 +409,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = unit,
                             onValueChange = { unit = it },
-                            label = { Text("Unit (optional)") },
+                            label = { Text(stringResource(R.string.panel_unit)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -415,8 +417,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = decimalsText,
                             onValueChange = { decimalsText = it.filter { c -> c.isDigit() } },
-                            label = { Text("Decimal places") },
-                            placeholder = { Text("e.g. 0 to round to the nearest whole number") },
+                            label = { Text(stringResource(R.string.panel_decimals)) },
+                            placeholder = { Text(stringResource(R.string.panel_decimals_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -426,12 +428,9 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Column(modifier = Modifier.weight(1f)) {
-                                Text("Editable value")
+                                Text(stringResource(R.string.panel_editable))
                                 Text(
-                                    "Tapping this tile lets you type a new number, which republishes " +
-                                        "to this same topic/field (retained) - for a fixed preference " +
-                                        "an automation script reads (e.g. a moisture threshold), not a " +
-                                        "live hardware reading, which the next update would just overwrite.",
+                                    stringResource(R.string.panel_editable_detail),
                                     style = MaterialTheme.typography.bodySmall
                                 )
                             }
@@ -441,8 +440,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = idealRangeTopic,
                             onValueChange = { idealRangeTopic = it },
-                            label = { Text("Ideal range topic (optional)") },
-                            placeholder = { Text("e.g. z2m2/SoilSensor_01/ideal \u2013 publishes {\"min\":x,\"max\":y}") },
+                            label = { Text(stringResource(R.string.panel_ideal_topic)) },
+                            placeholder = { Text(stringResource(R.string.panel_ideal_topic_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -452,7 +451,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 OutlinedTextField(
                                     value = idealMinPath,
                                     onValueChange = { idealMinPath = it },
-                                    label = { Text("Min field name") },
+                                    label = { Text(stringResource(R.string.panel_min_field)) },
                                     keyboardOptions = tvAwareKeyboardOptions(),
                                     modifier = Modifier.weight(1f).clearFocusOnBack()
                                 )
@@ -460,19 +459,18 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 OutlinedTextField(
                                     value = idealMaxPath,
                                     onValueChange = { idealMaxPath = it },
-                                    label = { Text("Max field name") },
+                                    label = { Text(stringResource(R.string.panel_max_field)) },
                                     keyboardOptions = tvAwareKeyboardOptions(),
                                     modifier = Modifier.weight(1f).clearFocusOnBack()
                                 )
                             }
                             Text(
-                                "Only needed if the topic doesn't use plain \"min\"/\"max\" keys \u2013 " +
-                                        "e.g. set these to \"moisture_min\"/\"moisture_max\" for a shared device config topic.",
+                                stringResource(R.string.panel_min_max_help),
                                 style = MaterialTheme.typography.bodySmall
                             )
                         }
                         Text(
-                            "When set, this tile flashes red below min, green within range, and blue above max.",
+                            stringResource(R.string.panel_ideal_help),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -481,8 +479,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = commandTopic,
                             onValueChange = { commandTopic = it },
-                            label = { Text("Command topic") },
-                            placeholder = { Text("e.g. zigbee2mqtt/Kitchen Plug/set") },
+                            label = { Text(stringResource(R.string.panel_command_topic)) },
+                            placeholder = { Text(stringResource(R.string.panel_command_topic_hint_toggle)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -491,7 +489,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             OutlinedTextField(
                                 value = onPayload,
                                 onValueChange = { onPayload = it },
-                                label = { Text("ON payload") },
+                                label = { Text(stringResource(R.string.panel_on_payload)) },
                                 keyboardOptions = tvAwareKeyboardOptions(),
                                 modifier = Modifier.weight(1f).clearFocusOnBack()
                             )
@@ -499,7 +497,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             OutlinedTextField(
                                 value = offPayload,
                                 onValueChange = { offPayload = it },
-                                label = { Text("OFF payload") },
+                                label = { Text(stringResource(R.string.panel_off_payload)) },
                                 keyboardOptions = tvAwareKeyboardOptions(),
                                 modifier = Modifier.weight(1f).clearFocusOnBack()
                             )
@@ -508,8 +506,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = stateTopic,
                             onValueChange = { stateTopic = it },
-                            label = { Text("State topic (optional)") },
-                            placeholder = { Text("e.g. zigbee2mqtt/Kitchen Plug") },
+                            label = { Text(stringResource(R.string.panel_state_topic)) },
+                            placeholder = { Text(stringResource(R.string.panel_state_topic_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -517,8 +515,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = stateJsonPath,
                             onValueChange = { stateJsonPath = it },
-                            label = { Text("State JSON field (optional)") },
-                            placeholder = { Text("e.g. state") },
+                            label = { Text(stringResource(R.string.panel_state_field)) },
+                            placeholder = { Text(stringResource(R.string.panel_state_field_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -529,8 +527,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = commandTopic,
                             onValueChange = { commandTopic = it },
-                            label = { Text("Command topic") },
-                            placeholder = { Text("e.g. zigbee2mqtt/Blind_01/set") },
+                            label = { Text(stringResource(R.string.panel_command_topic)) },
+                            placeholder = { Text(stringResource(R.string.panel_command_topic_hint_button)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
@@ -538,13 +536,13 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         OutlinedTextField(
                             value = buttonPayload,
                             onValueChange = { buttonPayload = it },
-                            label = { Text("Payload") },
-                            placeholder = { Text("e.g. {\"state\": \"STOP\"} or a bare value like STOP") },
+                            label = { Text(stringResource(R.string.panel_payload)) },
+                            placeholder = { Text(stringResource(R.string.panel_payload_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )
                         Text(
-                            "Sent every time this button is tapped - there's no on/off state to track.",
+                            stringResource(R.string.panel_button_help),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
@@ -555,7 +553,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     OutlinedButton(
                         onClick = { showDeleteConfirm = true },
                         modifier = Modifier.fillMaxWidth()
-                    ) { Text("Delete panel") }
+                    ) { Text(stringResource(R.string.panel_delete)) }
                 }
             }
             Spacer(Modifier.height(32.dp))
@@ -565,8 +563,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
     if (showDeleteConfirm && existing != null) {
         AlertDialog(
             onDismissRequest = { showDeleteConfirm = false },
-            title = { Text("Delete panel?") },
-            text = { Text("This removes \"${existing.label}\" from the dashboard.") },
+            title = { Text(stringResource(R.string.panel_delete_title)) },
+            text = { Text(stringResource(R.string.panel_delete_text, existing.label)) },
             confirmButton = {
                 TextButton(onClick = {
                     val devicesBefore = app.configRepository.config.value.autoConfiguredDevices
@@ -577,10 +575,10 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     clearRetainedAppTopicsForOrphanedDevices(app, devicesBefore)
                     showDeleteConfirm = false
                     navController.popBackStack()
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
             dismissButton = {
-                TextButton(onClick = { showDeleteConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showDeleteConfirm = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }

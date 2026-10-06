@@ -33,8 +33,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.pm.PackageInfoCompat
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.forceRepublishAllGroupsAppTopics
 import com.odiousapps.z2mdash.ui.components.rememberNotificationPermissionState
@@ -46,6 +50,7 @@ import com.odiousapps.z2mdash.ui.tv.toggleableRow
 fun SettingsScreen(navController: NavController) {
     val context = LocalContext.current
     val app = context.applicationContext as Z2mDashApplication
+    val resources = LocalResources.current
     val config by app.configRepository.config.collectAsState()
     val notificationPermission = rememberNotificationPermissionState()
     var showPruneConfirm by remember { mutableStateOf(false) }
@@ -56,7 +61,7 @@ fun SettingsScreen(navController: NavController) {
     // this module, and PackageManager is the simplest way to show the actual running version.
     val versionLabel = remember {
         val info = context.packageManager.getPackageInfo(context.packageName, 0)
-        "Version ${info.versionName} (${PackageInfoCompat.getLongVersionCode(info)})"
+        resources.getString(R.string.settings_version, info.versionName, PackageInfoCompat.getLongVersionCode(info))
     }
     // A panel tagged with a brokerId that no longer exists can never update again - usually left
     // behind when a broker is deleted (see ConfigRepository.deleteBroker()'s own comment).
@@ -71,16 +76,16 @@ fun SettingsScreen(navController: NavController) {
         LazyColumn(modifier = Modifier.padding(padding).fillMaxSize()) {
             item {
                 ListItem(
-                    headlineContent = { Text("Brokers") },
-                    supportingContent = { Text("${config.brokers.size} configured") },
+                    headlineContent = { Text(stringResource(R.string.brokers_title)) },
+                    supportingContent = { Text(pluralStringResource(R.plurals.settings_brokers_count, config.brokers.size, config.brokers.size)) },
                     leadingContent = { Icon(Icons.Default.Storage, contentDescription = null) },
                     modifier = Modifier.clickable { navController.navigate("brokers") }
                 )
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Background Work") },
-                    supportingContent = { Text("Keep broker connections alive when the app is closed") },
+                    headlineContent = { Text(stringResource(R.string.settings_background)) },
+                    supportingContent = { Text(stringResource(R.string.settings_background_detail)) },
                     leadingContent = { Icon(Icons.Default.Sync, contentDescription = null) },
                     trailingContent = { Switch(checked = config.backgroundWorkEnabled, onCheckedChange = null) },
                     modifier = Modifier.toggleableRow(config.backgroundWorkEnabled) { enabled ->
@@ -91,8 +96,8 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Blink Warnings") },
-                    supportingContent = { Text("Pulse out-of-range sensor tile alerts, instead of a static color") },
+                    headlineContent = { Text(stringResource(R.string.settings_blink)) },
+                    supportingContent = { Text(stringResource(R.string.settings_blink_detail)) },
                     leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },
                     trailingContent = { Switch(checked = config.staleDataBlinkEnabled, onCheckedChange = null) },
                     modifier = Modifier.toggleableRow(config.staleDataBlinkEnabled) { enabled ->
@@ -102,13 +107,10 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Tile & Cluster Width") },
+                    headlineContent = { Text(stringResource(R.string.settings_tile_width)) },
                     supportingContent = {
                         Column(modifier = Modifier.fillMaxWidth()) {
-                            Text(
-                                "How wide tiles (and so cluster cards, 3 tiles wide) can grow, up to " +
-                                    "filling the screen - currently ${config.tileWidthDp}dp"
-                            )
+                            Text(stringResource(R.string.settings_tile_width_detail, config.tileWidthDp))
                             // TVs can go narrower before looking cramped: no touch target to size for,
                             // tileScale (HomeScreen) shrinks font/icon with it, and text reads fine
                             // smaller from a distance - so more, smaller tiles is a net win there.
@@ -129,16 +131,14 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Undo Toast Duration") },
+                    headlineContent = { Text(stringResource(R.string.settings_undo)) },
                     supportingContent = {
                         Column(modifier = Modifier.fillMaxWidth()) {
                             Text(
                                 if (config.undoToastSeconds == 0) {
-                                    "How long the \"Undo\" prompt stays up after dragging a tile, cluster, or " +
-                                        "group - currently off"
+                                    stringResource(R.string.settings_undo_detail_off)
                                 } else {
-                                    "How long the \"Undo\" prompt stays up after dragging a tile, cluster, or " +
-                                        "group - currently ${config.undoToastSeconds}s"
+                                    stringResource(R.string.settings_undo_detail, config.undoToastSeconds)
                                 }
                             )
                             Slider(
@@ -157,8 +157,8 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Alarm/Alert") },
-                    supportingContent = { Text("Smoke and watering alerts, sound, and test notifications") },
+                    headlineContent = { Text(stringResource(R.string.alerts_title)) },
+                    supportingContent = { Text(stringResource(R.string.settings_alerts_detail)) },
                     leadingContent = { Icon(Icons.Default.Warning, contentDescription = null) },
                     modifier = Modifier.clickable { navController.navigate("alertSettings") }
                 )
@@ -166,9 +166,9 @@ fun SettingsScreen(navController: NavController) {
             if (orphanedPanelCount > 0) {
                 item {
                     ListItem(
-                        headlineContent = { Text("Clean Up Orphaned Data") },
+                        headlineContent = { Text(stringResource(R.string.settings_orphans)) },
                         supportingContent = {
-                            Text("$orphanedPanelCount panel(s) left over from a deleted broker can be removed")
+                            Text(pluralStringResource(R.plurals.settings_orphans_detail, orphanedPanelCount, orphanedPanelCount))
                         },
                         leadingContent = { Icon(Icons.Default.CleaningServices, contentDescription = null) },
                         modifier = Modifier.clickable { showPruneConfirm = true }
@@ -177,8 +177,8 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Backup & Restore") },
-                    supportingContent = { Text("Save or restore your configuration, full or brokers only") },
+                    headlineContent = { Text(stringResource(R.string.settings_backup)) },
+                    supportingContent = { Text(stringResource(R.string.settings_backup_detail)) },
                     leadingContent = { Icon(Icons.Default.Backup, contentDescription = null) },
                     modifier = Modifier.clickable { navController.navigate("backupRestore") }
                 )
@@ -186,13 +186,9 @@ fun SettingsScreen(navController: NavController) {
             if (config.groups.isNotEmpty()) {
                 item {
                     ListItem(
-                        headlineContent = { Text("Force Upload All Groups") },
+                        headlineContent = { Text(stringResource(R.string.settings_force_upload_all)) },
                         supportingContent = {
-                            Text(
-                                "Rebuilds and republishes every cluster in every group's device " +
-                                    "config from this phone's current settings - use this if a " +
-                                    "broker issue or another phone left more than one group out of sync"
-                            )
+                            Text(stringResource(R.string.settings_force_upload_all_detail))
                         },
                         leadingContent = { Icon(Icons.Default.CloudUpload, contentDescription = null) },
                         modifier = Modifier.clickable { showForceUploadAllConfirm = true }
@@ -201,10 +197,10 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("About") },
+                    headlineContent = { Text(stringResource(R.string.settings_about)) },
                     supportingContent = {
                         Column {
-                            Text("Z2M Dash \u2013 no cloud, no account, no lock-in")
+                            Text(stringResource(R.string.settings_about_tagline))
                             Text(versionLabel)
                         }
                     },
@@ -217,23 +213,19 @@ fun SettingsScreen(navController: NavController) {
     if (showPruneConfirm) {
         AlertDialog(
             onDismissRequest = { showPruneConfirm = false },
-            title = { Text("Clean up orphaned data?") },
+            title = { Text(stringResource(R.string.settings_orphans_confirm_title)) },
             text = {
-                Text(
-                    "This removes $orphanedPanelCount panel(s) tagged with a broker that no longer " +
-                        "exists - most often left behind by deleting a broker and re-adding it. Panels " +
-                        "still tied to a broker you actually have configured are never touched."
-                )
+                Text(pluralStringResource(R.plurals.settings_orphans_confirm, orphanedPanelCount, orphanedPanelCount))
             },
             confirmButton = {
                 TextButton(onClick = {
                     val removed = app.configRepository.pruneOrphanedBrokerData()
-                    pruneResultMessage = "Removed $removed panel(s)."
+                    pruneResultMessage = resources.getQuantityString(R.plurals.settings_orphans_removed, removed, removed)
                     showPruneConfirm = false
-                }) { Text("Clean Up") }
+                }) { Text(stringResource(R.string.settings_orphans_clean)) }
             },
             dismissButton = {
-                TextButton(onClick = { showPruneConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showPruneConfirm = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -241,10 +233,10 @@ fun SettingsScreen(navController: NavController) {
     pruneResultMessage?.let { message ->
         AlertDialog(
             onDismissRequest = { pruneResultMessage = null },
-            title = { Text("Done") },
+            title = { Text(stringResource(R.string.common_done)) },
             text = { Text(message) },
             confirmButton = {
-                TextButton(onClick = { pruneResultMessage = null }) { Text("OK") }
+                TextButton(onClick = { pruneResultMessage = null }) { Text(stringResource(R.string.common_ok)) }
             }
         )
     }
@@ -252,24 +244,19 @@ fun SettingsScreen(navController: NavController) {
     if (showForceUploadAllConfirm) {
         AlertDialog(
             onDismissRequest = { showForceUploadAllConfirm = false },
-            title = { Text("Force upload all groups?") },
+            title = { Text(stringResource(R.string.settings_force_upload_all_confirm_title)) },
             text = {
-                Text(
-                    "This overwrites the retained device config on the broker for every cluster in " +
-                        "every group with a fresh copy built from this phone's current settings. Any " +
-                        "different config currently on the broker (e.g. from another phone) will be " +
-                        "replaced, not merged. This can't be undone automatically."
-                )
+                Text(stringResource(R.string.settings_force_upload_all_confirm))
             },
             confirmButton = {
                 TextButton(onClick = {
                     val count = forceRepublishAllGroupsAppTopics(app)
-                    forceUploadAllResultMessage = "Re-published $count group(s) to the broker."
+                    forceUploadAllResultMessage = resources.getQuantityString(R.plurals.settings_force_upload_all_done, count, count)
                     showForceUploadAllConfirm = false
-                }) { Text("Force Upload") }
+                }) { Text(stringResource(R.string.force_upload)) }
             },
             dismissButton = {
-                TextButton(onClick = { showForceUploadAllConfirm = false }) { Text("Cancel") }
+                TextButton(onClick = { showForceUploadAllConfirm = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -277,10 +264,10 @@ fun SettingsScreen(navController: NavController) {
     forceUploadAllResultMessage?.let { message ->
         AlertDialog(
             onDismissRequest = { forceUploadAllResultMessage = null },
-            title = { Text("Done") },
+            title = { Text(stringResource(R.string.common_done)) },
             text = { Text(message) },
             confirmButton = {
-                TextButton(onClick = { forceUploadAllResultMessage = null }) { Text("OK") }
+                TextButton(onClick = { forceUploadAllResultMessage = null }) { Text(stringResource(R.string.common_ok)) }
             }
         )
     }

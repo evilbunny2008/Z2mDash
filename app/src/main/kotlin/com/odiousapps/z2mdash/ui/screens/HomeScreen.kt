@@ -104,6 +104,8 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
@@ -112,6 +114,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.AppConfig
 import com.odiousapps.z2mdash.data.AutoConfiguredDevice
@@ -315,7 +318,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     val result = withTimeoutOrNull((seconds * 1000L).milliseconds) {
                         snackbarHostState.showSnackbar(
                             message = message,
-                            actionLabel = "Undo",
+                            actionLabel = app.getString(R.string.home_undo),
                             duration = SnackbarDuration.Indefinite
                         )
                     }
@@ -714,10 +717,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // something for it to find, or while it's the active one, so it can always be switched back off.
     // Listed in menu order - low moisture first, as the one checked most often.
     val filterOptions = listOf(
-        FilterOption(DashboardFilter.LOW_MOISTURE, iconFor(TileIcon.MOISTURE), "Moisture below ideal range", hasMoistureSensors),
-        FilterOption(DashboardFilter.STALE, Icons.Default.Warning, "Not reporting recently", hasStaleCandidates),
-        FilterOption(DashboardFilter.LOW_BATTERY, Icons.Default.BatteryAlert, "Battery 20% or less", anyBatteryDevice),
-        FilterOption(DashboardFilter.WEAK_SIGNAL, iconFor(TileIcon.SIGNAL), "Link quality below $WEAK_SIGNAL_LQI", anyLinkQualityDevice)
+        FilterOption(DashboardFilter.LOW_MOISTURE, iconFor(TileIcon.MOISTURE), stringResource(R.string.filter_low_moisture), hasMoistureSensors),
+        FilterOption(DashboardFilter.STALE, Icons.Default.Warning, stringResource(R.string.filter_stale), hasStaleCandidates),
+        FilterOption(DashboardFilter.LOW_BATTERY, Icons.Default.BatteryAlert, stringResource(R.string.filter_low_battery), anyBatteryDevice),
+        FilterOption(DashboardFilter.WEAK_SIGNAL, iconFor(TileIcon.SIGNAL), stringResource(R.string.filter_weak_signal, WEAK_SIGNAL_LQI), anyLinkQualityDevice)
     ).filter { it.available || it.filter == activeFilter }
     val activeFilterOption = filterOptions.find { it.filter == activeFilter }
     // The filter FAB's own menu, shown above it - see filterFab below.
@@ -729,7 +732,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     text = { Text(option.label) },
                     leadingIcon = { Icon(option.icon, contentDescription = null) },
                     trailingIcon = if (active) {
-                        { Icon(Icons.Default.Check, contentDescription = "Active") }
+                        { Icon(Icons.Default.Check, contentDescription = stringResource(R.string.filter_active)) }
                     } else {
                         null
                     },
@@ -744,7 +747,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             if (activeFilter != null) {
                 HorizontalDivider()
                 DropdownMenuItem(
-                    text = { Text("Show everything") },
+                    text = { Text(stringResource(R.string.filter_show_everything)) },
                     leadingIcon = { Icon(Icons.Default.FilterListOff, contentDescription = null) },
                     onClick = {
                         activeFilter = null
@@ -759,8 +762,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     val filterFab = FabSpec(
         key = "filter",
         icon = activeFilterOption?.icon ?: Icons.Default.FilterList,
-        contentDescription = activeFilterOption?.let { "Filter: showing only ${it.label.lowercase()} - tap to change" }
-            ?: "Filter the dashboard",
+        contentDescription = activeFilterOption?.let { stringResource(R.string.filter_fab_active, it.label.lowercase()) }
+            ?: stringResource(R.string.filter_fab),
         highlighted = activeFilterOption != null,
         onClick = { showFilterMenu = true },
         menu = filterMenu
@@ -769,7 +772,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     val fabSpecs = listOfNotNull(
         // Only worth showing once there's at least one named cluster to actually find - a
         // dashboard of only standalone tiles has nothing for this to search.
-        FabSpec("search", Icons.Default.Search, "Search clusters", onClick = { showClusterSearch = true })
+        FabSpec("search", Icons.Default.Search, stringResource(R.string.home_search_clusters), onClick = { showClusterSearch = true })
             .takeIf { config.groups.any { g -> g.clusters.isNotEmpty() } },
         filterFab,
         // Only worth showing once there's more than one group to bulk-collapse - with zero or one,
@@ -777,10 +780,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         FabSpec(
             "collapse",
             if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore,
-            if (anyGroupExpanded) "Collapse all groups" else "Expand all groups",
+            stringResource(if (anyGroupExpanded) R.string.home_collapse_all_groups else R.string.home_expand_all_groups),
             onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) }
         ).takeIf { config.groups.size > 1 },
-        FabSpec("addGroup", Icons.Default.Add, "Add group", onClick = { navController.navigate("addGroup") })
+        FabSpec("addGroup", Icons.Default.Add, stringResource(R.string.home_add_group), onClick = { navController.navigate("addGroup") })
     )
     // As many FABs per row as fit across the screen (Scaffold end-aligns the FAB slot with a 16dp
     // margin each side - a row any wider ran off the left edge, clipping its first FAB), filled
@@ -878,18 +881,19 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         }?.takeIf { it.isNotBlank() }
         val permitJoinIsOn = activeStatus?.isOn == true
         val statusText = when {
-            activeTopic == null -> "No brokers configured"
+            activeTopic == null -> stringResource(R.string.permit_join_no_brokers)
             permitJoinIsOn -> {
-                val via = activeRouterText?.let { " via $it" } ?: ""
-                "Open for ${PermitJoin.formatRemaining(activeStatus!!.remainingSeconds)} more$via"
+                val remaining = PermitJoin.formatRemaining(activeStatus!!.remainingSeconds)
+                activeRouterText?.let { stringResource(R.string.permit_join_open_via, remaining, it) }
+                    ?: stringResource(R.string.permit_join_open, remaining)
             }
-            else -> "Off – new Zigbee devices can't join"
+            else -> stringResource(R.string.permit_join_off)
         }
         val permitJoinBannerContent: @Composable () -> Unit = {
             PermitJoinBanner(
-                title = "Permit Join",
+                title = stringResource(R.string.permit_join_title),
                 subtitle = if (allTopics.size > 1 && activeTopic != null) {
-                    "${activeTopic.second} · $statusText"
+                    stringResource(R.string.permit_join_subtitle, activeTopic.second, statusText)
                 } else {
                     statusText
                 },
@@ -917,16 +921,16 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 verticalArrangement = Arrangement.Center
             ) {
                 if (isConfigLoaded) {
-                    Text("No groups yet", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.home_no_groups), style = MaterialTheme.typography.titleMedium)
                     Spacer(Modifier.height(8.dp))
-                    Text("Tap + to create your first group, then add panels to it.")
+                    Text(stringResource(R.string.home_no_groups_detail))
                 } else {
                     // config.groups briefly looks empty while ConfigRepository loads from disk -
                     // without this check, a user with real groups could see "add your first
                     // group" flash up on a slow cold start.
-                    Text("Loading…", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.home_loading), style = MaterialTheme.typography.titleMedium)
                     Spacer(Modifier.height(8.dp))
-                    Text("Still reading your saved configuration.")
+                    Text(stringResource(R.string.home_loading_detail))
                 }
             }
         }
@@ -1058,7 +1062,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 // past whatever's currently on screen) just seems to vanish on
                                                 // release, with no indication of where it actually landed.
                                                 showUndoSnackbar(
-                                                    "Moved \"$fromClusterName\" within \"${currentGroup.name}\"",
+                                                    app.getString(R.string.home_moved_within, fromClusterName, currentGroup.name),
                                                     previousGroups
                                                 ) {
                                                     pushGroupOrderUpdatesForClusters(app, currentOrder, currentGroup.panels)
@@ -1091,7 +1095,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                         // otherwise invisible: the cluster disappears from where it was
                                         // dragged from with nothing on screen showing where it went.
                                         showUndoSnackbar(
-                                            "Moved \"$fromClusterName\" to \"${newGroupName ?: "another group"}\"",
+                                            app.getString(R.string.home_moved_to, fromClusterName, newGroupName ?: app.getString(R.string.home_another_group)),
                                             liveGroups
                                         ) {
                                             if (oldGroupName != null) {
@@ -1138,11 +1142,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                     val previousGroups = app.configRepository.config.value.groups
                                     val toIndex = previousGroups.indexOfFirst { it.id == toId }
                                     if (toIndex >= 0) {
-                                        val movedGroupName = previousGroups.find { it.id == fromId }?.name ?: "Group"
+                                        val movedGroupName = previousGroups.find { it.id == fromId }?.name ?: app.getString(R.string.home_group_fallback)
                                         app.configRepository.moveGroupToIndex(fromId, toIndex + 1)
                                         val reorderedGroups = app.configRepository.config.value.groups
                                         pushDashboardGroupOrderUpdates(app, reorderedGroups)
-                                        showUndoSnackbar("Moved \"$movedGroupName\"", previousGroups) {
+                                        showUndoSnackbar(app.getString(R.string.home_moved, movedGroupName), previousGroups) {
                                             pushDashboardGroupOrderUpdates(app, previousGroups)
                                         }
                                     }
@@ -1186,7 +1190,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                 )
                                                 pushPanelClusterOverrideIfAutoConfigured(app, panel, toClusterName, toClusterId)
                                                 publishAppTopicForClusterIfMissing(app, toGroupId, toClusterId)
-                                                showUndoSnackbar("Moved \"${panel.label}\" into \"$toClusterName\"", previousGroups) {
+                                                showUndoSnackbar(app.getString(R.string.home_moved_into, panel.label, toClusterName), previousGroups) {
                                                     pushPanelClusterOverrideIfAutoConfigured(app, panel, oldClusterName, panel.clusterId)
                                                 }
                                                 app.configRepository.setGroupCollapsed(toGroupId, false)
@@ -1243,7 +1247,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     pushPanelClusterOverrideIfAutoConfigured(app, panel, panel.label, newClusterId)
                                                     publishAppTopicForClusterIfMissing(app, fromGroupId, newClusterId)
                                                 }
-                                                showUndoSnackbar("Moved \"${panel.label}\"", previousGroups) {
+                                                showUndoSnackbar(app.getString(R.string.home_moved, panel.label), previousGroups) {
                                                     pushPanelClusterOverrideIfAutoConfigured(app, panel, oldClusterName, panel.clusterId)
                                                 }
                                             }
@@ -1266,7 +1270,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     app.configRepository.reorderPanelsInCluster(fromGroupId, orderedIds)
                                                     pushOrderUpdateIfAutoConfigured(app, orderedIds, reordered)
                                                     publishAppTopicForClusterIfMissing(app, fromGroupId, panel.clusterId)
-                                                    showUndoSnackbar("Moved \"${panel.label}\"", previousGroups) {
+                                                    showUndoSnackbar(app.getString(R.string.home_moved, panel.label), previousGroups) {
                                                         pushOrderUpdateIfAutoConfigured(
                                                             app, currentPanels.map { it.id }, currentPanels
                                                         )
@@ -1458,18 +1462,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             ) {
                                 Icon(
                                     if (group.collapsed) Icons.Default.KeyboardArrowDown else Icons.Default.KeyboardArrowUp,
-                                    contentDescription = if (group.collapsed) "Expand ${group.name}" else "Collapse ${group.name}"
+                                    contentDescription = stringResource(if (group.collapsed) R.string.home_expand_group else R.string.home_collapse_group, group.name)
                                 )
                             }
                         }
                         IconButton(onClick = { renamingGroup = group; renameText = group.name }) {
-                            Icon(Icons.Default.Edit, contentDescription = "Rename ${group.name}")
+                            Icon(Icons.Default.Edit, contentDescription = stringResource(R.string.home_rename_group, group.name))
                         }
                         IconButton(onClick = { navController.navigate("group/${group.id}/panel/new") }) {
-                            Icon(Icons.Default.Add, contentDescription = "Add panel to ${group.name}")
+                            Icon(Icons.Default.Add, contentDescription = stringResource(R.string.home_add_panel_to, group.name))
                         }
                         IconButton(onClick = { pendingGroupDelete = group.id }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Delete ${group.name}")
+                            Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.home_delete_group_named, group.name))
                         }
                     }
                 } // Column
@@ -1654,10 +1658,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                         // either way - this just keeps the two cards
                                                         // distinguishable on screen.
                                                         val existingNames = group.clusters.map { it.name }.toSet()
-                                                        var candidate = "$name copy"
+                                                        var candidate = app.getString(R.string.home_cluster_copy, name)
                                                         var suffix = 2
                                                         while (candidate in existingNames) {
-                                                            candidate = "$name copy $suffix"
+                                                            candidate = app.getString(R.string.home_cluster_copy_n, name, suffix)
                                                             suffix++
                                                         }
                                                         duplicateClusterNameText = candidate
@@ -1754,20 +1758,20 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 showClusterSearch = false
                 clusterSearchQuery = ""
             },
-            title = { Text("Search clusters") },
+            title = { Text(stringResource(R.string.home_search_clusters)) },
             text = {
                 Column {
                     OutlinedTextField(
                         value = clusterSearchQuery,
                         onValueChange = { clusterSearchQuery = it },
-                        label = { Text("Cluster name") },
+                        label = { Text(stringResource(R.string.home_cluster_name)) },
                         singleLine = true,
                         keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                     )
                     Spacer(Modifier.height(8.dp))
                     if (clusterSearchQuery.isNotBlank() && clusterSearchResults.isEmpty()) {
-                        Text("No matching clusters", style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(R.string.home_no_matching_clusters), style = MaterialTheme.typography.bodySmall)
                     } else {
                         LazyColumn(modifier = Modifier.heightIn(max = 320.dp)) {
                             items(
@@ -1788,7 +1792,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 TextButton(onClick = {
                     showClusterSearch = false
                     clusterSearchQuery = ""
-                }) { Text("Close") }
+                }) { Text(stringResource(R.string.common_close)) }
             }
         )
     }
@@ -1796,30 +1800,30 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     pendingGroupDelete?.let { groupId ->
         AlertDialog(
             onDismissRequest = { pendingGroupDelete = null },
-            title = { Text("Delete group?") },
-            text = { Text("This removes the group and every panel in it.") },
+            title = { Text(stringResource(R.string.home_delete_group_title)) },
+            text = { Text(stringResource(R.string.home_delete_group_text)) },
             confirmButton = {
                 TextButton(onClick = {
                     val devicesBefore = app.configRepository.config.value.autoConfiguredDevices
                     app.configRepository.deleteGroup(groupId)
                     clearRetainedAppTopicsForOrphanedDevices(app, devicesBefore)
                     pendingGroupDelete = null
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
-            dismissButton = { TextButton(onClick = { pendingGroupDelete = null }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { pendingGroupDelete = null }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
 
     renamingGroup?.let { group ->
         AlertDialog(
             onDismissRequest = { renamingGroup = null },
-            title = { Text("Edit group") },
+            title = { Text(stringResource(R.string.home_edit_group)) },
             text = {
                 Column {
                     OutlinedTextField(
                         value = renameText,
                         onValueChange = { renameText = it },
-                        label = { Text("Name") },
+                        label = { Text(stringResource(R.string.broker_name)) },
                         keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.clearFocusOnBack()
                     )
@@ -1830,13 +1834,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             pendingForceRepublishGroup = group
                         },
                         modifier = Modifier.fillMaxWidth()
-                    ) { Text("Force Upload New Copy") }
+                    ) { Text(stringResource(R.string.home_force_upload_copy)) }
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Rebuilds and republishes every cluster in this group's device config from " +
-                            "this phone's current settings, overwriting whatever's currently on the " +
-                            "broker - use this if another phone or a broker issue left something out " +
-                            "of sync.",
+                        stringResource(R.string.home_force_upload_copy_detail),
                         style = MaterialTheme.typography.bodySmall
                     )
                     Spacer(Modifier.height(16.dp))
@@ -1848,13 +1849,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             pendingGroupRetopic = group
                         },
                         modifier = Modifier.fillMaxWidth()
-                    ) { Text("Retopic All Clusters") }
+                    ) { Text(stringResource(R.string.home_retopic_all)) }
                     Spacer(Modifier.height(4.dp))
                     Text(
-                        "Moves every cluster in this group currently on one old MQTT topic onto a " +
-                            "new one, in one go - e.g. after splitting a Zigbee network onto a " +
-                            "second bridge, for every device that moved. Clusters on a different " +
-                            "topic are untouched.",
+                        stringResource(R.string.home_retopic_all_detail),
                         style = MaterialTheme.typography.bodySmall
                     )
                 }
@@ -1866,10 +1864,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         pushGroupRenameForAutoConfiguredDevices(app, group.id, group.name, renameText)
                     }
                     renamingGroup = null
-                }) { Text("Save") }
+                }) { Text(stringResource(R.string.common_save)) }
             },
             dismissButton = {
-                TextButton(onClick = { renamingGroup = null }) { Text("Cancel") }
+                TextButton(onClick = { renamingGroup = null }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -1877,26 +1875,21 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     pendingForceRepublishGroup?.let { group ->
         AlertDialog(
             onDismissRequest = { pendingForceRepublishGroup = null },
-            title = { Text("Force upload \"${group.name}\"?") },
+            title = { Text(stringResource(R.string.home_force_upload_title, group.name)) },
             text = {
-                Text(
-                    "This overwrites the retained device config on the broker for every cluster in " +
-                        "this group with a fresh copy built from this phone's current settings. Any " +
-                        "different config currently on the broker (e.g. from another phone) will be " +
-                        "replaced, not merged. This can't be undone automatically."
-                )
+                Text(stringResource(R.string.home_force_upload_text))
             },
             confirmButton = {
                 TextButton(onClick = {
                     forceRepublishGroupAppTopics(app, group.id)
                     pendingForceRepublishGroup = null
                     undoCoroutineScope.launch {
-                        snackbarHostState.showSnackbar("Re-published \"${group.name}\" to the broker")
+                        snackbarHostState.showSnackbar(app.getString(R.string.home_republished, group.name))
                     }
-                }) { Text("Force Upload") }
+                }) { Text(stringResource(R.string.force_upload)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingForceRepublishGroup = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingForceRepublishGroup = null }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -1904,20 +1897,18 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     pendingGroupRetopic?.let { group ->
         AlertDialog(
             onDismissRequest = { pendingGroupRetopic = null },
-            title = { Text("Retopic all clusters in \"${group.name}\"?") },
+            title = { Text(stringResource(R.string.home_retopic_all_title, group.name)) },
             text = {
                 Column {
                     Text(
-                        "Moves every cluster in this group whose topic exactly matches \"Old topic\" " +
-                            "onto \"New topic\" - the rest of this group's clusters are untouched. " +
-                            "This can't be undone automatically.",
+                        stringResource(R.string.home_retopic_all_text),
                         style = MaterialTheme.typography.bodySmall
                     )
                     Spacer(Modifier.height(12.dp))
                     OutlinedTextField(
                         value = groupRetopicOldTopicText,
                         onValueChange = { groupRetopicOldTopicText = it },
-                        label = { Text("Old topic") },
+                        label = { Text(stringResource(R.string.home_old_topic)) },
                         singleLine = true,
                         keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.clearFocusOnBack()
@@ -1926,7 +1917,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     OutlinedTextField(
                         value = groupRetopicNewTopicText,
                         onValueChange = { groupRetopicNewTopicText = it },
-                        label = { Text("New topic") },
+                        label = { Text(stringResource(R.string.home_new_topic)) },
                         singleLine = true,
                         keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.clearFocusOnBack()
@@ -1943,9 +1934,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         undoCoroutineScope.launch {
                             snackbarHostState.showSnackbar(
                                 if (movedClusters.isEmpty()) {
-                                    "No clusters in \"${group.name}\" were on that topic"
+                                    app.getString(R.string.home_retopic_none, group.name)
                                 } else {
-                                    "Moved ${movedClusters.size} cluster(s) to \"$groupRetopicNewTopicText\""
+                                    app.resources.getQuantityString(
+                                        R.plurals.home_retopic_moved, movedClusters.size, movedClusters.size, groupRetopicNewTopicText
+                                    )
                                 }
                             )
                         }
@@ -1954,10 +1947,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     },
                     enabled = groupRetopicOldTopicText.isNotBlank() && groupRetopicNewTopicText.isNotBlank() &&
                         groupRetopicOldTopicText != groupRetopicNewTopicText
-                ) { Text("Retopic") }
+                ) { Text(stringResource(R.string.home_retopic)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingGroupRetopic = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingGroupRetopic = null }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -1965,33 +1958,32 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     pendingClusterDelete?.let { pending ->
         AlertDialog(
             onDismissRequest = { pendingClusterDelete = null },
-            title = { Text("Delete \"${pending.name}\"?") },
-            text = { Text("This removes all ${pending.panelIds.size} panels for this device.") },
+            title = { Text(stringResource(R.string.home_delete_cluster_title, pending.name)) },
+            text = { Text(pluralStringResource(R.plurals.home_delete_cluster_text, pending.panelIds.size, pending.panelIds.size)) },
             confirmButton = {
                 TextButton(onClick = {
                     val devicesBefore = app.configRepository.config.value.autoConfiguredDevices
                     app.configRepository.removePanels(pending.groupId, pending.panelIds)
                     clearRetainedAppTopicsForOrphanedDevices(app, devicesBefore)
                     pendingClusterDelete = null
-                }) { Text("Delete") }
+                }) { Text(stringResource(R.string.common_delete)) }
             },
-            dismissButton = { TextButton(onClick = { pendingClusterDelete = null }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { pendingClusterDelete = null }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
 
     pendingClusterDuplicate?.let { pending ->
         AlertDialog(
             onDismissRequest = { pendingClusterDuplicate = null },
-            title = { Text("Duplicate \"${pending.name}\"") },
+            title = { Text(stringResource(R.string.home_duplicate_title, pending.name)) },
             text = {
                 Column {
                     if (SensorDiscovery.isSuspiciouslyBroadTopicPrefix(pending.originalTopicPrefix)) {
                         Text(
-                            "This cluster's panels don't all share one clean device topic (only " +
-                                "\"${pending.originalTopicPrefix.ifBlank { "(nothing)" }}\" in common) - " +
-                                "likely a few mismatched panels rather than one real device. The topic " +
-                                "below replaces only that shared part, so it may not apply the way you " +
-                                "expect. Worth checking this cluster's panels individually first.",
+                            stringResource(
+                                R.string.home_duplicate_broad_warning,
+                                pending.originalTopicPrefix.ifBlank { stringResource(R.string.home_nothing) }
+                            ),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -2000,14 +1992,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     OutlinedTextField(
                         value = duplicateTopicText,
                         onValueChange = { duplicateTopicText = it },
-                        label = { Text("Topic") },
+                        label = { Text(stringResource(R.string.panel_topic)) },
                         singleLine = true
                     )
                     Spacer(Modifier.height(12.dp))
                     OutlinedTextField(
                         value = duplicateClusterNameText,
                         onValueChange = { duplicateClusterNameText = it },
-                        label = { Text("Cluster name") },
+                        label = { Text(stringResource(R.string.home_cluster_name)) },
                         singleLine = true
                     )
                 }
@@ -2050,37 +2042,31 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         pendingClusterDuplicate = null
                     },
                     enabled = duplicateClusterNameText.isNotBlank()
-                ) { Text("Duplicate") }
+                ) { Text(stringResource(R.string.home_duplicate)) }
             },
-            dismissButton = { TextButton(onClick = { pendingClusterDuplicate = null }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { pendingClusterDuplicate = null }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
 
     pendingClusterRetopic?.let { pending ->
         AlertDialog(
             onDismissRequest = { pendingClusterRetopic = null },
-            title = { Text("Change topic for \"${pending.clusterName}\"") },
+            title = { Text(stringResource(R.string.home_change_topic_title, pending.clusterName)) },
             text = {
                 Column {
                     Text(
-                        "Moves every panel in this cluster onto a new MQTT topic - e.g. after " +
-                            "splitting a Zigbee network onto a second bridge, for just the devices " +
-                            "that actually moved. Other clusters are untouched.",
+                        stringResource(R.string.home_change_topic_text),
                         style = MaterialTheme.typography.bodySmall
                     )
                     Spacer(Modifier.height(12.dp))
                     Text(
-                        "Current topic: ${pending.currentTopicPrefix.ifBlank { "(none)" }}",
+                        stringResource(R.string.home_current_topic, pending.currentTopicPrefix.ifBlank { stringResource(R.string.home_none) }),
                         style = MaterialTheme.typography.bodySmall
                     )
                     if (SensorDiscovery.isSuspiciouslyBroadTopicPrefix(pending.currentTopicPrefix)) {
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            "This cluster's panels don't all share one clean device topic, only that " +
-                                "bare namespace - likely a few mismatched panels rather than one real " +
-                                "device. Moving it replaces only that shared part, so it may not apply " +
-                                "the way you expect. Worth checking this cluster's panels individually " +
-                                "first.",
+                            stringResource(R.string.home_change_topic_broad_warning),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.error
                         )
@@ -2089,7 +2075,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     OutlinedTextField(
                         value = retopicNewTopicText,
                         onValueChange = { retopicNewTopicText = it },
-                        label = { Text("New topic") },
+                        label = { Text(stringResource(R.string.home_new_topic)) },
                         singleLine = true,
                         keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.clearFocusOnBack()
@@ -2106,21 +2092,21 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         retopicNewTopicText = ""
                     },
                     enabled = retopicNewTopicText.isNotBlank() && retopicNewTopicText != pending.currentTopicPrefix
-                ) { Text("Save") }
+                ) { Text(stringResource(R.string.common_save)) }
             },
-            dismissButton = { TextButton(onClick = { pendingClusterRetopic = null }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { pendingClusterRetopic = null }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
 
     pendingValueEdit?.let { panel ->
         AlertDialog(
             onDismissRequest = { pendingValueEdit = null },
-            title = { Text("Edit \"${panel.label}\"") },
+            title = { Text(stringResource(R.string.home_edit_value_title, panel.label)) },
             text = {
                 OutlinedTextField(
                     value = valueEditText,
                     onValueChange = { valueEditText = it },
-                    label = { Text("Value") },
+                    label = { Text(stringResource(R.string.home_value)) },
                     singleLine = true,
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
                 )
@@ -2149,9 +2135,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         pendingValueEdit = null
                     },
                     enabled = valueEditText.isNotBlank()
-                ) { Text("Save") }
+                ) { Text(stringResource(R.string.common_save)) }
             },
-            dismissButton = { TextButton(onClick = { pendingValueEdit = null }) { Text("Cancel") } }
+            dismissButton = { TextButton(onClick = { pendingValueEdit = null }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
 }
@@ -2662,7 +2648,7 @@ private fun ClusterCard(
                         fontWeight = if (isStale) FontWeight.Bold else MaterialTheme.typography.labelSmall.fontWeight
                     )
                     Text(
-                        " \u2022 $ageText",
+                        stringResource(R.string.home_age, ageText),
                         style = ageTextStyle,
                         color = staleIndicatorColor
                     )
@@ -2670,7 +2656,7 @@ private fun ClusterCard(
                         Spacer(Modifier.width(4.dp))
                         Icon(
                             Icons.Default.Warning,
-                            contentDescription = "Data is more than an hour old",
+                            contentDescription = stringResource(R.string.home_stale_description),
                             tint = staleIndicatorColor,
                             modifier = Modifier.size(20.dp)
                         )
@@ -2680,7 +2666,7 @@ private fun ClusterCard(
                     Spacer(Modifier.width(4.dp))
                     Icon(
                         Icons.Default.BatteryAlert,
-                        contentDescription = "Battery at 20% or less",
+                        contentDescription = stringResource(R.string.home_low_battery_description),
                         tint = AlertBlue,
                         modifier = Modifier.size(20.dp)
                     )
@@ -2689,7 +2675,7 @@ private fun ClusterCard(
                     Spacer(Modifier.width(4.dp))
                     Icon(
                         Icons.Default.SignalWifi4Bar,
-                        contentDescription = "Link quality below $WEAK_SIGNAL_LQI",
+                        contentDescription = stringResource(R.string.home_weak_signal_description, WEAK_SIGNAL_LQI),
                         tint = AlertYellow,
                         modifier = Modifier.size(20.dp)
                     )
@@ -2697,14 +2683,14 @@ private fun ClusterCard(
                 IconButton(onClick = onDuplicate, modifier = Modifier.size(28.dp)) {
                     Icon(
                         Icons.Default.ContentCopy,
-                        contentDescription = "Duplicate $name",
+                        contentDescription = stringResource(R.string.home_duplicate_cluster, name),
                         modifier = Modifier.size(16.dp)
                     )
                 }
                 IconButton(onClick = onRetopic, modifier = Modifier.size(28.dp)) {
                     Icon(
                         Icons.Default.SwapHoriz,
-                        contentDescription = "Change topic for $name",
+                        contentDescription = stringResource(R.string.home_change_topic_cluster, name),
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -2727,14 +2713,14 @@ private fun ClusterCard(
                 ) {
                     Icon(
                         Icons.Default.Add,
-                        contentDescription = "Add tile to $name",
+                        contentDescription = stringResource(R.string.home_add_tile_to, name),
                         modifier = Modifier.size(16.dp)
                     )
                 }
                 IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
                     Icon(
                         Icons.Default.Delete,
-                        contentDescription = "Delete $name",
+                        contentDescription = stringResource(R.string.home_delete_cluster, name),
                         modifier = Modifier.size(16.dp)
                     )
                 }
@@ -2783,7 +2769,7 @@ private fun PanelTile(
                     // through as-is. Presence fields get a dedicated label instead of raw
                     // "true"/"false", with the icon itself carrying the detected state.
                     val value = when {
-                        isPresenceField -> if (extracted != null) { if (isPresent) "Detected" else "Clear" } else "--"
+                        isPresenceField -> if (extracted != null) app.getString(if (isPresent) R.string.tile_presence_detected else R.string.tile_presence_clear) else "--"
                         extracted != null -> extracted.toDoubleOrNull()?.let { num -> "%.${panel.decimals}f".format(num) } ?: extracted
                         else -> "--"
                     }
@@ -3003,10 +2989,10 @@ private fun PermitJoinDialog(
 
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Permit Join") },
+        title = { Text(stringResource(R.string.permit_join_title)) },
         text = {
             if (allTopics.isEmpty()) {
-                Text("No brokers configured.")
+                Text(stringResource(R.string.permit_join_dialog_no_brokers))
             } else {
                 Column {
                     var topicExpanded by remember { mutableStateOf(false) }
@@ -3018,7 +3004,7 @@ private fun PermitJoinDialog(
                             value = selected?.let { labelFor(it) } ?: "",
                             onValueChange = {},
                             readOnly = true,
-                            label = { Text("Base topic") },
+                            label = { Text(stringResource(R.string.broker_base_topic)) },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = topicExpanded) },
                             modifier = Modifier.fillMaxWidth()
                                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
@@ -3066,8 +3052,8 @@ private fun PermitJoinDialog(
                                     routerText = it
                                     routerExpanded = true
                                 },
-                                label = { Text("Permit join via (optional)") },
-                                placeholder = { Text("Blank = whole network") },
+                                label = { Text(stringResource(R.string.permit_join_via)) },
+                                placeholder = { Text(stringResource(R.string.permit_join_via_hint)) },
                                 keyboardOptions = tvAwareKeyboardOptions(),
                                 trailingIcon = if (routerNames.isNotEmpty()) {
                                     {
@@ -3111,9 +3097,7 @@ private fun PermitJoinDialog(
                             }
                         }
                         Text(
-                            "Friendly name of a specific router to extend joining through, or " +
-                                "\"Coordinator\" for just the coordinator. Leave blank to permit " +
-                                "joining via every router and the coordinator at once.",
+                            stringResource(R.string.permit_join_via_help),
                             style = MaterialTheme.typography.bodySmall
                         )
                         Spacer(Modifier.height(16.dp))
@@ -3130,12 +3114,12 @@ private fun PermitJoinDialog(
                                 }
                         ) {
                             Column(Modifier.weight(1f)) {
-                                Text("Permit Join", style = MaterialTheme.typography.titleMedium)
+                                Text(stringResource(R.string.permit_join_title), style = MaterialTheme.typography.titleMedium)
                                 Text(
                                     if (status.isOn) {
-                                        "Open for ${PermitJoin.formatRemaining(status.remainingSeconds)} more"
+                                        stringResource(R.string.permit_join_open, PermitJoin.formatRemaining(status.remainingSeconds))
                                     } else {
-                                        "Allow new Zigbee devices to join for a few minutes"
+                                        stringResource(R.string.permit_join_allow)
                                     },
                                     style = MaterialTheme.typography.bodySmall
                                 )
@@ -3147,7 +3131,7 @@ private fun PermitJoinDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = onDismiss) { Text("Close") }
+            TextButton(onClick = onDismiss) { Text(stringResource(R.string.common_close)) }
         }
     )
 }
@@ -3165,16 +3149,16 @@ private fun PendingDeviceBanner(
         tonalElevation = 2.dp
     ) {
         Column(modifier = Modifier.padding(12.dp)) {
-            Text("New device found", style = MaterialTheme.typography.titleSmall)
+            Text(stringResource(R.string.new_device_title), style = MaterialTheme.typography.titleSmall)
             Spacer(Modifier.height(4.dp))
             Text(
-                "\"${pending.deviceName}\" (${pending.appConfigTopic}) published its own dashboard config.",
+                stringResource(R.string.pending_device_text, pending.deviceName, pending.appConfigTopic),
                 style = MaterialTheme.typography.bodyMedium
             )
             Spacer(Modifier.height(8.dp))
             Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
-                TextButton(onClick = onIgnore) { Text("Ignore") }
-                TextButton(onClick = onAdd) { Text("Add") }
+                TextButton(onClick = onIgnore) { Text(stringResource(R.string.pending_ignore)) }
+                TextButton(onClick = onAdd) { Text(stringResource(R.string.common_add)) }
             }
         }
     }

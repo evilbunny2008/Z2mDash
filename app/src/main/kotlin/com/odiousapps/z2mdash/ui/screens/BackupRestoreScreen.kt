@@ -44,9 +44,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.BackupCodec
 import com.odiousapps.z2mdash.data.restoreConfig
@@ -86,13 +88,13 @@ fun BackupRestoreScreen(navController: NavController) {
         try {
             if (importScope == "BrokersOnly") {
                 app.configRepository.importBrokersOnlyJson(json)
-                snackbarMessage = "Brokers imported"
+                snackbarMessage = app.getString(R.string.backup_brokers_imported)
             } else {
                 restoreConfig(app, json, preserveBrokers = false)
-                snackbarMessage = "Configuration imported"
+                snackbarMessage = app.getString(R.string.backup_config_imported)
             }
         } catch (_: Exception) {
-            snackbarMessage = "Import failed: not a valid config file"
+            snackbarMessage = app.getString(R.string.import_failed_invalid)
         }
     }
 
@@ -136,7 +138,7 @@ fun BackupRestoreScreen(navController: NavController) {
             }
             context.contentResolver.openOutputStream(it, "wt")?.use { out -> out.write(output) }
             pendingExportPassword = null
-            snackbarMessage = "Configuration exported"
+            snackbarMessage = app.getString(R.string.backup_exported)
         }
     }
     val importLauncher = rememberLauncherForActivityResult(
@@ -161,10 +163,10 @@ fun BackupRestoreScreen(navController: NavController) {
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text("Backup & Restore") },
+                title = { Text(stringResource(R.string.settings_backup)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 }
             )
@@ -173,23 +175,23 @@ fun BackupRestoreScreen(navController: NavController) {
         LazyColumn(modifier = Modifier.padding(padding).fillMaxSize()) {
             item {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Export", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.backup_export), style = MaterialTheme.typography.titleMedium)
                     Spacer(Modifier.height(8.dp))
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                         SegmentedButton(
                             selected = exportScope == "Full",
                             onClick = { exportScope = "Full" },
                             shape = SegmentedButtonDefaults.itemShape(0, 2)
-                        ) { Text("Full Configuration") }
+                        ) { Text(stringResource(R.string.backup_scope_full)) }
                         SegmentedButton(
                             selected = exportScope == "BrokersOnly",
                             onClick = { exportScope = "BrokersOnly" },
                             shape = SegmentedButtonDefaults.itemShape(1, 2)
-                        ) { Text("Brokers Only") }
+                        ) { Text(stringResource(R.string.backup_scope_brokers)) }
                     }
                     ListItem(
-                        headlineContent = { Text("Encrypt Backup") },
-                        supportingContent = { Text("Protect the exported file with a password you choose") },
+                        headlineContent = { Text(stringResource(R.string.backup_encrypt)) },
+                        supportingContent = { Text(stringResource(R.string.backup_encrypt_detail)) },
                         trailingContent = { Switch(checked = encryptEnabled, onCheckedChange = null) },
                         modifier = Modifier.toggleableRow(encryptEnabled) { enabled ->
                             app.configRepository.update { it.copy(exportEncryptionEnabled = enabled) }
@@ -197,13 +199,13 @@ fun BackupRestoreScreen(navController: NavController) {
                     )
                     Spacer(Modifier.height(8.dp))
                     ListItem(
-                        headlineContent = { Text("Export Configuration") },
+                        headlineContent = { Text(stringResource(R.string.backup_export_config)) },
                         supportingContent = {
                             Text(
                                 if (exportScope == "BrokersOnly") {
-                                    "Save just your broker connection details as a compressed file"
+                                    stringResource(R.string.backup_export_brokers_detail)
                                 } else {
-                                    "Save your brokers, groups and panels as a compressed file you own"
+                                    stringResource(R.string.backup_export_full_detail)
                                 }
                             )
                         },
@@ -221,35 +223,35 @@ fun BackupRestoreScreen(navController: NavController) {
             }
             item {
                 Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Restore", style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.backup_restore), style = MaterialTheme.typography.titleMedium)
                     Spacer(Modifier.height(8.dp))
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.fillMaxWidth()) {
                         SegmentedButton(
                             selected = importScope == "Full",
                             onClick = { importScope = "Full" },
                             shape = SegmentedButtonDefaults.itemShape(0, 2)
-                        ) { Text("Replace Everything") }
+                        ) { Text(stringResource(R.string.backup_replace_everything)) }
                         SegmentedButton(
                             selected = importScope == "BrokersOnly",
                             onClick = { importScope = "BrokersOnly" },
                             shape = SegmentedButtonDefaults.itemShape(1, 2)
-                        ) { Text("Brokers Only") }
+                        ) { Text(stringResource(R.string.backup_scope_brokers)) }
                     }
                     if (importScope == "BrokersOnly") {
                         Text(
-                            "Merges brokers from the file into your current setup \u2013 groups and panels are left untouched.",
+                            stringResource(R.string.backup_restore_brokers_detail),
                             style = MaterialTheme.typography.bodySmall
                         )
                     } else {
                         Text(
-                            "Replaces your entire configuration with what's in the file.",
+                            stringResource(R.string.backup_restore_full_detail),
                             style = MaterialTheme.typography.bodySmall
                         )
                     }
                     Spacer(Modifier.height(8.dp))
                     ListItem(
-                        headlineContent = { Text("Import Configuration") },
-                        supportingContent = { Text("Restore from a previously exported backup file") },
+                        headlineContent = { Text(stringResource(R.string.backup_import_config)) },
+                        supportingContent = { Text(stringResource(R.string.backup_import_config_detail)) },
                         leadingContent = { Icon(Icons.Default.Restore, contentDescription = null) },
                         modifier = Modifier.clickable {
                             // "*/*" not a gzip MIME filter - storage providers report gzip
@@ -258,7 +260,7 @@ fun BackupRestoreScreen(navController: NavController) {
                             try {
                                 importLauncher.launch(arrayOf("*/*"))
                             } catch (_: ActivityNotFoundException) {
-                                snackbarMessage = "No file picker app is available on this device."
+                                snackbarMessage = app.getString(R.string.no_file_picker)
                             }
                         }
                     )
@@ -266,8 +268,8 @@ fun BackupRestoreScreen(navController: NavController) {
             }
             item {
                 ListItem(
-                    headlineContent = { Text("Backup / Restore via MQTT") },
-                    supportingContent = { Text("Publish or read a compressed backup on a broker topic, instead of a file") },
+                    headlineContent = { Text(stringResource(R.string.mqtt_backup_title)) },
+                    supportingContent = { Text(stringResource(R.string.backup_mqtt_detail)) },
                     leadingContent = { Icon(Icons.Default.Cloud, contentDescription = null) },
                     modifier = Modifier.clickable { navController.navigate("mqttBackup") }
                 )
@@ -278,13 +280,9 @@ fun BackupRestoreScreen(navController: NavController) {
     if (showUnencryptedWarning) {
         AlertDialog(
             onDismissRequest = { showUnencryptedWarning = false },
-            title = { Text("Export without encryption?") },
+            title = { Text(stringResource(R.string.backup_unencrypted_title)) },
             text = {
-                Text(
-                    "This backup includes your brokers' usernames and passwords, stored as plain " +
-                        "text. Anyone who gets hold of the file can read them. Turn on Encrypt " +
-                        "Backup to protect it with a password instead."
-                )
+                Text(stringResource(R.string.backup_unencrypted_text))
             },
             confirmButton = {
                 TextButton(onClick = {
@@ -292,12 +290,12 @@ fun BackupRestoreScreen(navController: NavController) {
                     try {
                         exportLauncher.launch(BackupCodec.newBackupFileName(brokersOnly = exportScope == "BrokersOnly"))
                     } catch (_: ActivityNotFoundException) {
-                        snackbarMessage = "No file picker app is available on this device."
+                        snackbarMessage = app.getString(R.string.no_file_picker)
                     }
-                }) { Text("Continue") }
+                }) { Text(stringResource(R.string.common_continue)) }
             },
             dismissButton = {
-                TextButton(onClick = { showUnencryptedWarning = false }) { Text("Cancel") }
+                TextButton(onClick = { showUnencryptedWarning = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -305,15 +303,15 @@ fun BackupRestoreScreen(navController: NavController) {
     if (showExportPasswordDialog) {
         AlertDialog(
             onDismissRequest = { showExportPasswordDialog = false },
-            title = { Text("Set Export Password") },
+            title = { Text(stringResource(R.string.backup_set_password_title)) },
             text = {
                 Column {
-                    Text("Choose a password to encrypt this backup with. It's remembered for next time - you'll need it again to restore.")
+                    Text(stringResource(R.string.backup_set_password_text))
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
                         value = exportPasswordText,
                         onValueChange = { exportPasswordText = it },
-                        label = { Text("Password") },
+                        label = { Text(stringResource(R.string.backup_password)) },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = tvAwareKeyboardOptions(),
                         modifier = Modifier.fillMaxWidth().clearFocusOnBack()
@@ -329,14 +327,14 @@ fun BackupRestoreScreen(navController: NavController) {
                         try {
                             exportLauncher.launch(BackupCodec.newBackupFileName(brokersOnly = exportScope == "BrokersOnly"))
                         } catch (_: ActivityNotFoundException) {
-                            snackbarMessage = "No file picker app is available on this device."
+                            snackbarMessage = app.getString(R.string.no_file_picker)
                         }
                     },
                     enabled = exportPasswordText.isNotBlank()
-                ) { Text("Continue") }
+                ) { Text(stringResource(R.string.common_continue)) }
             },
             dismissButton = {
-                TextButton(onClick = { showExportPasswordDialog = false }) { Text("Cancel") }
+                TextButton(onClick = { showExportPasswordDialog = false }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }
@@ -345,15 +343,15 @@ fun BackupRestoreScreen(navController: NavController) {
     if (encryptedBytes != null) {
         AlertDialog(
             onDismissRequest = { pendingEncryptedBytes = null },
-            title = { Text("Encrypted Backup") },
+            title = { Text(stringResource(R.string.backup_encrypted_title)) },
             text = {
                 Column {
-                    Text("This backup is encrypted. Enter the password it was encrypted with.")
+                    Text(stringResource(R.string.backup_encrypted_text))
                     Spacer(Modifier.height(8.dp))
                     OutlinedTextField(
                         value = passwordDialogText,
                         onValueChange = { passwordDialogText = it; passwordDialogError = null },
-                        label = { Text("Password") },
+                        label = { Text(stringResource(R.string.backup_password)) },
                         visualTransformation = PasswordVisualTransformation(),
                         isError = passwordDialogError != null,
                         supportingText = passwordDialogError?.let { { Text(it) } },
@@ -366,7 +364,7 @@ fun BackupRestoreScreen(navController: NavController) {
                 TextButton(onClick = {
                     val decrypted = BackupCodec.decrypt(encryptedBytes, passwordDialogText)
                     if (decrypted == null) {
-                        passwordDialogError = "Wrong password, or the file is corrupted"
+                        passwordDialogError = app.getString(R.string.backup_wrong_password)
                     } else {
                         val json = try {
                             BackupCodec.decompress(decrypted)
@@ -374,16 +372,16 @@ fun BackupRestoreScreen(navController: NavController) {
                             null
                         }
                         if (json == null) {
-                            passwordDialogError = "Wrong password, or the file is corrupted"
+                            passwordDialogError = app.getString(R.string.backup_wrong_password)
                         } else {
                             pendingEncryptedBytes = null
                             finishImport(json)
                         }
                     }
-                }) { Text("Unlock") }
+                }) { Text(stringResource(R.string.backup_unlock)) }
             },
             dismissButton = {
-                TextButton(onClick = { pendingEncryptedBytes = null }) { Text("Cancel") }
+                TextButton(onClick = { pendingEncryptedBytes = null }) { Text(stringResource(R.string.common_cancel)) }
             }
         )
     }

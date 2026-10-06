@@ -1,0 +1,1 @@
+No user-facing changes - all on-screen text has been moved into string resources, ready for translation.

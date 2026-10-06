@@ -104,11 +104,11 @@ class SmokeAlertManager(
         // A channel's sound can't be changed once created, so we pre-create a sound and a
         // silent channel and pick between them at send time to make the toggle work.
         val channelId = if (playSound) CHANNEL_ID_SOUND else CHANNEL_ID_SILENT
-        val title = if (isTest) "Test alert" else "Smoke detected!"
+        val title = context.getString(if (isTest) R.string.notif_test_title else R.string.smoke_notif_title)
         val text = if (isTest) {
-            "This is what a smoke alert notification looks like"
+            context.getString(R.string.smoke_notif_test_text)
         } else {
-            "$deviceName reported smoke \u2013 tap to open Z2M Dash"
+            context.getString(R.string.smoke_notif_text, deviceName)
         }
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle(title)
@@ -148,16 +148,16 @@ class SmokeAlertManager(
         val alarmSoundUri = "android.resource://${context.packageName}/${R.raw.smoke_alarm}".toUri()
 
         val soundChannel = NotificationChannel(
-            CHANNEL_ID_SOUND, "Smoke alerts (with sound)", NotificationManager.IMPORTANCE_HIGH
+            CHANNEL_ID_SOUND, context.getString(R.string.smoke_channel_sound), NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Alerts when a device reports smoke detected, with an alarm-style sound"
+            description = context.getString(R.string.smoke_channel_sound_desc)
             enableVibration(true)
             setSound(alarmSoundUri, alarmAttributes)
         }
         val silentChannel = NotificationChannel(
-            CHANNEL_ID_SILENT, "Smoke alerts (silent)", NotificationManager.IMPORTANCE_HIGH
+            CHANNEL_ID_SILENT, context.getString(R.string.smoke_channel_silent), NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Alerts when a device reports smoke detected, without sound"
+            description = context.getString(R.string.smoke_channel_silent_desc)
             enableVibration(true)
             setSound(null, null)
         }

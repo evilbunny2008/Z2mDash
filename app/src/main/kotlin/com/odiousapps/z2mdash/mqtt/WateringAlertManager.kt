@@ -84,7 +84,7 @@ class WateringAlertManager(
 
     /** Same rationale as SmokeAlertManager.triggerTestAlert - verifies sound/vibration for real. */
     fun triggerTestAlert() {
-        notifyMoistureTarget("Test Sensor", TEST_ALERT_KEY, isTest = true)
+        notifyMoistureTarget(context.getString(R.string.watering_test_sensor), TEST_ALERT_KEY, isTest = true)
     }
 
     private fun checkMoisturePanels(payloads: Map<String, String>) {
@@ -178,11 +178,11 @@ class WateringAlertManager(
             context, key.hashCode(), launchIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val title = if (isTest) "Test alert" else "$label reached target moisture"
+        val title = if (isTest) context.getString(R.string.notif_test_title) else context.getString(R.string.watering_notif_title, label)
         val text = if (isTest) {
-            "This is what a watering alert notification looks like"
+            context.getString(R.string.watering_notif_test_text)
         } else {
-            "Rising through the middle of its ideal range – tap to open Z2M Dash"
+            context.getString(R.string.watering_notif_text)
         }
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)
@@ -224,10 +224,9 @@ class WateringAlertManager(
         val chimeUri = "android.resource://${context.packageName}/${R.raw.watering_alert}".toUri()
 
         val channel = NotificationChannel(
-            CHANNEL_ID, "Watering alerts", NotificationManager.IMPORTANCE_HIGH
+            CHANNEL_ID, context.getString(R.string.watering_channel), NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Vibrates and chimes (loudly, via the alarm volume) when a moisture sensor " +
-                "reaches the middle of its ideal range while rising"
+            description = context.getString(R.string.watering_channel_desc)
             enableVibration(true)
             setSound(chimeUri, chimeAttributes)
         }

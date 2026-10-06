@@ -1,5 +1,6 @@
 package com.odiousapps.z2mdash.ui.navigation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.focusGroup
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -35,6 +37,7 @@ import androidx.tv.material3.DrawerValue
 import androidx.tv.material3.NavigationDrawer
 import androidx.tv.material3.NavigationDrawerItem
 import androidx.tv.material3.rememberDrawerState
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.ui.screens.AddEditBrokerScreen
 import com.odiousapps.z2mdash.ui.screens.AddGroupScreen
 import com.odiousapps.z2mdash.ui.screens.AddPanelScreen
@@ -54,12 +57,12 @@ import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toTvColorScheme
 import com.odiousapps.z2mdash.ui.tv.tvLeftEdgeFallbackToRail
 
-private data class BottomTab(val route: String, val label: String, val icon: ImageVector)
+private data class BottomTab(val route: String, @StringRes val labelRes: Int, val icon: ImageVector)
 
 private val bottomTabs = listOf(
-    BottomTab("home", "Home", Icons.Default.Home),
-    BottomTab("terminal", "Terminal", Icons.Default.Terminal),
-    BottomTab("settings", "Settings", Icons.Default.Settings)
+    BottomTab("home", R.string.tab_home, Icons.Default.Home),
+    BottomTab("terminal", R.string.tab_terminal, Icons.Default.Terminal),
+    BottomTab("settings", R.string.tab_settings, Icons.Default.Settings)
 )
 
 /**
@@ -101,8 +104,8 @@ private fun PhoneNavShell(
                         NavigationBarItem(
                             selected = currentRoute == tab.route,
                             onClick = { navigateToTab(navController, tab.route) },
-                            icon = { Icon(tab.icon, contentDescription = tab.label) },
-                            label = { Text(tab.label) }
+                            icon = { Icon(tab.icon, contentDescription = stringResource(tab.labelRes)) },
+                            label = { Text(stringResource(tab.labelRes)) }
                         )
                     }
                 }
@@ -167,14 +170,14 @@ private fun TvNavShell(
                             // silently fell back to a fixed colour, causing the dark-on-dark bug
                             // independent of the ColorScheme mismatch fixed above.
                             leadingContent = {
-                                androidx.tv.material3.Icon(tab.icon, contentDescription = tab.label)
+                                androidx.tv.material3.Icon(tab.icon, contentDescription = stringResource(tab.labelRes))
                             },
                             modifier = Modifier
                                 .onDpadSelect(onTabClick)
                                 .focusRequester(railFocusRequesters[index])
                                 .then(if (index == bottomTabs.lastIndex) Modifier.blockDirectionDown() else Modifier)
                         ) {
-                            androidx.tv.material3.Text(tab.label)
+                            androidx.tv.material3.Text(stringResource(tab.labelRes))
                         }
                     }
                 }

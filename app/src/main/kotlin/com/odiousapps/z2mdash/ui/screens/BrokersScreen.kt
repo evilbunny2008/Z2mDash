@@ -27,8 +27,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.mqtt.ConnectionState
 
@@ -43,17 +45,17 @@ fun BrokersScreen(navController: NavController) {
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         topBar = {
             TopAppBar(
-                title = { Text("Brokers") },
+                title = { Text(stringResource(R.string.brokers_title)) },
                 navigationIcon = {
                     IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.common_back))
                     }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { navController.navigate("broker/new") }) {
-                Icon(Icons.Default.Add, contentDescription = "Add broker")
+                Icon(Icons.Default.Add, contentDescription = stringResource(R.string.brokers_add))
             }
         }
     ) { padding ->
@@ -65,14 +67,24 @@ fun BrokersScreen(navController: NavController) {
                 val state = states[broker.id] ?: ConnectionState.DISCONNECTED
                 ListItem(
                     headlineContent = { Text(broker.name) },
-                    supportingContent = { Text("${broker.host}:${broker.port} \u00b7 ${broker.protocol} \u00b7 $state") },
+                    supportingContent = {
+                        val stateLabel = stringResource(
+                            when (state) {
+                                ConnectionState.DISCONNECTED -> R.string.connection_state_disconnected
+                                ConnectionState.CONNECTING -> R.string.connection_state_connecting
+                                ConnectionState.CONNECTED -> R.string.connection_state_connected
+                                ConnectionState.FAILED -> R.string.connection_state_failed
+                            }
+                        )
+                        Text(stringResource(R.string.brokers_summary, broker.host, broker.port, broker.protocol.name, stateLabel))
+                    },
                     trailingContent = {
                         Row {
                             IconButton(onClick = { app.connectionManager.reconnect(broker.id) }) {
-                                Icon(Icons.Default.Refresh, contentDescription = "Reconnect to ${broker.name}")
+                                Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.brokers_reconnect, broker.name))
                             }
                             IconButton(onClick = { navController.navigate("discover/${broker.id}") }) {
-                                Icon(Icons.Default.Search, contentDescription = "Discover sensors on ${broker.name}")
+                                Icon(Icons.Default.Search, contentDescription = stringResource(R.string.brokers_discover, broker.name))
                             }
                         }
                     },

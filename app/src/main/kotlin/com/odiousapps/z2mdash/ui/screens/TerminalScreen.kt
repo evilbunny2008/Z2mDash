@@ -45,10 +45,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.mqtt.LoggedMessage
+import com.odiousapps.z2mdash.mqtt.MAX_LOGGED_MESSAGES
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import kotlinx.coroutines.delay
@@ -57,7 +61,6 @@ import kotlinx.serialization.json.JsonElement
 import kotlin.time.Duration.Companion.milliseconds
 
 private const val ALL_BROKERS = "__all__"
-private const val MAX_LOGGED_MESSAGES_LABEL = "300"
 
 /** Shared by the rendered list and the auto-scroll effect, so they can never disagree on what's currently showing. */
 private fun filterMessages(log: List<LoggedMessage>, filterText: String, brokerId: String): List<LoggedMessage> =
@@ -119,10 +122,10 @@ fun TerminalScreen() {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Terminal") },
+                title = { Text(stringResource(R.string.terminal_title)) },
                 actions = {
                     IconButton(onClick = { app.connectionManager.clearMessageLog() }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Clear log")
+                        Icon(Icons.Default.Delete, contentDescription = stringResource(R.string.terminal_clear))
                     }
                 }
             )
@@ -135,7 +138,7 @@ fun TerminalScreen() {
                         listState.requestScrollToItem(filtered.size - 1)
                     }
                 }) {
-                    Icon(Icons.Default.KeyboardArrowDown, contentDescription = "Jump to newest")
+                    Icon(Icons.Default.KeyboardArrowDown, contentDescription = stringResource(R.string.terminal_jump_newest))
                 }
             }
         },
@@ -144,22 +147,23 @@ fun TerminalScreen() {
         Column(modifier = Modifier.padding(padding).fillMaxSize().padding(12.dp)) {
             if (config.brokers.size > 1) {
                 var brokerExpanded by remember { mutableStateOf(false) }
+                val allBrokersLabel = stringResource(R.string.terminal_all_brokers)
                 val selectedName = if (selectedBrokerId == ALL_BROKERS) {
-                    "All brokers"
+                    allBrokersLabel
                 } else {
-                    config.brokers.find { it.id == selectedBrokerId }?.name ?: "All brokers"
+                    config.brokers.find { it.id == selectedBrokerId }?.name ?: allBrokersLabel
                 }
                 ExposedDropdownMenuBox(expanded = brokerExpanded, onExpandedChange = { brokerExpanded = it }) {
                     OutlinedTextField(
                         readOnly = true,
                         value = selectedName,
                         onValueChange = {},
-                        label = { Text("Broker") },
+                        label = { Text(stringResource(R.string.terminal_broker)) },
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = brokerExpanded) },
                         modifier = Modifier.fillMaxWidth().menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
                     )
                     ExposedDropdownMenu(expanded = brokerExpanded, onDismissRequest = { brokerExpanded = false }) {
-                        DropdownMenuItem(text = { Text("All brokers") }, onClick = {
+                        DropdownMenuItem(text = { Text(allBrokersLabel) }, onClick = {
                             selectedBrokerId = ALL_BROKERS
                             brokerExpanded = false
                         })
@@ -177,7 +181,7 @@ fun TerminalScreen() {
             OutlinedTextField(
                 value = filterText,
                 onValueChange = { filterText = it },
-                label = { Text("Filter by topic or payload") },
+                label = { Text(stringResource(R.string.terminal_filter)) },
                 singleLine = true,
                 keyboardOptions = tvAwareKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
@@ -185,19 +189,18 @@ fun TerminalScreen() {
             Spacer(Modifier.height(8.dp))
 
             Text(
-                "${filtered.size} of ${messageLog.size} messages (oldest first, last $MAX_LOGGED_MESSAGES_LABEL kept)",
+                pluralStringResource(R.plurals.terminal_count, messageLog.size, filtered.size, messageLog.size, MAX_LOGGED_MESSAGES),
                 style = MaterialTheme.typography.bodySmall
             )
             Spacer(Modifier.height(8.dp))
 
             if (messageLog.isEmpty()) {
                 Text(
-                    "No messages received yet. Make sure a broker is connected and subscribed " +
-                        "(check Brokers in Settings, or that its base topic matches your setup).",
+                    stringResource(R.string.terminal_empty),
                     style = MaterialTheme.typography.bodySmall
                 )
             } else if (filtered.isEmpty()) {
-                Text("No messages match that filter.", style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.terminal_no_match), style = MaterialTheme.typography.bodySmall)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
                     items(filtered, key = { it.id }) { entry ->
