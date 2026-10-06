@@ -1,0 +1,1 @@
+- Fixed the Terminal screen crashing when a device sent two messages at almost the same moment.

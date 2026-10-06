@@ -200,7 +200,7 @@ fun TerminalScreen() {
                 Text("No messages match that filter.", style = MaterialTheme.typography.bodySmall)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxSize()) {
-                    items(filtered, key = { "${it.timestamp}|${it.topic}|${it.brokerId}" }) { entry ->
+                    items(filtered, key = { it.id }) { entry ->
                         MessageRow(
                             entry = entry,
                             brokerName = if (config.brokers.size > 1) {

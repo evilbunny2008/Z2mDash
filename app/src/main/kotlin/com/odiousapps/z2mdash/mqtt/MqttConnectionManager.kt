@@ -23,7 +23,19 @@ private const val MAX_LOGGED_MESSAGES = 300
 private val BATCH_INTERVAL_MS = 200.milliseconds
 
 /** One entry in the Terminal tab's rolling message log. */
-data class LoggedMessage(val brokerId: String, val topic: String, val payload: String, val timestamp: Long)
+// Hands out LoggedMessage.id - process-wide, so ids never repeat across brokers either.
+private val nextLoggedMessageId = java.util.concurrent.atomic.AtomicLong()
+
+data class LoggedMessage(
+    val brokerId: String,
+    val topic: String,
+    val payload: String,
+    val timestamp: Long,
+    // Unique per message - the Terminal list's item key. (timestamp, topic, broker) isn't: a
+    // device publishing twice within the same millisecond (common for a Zigbee2MQTT state update
+    // and its follow-up) produced two identical keys, and LazyColumn crashes the app on that.
+    val id: Long = nextLoggedMessageId.getAndIncrement()
+)
 
 /**
  * App-wide singleton (held by Z2mDashApplication) that owns one MqttConnection
