@@ -91,6 +91,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInWindow
@@ -115,6 +116,7 @@ import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.clusterKey
 import com.odiousapps.z2mdash.data.clusterName
@@ -133,6 +135,7 @@ import com.odiousapps.z2mdash.ui.components.ButtonTile
 import com.odiousapps.z2mdash.ui.components.SensorAlert
 import com.odiousapps.z2mdash.ui.components.SensorTile
 import com.odiousapps.z2mdash.ui.components.ToggleTile
+import com.odiousapps.z2mdash.ui.components.iconFor
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
@@ -267,18 +270,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
 
     var showClusterSearch by remember { mutableStateOf(false) }
     var clusterSearchQuery by remember { mutableStateOf("") }
-    // Filters the dashboard itself down to only clusters/standalone panels that haven't reported
-    // in the last hour, rather than opening a separate dialog for it - toggled by its own FAB.
-    // rememberSaveable, not remember - this is a deliberate, user-set filter mode, not transient
-    // dialog state, so it should survive a screen rotation (which fully recreates the Activity,
-    // since this app doesn't handle configChanges) rather than silently reverting to "off".
-    var showOnlyStaleClusters by rememberSaveable { mutableStateOf(false) }
-    // Same idea for devices whose battery is at or below LowBatteryAlertManager's low threshold
-    // (20%) - toggled by its own FAB.
-    var showOnlyLowBatteryClusters by rememberSaveable { mutableStateOf(false) }
-    // And again for a weak Zigbee link (linkquality below WEAK_SIGNAL_LQI). Every filter that's on
-    // has to match for a cluster to stay visible.
-    var showOnlyWeakSignalClusters by rememberSaveable { mutableStateOf(false) }
+    // Filters the dashboard itself down to only the clusters/standalone panels matching one
+    // DashboardFilter (not reporting recently, low battery, weak signal, low moisture), rather
+    // than opening a separate dialog for it - each toggled by its own FAB. Only one at a time:
+    // picking another replaces it. rememberSaveable, not remember - this is a deliberate,
+    // user-set filter mode, not transient dialog state, so it should survive a screen rotation
+    // (which fully recreates the Activity, since this app doesn't handle configChanges) rather
+    // than silently reverting to "off".
+    var activeFilter by rememberSaveable { mutableStateOf<DashboardFilter?>(null) }
     // Single Permit Join bar for the whole screen, regardless of how many brokers/base topics are
     // configured - tapping its text opens a dialog to pick which (broker, base topic) to act on
     // and, once picked, which router to extend joining through. Replaces both the old one-bar-
@@ -289,7 +288,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // both the bar and the dialog - the bar's own switch/countdown act on directly, without
     // opening the dialog. Selecting a different base topic inside the dialog updates this too, so
     // the bar always reflects whichever topic/router was picked last. rememberSaveable so it
-    // survives rotation the same as showOnlyStaleClusters above, rather than always resetting back
+    // survives rotation the same as activeFilter above, rather than always resetting back
     // to the first topic.
     var permitJoinTopicIndex by rememberSaveable { mutableIntStateOf(0) }
 
@@ -670,152 +669,109 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // in a smaller box.
     val tileScale = standaloneTileWidth / 110.dp
 
+    // ---- Floating action buttons ----
+    // Every FAB is the same full FloatingActionButton size, on phone and TV alike. On TV,
+    // tvFocusIndicator's visible focus ring and the wider spacing below are what a D-pad remote
+    // needs: without the ring there was no on-screen cue for which FAB (if any) was focused, which
+    // is what made them "hard to select" in the first place, and the extra spacing makes it easier
+    // to see which one currently has focus. Worked out here, above the Scaffold, rather than inside
+    // its floatingActionButton slot, because the list's own bottom padding (see the LazyColumn's
+    // contentPadding) depends on how many rows they wrap onto.
+    val isTv = LocalIsTv.current
+    val fabSpacing = if (isTv) 20.dp else 8.dp
+    // Only worth showing once there's at least one non-editable sensor to actually watch for
+    // staleness - an editable panel is a fixed preference value, not a live hardware reading, so
+    // it never genuinely "reports" and would just be noise here.
+    val hasStaleCandidates = config.groups.any { g -> g.panels.any { it is Panel.Sensor && !it.editable && it.topic.isNotBlank() } }
+    // The low-battery and weak-signal FABs are only worth showing once at least one dashboard
+    // device actually reports a "battery"/"linkquality" field. A plain substring check rather than
+    // a JSON parse - this re-runs on every incoming MQTT message, and only needs to know whether
+    // the field exists at all.
+    val deviceTopicKeys = remember(config) {
+        config.groups.asSequence().flatMap { it.panels }.flatMap { deviceTopicKeysFor(it) }.toSet()
+    }
+    val anyBatteryDevice by remember(deviceTopicKeys) {
+        derivedStateOf {
+            val payloads = payloadsState.value
+            deviceTopicKeys.any { payloads[it]?.contains("\"battery\"") == true }
+        }
+    }
+    val anyLinkQualityDevice by remember(deviceTopicKeys) {
+        derivedStateOf {
+            val payloads = payloadsState.value
+            deviceTopicKeys.any { payloads[it]?.contains("\"linkquality\"") == true }
+        }
+    }
+    val hasMoistureSensors = config.groups.any { g -> g.panels.any { isMoistureSensor(it) } }
+    // One FAB per dashboard filter, each available while there's something for it to find - or
+    // while it's the active filter, so it can always be switched back off.
+    fun filterFab(filter: DashboardFilter, available: Boolean, icon: ImageVector, description: String): FabSpec? {
+        if (!available && activeFilter != filter) return null
+        val active = activeFilter == filter
+        return FabSpec(
+            key = filter.name,
+            icon = icon,
+            contentDescription = if (active) "Showing only $description - tap to show everything" else "Show only $description",
+            highlighted = active,
+            // Picking a filter replaces whichever one was active; picking the active one clears it.
+            onClick = { activeFilter = if (active) null else filter }
+        )
+    }
+    val anyGroupExpanded = config.groups.any { !it.collapsed }
+    val fabSpecs = listOfNotNull(
+        // Only worth showing once there's at least one named cluster to actually find - a
+        // dashboard of only standalone tiles has nothing for this to search.
+        FabSpec("search", Icons.Default.Search, "Search clusters", onClick = { showClusterSearch = true })
+            .takeIf { config.groups.any { g -> g.clusters.isNotEmpty() } },
+        filterFab(DashboardFilter.STALE, hasStaleCandidates, Icons.Default.Warning, "sensors not reporting recently"),
+        filterFab(DashboardFilter.LOW_BATTERY, anyBatteryDevice, Icons.Default.BatteryAlert, "devices with 20% battery or less"),
+        filterFab(DashboardFilter.WEAK_SIGNAL, anyLinkQualityDevice, iconFor(TileIcon.SIGNAL), "devices with link quality below $WEAK_SIGNAL_LQI"),
+        filterFab(DashboardFilter.LOW_MOISTURE, hasMoistureSensors, iconFor(TileIcon.MOISTURE), "moisture sensors below their ideal range"),
+        // Only worth showing once there's more than one group to bulk-collapse - with zero or one,
+        // per-group collapse (the header's own chevron) already covers it.
+        FabSpec(
+            "collapse",
+            if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore,
+            if (anyGroupExpanded) "Collapse all groups" else "Expand all groups",
+            onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) }
+        ).takeIf { config.groups.size > 1 },
+        FabSpec("addGroup", Icons.Default.Add, "Add group", onClick = { navController.navigate("addGroup") })
+    )
+    // As many FABs per row as fit across the screen (Scaffold end-aligns the FAB slot with a 16dp
+    // margin each side - a row any wider ran off the left edge, clipping its first FAB), filled
+    // from the bottom-right: "Add group" always ends the bottom row, and whatever doesn't fit
+    // wraps onto rows ABOVE it rather than below, since the bottom edge is where they're anchored.
+    val fabsPerRow = (((screenWidthDp - 16.dp * 2 + fabSpacing) / (56.dp + fabSpacing)).toInt()).coerceAtLeast(1)
+    val fabRows = fabSpecs.reversed().chunked(fabsPerRow).map { it.reversed() }.reversed()
+    // Extra list padding for every row of FABs beyond the first, so the list can still scroll its
+    // last items clear of them (the first row is already covered by the base 96dp).
+    val extraFabRowsPadding = (56.dp + fabSpacing) * (fabRows.size - 1).coerceAtLeast(0)
+
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         floatingActionButton = {
-            // Every FAB is the same full FloatingActionButton size, on phone and TV alike - the
-            // small variant used to be used for all but "Add group" on phones, which left a row of
-            // mismatched buttons once they moved to a single row along the bottom edge. On TV,
-            // tvFocusIndicator's visible focus ring and the wider spacing below are what a D-pad
-            // remote needs: without the ring there was no on-screen cue for which FAB (if any) was
-            // focused, which is what made them "hard to select" in the first place, and the extra
-            // spacing makes it easier to see which one currently has focus.
-            val isTv = LocalIsTv.current
-            // Only worth showing once there's at least one named cluster to actually find - a
-            // dashboard of only standalone tiles has nothing for this to search.
-            val showSearchFab = config.groups.any { g -> g.clusters.isNotEmpty() }
-            // Only worth showing once there's at least one non-editable sensor to actually watch
-            // for staleness - an editable panel is a fixed preference value, not a live hardware
-            // reading, so it never genuinely "reports" and would just be noise here.
-            val showStaleFab = config.groups.any { g -> g.panels.any { it is Panel.Sensor && !it.editable && it.topic.isNotBlank() } }
-            // The low-battery and weak-signal FABs are only worth showing once at least one
-            // dashboard device actually reports a "battery"/"linkquality" field (or while
-            // their filter is on, so it can always be switched back off). A plain substring
-            // check rather than a JSON parse - this re-runs on every incoming MQTT message,
-            // and only needs to know whether the field exists at all.
-            val deviceTopicKeys = remember(config) {
-                config.groups.asSequence().flatMap { it.panels }.flatMap { deviceTopicKeysFor(it) }.toSet()
-            }
-            val anyBatteryDevice by remember(deviceTopicKeys) {
-                derivedStateOf {
-                    val payloads = payloadsState.value
-                    deviceTopicKeys.any { payloads[it]?.contains("\"battery\"") == true }
-                }
-            }
-            val anyLinkQualityDevice by remember(deviceTopicKeys) {
-                derivedStateOf {
-                    val payloads = payloadsState.value
-                    deviceTopicKeys.any { payloads[it]?.contains("\"linkquality\"") == true }
-                }
-            }
-            val showLowBatteryFab = anyBatteryDevice || showOnlyLowBatteryClusters
-            val showWeakSignalFab = anyLinkQualityDevice || showOnlyWeakSignalClusters
-            // Only worth showing once there's more than one group to bulk-collapse - with zero or
-            // one, per-group collapse (the header's own chevron) already covers it.
-            val showCollapseFab = config.groups.size > 1
-            // 8dp between FABs on a phone, shrunk further if even that won't fit across the
-            // screen - Scaffold end-aligns the FAB slot with a 16dp margin, so a row wider than
-            // the space left of that just runs off the left edge, clipping the first FAB (six
-            // FABs at the old 12dp spacing did exactly that on a 411dp-wide phone). TV keeps its
-            // wider 20dp D-pad spacing - a TV screen has room to spare.
-            val fabCount = 1 + listOf(showSearchFab, showStaleFab, showLowBatteryFab, showWeakSignalFab, showCollapseFab).count { it }
-            val fabSpacing = if (isTv) {
-                20.dp
-            } else {
-                val fabRowRoom = screenWidthDp - 16.dp * 2 - 56.dp * fabCount
-                if (fabCount > 1) (fabRowRoom / (fabCount - 1)).coerceIn(0.dp, 8.dp) else 8.dp
-            }
-            // Laid out in a single row along the bottom edge rather than stacked vertically, so the
-            // FABs only cover a short strip of the list instead of a tall column down its right side.
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                if (showSearchFab) {
-                    FloatingActionButton(
-                        onClick = { showClusterSearch = true },
-                        modifier = Modifier.tvFocusIndicator()
-                    ) {
-                        Icon(Icons.Default.Search, contentDescription = "Search clusters")
-                    }
-                    Spacer(Modifier.width(fabSpacing))
-                }
-                if (showStaleFab) {
-                    val staleToggleContainerColor = if (showOnlyStaleClusters) {
-                        MaterialTheme.colorScheme.errorContainer
-                    } else {
-                        FloatingActionButtonDefaults.containerColor
-                    }
-                    val staleToggleContentDescription = if (showOnlyStaleClusters) {
-                        "Showing only sensors not reporting recently - tap to show everything"
-                    } else {
-                        "Show only sensors not reporting recently"
-                    }
-                    FloatingActionButton(
-                        onClick = { showOnlyStaleClusters = !showOnlyStaleClusters },
-                        containerColor = staleToggleContainerColor,
-                        modifier = Modifier.tvFocusIndicator()
-                    ) {
-                        Icon(Icons.Default.Warning, contentDescription = staleToggleContentDescription)
-                    }
-                    Spacer(Modifier.width(fabSpacing))
-                }
-                if (showLowBatteryFab) {
-                    FloatingActionButton(
-                        onClick = { showOnlyLowBatteryClusters = !showOnlyLowBatteryClusters },
-                        containerColor = if (showOnlyLowBatteryClusters) {
-                            MaterialTheme.colorScheme.errorContainer
-                        } else {
-                            FloatingActionButtonDefaults.containerColor
-                        },
-                        modifier = Modifier.tvFocusIndicator()
-                    ) {
-                        Icon(
-                            Icons.Default.BatteryAlert,
-                            contentDescription = if (showOnlyLowBatteryClusters) {
-                                "Showing only devices with 20% battery or less - tap to show everything"
-                            } else {
-                                "Show only devices with 20% battery or less"
+            Column(
+                horizontalAlignment = Alignment.End,
+                verticalArrangement = Arrangement.spacedBy(fabSpacing)
+            ) {
+                fabRows.forEach { row ->
+                    Row(horizontalArrangement = Arrangement.spacedBy(fabSpacing)) {
+                        row.forEach { fab ->
+                            key(fab.key) {
+                                FloatingActionButton(
+                                    onClick = fab.onClick,
+                                    containerColor = if (fab.highlighted) {
+                                        MaterialTheme.colorScheme.errorContainer
+                                    } else {
+                                        FloatingActionButtonDefaults.containerColor
+                                    },
+                                    modifier = Modifier.tvFocusIndicator()
+                                ) {
+                                    Icon(fab.icon, contentDescription = fab.contentDescription)
+                                }
                             }
-                        )
+                        }
                     }
-                    Spacer(Modifier.width(fabSpacing))
-                }
-                if (showWeakSignalFab) {
-                    FloatingActionButton(
-                        onClick = { showOnlyWeakSignalClusters = !showOnlyWeakSignalClusters },
-                        containerColor = if (showOnlyWeakSignalClusters) {
-                            MaterialTheme.colorScheme.errorContainer
-                        } else {
-                            FloatingActionButtonDefaults.containerColor
-                        },
-                        modifier = Modifier.tvFocusIndicator()
-                    ) {
-                        Icon(
-                            Icons.Default.SignalWifi4Bar,
-                            contentDescription = if (showOnlyWeakSignalClusters) {
-                                "Showing only devices with link quality below $WEAK_SIGNAL_LQI - tap to show everything"
-                            } else {
-                                "Show only devices with link quality below $WEAK_SIGNAL_LQI"
-                            }
-                        )
-                    }
-                    Spacer(Modifier.width(fabSpacing))
-                }
-                if (showCollapseFab) {
-                    val anyGroupExpanded = config.groups.any { !it.collapsed }
-                    val collapseContentDescription = if (anyGroupExpanded) "Collapse all groups" else "Expand all groups"
-                    val collapseIcon = if (anyGroupExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore
-                    FloatingActionButton(
-                        onClick = { app.configRepository.setAllGroupsCollapsed(anyGroupExpanded) },
-                        modifier = Modifier.tvFocusIndicator()
-                    ) {
-                        Icon(collapseIcon, contentDescription = collapseContentDescription)
-                    }
-                    Spacer(Modifier.width(fabSpacing))
-                }
-                FloatingActionButton(
-                    onClick = { navController.navigate("addGroup") },
-                    modifier = Modifier.tvFocusIndicator()
-                ) {
-                    Icon(Icons.Default.Add, contentDescription = "Add group")
                 }
             }
         },
@@ -1332,8 +1288,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     )
                 },
             // Extra bottom padding so the last group's trailing icons can scroll clear of the
-            // FAB, which floats on top of content without reserving space for itself.
-            contentPadding = PaddingValues(bottom = 96.dp)
+            // FABs, which float on top of content without reserving space for themselves - one
+            // more FAB row's worth for each extra row they've wrapped onto.
+            contentPadding = PaddingValues(bottom = 96.dp + extraFabRowsPadding)
         ) {
             // Only rendered in the list when NOT active - while active it's drawn as a fixed
             // banner above this whole LazyColumn instead (see its own computation/doc further up,
@@ -1484,29 +1441,31 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         val orderedClusters = clusters.values
                             .map { bucket -> bucket.sortedBy { it.displayOrder } }
                             .sortedBy { bucket -> bucket.minOf { it.displayOrder } }
-                        // When the "only sensors not reporting recently" toggle is on, clusters
-                        // (and standalone tiles, each their own single-panel bucket above) that
-                        // HAVE reported within the last hour are left out of row-packing/rendering
-                        // entirely, rather than shown dimmed or in a separate dialog. The
-                        // low-battery and weak-signal toggles filter the same way, and every
-                        // toggle that's on has to match. Deliberately
+                        // While a filter is active, clusters (and standalone tiles, each their own
+                        // single-panel bucket above) that don't match it are left out of
+                        // row-packing/rendering entirely, rather than shown dimmed or in a
+                        // separate dialog. Deliberately
                         // NOT wrapped in remember/derivedStateOf per bucket - calling those inside
                         // a plain .filter{} loop whose iteration count varies is a known Compose
                         // slot-alignment hazard without an explicit key() per item, which isn't
                         // available here. Reading payloadsState/timestampsState directly instead
                         // means every expanded group's content recomposes on every MQTT message
-                        // while either toggle is on (unlike everywhere else on this screen), but only
+                        // while a filter is on (unlike everywhere else on this screen), but only
                         // for as long as one is deliberately switched on.
-                        val visibleClusters = if (!showOnlyStaleClusters && !showOnlyLowBatteryClusters && !showOnlyWeakSignalClusters) {
+                        val filter = activeFilter
+                        val visibleClusters = if (filter == null) {
                             orderedClusters
                         } else {
                             val payloads = payloadsState.value
                             val timestamps = timestampsState.value
                             val nowMillis = nowMillisState.longValue
                             orderedClusters.filter { bucket ->
-                                (!showOnlyStaleClusters || isClusterStale(bucket, payloads, timestamps, nowMillis)) &&
-                                    (!showOnlyLowBatteryClusters || isClusterLowBattery(bucket, payloads)) &&
-                                    (!showOnlyWeakSignalClusters || isClusterWeakSignal(bucket, payloads))
+                                when (filter) {
+                                    DashboardFilter.STALE -> isClusterStale(bucket, payloads, timestamps, nowMillis)
+                                    DashboardFilter.LOW_BATTERY -> isClusterLowBattery(bucket, payloads)
+                                    DashboardFilter.WEAK_SIGNAL -> isClusterWeakSignal(bucket, payloads)
+                                    DashboardFilter.LOW_MOISTURE -> isClusterLowMoisture(bucket, payloads)
+                                }
                             }
                         }
 
@@ -2337,6 +2296,50 @@ private fun isClusterLowBattery(panels: List<Panel>, payloads: Map<String, Strin
         }
     }
 
+/** The dashboard filters the Home screen's filter FABs switch between - at most one at a time. */
+private enum class DashboardFilter { STALE, LOW_BATTERY, WEAK_SIGNAL, LOW_MOISTURE }
+
+/** One Home screen FAB; [highlighted] marks an active filter. */
+private class FabSpec(
+    val key: String,
+    val icon: ImageVector,
+    val contentDescription: String,
+    val highlighted: Boolean = false,
+    val onClick: () -> Unit
+)
+
+/**
+ * A moisture sensor with an ideal range to be low against - the same test WateringAlertManager
+ * uses to decide which panels it watches.
+ */
+private fun isMoistureSensor(panel: Panel): Boolean =
+    panel is Panel.Sensor && panel.icon == TileIcon.MOISTURE && panel.idealRangeTopic.isNotBlank()
+
+/** Whether any moisture sensor in [panels] currently reads below its ideal range's minimum. */
+private fun isClusterLowMoisture(panels: List<Panel>, payloads: Map<String, String>): Boolean =
+    panels.any { it is Panel.Sensor && isMoistureSensor(it) && idealRangeAlert(it, payloads) == SensorAlert.BELOW_MIN }
+
+/**
+ * Where [panel]'s current reading sits against its ideal range - what colours its tile, and what
+ * the low-moisture filter checks. Compares the raw extracted value, not the rounded display one -
+ * comparing a rounded number could misclassify a borderline reading.
+ */
+private fun idealRangeAlert(panel: Panel.Sensor, payloads: Map<String, String>): SensorAlert {
+    if (panel.idealRangeTopic.isBlank()) return SensorAlert.NONE
+    val numericValue = payloads["${panel.brokerId}|${panel.topic}"]
+        ?.let { JsonPath.extract(it, panel.jsonPath) }?.toDoubleOrNull()
+        ?: return SensorAlert.NONE
+    val idealRaw = payloads["${panel.brokerId}|${panel.idealRangeTopic}"]
+    val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
+    val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
+    return when {
+        min != null && numericValue < min -> SensorAlert.BELOW_MIN
+        max != null && numericValue > max -> SensorAlert.ABOVE_MAX
+        min != null || max != null -> SensorAlert.IN_RANGE
+        else -> SensorAlert.NONE
+    }
+}
+
 // Zigbee link quality (0-255) below this counts as a weak link - the weak-signal FAB's filter and
 // the dark yellow cluster outline.
 private const val WEAK_SIGNAL_LQI = 50
@@ -2726,23 +2729,7 @@ private fun PanelTile(
                         extracted != null -> extracted.toDoubleOrNull()?.let { num -> "%.${panel.decimals}f".format(num) } ?: extracted
                         else -> "--"
                     }
-                    val alert = if (panel.idealRangeTopic.isBlank()) {
-                        SensorAlert.NONE
-                    } else {
-                        // Reparses the original extracted text, not the rounded display value -
-                        // comparing a rounded number could misclassify a borderline reading.
-                        val numericValue = extracted?.toDoubleOrNull()
-                        val idealRaw = payloads["${panel.brokerId}|${panel.idealRangeTopic}"]
-                        val min = idealRaw?.let { JsonPath.extract(it, panel.idealMinPath) }?.toDoubleOrNull()
-                        val max = idealRaw?.let { JsonPath.extract(it, panel.idealMaxPath) }?.toDoubleOrNull()
-                        when {
-                            numericValue == null -> SensorAlert.NONE
-                            min != null && numericValue < min -> SensorAlert.BELOW_MIN
-                            max != null && numericValue > max -> SensorAlert.ABOVE_MAX
-                            min != null || max != null -> SensorAlert.IN_RANGE
-                            else -> SensorAlert.NONE
-                        }
-                    }
+                    val alert = idealRangeAlert(panel, payloads)
                     SensorTileDerived(value, alert, isPresenceField, isPresent)
                 }
             }

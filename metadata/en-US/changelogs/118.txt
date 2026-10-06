@@ -1,0 +1,4 @@
+- New button to show only moisture sensors below their ideal range.
+- Only one filter button can be on at a time - picking another switches to it.
+- When the bottom buttons don't fit in one row they wrap onto a row above, and the list leaves room so nothing is hidden behind them.
+- The weak signal outline is now a brighter yellow.
