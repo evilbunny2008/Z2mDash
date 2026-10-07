@@ -5,7 +5,7 @@
 	<string name="add_group_title">新增群組</string>
 	<string name="alerts_allow">允許</string>
 	<string name="alerts_battery">低電量警報</string>
-	<string name="alerts_battery_detail">當任何裝置報告電池電量為 20% 或以下時發出通知</string>
+	<string name="alerts_battery_detail" formatted="false">當任何裝置報告電池電量為 20% 或以下時發出通知</string>
 	<string name="alerts_battery_test_detail">使用與真正的低電量警報完全相同的邏輯觸發真正的通知，無論上面的切換如何。</string>
 	<string name="alerts_notifications_off">通知已關閉</string>
 	<string name="alerts_notifications_off_detail">在允許 %1$s 發布通知之前，無法顯示警報</string>
@@ -62,7 +62,7 @@
 	<string name="broker_auto_accept_detail">立即新增新看到的設備的群組/集群/面板，而不是提示接受每一個</string>
 	<string name="broker_auto_connect">自動連線</string>
 	<string name="broker_base_topic">基礎主題</string>
-	<string name="broker_base_topic_help">該應用程式監視設備及其 /app 配置的‘&lt;基本主題&gt;/#’，而不是代理上的每個主題。輸入以逗號分隔的清單（例如 \‘zigbee2mqtt, zigbee2mqtt2’）以監視同一代理上的多個 Zigbee2MQTT 命名空間 - 每個命名空間都有自己的「允許加入」切換開關。</string>
+	<string name="broker_base_topic_help">該應用程式監視設備及其 /app 配置的‘&lt;基本主題&gt;/#’，而不是代理上的每個主題。輸入以逗號分隔的清單（例如 ‘zigbee2mqtt, zigbee2mqtt2’）以監視同一代理上的多個 Zigbee2MQTT 命名空間 - 每個命名空間都有自己的「允許加入」切換開關。</string>
 	<string name="broker_cert_selected">已選擇證書 ✓</string>
 	<string name="broker_clean_session">清潔會議</string>
 	<string name="broker_clean_session_detail">在每個連線上啟動一個新會話（訊息不保留）</string>
@@ -112,14 +112,14 @@
 	<string name="connection_state_connecting">連接中</string>
 	<string name="connection_state_disconnected">已斷開連接</string>
 	<string name="connection_state_failed">失敗的</string>
-	<string name="cred_consent">此選用功能使用由開發人員運行的線上服務，sync.odiousapps.com。您登入那裡的帳戶並選擇已儲存的憑證，經紀人的主機名稱、使用者名稱和密碼將透過該伺服器轉發回該裝置。在您繼續之前，不會發送任何內容。</string>
+	<string name="cred_consent">此選用功能使用由開發人員運行的線上服務，%1$s。您登入那裡的帳戶並選擇已儲存的憑證，經紀人的主機名稱、使用者名稱和密碼將透過該伺服器轉發回該裝置。在您繼續之前，不會發送任何內容。</string>
 	<string name="cred_expired">代碼已過期 - 重新開啟此代碼以重試。</string>
-	<string name="cred_instructions">掃描此鏈接，或打開sync.odiousapps.com/credential_view.php並輸入代碼，然後選擇已儲存的‘%1$s’憑證進行傳送。</string>
-	<string name="cred_no_hostname">此預設不包含主機名字段 - 請在sync.odiousapps.com 上檢查並重試。</string>
+	<string name="cred_instructions">掃描此鏈接，或打開%2$s並輸入代碼，然後選擇已儲存的‘%1$s’憑證進行傳送。</string>
+	<string name="cred_no_hostname">此預設不包含主機名字段 - 請在%1$s 上檢查並重試。</string>
 	<string name="cred_qr_description">代碼 %1$s 的二維碼</string>
 	<string name="cred_starting">開始</string>
 	<string name="cred_title">導入經紀商憑證</string>
-	<string name="cred_unreachable">無法存取sync.odiousapps.com - 檢查您的連線並重試。</string>
+	<string name="cred_unreachable">無法存取%1$s - 檢查您的連線並重試。</string>
 	<string name="cred_waiting">等待接機</string>
 	<plurals name="discover_add_panels">
 		<item quantity="other">增加 %1$d 個面板</item>
@@ -157,7 +157,7 @@
 	<string name="filter_fab">過濾儀表板</string>
 	<string name="filter_fab_active">過濾器：僅顯示 %1$s - 點擊即可更改</string>
 	<string name="filter_high_moisture">濕度高於理想範圍</string>
-	<string name="filter_low_battery">電池電量 20% 或更少</string>
+	<string name="filter_low_battery" formatted="false">電池電量 20% 或更少</string>
 	<string name="filter_low_moisture">水分低於理想範圍</string>
 	<string name="filter_show_everything">顯示一切</string>
 	<string name="filter_stale">最近沒有報告</string>
@@ -191,7 +191,7 @@
 	<string name="home_duplicate_cluster">重複%1$s</string>
 	<string name="home_duplicate_title">重複‘%1$s’</string>
 	<string name="home_edit_group">編輯群組</string>
-	<string name="home_edit_value_title">編輯\‘%1$s’</string>
+	<string name="home_edit_value_title">編輯‘%1$s’</string>
 	<string name="home_expand_all_groups">展開所有群組</string>
 	<string name="home_expand_group">展開%1$s</string>
 	<string name="home_force_upload_copy">強制上傳新副本</string>
@@ -201,7 +201,7 @@
 	<string name="home_group_fallback">團體</string>
 	<string name="home_loading">載入中</string>
 	<string name="home_loading_detail">仍在讀取您已儲存的配置。</string>
-	<string name="home_low_battery_description">電池電量為 20% 或更低</string>
+	<string name="home_low_battery_description" formatted="false">電池電量為 20% 或更低</string>
 	<string name="home_moved">已移動‘%1$s’</string>
 	<string name="home_moved_into">已將‘%1$s’移至’%2$s‘</string>
 	<string name="home_moved_to">已將‘%1$s’移至’%2$s‘</string>
@@ -234,7 +234,7 @@
 	<string name="mqtt_backup_delete_text">从 %1$s 中删除保留的备份。此操作無法撤銷。</string>
 	<string name="mqtt_backup_delete_title">刪除這個備份嗎？</string>
 	<string name="mqtt_backup_deleted">已從 %1$s 刪除備份</string>
-	<string name="mqtt_backup_explain">發布您的群組和麵板（不是代理主機/用戶名/密碼 - 它們保留在此設備上） - gzip 壓縮，然後進行 base64 編碼，以便它作為正常 MQTT 負載傳輸 - 作為 \‘%1$s/&lt;timestamp&gt;’ 下的新保留訊息，保持以前的每個備份完好無損。</string>
+	<string name="mqtt_backup_explain">發布您的群組和麵板（不是代理主機/用戶名/密碼 - 它們保留在此設備上） - gzip 壓縮，然後進行 base64 編碼，以便它作為正常 MQTT 負載傳輸 - 作為 ‘%1$s/&lt;timestamp&gt;’ 下的新保留訊息，保持以前的每個備份完好無損。</string>
 	<string name="mqtt_backup_mode_backup">備份</string>
 	<string name="mqtt_backup_mode_restore">恢復</string>
 	<string name="mqtt_backup_no_broker">使用此功能之前，請先新增經紀人（設定 → 經紀人）。</string>
@@ -277,7 +277,7 @@
 	<string name="panel_icon">圖示</string>
 	<string name="panel_ideal_help">設定後，該圖塊在最小值以下閃爍紅色，在範圍內閃爍綠色，在最大值以上閃爍藍色。</string>
 	<string name="panel_ideal_topic">理想範圍主題（可選）</string>
-	<string name="panel_ideal_topic_hint">例如z2m2/SoilSensor_01/ideal – 發佈 {\‘min’:x,\‘max’:y}</string>
+	<string name="panel_ideal_topic_hint">例如z2m2/SoilSensor_01/ideal – 發佈 {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">JSON 欄位（空白 = 原始負載）</string>
 	<string name="panel_json_field_hint">例如溫度或狀態.電池</string>
 	<string name="panel_label">標籤</string>
@@ -290,7 +290,7 @@
 	<string name="panel_order">顯示順序（可選）</string>
 	<string name="panel_order_hint">較小的數字在組內首先出現</string>
 	<string name="panel_payload">有效載荷</string>
-	<string name="panel_payload_hint">例如{\‘state’: \‘STOP’} 或像 STOP 這樣的裸值</string>
+	<string name="panel_payload_hint">例如{‘state’: ‘STOP’} 或像 STOP 這樣的裸值</string>
 	<string name="panel_state_field">狀態 JSON 欄位（可選）</string>
 	<string name="panel_state_field_hint">例如狀態</string>
 	<string name="panel_state_topic">陳述主題（可選）</string>
@@ -302,7 +302,7 @@
 	<string name="panel_type_sensor">感應器</string>
 	<string name="panel_type_toggle">切換</string>
 	<string name="panel_unit">單位（可選）</string>
-	<string name="pending_device_text">\‘%1$s’(%2$s) 發布了自己的儀表板配置。</string>
+	<string name="pending_device_text">‘%1$s’(%2$s) 發布了自己的儀表板配置。</string>
 	<string name="pending_ignore">忽略</string>
 	<string name="permit_join_allow">允許新的 Zigbee 設備加入幾分鐘</string>
 	<string name="permit_join_dialog_no_brokers">沒有配置代理。</string>

@@ -59,7 +59,7 @@ fun CredentialImportDialog(
             CredentialShareClient.startImport(label = "New broker")
         }
         if (started == null) {
-            errorMessage = resources.getString(R.string.cred_unreachable)
+            errorMessage = resources.getString(R.string.cred_unreachable, CredentialShareClient.SERVICE_HOST)
             return@LaunchedEffect
         }
         session = started
@@ -74,7 +74,7 @@ fun CredentialImportDialog(
             when (val polled = withContext(Dispatchers.IO) { CredentialShareClient.pollStatus(started.token) }) {
                 is CredentialShareClient.StatusResult.Resolved -> {
                     if (polled.fields["Hostname"].isNullOrBlank()) {
-                        errorMessage = resources.getString(R.string.cred_no_hostname)
+                        errorMessage = resources.getString(R.string.cred_no_hostname, CredentialShareClient.SERVICE_HOST)
                     } else {
                         onImported(polled.fields)
                     }
@@ -100,7 +100,7 @@ fun CredentialImportDialog(
                 val currentSession = session
                 when {
                     !consented -> Text(
-                        stringResource(R.string.cred_consent),
+                        stringResource(R.string.cred_consent, CredentialShareClient.SERVICE_HOST),
                         style = MaterialTheme.typography.bodyMedium
                     )
                     error != null -> Text(error, color = MaterialTheme.colorScheme.error)
@@ -122,7 +122,11 @@ fun CredentialImportDialog(
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            stringResource(R.string.cred_instructions, stringResource(R.string.app_name)),
+                            stringResource(
+                                R.string.cred_instructions,
+                                stringResource(R.string.app_name),
+                                CredentialShareClient.VIEW_PAGE
+                            ),
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center
                         )

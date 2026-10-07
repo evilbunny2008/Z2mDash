@@ -26,9 +26,15 @@ object CredentialShareClient {
 
     // Credentials only ever touch this relay in transit through this short-lived exchange.
     // Server source: https://github.com/evilbunny2008/MX3Launcher/tree/main/website
-    private const val START_URL = "https://sync.odiousapps.com/credential_start.php"
-    private const val STATUS_URL = "https://sync.odiousapps.com/credential_status.php"
-    private const val VIEW_URL_BASE = "https://sync.odiousapps.com/credential_view.php"
+    // The relay's host, and the page a user opens there to enter a code by hand - public so UI
+    // text (see the cred_* strings, which take these as format arguments rather than spelling
+    // the address out) always shows the same address the requests below actually go to.
+    const val SERVICE_HOST = "sync.odiousapps.com"
+    const val VIEW_PAGE = "$SERVICE_HOST/credential_view.php"
+
+    private const val START_URL = "https://$SERVICE_HOST/credential_start.php"
+    private const val STATUS_URL = "https://$SERVICE_HOST/credential_status.php"
+    private const val VIEW_URL_BASE = "https://$VIEW_PAGE"
 
     private const val APP_NAME = "Z2M Dash"
 
