@@ -3,11 +3,47 @@
 	<string name="add_group_create">創造</string>
 	<string name="add_group_name">團體名稱</string>
 	<string name="add_group_title">新增群組</string>
+	<string name="alerts_allow">允許</string>
+	<string name="alerts_battery">低電量警報</string>
+	<string name="alerts_battery_detail">當任何裝置報告電池電量為 20% 或以下時發出通知</string>
+	<string name="alerts_battery_test_detail">使用與真正的低電量警報完全相同的邏輯觸發真正的通知，無論上面的切換如何。</string>
+	<string name="alerts_notifications_off">通知已關閉</string>
+	<string name="alerts_notifications_off_detail">在允許 Z2M Dash 發布通知之前，無法顯示警報</string>
+	<string name="alerts_open_settings">設定</string>
+	<string name="alerts_smoke">煙霧警報</string>
+	<string name="alerts_smoke_detail">如果有任何設備報告偵測到煙霧，則通知</string>
+	<string name="alerts_smoke_test_detail">使用與真正的煙霧警報完全相同的邏輯觸發真正的通知（帶有聲音，如果上面啟用）——這是確認它確實會在您需要之前引起您注意的好方法。</string>
+	<string name="alerts_sound">警報聲</string>
+	<string name="alerts_sound_detail">在通知旁邊播放響亮的警報聲</string>
+	<string name="alerts_test">測試通知</string>
+	<string name="alerts_title">警報/警報</string>
+	<string name="alerts_watering">澆水警報</string>
+	<string name="alerts_watering_detail">當濕度感測器上升到其理想範圍的中間時振動並發出提示音</string>
+	<string name="alerts_watering_test_detail">無論上面的切換如何，都會通過澆水鈴聲和振動發出真正的通知 - 這是在依賴它之前聽到它的好方法。</string>
+	<string name="battery_channel">低電量警報</string>
+	<string name="battery_channel_desc">當設備的電池讀數下降時發出警報</string>
+	<string name="battery_notif_test_text">這就是低電量通知的樣子</string>
+	<string name="battery_notif_text">電池電量低 – 點選開啟 Z2M Dash</string>
+	<string name="battery_notif_text_percent">電池電量為 %1$d%% – 點擊即可開啟 Z2M Dash</string>
+	<string name="battery_notif_title">%1$s 電池電量低</string>
+	<string name="battery_notif_title_percent">%1$s 電池電量低 (%2$d%%)</string>
+	<string name="battery_test_device">測試裝置</string>
 	<string name="brokers_add">新增經紀商</string>
 	<string name="brokers_discover">發現 %1$s 上的感測器</string>
 	<string name="brokers_reconnect">重新連接到%1$s</string>
 	<string name="brokers_title">經紀人</string>
 	<string name="common_back">後退</string>
+	<string name="common_cancel">取消</string>
+	<string name="common_continue">繼續</string>
+	<string name="cred_consent">此選用功能使用由開發人員運行的線上服務，sync.odiousapps.com。您登入那裡的帳戶並選擇已儲存的憑證，經紀人的主機名稱、使用者名稱和密碼將透過該伺服器轉發回該裝置。在您繼續之前，不會發送任何內容。</string>
+	<string name="cred_expired">代碼已過期 - 重新開啟此代碼以重試。</string>
+	<string name="cred_instructions">掃描此鏈接，或打開sync.odiousapps.com/credential_view.php並輸入代碼，然後選擇已儲存的’Z2M Dash’憑證進行傳送。</string>
+	<string name="cred_no_hostname">此預設不包含主機名字段 - 請在sync.odiousapps.com 上檢查並重試。</string>
+	<string name="cred_qr_description">代碼 %1$s 的二維碼</string>
+	<string name="cred_starting">開始</string>
+	<string name="cred_title">導入經紀商憑證</string>
+	<string name="cred_unreachable">無法存取sync.odiousapps.com - 檢查您的連線並重試。</string>
+	<string name="cred_waiting">等待接機</string>
 	<plurals name="discover_add_panels">
 		<item quantity="other">增加 %1$d 個面板</item>
 	</plurals>
@@ -33,9 +69,11 @@
 	<plurals name="mqtt_backup_published">
 		<item quantity="other">已發布（%1$d 位元組）到 %2$s</item>
 	</plurals>
+	<string name="new_device_channel">發現新設備</string>
 	<string name="no_file_picker">此設備上沒有可用的文件選擇器應用程式。</string>
 	<string name="notif_channel_mqtt_connection">MQTT 連接</string>
 	<string name="notif_mqtt_connection_text">維護經紀人連接</string>
+	<string name="notif_test_title">測試警報</string>
 	<plurals name="settings_brokers_count">
 		<item quantity="other">已配置 %1$d</item>
 	</plurals>
@@ -51,6 +89,13 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">已刪除 %1$d 個面板​​。</item>
 	</plurals>
+	<string name="smoke_channel_silent">煙霧警報（靜音）</string>
+	<string name="smoke_channel_silent_desc">當設備報告偵測到煙霧時發出警報，但沒有聲音</string>
+	<string name="smoke_channel_sound">煙霧警報（有聲音）</string>
+	<string name="smoke_channel_sound_desc">當設備報告偵測到煙霧時發出警報，並發出警報聲</string>
+	<string name="smoke_notif_test_text">這就是煙霧警報通知的樣子</string>
+	<string name="smoke_notif_text">%1$s 報告有煙霧 – 點擊即可打開 Z2M Dash</string>
+	<string name="smoke_notif_title">偵測到煙霧！</string>
 	<string name="tab_home">家</string>
 	<string name="tab_settings">設定</string>
 	<string name="tab_terminal">終端</string>
@@ -60,9 +105,17 @@
 	<plurals name="terminal_count">
 		<item quantity="other">%1$d 訊息，共 %2$d 訊息（最舊的在前，保留最後 %3$d 訊息）</item>
 	</plurals>
+	<string name="terminal_empty">尚未收到訊息。確保代理已連接並訂閱（檢查’設定’中的’代理‘，或其基本主題與您的設定相符）。</string>
 	<string name="terminal_filter">按主題或負載過濾</string>
 	<string name="terminal_jump_newest">跳到最新的</string>
+	<string name="terminal_no_match">沒有訊息與該過濾器相符。</string>
 	<string name="terminal_title">終端</string>
+	<string name="watering_channel">澆水警報</string>
+	<string name="watering_channel_desc">當濕度感測器在上升過程中達到理想範圍的中間位置時，會振動並發出提示音（透過警報音量發出響亮的聲音）</string>
+	<string name="watering_notif_test_text">這就是澆水警報通知的樣子</string>
+	<string name="watering_notif_text">上升到理想範圍的中間 – 點擊開啟 Z2M Dash</string>
+	<string name="watering_notif_title">%1$s 達到目標濕度</string>
+	<string name="watering_test_sensor">測試感測器</string>
 	<string name="welcome_add_broker">新增經紀人</string>
 	<string name="welcome_intro">您至少需要一個 MQTT 代理才能開始 - 立即新增一個，或還原您先前備份的配置。</string>
 	<string name="welcome_restore">從備份中恢復</string>
