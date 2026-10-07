@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="add_group_create">創造</string>
+	<string name="add_group_name">團體名稱</string>
+	<string name="add_group_title">新增群組</string>
+	<string name="brokers_add">新增經紀商</string>
+	<string name="brokers_discover">發現 %1$s 上的感測器</string>
+	<string name="brokers_reconnect">重新連接到%1$s</string>
+	<string name="brokers_title">經紀人</string>
+	<string name="common_back">後退</string>
+	<plurals name="discover_add_panels">
+		<item quantity="other">增加 %1$d 個面板</item>
+	</plurals>
+	<plurals name="discover_apply_detail_group">
+		<item quantity="other">完全按照 %2$s 中列出的方式將 %1$d 個面板​​建立到群組「%3$s」中，並跳過下面的複選框。</item>
+	</plurals>
+	<plurals name="discover_apply_detail">
+		<item quantity="other">完全按照 %2$s 中列出的方式建立 %1$d 個面板​​，並跳過下面的複選框。</item>
+	</plurals>
+	<plurals name="discover_auto_done">
+		<item quantity="other">自動配置 %1$d 台設備。</item>
+	</plurals>
+	<plurals name="discover_selected">
+		<item quantity="other">已選擇%1$d（共%2$d）</item>
+	</plurals>
+	<plurals name="home_delete_cluster_text">
+		<item quantity="other">這將刪除該裝置的所有 %1$d 面板。</item>
+	</plurals>
+	<plurals name="home_retopic_moved">
+		<item quantity="other">已將 %1$d 個集群移至‘%2$s’</item>
+	</plurals>
+	<string name="import_failed_invalid">導入失敗：不是有效的設定文件</string>
+	<plurals name="mqtt_backup_published">
+		<item quantity="other">已發布（%1$d 位元組）到 %2$s</item>
+	</plurals>
+	<string name="no_file_picker">此設備上沒有可用的文件選擇器應用程式。</string>
+	<string name="notif_channel_mqtt_connection">MQTT 連接</string>
+	<string name="notif_mqtt_connection_text">維護經紀人連接</string>
+	<plurals name="settings_brokers_count">
+		<item quantity="other">已配置 %1$d</item>
+	</plurals>
+	<plurals name="settings_force_upload_all_done">
+		<item quantity="other">已將 %1$d 個群組重新發佈到代理程式。</item>
+	</plurals>
+	<plurals name="settings_orphans_confirm">
+		<item quantity="other">這將刪除 %1$d 個標記有不再存在的代理的面板 - 通常是透過刪除代理並重新添加它而留下的。仍然與您實際配置的代理程式綁定的面板永遠不會被觸及。</item>
+	</plurals>
+	<plurals name="settings_orphans_detail">
+		<item quantity="other">已刪除經紀商留下的 %1$d 個面板​​可以刪除</item>
+	</plurals>
+	<plurals name="settings_orphans_removed">
+		<item quantity="other">已刪除 %1$d 個面板​​。</item>
+	</plurals>
+	<string name="tab_home">家</string>
+	<string name="tab_settings">設定</string>
+	<string name="tab_terminal">終端</string>
+	<string name="terminal_all_brokers">所有經紀商</string>
+	<string name="terminal_broker">經紀人</string>
+	<string name="terminal_clear">清除日誌</string>
+	<plurals name="terminal_count">
+		<item quantity="other">%1$d 訊息，共 %2$d 訊息（最舊的在前，保留最後 %3$d 訊息）</item>
+	</plurals>
+	<string name="terminal_filter">按主題或負載過濾</string>
+	<string name="terminal_jump_newest">跳到最新的</string>
+	<string name="terminal_title">終端</string>
+	<string name="welcome_add_broker">新增經紀人</string>
+	<string name="welcome_intro">您至少需要一個 MQTT 代理才能開始 - 立即新增一個，或還原您先前備份的配置。</string>
+	<string name="welcome_restore">從備份中恢復</string>
+	<string name="welcome_title">歡迎</string>
+</resources>
