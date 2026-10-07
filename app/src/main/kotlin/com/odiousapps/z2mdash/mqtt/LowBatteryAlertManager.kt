@@ -173,9 +173,9 @@ class LowBatteryAlertManager(
         val text = if (isTest) {
             context.getString(R.string.battery_notif_test_text)
         } else if (percent != null) {
-            context.getString(R.string.battery_notif_text_percent, percent)
+            context.getString(R.string.battery_notif_text_percent, percent, context.getString(R.string.app_name))
         } else {
-            context.getString(R.string.battery_notif_text)
+            context.getString(R.string.battery_notif_text, context.getString(R.string.app_name))
         }
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)

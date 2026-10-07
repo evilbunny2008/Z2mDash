@@ -182,7 +182,7 @@ class WateringAlertManager(
         val text = if (isTest) {
             context.getString(R.string.watering_notif_test_text)
         } else {
-            context.getString(R.string.watering_notif_text)
+            context.getString(R.string.watering_notif_text, context.getString(R.string.app_name))
         }
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(title)

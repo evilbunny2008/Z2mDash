@@ -122,7 +122,7 @@ fun CredentialImportDialog(
                         )
                         Spacer(Modifier.height(8.dp))
                         Text(
-                            stringResource(R.string.cred_instructions),
+                            stringResource(R.string.cred_instructions, stringResource(R.string.app_name)),
                             style = MaterialTheme.typography.bodySmall,
                             textAlign = TextAlign.Center
                         )

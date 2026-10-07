@@ -66,7 +66,7 @@ fun AlertSettingsScreen(navController: NavController) {
             if (anyAlertEnabled && !notificationPermission.granted) {
                 ListItem(
                     headlineContent = { Text(stringResource(R.string.alerts_notifications_off)) },
-                    supportingContent = { Text(stringResource(R.string.alerts_notifications_off_detail)) },
+                    supportingContent = { Text(stringResource(R.string.alerts_notifications_off_detail, stringResource(R.string.app_name))) },
                     leadingContent = {
                         Icon(Icons.Default.NotificationsOff, contentDescription = null, tint = MaterialTheme.colorScheme.error)
                     },

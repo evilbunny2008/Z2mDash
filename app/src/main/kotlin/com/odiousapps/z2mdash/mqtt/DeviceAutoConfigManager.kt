@@ -392,7 +392,7 @@ class DeviceAutoConfigManager(
         )
         val notification = NotificationCompat.Builder(context, CHANNEL_ID)
             .setContentTitle(context.getString(R.string.new_device_title))
-            .setContentText(context.getString(R.string.new_device_text, deviceName))
+            .setContentText(context.getString(R.string.new_device_text, deviceName, context.getString(R.string.app_name)))
             .setSmallIcon(android.R.drawable.stat_notify_sync)
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)

@@ -200,7 +200,7 @@ fun SettingsScreen(navController: NavController) {
                     headlineContent = { Text(stringResource(R.string.settings_about)) },
                     supportingContent = {
                         Column {
-                            Text(stringResource(R.string.settings_about_tagline))
+                            Text(stringResource(R.string.settings_about_tagline, stringResource(R.string.app_name)))
                             Text(versionLabel)
                         }
                     },

@@ -108,7 +108,7 @@ class SmokeAlertManager(
         val text = if (isTest) {
             context.getString(R.string.smoke_notif_test_text)
         } else {
-            context.getString(R.string.smoke_notif_text, deviceName)
+            context.getString(R.string.smoke_notif_text, deviceName, context.getString(R.string.app_name))
         }
         val notification = NotificationCompat.Builder(context, channelId)
             .setContentTitle(title)
