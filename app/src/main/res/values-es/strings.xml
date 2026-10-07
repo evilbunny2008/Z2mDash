@@ -55,6 +55,22 @@
 	<string name="battery_notif_title">%1$s batería baja</string>
 	<string name="battery_notif_title_percent">%1$s batería baja (%2$d%%)</string>
 	<string name="battery_test_device">Dispositivo de prueba</string>
+	<string name="broker_add_title">Agregar corredor</string>
+	<string name="broker_auth">Autenticación</string>
+	<string name="broker_base_topic">Tema base</string>
+	<string name="broker_base_topic_help">La aplicación vigila \‘&lt;tema base&gt;/#’ los dispositivos y sus configuraciones /app, en lugar de cada tema del intermediario. Ingrese una lista separada por comas (por ejemplo, \‘zigbee2mqtt, zigbee2mqtt2’) para ver más de un espacio de nombres Zigbee2MQTT en este mismo corredor; cada uno tiene su propio botón Permitir unirse a continuación</string>
+	<string name="broker_cert_selected">Certificado seleccionado ✓</string>
+	<string name="broker_default_name">Mi corredor MQTT</string>
+	<string name="broker_edit_title">Editar corredor</string>
+	<string name="broker_host">Anfitrión</string>
+	<string name="broker_import_code">Importar mediante código</string>
+	<string name="broker_name">Nombre</string>
+	<string name="broker_port">Puerto</string>
+	<string name="broker_protocol">Protocolo</string>
+	<string name="broker_select_cert">Seleccionar archivo de certificado</string>
+	<string name="broker_self_signed">Este corredor utiliza un certificado SSL/TLS autofirmado</string>
+	<string name="broker_self_signed_risk">Úselo bajo su propio riesgo</string>
+	<string name="broker_ws_path">Ruta de WebSocket</string>
 	<string name="brokers_add">Agregar corredor</string>
 	<string name="brokers_discover">Descubra sensores en %1$s</string>
 	<string name="brokers_reconnect">Reconectarse a %1$s</string>
@@ -66,6 +82,7 @@
 	<string name="common_continue">Continuar</string>
 	<string name="common_delete">Borrar</string>
 	<string name="common_done">Hecho</string>
+	<string name="common_expand">Expandir</string>
 	<string name="common_expand_all">Expandir todo</string>
 	<string name="common_ok">DE ACUERDO</string>
 	<string name="cred_consent">Esta característica opcional utiliza un servicio en línea ejecutado por el desarrollador, sync.odiousapps.com. Usted inicia sesión en una cuenta allí y elige una credencial guardada, y el nombre de host, el nombre de usuario y la contraseña del corredor se transmiten a este dispositivo a través de ese servidor. No se envía nada hasta que continúes</string>
@@ -82,6 +99,7 @@
 		<item quantity="other">Agregar %1$d paneles</item>
 	</plurals>
 	<string name="discover_all_applied">Se han aplicado todos los dispositivos descubiertos; no queda nada por configurar aquí</string>
+	<string name="discover_apply">Aplicar configuración del dispositivo</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Crea %1$d panel exactamente como se indica en %2$s en el grupo \‘%3$s’, omitiendo las casillas de verificación a continuación</item>
 		<item quantity="other">Crea %1$d paneles exactamente como se enumeran en %2$s en el grupo \‘%3$s’, omitiendo las casillas de verificación a continuación</item>
@@ -90,18 +108,23 @@
 		<item quantity="one">Crea %1$d panel exactamente como se indica en %2$s, omitiendo las casillas de verificación a continuación</item>
 		<item quantity="other">Crea %1$d paneles exactamente como se enumeran en %2$s, omitiendo las casillas de verificación a continuación</item>
 	</plurals>
+	<string name="discover_apply_named">Aplicar configuración del dispositivo: %1$s</string>
 	<string name="discover_auto_all">Configura automáticamente todos los dispositivos encontrados</string>
 	<plurals name="discover_auto_done">
 		<item quantity="one">Dispositivo %1$d configurado automáticamente</item>
 		<item quantity="other">%1$d dispositivos configurados automáticamente</item>
 	</plurals>
 	<string name="discover_auto_none">Ningún dispositivo con una configuración válida estaba listo todavía; inténtelo de nuevo en un momento o use el ícono de actualización que aparece arriba</string>
+	<string name="discover_bad_config">Encontré %1$s pero no pude leerlo como una configuración de dispositivo; verifique que sea JSON válido con una matriz \‘panels’ no vacía</string>
+	<string name="discover_field">%1$s (%2$s)</string>
+	<string name="discover_ideal_range">rango ideal</string>
 	<string name="discover_instructions">Marque los campos que desee como mosaicos del panel o utilice \‘Aplicar configuración del dispositivo’ si el dispositivo publica su propia configuración &lt;tema&gt;/aplicación</string>
 	<string name="discover_new_group">+ Nuevo grupo</string>
 	<string name="discover_new_group_name">Nuevo nombre de grupo</string>
 	<string name="discover_no_broker">Primero agregue un corredor (Configuración → Corredores) antes de descubrir sensores</string>
 	<string name="discover_none_found">Aún no se han encontrado temas relacionados con sensores. Los mensajes retenidos pueden tardar un momento en llegar después de suscribirse; pruebe el ícono de actualización de arriba o verifique que el corredor realmente esté reteniendo mensajes sobre esos temas</string>
 	<string name="discover_rescan">Volver a escanear</string>
+	<string name="discover_sample">muestra: %1$s</string>
 	<plurals name="discover_selected">
 		<item quantity="one">%1$d de %2$d seleccionados</item>
 		<item quantity="other">%1$d de %2$d seleccionados</item>
