@@ -5,7 +5,7 @@
 	<string name="add_group_title">新增群組</string>
 	<string name="alerts_allow">允許</string>
 	<string name="alerts_battery">低電量警報</string>
-	<string name="alerts_battery_detail" formatted="false">當任何裝置報告電池電量為 20% 或以下時發出通知</string>
+	<string name="alerts_battery_detail">當任何裝置報告電池電量為 20% 或以下時發出通知</string>
 	<string name="alerts_battery_test_detail">使用與真正的低電量警報完全相同的邏輯觸發真正的通知，無論上面的切換如何。</string>
 	<string name="alerts_notifications_off">通知已關閉</string>
 	<string name="alerts_notifications_off_detail">在允許 %1$s 發布通知之前，無法顯示警報</string>
@@ -157,7 +157,7 @@
 	<string name="filter_fab">過濾儀表板</string>
 	<string name="filter_fab_active">過濾器：僅顯示 %1$s - 點擊即可更改</string>
 	<string name="filter_high_moisture">濕度高於理想範圍</string>
-	<string name="filter_low_battery" formatted="false">電池電量 20% 或更少</string>
+	<string name="filter_low_battery">電池電量 20% 或更少</string>
 	<string name="filter_low_moisture">水分低於理想範圍</string>
 	<string name="filter_show_everything">顯示一切</string>
 	<string name="filter_stale">最近沒有報告</string>
@@ -201,7 +201,7 @@
 	<string name="home_group_fallback">團體</string>
 	<string name="home_loading">載入中</string>
 	<string name="home_loading_detail">仍在讀取您已儲存的配置。</string>
-	<string name="home_low_battery_description" formatted="false">電池電量為 20% 或更低</string>
+	<string name="home_low_battery_description">電池電量為 20% 或更低</string>
 	<string name="home_moved">已移動‘%1$s’</string>
 	<string name="home_moved_into">已將‘%1$s’移至’%2$s‘</string>
 	<string name="home_moved_to">已將‘%1$s’移至’%2$s‘</string>

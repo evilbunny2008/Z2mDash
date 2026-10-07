@@ -5,7 +5,7 @@
 	<string name="add_group_title">Добавить группу</string>
 	<string name="alerts_allow">Позволять</string>
 	<string name="alerts_battery">Оповещения о низком заряде батареи</string>
-	<string name="alerts_battery_detail" formatted="false">Уведомлять, когда какое-либо устройство сообщает об уровне заряда батареи 20 % или ниже</string>
+	<string name="alerts_battery_detail">Уведомлять, когда какое-либо устройство сообщает об уровне заряда батареи 20 % или ниже</string>
 	<string name="alerts_battery_test_detail">Выдает настоящее уведомление, используя ту же логику, что и при подлинном оповещении о низком заряде батареи, независимо от переключателя выше</string>
 	<string name="alerts_notifications_off">Уведомления отключены</string>
 	<string name="alerts_notifications_off_detail">Оповещения не могут отображаться до тех пор, пока %1$s не разрешит публиковать уведомления</string>
@@ -162,7 +162,7 @@
 	<string name="filter_fab">Фильтровать панель мониторинга</string>
 	<string name="filter_fab_active">Фильтр: показывает только %1$s – нажмите, чтобы изменить</string>
 	<string name="filter_high_moisture">Влажность выше идеального диапазона</string>
-	<string name="filter_low_battery" formatted="false">Батарея 20% или меньше</string>
+	<string name="filter_low_battery">Батарея 20% или меньше</string>
 	<string name="filter_low_moisture">Влажность ниже идеального диапазона</string>
 	<string name="filter_show_everything">Показать все</string>
 	<string name="filter_stale">Недавно не сообщал</string>
@@ -207,7 +207,7 @@
 	<string name="home_group_fallback">Группа</string>
 	<string name="home_loading">Загрузка</string>
 	<string name="home_loading_detail">Все еще читаем сохраненную конфигурацию</string>
-	<string name="home_low_battery_description" formatted="false">Уровень заряда батареи составляет 20 % или меньше</string>
+	<string name="home_low_battery_description">Уровень заряда батареи составляет 20 % или меньше</string>
 	<string name="home_moved">Перемещен ‘%1$s’</string>
 	<string name="home_moved_into">Перемещен ‘%1$s’ в ‘%2$s’</string>
 	<string name="home_moved_to">Перемещен ‘%1$s’ на ‘%2$s’</string>
