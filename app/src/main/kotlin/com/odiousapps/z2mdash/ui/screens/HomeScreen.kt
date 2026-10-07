@@ -45,6 +45,7 @@ import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material.icons.filled.UnfoldLess
 import androidx.compose.material.icons.filled.UnfoldMore
 import androidx.compose.material.icons.filled.Warning
+import androidx.compose.material.icons.filled.Water
 import androidx.compose.material.icons.filled.WifiTethering
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DropdownMenu
@@ -279,7 +280,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var showClusterSearch by remember { mutableStateOf(false) }
     var clusterSearchQuery by remember { mutableStateOf("") }
     // Filters the dashboard itself down to only the clusters/standalone panels matching one
-    // DashboardFilter (not reporting recently, low battery, weak signal, low moisture), rather
+    // DashboardFilter (not reporting recently, low battery, weak signal, low or high moisture), rather
     // than opening a separate dialog for it - picked from the filter FAB's menu. Only one at a time:
     // picking another replaces it. rememberSaveable, not remember - this is a deliberate,
     // user-set filter mode, not transient dialog state, so it should survive a screen rotation
@@ -715,9 +716,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     // The dashboard filters live behind one "filter" FAB's menu rather than a FAB each - four
     // more always-visible FABs didn't fit along the bottom. Each is offered while there's
     // something for it to find, or while it's the active one, so it can always be switched back off.
-    // Listed in menu order - low moisture first, as the one checked most often.
+    // Listed in menu order - moisture (low, then high) first, as the ones checked most often.
     val filterOptions = listOf(
         FilterOption(DashboardFilter.LOW_MOISTURE, iconFor(TileIcon.MOISTURE), stringResource(R.string.filter_low_moisture), hasMoistureSensors),
+        // Its own icon (water waves, for too much water) rather than the moisture tile's droplet the
+        // low option already uses - the filter FAB shows the active filter's icon, so the two have
+        // to look different.
+        FilterOption(DashboardFilter.HIGH_MOISTURE, Icons.Default.Water, stringResource(R.string.filter_high_moisture), hasMoistureSensors),
         FilterOption(DashboardFilter.STALE, Icons.Default.Warning, stringResource(R.string.filter_stale), hasStaleCandidates),
         FilterOption(DashboardFilter.LOW_BATTERY, Icons.Default.BatteryAlert, stringResource(R.string.filter_low_battery), anyBatteryDevice),
         FilterOption(DashboardFilter.WEAK_SIGNAL, iconFor(TileIcon.SIGNAL), stringResource(R.string.filter_weak_signal, WEAK_SIGNAL_LQI), anyLinkQualityDevice)
@@ -1518,6 +1523,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                     DashboardFilter.LOW_BATTERY -> isClusterLowBattery(bucket, payloads)
                                     DashboardFilter.WEAK_SIGNAL -> isClusterWeakSignal(bucket, payloads)
                                     DashboardFilter.LOW_MOISTURE -> isClusterLowMoisture(bucket, payloads)
+                                    DashboardFilter.HIGH_MOISTURE -> isClusterHighMoisture(bucket, payloads)
                                 }
                             }
                         }
@@ -2332,7 +2338,7 @@ private fun isClusterLowBattery(panels: List<Panel>, payloads: Map<String, Strin
     }
 
 /** The dashboard filters the Home screen's filter FABs switch between - at most one at a time. */
-private enum class DashboardFilter { STALE, LOW_BATTERY, WEAK_SIGNAL, LOW_MOISTURE }
+private enum class DashboardFilter { STALE, LOW_BATTERY, WEAK_SIGNAL, LOW_MOISTURE, HIGH_MOISTURE }
 
 /** One Home screen FAB; [highlighted] marks an active filter, [menu] is a dropdown anchored to it. */
 private class FabSpec(
@@ -2362,6 +2368,10 @@ private fun isMoistureSensor(panel: Panel): Boolean =
 /** Whether any moisture sensor in [panels] currently reads below its ideal range's minimum. */
 private fun isClusterLowMoisture(panels: List<Panel>, payloads: Map<String, String>): Boolean =
     panels.any { it is Panel.Sensor && isMoistureSensor(it) && idealRangeAlert(it, payloads) == SensorAlert.BELOW_MIN }
+
+/** Whether any moisture sensor in [panels] currently reads above its ideal range's maximum. */
+private fun isClusterHighMoisture(panels: List<Panel>, payloads: Map<String, String>): Boolean =
+    panels.any { it is Panel.Sensor && isMoistureSensor(it) && idealRangeAlert(it, payloads) == SensorAlert.ABOVE_MAX }
 
 /**
  * Where [panel]'s current reading sits against its ideal range - what colours its tile, and what

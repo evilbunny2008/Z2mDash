@@ -1,0 +1,1 @@
+- New filter option to show only moisture sensors above their ideal range.

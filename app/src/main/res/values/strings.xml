@@ -403,4 +403,5 @@
         <item quantity="one">%1$d of %2$d selected</item>
         <item quantity="other">%1$d of %2$d selected</item>
     </plurals>
+    <string name="filter_high_moisture">Moisture above ideal range</string>
 </resources>
