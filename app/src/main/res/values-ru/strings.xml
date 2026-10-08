@@ -122,22 +122,30 @@
 	<string name="cred_unreachable">Не удалось связаться с %1$s. Проверьте подключение и повторите попытку</string>
 	<string name="cred_waiting">Жду самовывоза</string>
 	<plurals name="discover_add_panels">
+		<item quantity="few">Добавить панели %1$d</item>
+		<item quantity="many">Добавить панели %1$d</item>
 		<item quantity="one">Добавить панель %1$d</item>
 		<item quantity="other">Добавить панели %1$d</item>
 	</plurals>
 	<string name="discover_all_applied">Все обнаруженные устройства были применены – здесь больше нечего настраивать</string>
 	<string name="discover_apply">Применить конфигурацию устройства</string>
 	<plurals name="discover_apply_detail_group">
+		<item quantity="few">Создает %1$d панелей точно так, как указано в %2$s, в группу ‘%3$s’, пропуская флажки ниже</item>
+		<item quantity="many">Создает %1$d панелей точно так, как указано в %2$s, в группу ‘%3$s’, пропуская флажки ниже</item>
 		<item quantity="one">Создает панель %1$d точно так, как указано в %2$s, в группе ‘%3$s’, пропуская флажки ниже</item>
 		<item quantity="other">Создает %1$d панелей точно так, как указано в %2$s, в группу ‘%3$s’, пропуская флажки ниже</item>
 	</plurals>
 	<plurals name="discover_apply_detail">
+		<item quantity="few">Создает %1$d панелей точно так, как указано в %2$s, пропуская флажки ниже</item>
+		<item quantity="many">Создает %1$d панелей точно так, как указано в %2$s, пропуская флажки ниже</item>
 		<item quantity="one">Создает панель %1$d точно так, как указано в %2$s, пропуская флажки ниже</item>
 		<item quantity="other">Создает %1$d панелей точно так, как указано в %2$s, пропуская флажки ниже</item>
 	</plurals>
 	<string name="discover_apply_named">Применить конфигурацию устройства: %1$s</string>
 	<string name="discover_auto_all">Автоматическая настройка всех найденных устройств</string>
 	<plurals name="discover_auto_done">
+		<item quantity="few">Автоматически настроено %1$d устройств</item>
+		<item quantity="many">Автоматически настроено %1$d устройств</item>
 		<item quantity="one">Автоматически настроенное устройство %1$d</item>
 		<item quantity="other">Автоматически настроено %1$d устройств</item>
 	</plurals>
@@ -153,6 +161,8 @@
 	<string name="discover_rescan">Повторное сканирование</string>
 	<string name="discover_sample">образец: %1$s</string>
 	<plurals name="discover_selected">
+		<item quantity="few">%1$d из %2$d выбрано</item>
+		<item quantity="many">%1$d из %2$d выбрано</item>
 		<item quantity="one">%1$d из %2$d выбрано</item>
 		<item quantity="other">%1$d из %2$d выбрано</item>
 	</plurals>
@@ -185,6 +195,8 @@
 	<string name="home_current_topic">Текущая тема: %1$s</string>
 	<string name="home_delete_cluster">Удалить %1$s</string>
 	<plurals name="home_delete_cluster_text">
+		<item quantity="few">На этом устройстве будут удалены все панели %1$d</item>
+		<item quantity="many">На этом устройстве будут удалены все панели %1$d</item>
 		<item quantity="one">Панель %1$d для этого устройства будет удалена</item>
 		<item quantity="other">На этом устройстве будут удалены все панели %1$d</item>
 	</plurals>
@@ -227,6 +239,8 @@
 	<string name="home_retopic_all_text">Перемещает каждый кластер в этой группе, тема которого точно соответствует ‘Старой теме’, в ‘Новую тему’ ​​— остальные кластеры этой группы остаются нетронутыми. Это действие нельзя отменить автоматически</string>
 	<string name="home_retopic_all_title">Перетемизировать все кластеры в ‘%1$s’?</string>
 	<plurals name="home_retopic_moved">
+		<item quantity="few">Кластеры %1$d перемещены в ‘%2$s’</item>
+		<item quantity="many">Кластеры %1$d перемещены в ‘%2$s’</item>
 		<item quantity="one">Кластер %1$d перемещен в ‘%2$s’</item>
 		<item quantity="other">Кластеры %1$d перемещены в ‘%2$s’</item>
 	</plurals>
@@ -248,6 +262,8 @@
 	<string name="mqtt_backup_prefix">Префикс резервной темы</string>
 	<string name="mqtt_backup_publish">Опубликовать резервную копию</string>
 	<plurals name="mqtt_backup_published">
+		<item quantity="few">Опубликовано (%1$d байт) в %2$s</item>
+		<item quantity="many">Опубликовано (%1$d байт) в %2$s</item>
 		<item quantity="one">Опубликовано (%1$d байт) в %2$s</item>
 		<item quantity="other">Опубликовано (%1$d байт) в %2$s</item>
 	</plurals>
@@ -337,6 +353,8 @@
 	<string name="settings_blink">Мигающие предупреждения</string>
 	<string name="settings_blink_detail">Оповещения о выходе импульсного датчика за пределы диапазона вместо статического цвета</string>
 	<plurals name="settings_brokers_count">
+		<item quantity="few">%1$d настроено</item>
+		<item quantity="many">%1$d настроено</item>
 		<item quantity="one">%1$d настроено</item>
 		<item quantity="other">%1$d настроено</item>
 	</plurals>
@@ -345,6 +363,8 @@
 	<string name="settings_force_upload_all_confirm_title">Принудительно загрузить все группы?</string>
 	<string name="settings_force_upload_all_detail">Перестраивает и повторно публикует каждый кластер в конфигурации устройства каждой группы на основе текущих настроек этого телефона — используйте это, если проблема с брокером или другой телефон привел к рассинхронизации более одной группы</string>
 	<plurals name="settings_force_upload_all_done">
+		<item quantity="few">Повторно опубликовано %1$d групп в брокере</item>
+		<item quantity="many">Повторно опубликовано %1$d групп в брокере</item>
 		<item quantity="one">Группа %1$d повторно опубликована в брокере</item>
 		<item quantity="other">Повторно опубликовано %1$d групп в брокере</item>
 	</plurals>
@@ -352,14 +372,20 @@
 	<string name="settings_orphans_clean">Очистить</string>
 	<string name="settings_orphans_confirm_title">Очистить потерянные данные?</string>
 	<plurals name="settings_orphans_confirm">
+		<item quantity="few">При этом будут удалены панели %1$d, помеченные брокером, которого больше не существует. Чаще всего они остаются после удаления брокера и его повторного добавления. Панели, все еще привязанные к брокеру, который вы настроили, никогда не трогаются</item>
+		<item quantity="many">При этом будут удалены панели %1$d, помеченные брокером, которого больше не существует. Чаще всего они остаются после удаления брокера и его повторного добавления. Панели, все еще привязанные к брокеру, который вы настроили, никогда не трогаются</item>
 		<item quantity="one">При этом будет удалена панель %1$d, помеченная брокером, которого больше не существует. Чаще всего она остается после удаления брокера и его повторного добавления. Панели, все еще привязанные к брокеру, который вы настроили, никогда не трогаются</item>
 		<item quantity="other">При этом будут удалены панели %1$d, помеченные брокером, которого больше не существует. Чаще всего они остаются после удаления брокера и его повторного добавления. Панели, все еще привязанные к брокеру, который вы настроили, никогда не трогаются</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
+		<item quantity="few">%1$d панелей, оставшихся от удаленного брокера, можно удалить</item>
+		<item quantity="many">%1$d панелей, оставшихся от удаленного брокера, можно удалить</item>
 		<item quantity="one">Панель %1$d, оставшуюся от удаленного брокера, можно удалить</item>
 		<item quantity="other">%1$d панелей, оставшихся от удаленного брокера, можно удалить</item>
 	</plurals>
 	<plurals name="settings_orphans_removed">
+		<item quantity="few">Удалены панели %1$d</item>
+		<item quantity="many">Удалены панели %1$d</item>
 		<item quantity="one">Удалена панель %1$d</item>
 		<item quantity="other">Удалены панели %1$d</item>
 	</plurals>
@@ -384,6 +410,8 @@
 	<string name="terminal_clear">Очистить журнал</string>
 	<string name="terminal_connection_error">⚠ ошибка подключения</string>
 	<plurals name="terminal_count">
+		<item quantity="few">%1$d из %2$d сообщений (сначала самые старые, последние %3$d сохраняются)</item>
+		<item quantity="many">%1$d из %2$d сообщений (сначала самые старые, последние %3$d сохраняются)</item>
 		<item quantity="one">%1$d из %2$d сообщений (сначала самое старое, последнее сохраняется %3$d)</item>
 		<item quantity="other">%1$d из %2$d сообщений (сначала самые старые, последние %3$d сохраняются)</item>
 	</plurals>

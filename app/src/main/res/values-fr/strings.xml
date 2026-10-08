@@ -122,22 +122,26 @@
 	<string name="cred_unreachable">Impossible d’atteindre %1$s - vérifiez votre connexion et réessayez</string>
 	<string name="cred_waiting">En attendant le ramassage</string>
 	<plurals name="discover_add_panels">
+		<item quantity="many">Ajouter %1$d panneaux</item>
 		<item quantity="one">Ajouter %1$d panneau</item>
 		<item quantity="other">Ajouter %1$d panneaux</item>
 	</plurals>
 	<string name="discover_all_applied">Tous les appareils découverts ont été appliqués – il ne reste plus rien à configurer ici</string>
 	<string name="discover_apply">Appliquer la configuration de l’appareil</string>
 	<plurals name="discover_apply_detail_group">
+		<item quantity="many">Crée %1$d panneaux exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci-dessous</item>
 		<item quantity="one">Crée %1$d panneau exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci-dessous</item>
 		<item quantity="other">Crée %1$d panneaux exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci-dessous</item>
 	</plurals>
 	<plurals name="discover_apply_detail">
+		<item quantity="many">Crée %1$d panneaux exactement comme indiqué dans %2$s, en ignorant les cases ci-dessous</item>
 		<item quantity="one">Crée %1$d panneau exactement comme indiqué dans %2$s, en ignorant les cases ci-dessous</item>
 		<item quantity="other">Crée %1$d panneaux exactement comme indiqué dans %2$s, en ignorant les cases ci-dessous</item>
 	</plurals>
 	<string name="discover_apply_named">Appliquer la configuration du périphérique : %1$s</string>
 	<string name="discover_auto_all">Configurer automatiquement tous les appareils trouvés</string>
 	<plurals name="discover_auto_done">
+		<item quantity="many">Appareils %1$d configurés automatiquement</item>
 		<item quantity="one">Appareil %1$d configuré automatiquement</item>
 		<item quantity="other">Appareils %1$d configurés automatiquement</item>
 	</plurals>
@@ -153,6 +157,7 @@
 	<string name="discover_rescan">Nouvelle analyse</string>
 	<string name="discover_sample">échantillon : %1$s</string>
 	<plurals name="discover_selected">
+		<item quantity="many">%1$d sur %2$d sélectionnés</item>
 		<item quantity="one">%1$d sur %2$d sélectionnés</item>
 		<item quantity="other">%1$d sur %2$d sélectionnés</item>
 	</plurals>
@@ -185,6 +190,7 @@
 	<string name="home_current_topic">Sujet actuel : %1$s</string>
 	<string name="home_delete_cluster">Supprimer %1$s</string>
 	<plurals name="home_delete_cluster_text">
+		<item quantity="many">Cela supprime tous les %1$d panneaux pour cet appareil</item>
 		<item quantity="one">Cela supprime le panneau %1$d pour cet appareil</item>
 		<item quantity="other">Cela supprime tous les %1$d panneaux pour cet appareil</item>
 	</plurals>
@@ -227,6 +233,7 @@
 	<string name="home_retopic_all_text">Déplace chaque cluster de ce groupe dont le sujet correspond exactement à ‘ Ancien sujet ’ vers ‘ Nouveau sujet ’ - le reste des clusters de ce groupe reste intact. Cela ne peut pas être annulé automatiquement</string>
 	<string name="home_retopic_all_title">Retopiquer tous les clusters dans ‘ %1$s ’ ?</string>
 	<plurals name="home_retopic_moved">
+		<item quantity="many">%1$d clusters déplacés vers ‘ %2$s ’</item>
 		<item quantity="one">Cluster %1$d déplacé vers ‘ %2$s ’</item>
 		<item quantity="other">%1$d clusters déplacés vers ‘ %2$s ’</item>
 	</plurals>
@@ -248,6 +255,7 @@
 	<string name="mqtt_backup_prefix">Préfixe du sujet de sauvegarde</string>
 	<string name="mqtt_backup_publish">Publier la sauvegarde</string>
 	<plurals name="mqtt_backup_published">
+		<item quantity="many">Publié (%1$d octets) sur %2$s</item>
 		<item quantity="one">Publié (%1$d octet) sur %2$s</item>
 		<item quantity="other">Publié (%1$d octets) sur %2$s</item>
 	</plurals>
@@ -337,6 +345,7 @@
 	<string name="settings_blink">Avertissements clignotants</string>
 	<string name="settings_blink_detail">Alertes de tuile de capteur d’impulsion hors de portée, au lieu d’une couleur statique</string>
 	<plurals name="settings_brokers_count">
+		<item quantity="many">%1$d configuré</item>
 		<item quantity="one">%1$d configuré</item>
 		<item quantity="other">%1$d configuré</item>
 	</plurals>
@@ -345,6 +354,7 @@
 	<string name="settings_force_upload_all_confirm_title">Forcer le téléchargement de tous les groupes ?</string>
 	<string name="settings_force_upload_all_detail">Reconstruit et republie chaque cluster dans la configuration de périphérique de chaque groupe à partir des paramètres actuels de ce téléphone - utilisez-le si un problème de courtier ou un autre téléphone a laissé plusieurs groupes désynchronisés</string>
 	<plurals name="settings_force_upload_all_done">
+		<item quantity="many">%1$d groupes republiés sur le courtier</item>
 		<item quantity="one">Groupe %1$d republié auprès du courtier</item>
 		<item quantity="other">%1$d groupes republiés sur le courtier</item>
 	</plurals>
@@ -352,14 +362,17 @@
 	<string name="settings_orphans_clean">Nettoyer</string>
 	<string name="settings_orphans_confirm_title">Nettoyer les données orphelines ?</string>
 	<plurals name="settings_orphans_confirm">
+		<item quantity="many">Cela supprime %1$d panneaux étiquetés avec un courtier qui n’existe plus - le plus souvent laissés de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
 		<item quantity="one">Cela supprime %1$d panneau étiqueté avec un courtier qui n’existe plus - le plus souvent laissé de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
 		<item quantity="other">Cela supprime %1$d panneaux étiquetés avec un courtier qui n’existe plus - le plus souvent laissés de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
+		<item quantity="many">%1$d panneaux restants d’un courtier supprimé peuvent être supprimés</item>
 		<item quantity="one">%1$d le panneau restant d’un courtier supprimé peut être supprimé</item>
 		<item quantity="other">%1$d panneaux restants d’un courtier supprimé peuvent être supprimés</item>
 	</plurals>
 	<plurals name="settings_orphans_removed">
+		<item quantity="many">%1$d panneaux supprimés</item>
 		<item quantity="one">Panneau %1$d supprimé</item>
 		<item quantity="other">%1$d panneaux supprimés</item>
 	</plurals>
@@ -384,6 +397,7 @@
 	<string name="terminal_clear">Effacer le journal</string>
 	<string name="terminal_connection_error">⚠ erreur de connexion</string>
 	<plurals name="terminal_count">
+		<item quantity="many">%1$d sur %2$d messages (le plus ancien en premier, le dernier %3$d conservé)</item>
 		<item quantity="one">%1$d sur %2$d message (le plus ancien en premier, le dernier %3$d conservé)</item>
 		<item quantity="other">%1$d sur %2$d messages (le plus ancien en premier, le dernier %3$d conservé)</item>
 	</plurals>

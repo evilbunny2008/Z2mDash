@@ -67,6 +67,7 @@ import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.rememberTvKeyboardGate
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
+import com.odiousapps.z2mdash.ui.tv.tvKeyboardGate
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -158,7 +159,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 label = { Text(stringResource(R.string.broker_name)) },
                 readOnly = nameKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(nameKeyboardGate.modifier())
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(nameKeyboardGate)
             )
             Spacer(Modifier.height(16.dp))
             val hostKeyboardGate = rememberTvKeyboardGate()
@@ -169,7 +170,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 isError = broker.host.isBlank(),
                 readOnly = hostKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(hostKeyboardGate.modifier())
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(hostKeyboardGate)
             )
             Spacer(Modifier.height(16.dp))
 
@@ -181,7 +182,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 placeholder = { Text("zigbee2mqtt") },
                 readOnly = baseTopicKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(baseTopicKeyboardGate.modifier())
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(baseTopicKeyboardGate)
             )
             Text(
                 stringResource(R.string.broker_base_topic_help),
@@ -250,7 +251,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                 label = { Text(stringResource(R.string.broker_port)) },
                 readOnly = portKeyboardGate.readOnly,
                 keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
-                modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(portKeyboardGate.modifier())
+                modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(portKeyboardGate)
             )
 
             if (broker.protocol == MqttProtocol.WS || broker.protocol == MqttProtocol.WSS) {
@@ -262,7 +263,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     label = { Text(stringResource(R.string.broker_ws_path)) },
                     readOnly = webSocketPathKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(webSocketPathKeyboardGate.modifier())
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(webSocketPathKeyboardGate)
                 )
             }
 
@@ -317,7 +318,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     label = { Text(stringResource(R.string.broker_username)) },
                     readOnly = usernameKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(usernameKeyboardGate.modifier())
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(usernameKeyboardGate)
                 )
                 Spacer(Modifier.height(8.dp))
                 val passwordKeyboardGate = rememberTvKeyboardGate()
@@ -333,7 +334,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     },
                     readOnly = passwordKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(passwordKeyboardGate.modifier())
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(passwordKeyboardGate)
                 )
             }
 
@@ -355,7 +356,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     label = { Text(stringResource(R.string.broker_client_id)) },
                     readOnly = clientIdKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(clientIdKeyboardGate.modifier())
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(clientIdKeyboardGate)
                 )
                 Spacer(Modifier.height(16.dp))
                 Row(
@@ -380,7 +381,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     label = { Text(stringResource(R.string.broker_keep_alive)) },
                     readOnly = keepAliveKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(keepAliveKeyboardGate.modifier())
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(keepAliveKeyboardGate)
                 )
                 Text(
                     stringResource(R.string.broker_keep_alive_help),
@@ -394,7 +395,7 @@ fun AddEditBrokerScreen(navController: NavController, brokerId: String?) {
                     label = { Text(stringResource(R.string.broker_timeout)) },
                     readOnly = connectionTimeoutKeyboardGate.readOnly,
                     keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
-                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().then(connectionTimeoutKeyboardGate.modifier())
+                    modifier = Modifier.fillMaxWidth().clearFocusOnBack().tvKeyboardGate(connectionTimeoutKeyboardGate)
                 )
                 Text(
                     stringResource(R.string.broker_timeout_help),

@@ -93,4 +93,5 @@
 # merged with it present) - a keep on the whole package is what actually prevents it. Renaming
 # and removal of genuinely-unused members are still allowed, only merging is blocked.
 #noinspection ExpensiveKeepRuleInspection
--keep,allowobfuscation,allowshrinking class io.netty.handler.codec.** { *; }
+-keep,allowobfuscation,allowshrinking class io.netty.handler.codec.** { #noinspection ExpensiveKeepRuleInspection
+ *; }

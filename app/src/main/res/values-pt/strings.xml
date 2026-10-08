@@ -122,22 +122,26 @@
 	<string name="cred_unreachable">Não foi possível acessar %1$s. Verifique sua conexão e tente novamente</string>
 	<string name="cred_waiting">Aguardando retirada</string>
 	<plurals name="discover_add_panels">
+		<item quantity="many">Adicionar %1$d painéis</item>
 		<item quantity="one">Adicionar painel %1$d</item>
 		<item quantity="other">Adicionar %1$d painéis</item>
 	</plurals>
 	<string name="discover_all_applied">Todos os dispositivos descobertos foram aplicados – não há mais nada para configurar aqui</string>
 	<string name="discover_apply">Aplicar configuração do dispositivo</string>
 	<plurals name="discover_apply_detail_group">
+		<item quantity="many">Cria %1$d painéis exatamente como listados em %2$s no grupo ‘%3$s’, ignorando as caixas de seleção abaixo</item>
 		<item quantity="one">Cria o painel %1$d exatamente como listado em %2$s no grupo ‘%3$s’, ignorando as caixas de seleção abaixo</item>
 		<item quantity="other">Cria %1$d painéis exatamente como listados em %2$s no grupo ‘%3$s’, ignorando as caixas de seleção abaixo</item>
 	</plurals>
 	<plurals name="discover_apply_detail">
+		<item quantity="many">Cria %1$d painéis exatamente como listados em %2$s, ignorando as caixas de seleção abaixo</item>
 		<item quantity="one">Cria o painel %1$d exatamente como listado em %2$s, ignorando as caixas de seleção abaixo</item>
 		<item quantity="other">Cria %1$d painéis exatamente como listados em %2$s, ignorando as caixas de seleção abaixo</item>
 	</plurals>
 	<string name="discover_apply_named">Aplicar configuração do dispositivo: %1$s</string>
 	<string name="discover_auto_all">Configure automaticamente todos os dispositivos encontrados</string>
 	<plurals name="discover_auto_done">
+		<item quantity="many">%1$d dispositivos configurados automaticamente</item>
 		<item quantity="one">Dispositivo %1$d configurado automaticamente</item>
 		<item quantity="other">%1$d dispositivos configurados automaticamente</item>
 	</plurals>
@@ -153,6 +157,7 @@
 	<string name="discover_rescan">Digitalizar novamente</string>
 	<string name="discover_sample">amostra: %1$s</string>
 	<plurals name="discover_selected">
+		<item quantity="many">%1$d de %2$d selecionado</item>
 		<item quantity="one">%1$d de %2$d selecionado</item>
 		<item quantity="other">%1$d de %2$d selecionado</item>
 	</plurals>
@@ -185,6 +190,7 @@
 	<string name="home_current_topic">Tópico atual: %1$s</string>
 	<string name="home_delete_cluster">Excluir %1$s</string>
 	<plurals name="home_delete_cluster_text">
+		<item quantity="many">Isso remove todos os %1$d painéis deste dispositivo</item>
 		<item quantity="one">Isto remove o painel %1$d deste dispositivo</item>
 		<item quantity="other">Isso remove todos os %1$d painéis deste dispositivo</item>
 	</plurals>
@@ -227,6 +233,7 @@
 	<string name="home_retopic_all_text">Move todos os clusters deste grupo cujo tópico corresponde exatamente ao ‘Tópico antigo’ para o ‘Novo tópico’ - o restante dos clusters deste grupo permanece intacto. Isso não pode ser desfeito automaticamente</string>
 	<string name="home_retopic_all_title">Retopic todos os clusters em ‘%1$s’?</string>
 	<plurals name="home_retopic_moved">
+		<item quantity="many">%1$d clusters movidos para ‘%2$s’</item>
 		<item quantity="one">Cluster %1$d movido para ‘%2$s’</item>
 		<item quantity="other">%1$d clusters movidos para ‘%2$s’</item>
 	</plurals>
@@ -248,6 +255,7 @@
 	<string name="mqtt_backup_prefix">Prefixo do tópico de backup</string>
 	<string name="mqtt_backup_publish">Publicar backup</string>
 	<plurals name="mqtt_backup_published">
+		<item quantity="many">Publicado (%1$d bytes) em %2$s</item>
 		<item quantity="one">Publicado (%1$d byte) em %2$s</item>
 		<item quantity="other">Publicado (%1$d bytes) em %2$s</item>
 	</plurals>
@@ -337,6 +345,7 @@
 	<string name="settings_blink">Avisos de piscada</string>
 	<string name="settings_blink_detail">Alertas de bloco de sensor de pulso fora da faixa, em vez de uma cor estática</string>
 	<plurals name="settings_brokers_count">
+		<item quantity="many">%1$d configurado</item>
 		<item quantity="one">%1$d configurado</item>
 		<item quantity="other">%1$d configurado</item>
 	</plurals>
@@ -345,6 +354,7 @@
 	<string name="settings_force_upload_all_confirm_title">Forçar upload de todos os grupos?</string>
 	<string name="settings_force_upload_all_detail">Reconstrói e republica cada cluster na configuração de dispositivo de cada grupo a partir das configurações atuais deste telefone - use isto se um problema do corretor ou outro telefone deixou mais de um grupo fora de sincronia</string>
 	<plurals name="settings_force_upload_all_done">
+		<item quantity="many">%1$d grupos republicados no corretor</item>
 		<item quantity="one">Grupo %1$d republicado para o corretor</item>
 		<item quantity="other">%1$d grupos republicados no corretor</item>
 	</plurals>
@@ -352,14 +362,17 @@
 	<string name="settings_orphans_clean">Limpar</string>
 	<string name="settings_orphans_confirm_title">Limpar dados órfãos?</string>
 	<plurals name="settings_orphans_confirm">
+		<item quantity="many">Isso remove %1$d painéis marcados com um corretor que não existe mais - geralmente deixados para trás ao excluir um corretor e adicioná-lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
 		<item quantity="one">Isso remove o painel %1$d marcado com um corretor que não existe mais - geralmente deixado para trás ao excluir um corretor e adicioná-lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
 		<item quantity="other">Isso remove %1$d painéis marcados com um corretor que não existe mais - geralmente deixados para trás ao excluir um corretor e adicioná-lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
+		<item quantity="many">%1$d painéis restantes de um corretor excluído podem ser removidos</item>
 		<item quantity="one">%1$d painel restante de um corretor excluído pode ser removido</item>
 		<item quantity="other">%1$d painéis restantes de um corretor excluído podem ser removidos</item>
 	</plurals>
 	<plurals name="settings_orphans_removed">
+		<item quantity="many">%1$d painéis removidos</item>
 		<item quantity="one">Painel %1$d removido</item>
 		<item quantity="other">%1$d painéis removidos</item>
 	</plurals>
@@ -384,6 +397,7 @@
 	<string name="terminal_clear">Limpar registro</string>
 	<string name="terminal_connection_error">⚠ erro de conexão</string>
 	<plurals name="terminal_count">
+		<item quantity="many">%1$d de %2$d mensagens (as mais antigas primeiro, as últimas %3$d mantidas)</item>
 		<item quantity="one">%1$d de %2$d mensagem (mais antiga primeiro, última %3$d mantida)</item>
 		<item quantity="other">%1$d de %2$d mensagens (as mais antigas primeiro, as últimas %3$d mantidas)</item>
 	</plurals>

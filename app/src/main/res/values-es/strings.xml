@@ -122,22 +122,26 @@
 	<string name="cred_unreachable">No se pudo acceder a %1$s; verifique su conexión e inténtelo nuevamente</string>
 	<string name="cred_waiting">Esperando recogida</string>
 	<plurals name="discover_add_panels">
+		<item quantity="many">Agregar %1$d paneles</item>
 		<item quantity="one">Agregar %1$d panel</item>
 		<item quantity="other">Agregar %1$d paneles</item>
 	</plurals>
 	<string name="discover_all_applied">Se han aplicado todos los dispositivos descubiertos; no queda nada por configurar aquí</string>
 	<string name="discover_apply">Aplicar configuración del dispositivo</string>
 	<plurals name="discover_apply_detail_group">
+		<item quantity="many">Crea %1$d paneles exactamente como se enumeran en %2$s en el grupo ‘%3$s’, omitiendo las casillas de verificación a continuación</item>
 		<item quantity="one">Crea %1$d panel exactamente como se indica en %2$s en el grupo ‘%3$s’, omitiendo las casillas de verificación a continuación</item>
 		<item quantity="other">Crea %1$d paneles exactamente como se enumeran en %2$s en el grupo ‘%3$s’, omitiendo las casillas de verificación a continuación</item>
 	</plurals>
 	<plurals name="discover_apply_detail">
+		<item quantity="many">Crea %1$d paneles exactamente como se enumeran en %2$s, omitiendo las casillas de verificación a continuación</item>
 		<item quantity="one">Crea %1$d panel exactamente como se indica en %2$s, omitiendo las casillas de verificación a continuación</item>
 		<item quantity="other">Crea %1$d paneles exactamente como se enumeran en %2$s, omitiendo las casillas de verificación a continuación</item>
 	</plurals>
 	<string name="discover_apply_named">Aplicar configuración del dispositivo: %1$s</string>
 	<string name="discover_auto_all">Configura automáticamente todos los dispositivos encontrados</string>
 	<plurals name="discover_auto_done">
+		<item quantity="many">%1$d dispositivos configurados automáticamente</item>
 		<item quantity="one">Dispositivo %1$d configurado automáticamente</item>
 		<item quantity="other">%1$d dispositivos configurados automáticamente</item>
 	</plurals>
@@ -153,6 +157,7 @@
 	<string name="discover_rescan">Volver a escanear</string>
 	<string name="discover_sample">muestra: %1$s</string>
 	<plurals name="discover_selected">
+		<item quantity="many">%1$d de %2$d seleccionados</item>
 		<item quantity="one">%1$d de %2$d seleccionados</item>
 		<item quantity="other">%1$d de %2$d seleccionados</item>
 	</plurals>
@@ -185,6 +190,7 @@
 	<string name="home_current_topic">Tema actual: %1$s</string>
 	<string name="home_delete_cluster">Eliminar %1$s</string>
 	<plurals name="home_delete_cluster_text">
+		<item quantity="many">Esto elimina todos los %1$d paneles de este dispositivo</item>
 		<item quantity="one">Esto elimina el panel %1$d para este dispositivo</item>
 		<item quantity="other">Esto elimina todos los %1$d paneles de este dispositivo</item>
 	</plurals>
@@ -227,6 +233,7 @@
 	<string name="home_retopic_all_text">Mueve cada grupo de este grupo cuyo tema coincida exactamente con ‘Tema antiguo’ a ‘Tema nuevo’; el resto de los grupos de este grupo no se modifican. Esto no se puede deshacer automáticamente</string>
 	<string name="home_retopic_all_title">¿Retobar todos los clústeres en ‘%1$s’?</string>
 	<plurals name="home_retopic_moved">
+		<item quantity="many">Se movieron %1$d grupos a ‘%2$s’</item>
 		<item quantity="one">Se movió %1$d clúster a ‘%2$s’</item>
 		<item quantity="other">Se movieron %1$d grupos a ‘%2$s’</item>
 	</plurals>
@@ -248,6 +255,7 @@
 	<string name="mqtt_backup_prefix">Prefijo de tema de copia de seguridad</string>
 	<string name="mqtt_backup_publish">Publicar copia de seguridad</string>
 	<plurals name="mqtt_backup_published">
+		<item quantity="many">Publicado (%1$d bytes) en %2$s</item>
 		<item quantity="one">Publicado (%1$d byte) en %2$s</item>
 		<item quantity="other">Publicado (%1$d bytes) en %2$s</item>
 	</plurals>
@@ -337,6 +345,7 @@
 	<string name="settings_blink">Advertencias de parpadeo</string>
 	<string name="settings_blink_detail">Alertas de mosaico de sensor de pulso fuera de rango, en lugar de un color estático</string>
 	<plurals name="settings_brokers_count">
+		<item quantity="many">%1$d configurado</item>
 		<item quantity="one">%1$d configurado</item>
 		<item quantity="other">%1$d configurado</item>
 	</plurals>
@@ -345,6 +354,7 @@
 	<string name="settings_force_upload_all_confirm_title">¿Forzar la carga de todos los grupos?</string>
 	<string name="settings_force_upload_all_detail">Reconstruye y vuelve a publicar cada clúster en la configuración del dispositivo de cada grupo desde la configuración actual de este teléfono; utilícelo si un problema con el intermediario u otro teléfono dejó a más de un grupo sin sincronizar</string>
 	<plurals name="settings_force_upload_all_done">
+		<item quantity="many">Se volvió a publicar %1$d grupos para el corredor</item>
 		<item quantity="one">Se volvió a publicar %1$d grupo para el corredor</item>
 		<item quantity="other">Se volvió a publicar %1$d grupos para el corredor</item>
 	</plurals>
@@ -352,14 +362,17 @@
 	<string name="settings_orphans_clean">Limpiar</string>
 	<string name="settings_orphans_confirm_title">¿Limpiar datos huérfanos?</string>
 	<plurals name="settings_orphans_confirm">
+		<item quantity="many">Esto elimina %1$d paneles etiquetados con un corredor que ya no existe; la mayoría de las veces se quedan atrás al eliminar un corredor y volver a agregarlo. Los paneles que aún están vinculados a un corredor que realmente haya configurado nunca se tocan</item>
 		<item quantity="one">Esto elimina %1$d panel etiquetado con un corredor que ya no existe; la mayoría de las veces se deja atrás al eliminar un corredor y volver a agregarlo. Los paneles que aún están vinculados a un corredor que realmente haya configurado nunca se tocan</item>
 		<item quantity="other">Esto elimina %1$d paneles etiquetados con un corredor que ya no existe; la mayoría de las veces se quedan atrás al eliminar un corredor y volver a agregarlo. Los paneles que aún están vinculados a un corredor que realmente haya configurado nunca se tocan</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
+		<item quantity="many">Se pueden eliminar %1$d paneles sobrantes de un broker eliminado</item>
 		<item quantity="one">Se puede eliminar %1$d panel sobrante de un broker eliminado</item>
 		<item quantity="other">Se pueden eliminar %1$d paneles sobrantes de un broker eliminado</item>
 	</plurals>
 	<plurals name="settings_orphans_removed">
+		<item quantity="many">Se eliminaron %1$d paneles</item>
 		<item quantity="one">Se eliminó %1$d panel</item>
 		<item quantity="other">Se eliminaron %1$d paneles</item>
 	</plurals>
@@ -384,6 +397,7 @@
 	<string name="terminal_clear">Borrar registro</string>
 	<string name="terminal_connection_error">⚠ error de conexión</string>
 	<plurals name="terminal_count">
+		<item quantity="many">%1$d de %2$d mensajes (los más antiguos primero, los últimos %3$d se conservan)</item>
 		<item quantity="one">%1$d de %2$d mensaje (el más antiguo primero, el último %3$d se conserva)</item>
 		<item quantity="other">%1$d de %2$d mensajes (los más antiguos primero, los últimos %3$d se conservan)</item>
 	</plurals>

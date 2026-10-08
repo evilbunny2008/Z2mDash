@@ -122,24 +122,40 @@
 	<string name="cred_unreachable">تعذر الوصول إلى %1$s - تحقق من اتصالك وحاول مرة أخرى</string>
 	<string name="cred_waiting">في انتظار الاستلام</string>
 	<plurals name="discover_add_panels">
+		<item quantity="few">أضف %1$d من اللوحات</item>
+		<item quantity="many">أضف %1$d من اللوحات</item>
 		<item quantity="one">أضف %1$d لوحة</item>
 		<item quantity="other">أضف %1$d لوحة</item>
+		<item quantity="two">أضف %1$d لوحة</item>
+		<item quantity="zero">أضف %1$d من اللوحات</item>
 	</plurals>
 	<string name="discover_all_applied">تم تطبيق جميع الأجهزة المكتشفة، ولم يتبق شيء لتكوينه هنا</string>
 	<string name="discover_apply">تطبيق تكوين الجهاز</string>
 	<plurals name="discover_apply_detail_group">
+		<item quantity="few">إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s في المجموعة ‘%3$s’، مع تخطي مربعات الاختيار أدناه</item>
+		<item quantity="many">إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s في المجموعة ‘%3$s’، مع تخطي مربعات الاختيار أدناه</item>
 		<item quantity="one">إنشاء لوحة %1$d تمامًا كما هو مذكور في %2$s في المجموعة ‘%3$s’، مع تخطي مربعات الاختيار أدناه</item>
 		<item quantity="other">إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s في المجموعة ‘%3$s’، مع تخطي مربعات الاختيار أدناه</item>
+		<item quantity="two">إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s في المجموعة ‘%3$s’، مع تخطي مربعات الاختيار أدناه</item>
+		<item quantity="zero">إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s في المجموعة ‘%3$s’، مع تخطي مربعات الاختيار أدناه</item>
 	</plurals>
 	<plurals name="discover_apply_detail">
+		<item quantity="few">يتم إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s، مع تخطي مربعات الاختيار أدناه</item>
+		<item quantity="many">يتم إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s، مع تخطي مربعات الاختيار أدناه</item>
 		<item quantity="one">يتم إنشاء لوحة %1$d تمامًا كما هو مذكور في %2$s، مع تخطي مربعات الاختيار أدناه</item>
 		<item quantity="other">يتم إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s، مع تخطي مربعات الاختيار أدناه</item>
+		<item quantity="two">يتم إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s، مع تخطي مربعات الاختيار أدناه</item>
+		<item quantity="zero">يتم إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s، مع تخطي مربعات الاختيار أدناه</item>
 	</plurals>
 	<string name="discover_apply_named">تطبيق تكوين الجهاز: %1$s</string>
 	<string name="discover_auto_all">التكوين التلقائي لجميع الأجهزة التي تم العثور عليها</string>
 	<plurals name="discover_auto_done">
+		<item quantity="few">تم تكوين %1$d من الأجهزة تلقائيًا</item>
+		<item quantity="many">تم تكوين %1$d من الأجهزة تلقائيًا</item>
 		<item quantity="one">جهاز %1$d تمت تهيئته تلقائيًا</item>
 		<item quantity="other">تم تكوين %1$d من الأجهزة تلقائيًا</item>
+		<item quantity="two">تم تكوين %1$d من الأجهزة تلقائيًا</item>
+		<item quantity="zero">تم تكوين %1$d من الأجهزة تلقائيًا</item>
 	</plurals>
 	<string name="discover_auto_none">لم تكن هناك أجهزة ذات تكوين صالح جاهزة بعد - حاول مرة أخرى بعد قليل، أو استخدم رمز التحديث أعلاه</string>
 	<string name="discover_bad_config">تم العثور على %1$s ولكن لا يمكن قراءتها كتكوين للجهاز - تأكد من أنها صالحة JSON باستخدام مصفوفة ‘لوحات’ غير فارغة</string>
@@ -153,8 +169,12 @@
 	<string name="discover_rescan">إعادة المسح</string>
 	<string name="discover_sample">العينة: %1$s</string>
 	<plurals name="discover_selected">
+		<item quantity="few">تم تحديد %1$d من %2$d</item>
+		<item quantity="many">تم تحديد %1$d من %2$d</item>
 		<item quantity="one">تم تحديد %1$d من %2$d</item>
 		<item quantity="other">تم تحديد %1$d من %2$d</item>
+		<item quantity="two">تم تحديد %1$d من %2$d</item>
+		<item quantity="zero">تم تحديد %1$d من %2$d</item>
 	</plurals>
 	<string name="discover_target_group">إضافة لوحات إلى المجموعة</string>
 	<string name="discover_title">اكتشف أجهزة الاستشعار</string>
@@ -185,8 +205,12 @@
 	<string name="home_current_topic">الموضوع الحالي: %1$s</string>
 	<string name="home_delete_cluster">احذف %1$s</string>
 	<plurals name="home_delete_cluster_text">
+		<item quantity="few">يؤدي هذا إلى إزالة كافة اللوحات الـ %1$d لهذا الجهاز</item>
+		<item quantity="many">يؤدي هذا إلى إزالة كافة اللوحات الـ %1$d لهذا الجهاز</item>
 		<item quantity="one">يؤدي هذا إلى إزالة اللوحة %1$d لهذا الجهاز</item>
 		<item quantity="other">يؤدي هذا إلى إزالة كافة اللوحات الـ %1$d لهذا الجهاز</item>
+		<item quantity="two">يؤدي هذا إلى إزالة كافة اللوحات الـ %1$d لهذا الجهاز</item>
+		<item quantity="zero">يؤدي هذا إلى إزالة كافة اللوحات الـ %1$d لهذا الجهاز</item>
 	</plurals>
 	<string name="home_delete_cluster_title">هل تريد حذف ‘%1$s’؟</string>
 	<string name="home_delete_group_named">احذف %1$s</string>
@@ -227,8 +251,12 @@
 	<string name="home_retopic_all_text">ينقل كل مجموعة في هذه المجموعة التي يتطابق موضوعها تمامًا مع ‘الموضوع القديم’ إلى ‘موضوع جديد’ - ولن يتم المساس ببقية مجموعات هذه المجموعة. لا يمكن التراجع عن هذا تلقائيًا</string>
 	<string name="home_retopic_all_title">هل تريد إعادة صياغة كل المجموعات في ‘%1$s’؟</string>
 	<plurals name="home_retopic_moved">
+		<item quantity="few">تم نقل %1$d مجموعة إلى ‘%2$s’</item>
+		<item quantity="many">تم نقل %1$d مجموعة إلى ‘%2$s’</item>
 		<item quantity="one">تم نقل مجموعة %1$d إلى ‘%2$s’</item>
 		<item quantity="other">تم نقل %1$d مجموعة إلى ‘%2$s’</item>
+		<item quantity="two">تم نقل %1$d مجموعة إلى ‘%2$s’</item>
+		<item quantity="zero">تم نقل %1$d مجموعة إلى ‘%2$s’</item>
 	</plurals>
 	<string name="home_retopic_none">لم تكن هناك مجموعات في ‘%1$s’ حول هذا الموضوع</string>
 	<string name="home_search_clusters">مجموعات البحث</string>
@@ -248,8 +276,12 @@
 	<string name="mqtt_backup_prefix">بادئة موضوع النسخ الاحتياطي</string>
 	<string name="mqtt_backup_publish">نشر النسخ الاحتياطي</string>
 	<plurals name="mqtt_backup_published">
+		<item quantity="few">تم النشر (%1$d بايت) إلى %2$s</item>
+		<item quantity="many">تم النشر (%1$d بايت) إلى %2$s</item>
 		<item quantity="one">تم النشر (%1$d بايت) إلى %2$s</item>
 		<item quantity="other">تم النشر (%1$d بايت) إلى %2$s</item>
+		<item quantity="two">تم النشر (%1$d بايت) إلى %2$s</item>
+		<item quantity="zero">تم النشر (%1$d بايت) إلى %2$s</item>
 	</plurals>
 	<string name="mqtt_backup_title">النسخ الاحتياطي / الاستعادة عبر MQTT</string>
 	<string name="mqtt_restore_done">تمت الاستعادة من %1$s</string>
@@ -337,31 +369,51 @@
 	<string name="settings_blink">تحذيرات وميض</string>
 	<string name="settings_blink_detail">تنبيهات نبضية لمستشعر خارج النطاق، بدلاً من اللون الثابت</string>
 	<plurals name="settings_brokers_count">
+		<item quantity="few">تم تكوين %1$d</item>
+		<item quantity="many">تم تكوين %1$d</item>
 		<item quantity="one">تم تكوين %1$d</item>
 		<item quantity="other">تم تكوين %1$d</item>
+		<item quantity="two">تم تكوين %1$d</item>
+		<item quantity="zero">تم تكوين %1$d</item>
 	</plurals>
 	<string name="settings_force_upload_all">فرض تحميل جميع المجموعات</string>
 	<string name="settings_force_upload_all_confirm">يؤدي هذا إلى استبدال تكوين الجهاز المحتفظ به على الوسيط لكل مجموعة في كل مجموعة بنسخة جديدة تم إنشاؤها من الإعدادات الحالية لهذا الهاتف. سيتم استبدال أي تكوين مختلف موجود حاليًا على الوسيط (على سبيل المثال من هاتف آخر)، ولن يتم دمجه. لا يمكن التراجع عن هذا تلقائيًا</string>
 	<string name="settings_force_upload_all_confirm_title">فرض تحميل جميع المجموعات؟</string>
 	<string name="settings_force_upload_all_detail">يعيد إنشاء كل مجموعة ويعيد نشرها في تكوين جهاز كل مجموعة من الإعدادات الحالية لهذا الهاتف - استخدم هذا إذا كانت مشكلة الوسيط أو هاتف آخر تركت أكثر من مجموعة واحدة غير متزامنة</string>
 	<plurals name="settings_force_upload_all_done">
+		<item quantity="few">تمت إعادة نشر %1$d مجموعة إلى الوسيط</item>
+		<item quantity="many">تمت إعادة نشر %1$d مجموعة إلى الوسيط</item>
 		<item quantity="one">تمت إعادة نشر مجموعة %1$d إلى الوسيط</item>
 		<item quantity="other">تمت إعادة نشر %1$d مجموعة إلى الوسيط</item>
+		<item quantity="two">تمت إعادة نشر %1$d مجموعة إلى الوسيط</item>
+		<item quantity="zero">تمت إعادة نشر %1$d مجموعة إلى الوسيط</item>
 	</plurals>
 	<string name="settings_orphans">تنظيف البيانات المعزولة</string>
 	<string name="settings_orphans_clean">تنظيف</string>
 	<string name="settings_orphans_confirm_title">هل تريد تنظيف البيانات المعزولة؟</string>
 	<plurals name="settings_orphans_confirm">
+		<item quantity="few">يؤدي هذا إلى إزالة %1$d من اللوحات التي تحمل علامة وسيط لم يعد موجودًا - وغالبًا ما يتم تركها خلفه عن طريق حذف الوسيط وإعادة إضافته. لا يتم لمس اللوحات التي لا تزال مرتبطة بالوسيط الذي قمت بتكوينه بالفعل</item>
+		<item quantity="many">يؤدي هذا إلى إزالة %1$d من اللوحات التي تحمل علامة وسيط لم يعد موجودًا - وغالبًا ما يتم تركها خلفه عن طريق حذف الوسيط وإعادة إضافته. لا يتم لمس اللوحات التي لا تزال مرتبطة بالوسيط الذي قمت بتكوينه بالفعل</item>
 		<item quantity="one">يؤدي هذا إلى إزالة اللوحة %1$d التي تم وضع علامة عليها بواسطة وسيط لم يعد موجودًا - غالبًا ما يتم تركه خلفه عن طريق حذف الوسيط وإعادة إضافته. لا يتم لمس اللوحات التي لا تزال مرتبطة بالوسيط الذي قمت بتكوينه بالفعل</item>
 		<item quantity="other">يؤدي هذا إلى إزالة %1$d من اللوحات التي تحمل علامة وسيط لم يعد موجودًا - وغالبًا ما يتم تركها خلفه عن طريق حذف الوسيط وإعادة إضافته. لا يتم لمس اللوحات التي لا تزال مرتبطة بالوسيط الذي قمت بتكوينه بالفعل</item>
+		<item quantity="two">يؤدي هذا إلى إزالة %1$d من اللوحات التي تحمل علامة وسيط لم يعد موجودًا - وغالبًا ما يتم تركها خلفه عن طريق حذف الوسيط وإعادة إضافته. لا يتم لمس اللوحات التي لا تزال مرتبطة بالوسيط الذي قمت بتكوينه بالفعل</item>
+		<item quantity="zero">يؤدي هذا إلى إزالة %1$d من اللوحات التي تحمل علامة وسيط لم يعد موجودًا - وغالبًا ما يتم تركها خلفه عن طريق حذف الوسيط وإعادة إضافته. لا يتم لمس اللوحات التي لا تزال مرتبطة بالوسيط الذي قمت بتكوينه بالفعل</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
+		<item quantity="few">يمكن إزالة %1$d من اللوحات المتبقية من الوسيط المحذوف</item>
+		<item quantity="many">يمكن إزالة %1$d من اللوحات المتبقية من الوسيط المحذوف</item>
 		<item quantity="one">يمكن إزالة اللوحة %1$d المتبقية من الوسيط المحذوف</item>
 		<item quantity="other">يمكن إزالة %1$d من اللوحات المتبقية من الوسيط المحذوف</item>
+		<item quantity="two">يمكن إزالة %1$d من اللوحات المتبقية من الوسيط المحذوف</item>
+		<item quantity="zero">يمكن إزالة %1$d من اللوحات المتبقية من الوسيط المحذوف</item>
 	</plurals>
 	<plurals name="settings_orphans_removed">
+		<item quantity="few">تمت إزالة %1$d من اللوحات</item>
+		<item quantity="many">تمت إزالة %1$d من اللوحات</item>
 		<item quantity="one">تمت إزالة %1$d من اللوحة</item>
 		<item quantity="other">تمت إزالة %1$d من اللوحات</item>
+		<item quantity="two">تمت إزالة %1$d من اللوحات</item>
+		<item quantity="zero">تمت إزالة %1$d من اللوحات</item>
 	</plurals>
 	<string name="settings_tile_width">عرض البلاط والكتلة</string>
 	<string name="settings_tile_width_detail">مدى عرض المربعات (وبالتالي البطاقات العنقودية، التي يبلغ عرضها 3 مربعات) يمكن أن تنمو، حتى ملء الشاشة - حاليًا %1$ddp</string>
@@ -384,8 +436,12 @@
 	<string name="terminal_clear">مسح السجل</string>
 	<string name="terminal_connection_error">⚠ خطأ في الاتصال</string>
 	<plurals name="terminal_count">
+		<item quantity="few">%1$d من %2$d رسالة (الأقدم أولاً، آخر %3$d تم الاحتفاظ بها)</item>
+		<item quantity="many">%1$d من %2$d رسالة (الأقدم أولاً، آخر %3$d تم الاحتفاظ بها)</item>
 		<item quantity="one">%1$d من %2$d رسالة (الأقدم أولاً، آخر %3$d تم الاحتفاظ بها)</item>
 		<item quantity="other">%1$d من %2$d رسالة (الأقدم أولاً، آخر %3$d تم الاحتفاظ بها)</item>
+		<item quantity="two">%1$d من %2$d رسالة (الأقدم أولاً، آخر %3$d تم الاحتفاظ بها)</item>
+		<item quantity="zero">%1$d من %2$d رسالة (الأقدم أولاً، آخر %3$d تم الاحتفاظ بها)</item>
 	</plurals>
 	<string name="terminal_empty">لم يتم تلقي أي رسائل حتى الآن. تأكد من أن الوسيط متصل ومشترك (تحقق من الوسطاء في الإعدادات، أو أن موضوعه الأساسي يطابق الإعداد الخاص بك)</string>
 	<string name="terminal_filter">التصفية حسب الموضوع أو الحمولة</string>
