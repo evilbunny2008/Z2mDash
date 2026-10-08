@@ -19,7 +19,7 @@
 	<string name="alerts_title">Alarme/Alerta</string>
 	<string name="alerts_watering">Alertas de rega</string>
 	<string name="alerts_watering_detail">Vibrar e emitir um sinal sonoro quando um sensor de umidade atingir o meio de sua faixa ideal</string>
-	<string name="alerts_watering_test_detail">Dispara uma notificação real com toque e vibração de irrigação, independentemente da alternância acima – uma boa maneira de ouvi-la antes de confiar nela</string>
+	<string name="alerts_watering_test_detail">Dispara uma notificação real com toque e vibração de irrigação, independentemente da alternância acima – uma boa maneira de ouvi–la antes de confiar nela</string>
 	<string name="backup_brokers_imported">Corretores importados</string>
 	<string name="backup_config_imported">Configuração importada</string>
 	<string name="backup_encrypt">Criptografar backup</string>
@@ -41,9 +41,9 @@
 	<string name="backup_restore_full_detail">Substitui toda a sua configuração pelo que está no arquivo</string>
 	<string name="backup_scope_brokers">Apenas corretores</string>
 	<string name="backup_scope_full">Configuração completa</string>
-	<string name="backup_set_password_text">Escolha uma senha para criptografar este backup. Ele será lembrado na próxima vez - você precisará dele novamente para restaurar</string>
+	<string name="backup_set_password_text">Escolha uma senha para criptografar este backup. Ele será lembrado na próxima vez – você precisará dele novamente para restaurar</string>
 	<string name="backup_set_password_title">Definir senha de exportação</string>
-	<string name="backup_unencrypted_text">Este backup inclui nomes de usuário e senhas de seus corretores, armazenados como texto simples. Qualquer pessoa que tiver acesso ao arquivo poderá lê-lo. Ative Criptografar backup para protegê-lo com uma senha</string>
+	<string name="backup_unencrypted_text">Este backup inclui nomes de usuário e senhas de seus corretores, armazenados como texto simples. Qualquer pessoa que tiver acesso ao arquivo poderá lê–lo. Ative Criptografar backup para protegê–lo com uma senha</string>
 	<string name="backup_unencrypted_title">Exportar sem criptografia?</string>
 	<string name="backup_unlock">Desbloquear</string>
 	<string name="backup_wrong_password">Senha errada ou o arquivo está corrompido</string>
@@ -59,10 +59,10 @@
 	<string name="broker_additional">Parâmetros Adicionais</string>
 	<string name="broker_auth">Autenticação</string>
 	<string name="broker_auto_accept">Aceitar automaticamente dispositivos descobertos</string>
-	<string name="broker_auto_accept_detail">Adicione imediatamente grupos/clusters/painéis de um dispositivo recém-visto, em vez de solicitar a aceitação de cada um deles</string>
+	<string name="broker_auto_accept_detail">Adicione imediatamente grupos/clusters/painéis de um dispositivo recém–visto, em vez de solicitar a aceitação de cada um deles</string>
 	<string name="broker_auto_connect">Conexão automática</string>
 	<string name="broker_base_topic">Tópico base</string>
-	<string name="broker_base_topic_help">O aplicativo monitora ‘&lt;tópico base&gt;/#’ para dispositivos e suas configurações de /app, em vez de todos os tópicos do corretor. Insira uma lista separada por vírgula (por exemplo, ‘zigbee2mqtt, zigbee2mqtt2’) para observar mais de um namespace Zigbee2MQTT neste mesmo corretor - cada um recebe seu próprio botão Permit Join abaixo</string>
+	<string name="broker_base_topic_help">O aplicativo monitora ‘&lt;tópico base&gt;/#’ para dispositivos e suas configurações de /app, em vez de todos os tópicos do corretor. Insira uma lista separada por vírgula (por exemplo, ‘zigbee2mqtt, zigbee2mqtt2’) para observar mais de um namespace Zigbee2MQTT neste mesmo corretor – cada um recebe seu próprio botão Permit Join abaixo</string>
 	<string name="broker_cert_selected">Certificado selecionado ✓</string>
 	<string name="broker_clean_session">Sessão Limpa</string>
 	<string name="broker_clean_session_detail">Iniciar uma nova sessão em cada conexão (mensagens não retidas)</string>
@@ -92,8 +92,8 @@
 	<string name="broker_ws_path">Caminho do WebSocket</string>
 	<string name="brokers_add">Adicionar corretor</string>
 	<string name="brokers_discover">Descubra sensores em %1$s</string>
-	<string name="brokers_reconnect">Reconectar-se a %1$s</string>
-	<string name="brokers_summary">%1$s:%2$d · %3$s · %4$s</string>
+	<string name="brokers_reconnect">Reconectar–se a %1$s</string>
+
 	<string name="brokers_title">Corretores</string>
 	<string name="common_add">Adicionar</string>
 	<string name="common_back">Voltar</string>
@@ -115,7 +115,7 @@
 	<string name="cred_consent">Este recurso opcional usa um serviço online executado pelo desenvolvedor, %1$s. Você faz login em uma conta lá e escolhe uma credencial salva, e o nome de host, nome de usuário e senha do corretor são retransmitidos de volta para este dispositivo através desse servidor. Nada é enviado até você continuar</string>
 	<string name="cred_expired">O código expirou. Reabra para tentar novamente</string>
 	<string name="cred_instructions">Digitalize isto ou abra %2$s e insira o código e escolha uma credencial ‘%1$s’ salva para enviar</string>
-	<string name="cred_no_hostname">Essa predefinição não incluía um campo Hostname - verifique em %1$s e tente novamente</string>
+	<string name="cred_no_hostname">Essa predefinição não incluía um campo Hostname – verifique em %1$s e tente novamente</string>
 	<string name="cred_qr_description">Código QR para o código %1$s</string>
 	<string name="cred_starting">Começando</string>
 	<string name="cred_title">Importar credenciais do corretor</string>
@@ -146,14 +146,14 @@
 		<item quantity="other">%1$d dispositivos configurados automaticamente</item>
 	</plurals>
 	<string name="discover_auto_none">Nenhum dispositivo com configuração válida estava pronto ainda. Tente novamente em alguns instantes ou use o ícone de atualização acima</string>
-	<string name="discover_bad_config">Encontrado %1$s, mas não foi possível lê-lo como uma configuração de dispositivo – verifique se é JSON válido com uma matriz de ‘painéis’ não vazia</string>
-	<string name="discover_field">%1$s (%2$s)</string>
+	<string name="discover_bad_config">Encontrado %1$s, mas não foi possível lê–lo como uma configuração de dispositivo – verifique se é JSON válido com uma matriz de ‘painéis’ não vazia</string>
+
 	<string name="discover_ideal_range">faixa ideal</string>
 	<string name="discover_instructions">Marque os campos que você deseja como blocos do painel ou use ‘Aplicar configuração do dispositivo’ se o dispositivo publicar seu próprio &lt;topic&gt;/app config</string>
 	<string name="discover_new_group">+ Novo grupo</string>
 	<string name="discover_new_group_name">Novo nome do grupo</string>
 	<string name="discover_no_broker">Adicione um corretor primeiro (Configurações → Corretores) antes de descobrir os sensores</string>
-	<string name="discover_none_found">Nenhum tópico em formato de sensor encontrado ainda. As mensagens retidas podem demorar um pouco para chegar após a assinatura - experimente o ícone de atualização acima ou verifique se o corretor está realmente retendo mensagens sobre esses tópicos</string>
+	<string name="discover_none_found">Nenhum tópico em formato de sensor encontrado ainda. As mensagens retidas podem demorar um pouco para chegar após a assinatura – experimente o ícone de atualização acima ou verifique se o corretor está realmente retendo mensagens sobre esses tópicos</string>
 	<string name="discover_rescan">Digitalizar novamente</string>
 	<string name="discover_sample">amostra: %1$s</string>
 	<plurals name="discover_selected">
@@ -165,7 +165,7 @@
 	<string name="discover_title">Descubra sensores</string>
 	<string name="filter_active">Ativo</string>
 	<string name="filter_fab">Filtrar o painel</string>
-	<string name="filter_fab_active">Filtro: mostrando apenas %1$s - toque para alterar</string>
+	<string name="filter_fab_active">Filtro: mostrando apenas %1$s – toque para alterar</string>
 	<string name="filter_high_moisture">Umidade acima da faixa ideal</string>
 	<string name="filter_low_battery">Bateria 20% ou menos</string>
 	<string name="filter_low_moisture">Umidade abaixo da faixa ideal</string>
@@ -176,11 +176,11 @@
 	<string name="home_add_group">Adicionar grupo</string>
 	<string name="home_add_panel_to">Adicionar painel a %1$s</string>
 	<string name="home_add_tile_to">Adicionar bloco a %1$s</string>
-	<string name="home_age">• %1$s</string>
+
 	<string name="home_another_group">outro grupo</string>
-	<string name="home_change_topic_broad_warning">Nem todos os painéis deste cluster compartilham um tópico de dispositivo limpo, apenas aquele namespace vazio - provavelmente alguns painéis incompatíveis em vez de um dispositivo real. Movê-lo substitui apenas a parte compartilhada, portanto, pode não se aplicar da maneira esperada. Vale a pena verificar primeiro os painéis deste cluster individualmente</string>
+	<string name="home_change_topic_broad_warning">Nem todos os painéis deste cluster compartilham um tópico de dispositivo limpo, apenas aquele namespace vazio – provavelmente alguns painéis incompatíveis em vez de um dispositivo real. Movê–lo substitui apenas a parte compartilhada, portanto, pode não se aplicar da maneira esperada. Vale a pena verificar primeiro os painéis deste cluster individualmente</string>
 	<string name="home_change_topic_cluster">Alterar tópico para %1$s</string>
-	<string name="home_change_topic_text">Move todos os painéis deste cluster para um novo tópico MQTT - por exemplo. depois de dividir uma rede Zigbee em uma segunda ponte, apenas para os dispositivos que realmente se moveram. Outros clusters permanecem intocados</string>
+	<string name="home_change_topic_text">Move todos os painéis deste cluster para um novo tópico MQTT – por exemplo. depois de dividir uma rede Zigbee em uma segunda ponte, apenas para os dispositivos que realmente se moveram. Outros clusters permanecem intocados</string>
 	<string name="home_change_topic_title">Alterar tópico para ‘%1$s’</string>
 	<string name="home_cluster_copy">%1$s cópia</string>
 	<string name="home_cluster_copy_n">%1$s copiar %2$d</string>
@@ -199,7 +199,7 @@
 	<string name="home_delete_group_text">Isso remove o grupo e todos os painéis nele</string>
 	<string name="home_delete_group_title">Excluir grupo?</string>
 	<string name="home_duplicate">Duplicado</string>
-	<string name="home_duplicate_broad_warning">Nem todos os painéis deste cluster compartilham um tópico de dispositivo limpo (apenas ‘%1$s’ em comum) - provavelmente alguns painéis incompatíveis em vez de um dispositivo real. O tópico abaixo substitui apenas a parte compartilhada, portanto pode não se aplicar da maneira esperada. Vale a pena verificar primeiro os painéis deste cluster individualmente</string>
+	<string name="home_duplicate_broad_warning">Nem todos os painéis deste cluster compartilham um tópico de dispositivo limpo (apenas ‘%1$s’ em comum) – provavelmente alguns painéis incompatíveis em vez de um dispositivo real. O tópico abaixo substitui apenas a parte compartilhada, portanto pode não se aplicar da maneira esperada. Vale a pena verificar primeiro os painéis deste cluster individualmente</string>
 	<string name="home_duplicate_cluster">Duplicado %1$s</string>
 	<string name="home_duplicate_title">Duplicar ‘%1$s’</string>
 	<string name="home_edit_group">Editar grupo</string>
@@ -207,7 +207,7 @@
 	<string name="home_expand_all_groups">Expandir todos os grupos</string>
 	<string name="home_expand_group">Expandir %1$s</string>
 	<string name="home_force_upload_copy">Forçar upload de nova cópia</string>
-	<string name="home_force_upload_copy_detail">Reconstrói e republica todos os clusters na configuração do dispositivo deste grupo a partir das configurações atuais deste telefone, substituindo o que estiver atualmente no corretor - use isto se outro telefone ou um problema do corretor deixar algo fora de sincronia</string>
+	<string name="home_force_upload_copy_detail">Reconstrói e republica todos os clusters na configuração do dispositivo deste grupo a partir das configurações atuais deste telefone, substituindo o que estiver atualmente no corretor – use isto se outro telefone ou um problema do corretor deixar algo fora de sincronia</string>
 	<string name="home_force_upload_text">Isso substitui a configuração do dispositivo retido no corretor para cada cluster neste grupo por uma nova cópia criada a partir das configurações atuais deste telefone. Qualquer configuração diferente atualmente no corretor (por exemplo, de outro telefone) será substituída, não mesclada. Isso não pode ser desfeito automaticamente</string>
 	<string name="home_force_upload_title">Forçar upload de ‘%1$s’?</string>
 	<string name="home_group_fallback">Grupo</string>
@@ -229,8 +229,8 @@
 	<string name="home_republished">Republicado ‘%1$s’ para o corretor</string>
 	<string name="home_retopic">Retópico</string>
 	<string name="home_retopic_all">Retopic todos os clusters</string>
-	<string name="home_retopic_all_detail">Move todos os clusters deste grupo atualmente em um tópico MQTT antigo para um novo, de uma só vez - por exemplo, depois de dividir uma rede Zigbee em uma segunda ponte, para cada dispositivo movido. Clusters em um tópico diferente permanecem intocados</string>
-	<string name="home_retopic_all_text">Move todos os clusters deste grupo cujo tópico corresponde exatamente ao ‘Tópico antigo’ para o ‘Novo tópico’ - o restante dos clusters deste grupo permanece intacto. Isso não pode ser desfeito automaticamente</string>
+	<string name="home_retopic_all_detail">Move todos os clusters deste grupo atualmente em um tópico MQTT antigo para um novo, de uma só vez – por exemplo, depois de dividir uma rede Zigbee em uma segunda ponte, para cada dispositivo movido. Clusters em um tópico diferente permanecem intocados</string>
+	<string name="home_retopic_all_text">Move todos os clusters deste grupo cujo tópico corresponde exatamente ao ‘Tópico antigo’ para o ‘Novo tópico’ – o restante dos clusters deste grupo permanece intacto. Isso não pode ser desfeito automaticamente</string>
 	<string name="home_retopic_all_title">Retopic todos os clusters em ‘%1$s’?</string>
 	<plurals name="home_retopic_moved">
 		<item quantity="many">%1$d clusters movidos para ‘%2$s’</item>
@@ -248,7 +248,7 @@
 	<string name="mqtt_backup_delete_text">Remove o backup retido de %1$s. Isso não pode ser desfeito</string>
 	<string name="mqtt_backup_delete_title">Excluir este backup?</string>
 	<string name="mqtt_backup_deleted">Backup excluído de %1$s</string>
-	<string name="mqtt_backup_explain">Publica seus grupos e painéis (não o host/nome de usuário/senha do corretor - eles permanecem neste dispositivo) - compactado com gzip e codificado em base64 para que viaje como uma carga MQTT normal - como uma nova mensagem retida em ‘%1$s/&lt;timestamp&gt;’, mantendo todos os backups anteriores intactos</string>
+	<string name="mqtt_backup_explain">Publica seus grupos e painéis (não o host/nome de usuário/senha do corretor – eles permanecem neste dispositivo) – compactado com gzip e codificado em base64 para que viaje como uma carga MQTT normal – como uma nova mensagem retida em ‘%1$s/&lt;timestamp&gt;’, mantendo todos os backups anteriores intactos</string>
 	<string name="mqtt_backup_mode_backup">Backup</string>
 	<string name="mqtt_backup_mode_restore">Restaurar</string>
 	<string name="mqtt_backup_no_broker">Adicione um corretor primeiro (Configurações → Corretores) antes de usar este</string>
@@ -261,24 +261,24 @@
 	</plurals>
 	<string name="mqtt_backup_title">Backup/Restauração via MQTT</string>
 	<string name="mqtt_restore_done">Restaurado de %1$s</string>
-	<string name="mqtt_restore_explain">Verifica ‘%1$s/#’ para cada backup que o corretor reteve, o mais recente primeiro. A restauração substitui seus grupos e painéis, mas mantém seus corretores atuais como estão (eles não foram incluídos no backup) - portanto, isso apenas se reconecta de forma limpa na mesma configuração do corretor de onde o backup foi feito</string>
+	<string name="mqtt_restore_explain">Verifica ‘%1$s/#’ para cada backup que o corretor reteve, o mais recente primeiro. A restauração substitui seus grupos e painéis, mas mantém seus corretores atuais como estão (eles não foram incluídos no backup) – portanto, isso apenas se reconecta de forma limpa na mesma configuração do corretor de onde o backup foi feito</string>
 	<string name="mqtt_restore_failed">Falha na restauração: a carga desse tópico não era um backup válido</string>
-	<string name="mqtt_restore_none">Nenhum backup encontrado ainda em ‘%1$s/’ - as mensagens retidas podem demorar um pouco para chegar após a verificação ou podem não haver nenhuma publicada lá</string>
+	<string name="mqtt_restore_none">Nenhum backup encontrado ainda em ‘%1$s/’ – as mensagens retidas podem demorar um pouco para chegar após a verificação ou podem não haver nenhuma publicada lá</string>
 	<string name="mqtt_restore_not_loaded">Os dados desse backup ainda não foram carregados. Tente digitalizar novamente</string>
 	<string name="mqtt_restore_restoring">Restaurando</string>
 	<string name="mqtt_restore_scan">Procurar backups</string>
 	<string name="mqtt_restore_scan_hint">Toque em ‘Scan for Backups’ para procurar backups retidos neste corretor</string>
 	<string name="new_device_channel">Novo dispositivo encontrado</string>
-	<string name="new_device_text">%1$s publicou sua própria configuração de painel – abra %2$s para adicioná-la</string>
+	<string name="new_device_text">%1$s publicou sua própria configuração de painel – abra %2$s para adicioná–la</string>
 	<string name="new_device_title">Novo dispositivo encontrado</string>
 	<string name="no_file_picker">Nenhum aplicativo de seleção de arquivos está disponível neste dispositivo</string>
 	<string name="notif_channel_mqtt_connection">Conexão MQTT</string>
 	<string name="notif_mqtt_connection_text">Mantendo conexões de corretor</string>
 	<string name="notif_test_title">Alerta de teste</string>
 	<string name="panel_add_title">Adicionar painel</string>
-	<string name="panel_button_help">Enviado sempre que este botão é tocado - não há estado ligado/desligado para rastrear</string>
+	<string name="panel_button_help">Enviado sempre que este botão é tocado – não há estado ligado/desligado para rastrear</string>
 	<string name="panel_cluster">Nome do cluster (opcional)</string>
-	<string name="panel_cluster_hint">por exemplo Sensor de Solo 1 – agrupa-o com outros painéis com o mesmo nome</string>
+	<string name="panel_cluster_hint">por exemplo Sensor de Solo 1 – agrupa–o com outros painéis com o mesmo nome</string>
 	<string name="panel_command_topic">Tópico de comando</string>
 	<string name="panel_command_topic_hint_button">por exemplo zigbee2mqtt/Blind_01/conjunto</string>
 	<string name="panel_command_topic_hint_toggle">por exemplo zigbee2mqtt/plugue/conjunto de cozinha</string>
@@ -289,17 +289,17 @@
 	<string name="panel_delete_title">Excluir painel?</string>
 	<string name="panel_edit_title">Painel de edição</string>
 	<string name="panel_editable">Valor editável</string>
-	<string name="panel_editable_detail">Tocar neste bloco permite digitar um novo número, que republica neste mesmo tópico/campo (mantido) - para uma preferência fixa, um script de automação lê (por exemplo, um limite de umidade), não uma leitura de hardware ao vivo, que a próxima atualização apenas substituiria</string>
+	<string name="panel_editable_detail">Tocar neste bloco permite digitar um novo número, que republica neste mesmo tópico/campo (mantido) – para uma preferência fixa, um script de automação lê (por exemplo, um limite de umidade), não uma leitura de hardware ao vivo, que a próxima atualização apenas substituiria</string>
 	<string name="panel_icon">Ícone</string>
 	<string name="panel_ideal_help">Quando definido, este bloco pisca em vermelho abaixo do mínimo, verde dentro do alcance e azul acima do máximo</string>
 	<string name="panel_ideal_topic">Tópico de alcance ideal (opcional)</string>
-	<string name="panel_ideal_topic_hint">por exemplo z2m2/SoilSensor_01/ideal – publica {‘min’:x,‘max’:y}</string>
+	<string name="panel_ideal_topic_hint">por exemplo zigbee2mqtt/SoilSensor_01/ideal – publica {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">Campo JSON (em branco = carga útil bruta)</string>
 	<string name="panel_json_field_hint">por exemplo temperatura ou estado.bateria</string>
 	<string name="panel_label">Rótulo</string>
 	<string name="panel_max_field">Nome máximo do campo</string>
 	<string name="panel_min_field">Nome do campo mínimo</string>
-	<string name="panel_min_max_help">Necessário apenas se o tópico não usar teclas simples ‘min’/‘max’ – por exemplo. defina-os como ‘moisture_min’/‘moisture_max’ para um tópico de configuração de dispositivo compartilhado</string>
+	<string name="panel_min_max_help">Necessário apenas se o tópico não usar teclas simples ‘min’/‘max’ – por exemplo. defina–os como ‘moisture_min’/‘moisture_max’ para um tópico de configuração de dispositivo compartilhado</string>
 	<string name="panel_no_broker">Adicione um corretor primeiro (Configurações → Corretores) antes de criar painéis</string>
 	<string name="panel_off_payload">Carga útil DESLIGADA</string>
 	<string name="panel_on_payload">ON carga útil</string>
@@ -331,10 +331,10 @@
 	<string name="permit_join_via">Permitir adesão via (opcional)</string>
 	<string name="permit_join_via_help">Nome amigável de um roteador específico para estender a adesão ou ‘Coordenador’ apenas para o coordenador. Deixe em branco para permitir a adesão através de todos os roteadores e do coordenador ao mesmo tempo</string>
 	<string name="permit_join_via_hint">Em branco = toda a rede</string>
-	<string name="protocol_ssl">SSL - Camada de soquetes seguros</string>
-	<string name="protocol_tcp">TCP - Protocolo de Controle de Transmissão</string>
-	<string name="protocol_ws">WS - Soquetes da Web</string>
-	<string name="protocol_wss">WSS - Web Sockets Seguros</string>
+	<string name="protocol_ssl">SSL – Camada de soquetes seguros</string>
+	<string name="protocol_tcp">TCP – Protocolo de Controle de Transmissão</string>
+	<string name="protocol_ws">WS – Soquetes da Web</string>
+	<string name="protocol_wss">WSS – Web Sockets Seguros</string>
 	<string name="settings_about">Sobre</string>
 	<string name="settings_about_tagline">%1$s – sem nuvem, sem conta, sem aprisionamento</string>
 	<string name="settings_alerts_detail">Alertas de fumaça e irrigação, som e notificações de teste</string>
@@ -352,7 +352,7 @@
 	<string name="settings_force_upload_all">Forçar upload de todos os grupos</string>
 	<string name="settings_force_upload_all_confirm">Isso substitui a configuração do dispositivo retido no corretor para cada cluster em cada grupo por uma nova cópia criada a partir das configurações atuais deste telefone. Qualquer configuração diferente atualmente no corretor (por exemplo, de outro telefone) será substituída, não mesclada. Isso não pode ser desfeito automaticamente</string>
 	<string name="settings_force_upload_all_confirm_title">Forçar upload de todos os grupos?</string>
-	<string name="settings_force_upload_all_detail">Reconstrói e republica cada cluster na configuração de dispositivo de cada grupo a partir das configurações atuais deste telefone - use isto se um problema do corretor ou outro telefone deixou mais de um grupo fora de sincronia</string>
+	<string name="settings_force_upload_all_detail">Reconstrói e republica cada cluster na configuração de dispositivo de cada grupo a partir das configurações atuais deste telefone – use isto se um problema do corretor ou outro telefone deixou mais de um grupo fora de sincronia</string>
 	<plurals name="settings_force_upload_all_done">
 		<item quantity="many">%1$d grupos republicados no corretor</item>
 		<item quantity="one">Grupo %1$d republicado para o corretor</item>
@@ -362,9 +362,9 @@
 	<string name="settings_orphans_clean">Limpar</string>
 	<string name="settings_orphans_confirm_title">Limpar dados órfãos?</string>
 	<plurals name="settings_orphans_confirm">
-		<item quantity="many">Isso remove %1$d painéis marcados com um corretor que não existe mais - geralmente deixados para trás ao excluir um corretor e adicioná-lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
-		<item quantity="one">Isso remove o painel %1$d marcado com um corretor que não existe mais - geralmente deixado para trás ao excluir um corretor e adicioná-lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
-		<item quantity="other">Isso remove %1$d painéis marcados com um corretor que não existe mais - geralmente deixados para trás ao excluir um corretor e adicioná-lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
+		<item quantity="many">Isso remove %1$d painéis marcados com um corretor que não existe mais – geralmente deixados para trás ao excluir um corretor e adicioná–lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
+		<item quantity="one">Isso remove o painel %1$d marcado com um corretor que não existe mais – geralmente deixado para trás ao excluir um corretor e adicioná–lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
+		<item quantity="other">Isso remove %1$d painéis marcados com um corretor que não existe mais – geralmente deixados para trás ao excluir um corretor e adicioná–lo novamente. Os painéis ainda vinculados a um corretor que você realmente configurou nunca são tocados</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
 		<item quantity="many">%1$d painéis restantes de um corretor excluído podem ser removidos</item>
@@ -377,10 +377,10 @@
 		<item quantity="other">%1$d painéis removidos</item>
 	</plurals>
 	<string name="settings_tile_width">Largura do bloco e do cluster</string>
-	<string name="settings_tile_width_detail">Qual a largura dos blocos (e, portanto, as cartas de grupo, com 3 blocos de largura) podem crescer, até preencher a tela - atualmente %1$ddp</string>
+	<string name="settings_tile_width_detail">Qual a largura dos blocos (e, portanto, as cartas de grupo, com 3 blocos de largura) podem crescer, até preencher a tela – atualmente %1$ddp</string>
 	<string name="settings_undo">Desfazer duração do brinde</string>
-	<string name="settings_undo_detail">Quanto tempo o prompt ‘Desfazer’ permanece ativo após arrastar um bloco, cluster ou grupo - atualmente %1$ds</string>
-	<string name="settings_undo_detail_off">Quanto tempo o prompt ‘Desfazer’ permanece ativo após arrastar um bloco, cluster ou grupo - atualmente desativado</string>
+	<string name="settings_undo_detail">Quanto tempo o prompt ‘Desfazer’ permanece ativo após arrastar um bloco, cluster ou grupo – atualmente %1$ds</string>
+	<string name="settings_undo_detail_off">Quanto tempo o prompt ‘Desfazer’ permanece ativo após arrastar um bloco, cluster ou grupo – atualmente desativado</string>
 	<string name="settings_version">Versão %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">Alertas de fumaça (silencioso)</string>
 	<string name="smoke_channel_silent_desc">Alerta quando um dispositivo relata fumaça detectada, sem som</string>
@@ -401,7 +401,7 @@
 		<item quantity="one">%1$d de %2$d mensagem (mais antiga primeiro, última %3$d mantida)</item>
 		<item quantity="other">%1$d de %2$d mensagens (as mais antigas primeiro, as últimas %3$d mantidas)</item>
 	</plurals>
-	<string name="terminal_empty">Nenhuma mensagem recebida ainda. Certifique-se de que um corretor esteja conectado e inscrito (verifique Corretores em Configurações ou se o tópico base corresponde à sua configuração)</string>
+	<string name="terminal_empty">Nenhuma mensagem recebida ainda. Certifique–se de que um corretor esteja conectado e inscrito (verifique Corretores em Configurações ou se o tópico base corresponde à sua configuração)</string>
 	<string name="terminal_filter">Filtrar por tópico ou carga útil</string>
 	<string name="terminal_jump_newest">Ir para o mais recente</string>
 	<string name="terminal_no_match">Nenhuma mensagem corresponde a esse filtro</string>
@@ -417,5 +417,5 @@
 	<string name="welcome_add_broker">Adicionar um corretor</string>
 	<string name="welcome_intro">Você precisará de pelo menos um corretor MQTT para começar – adicione um agora ou restaure uma configuração da qual você fez backup anteriormente</string>
 	<string name="welcome_restore">Restaurar do backup</string>
-	<string name="welcome_title">Bem-vindo</string>
+	<string name="welcome_title">Bem–vindo</string>
 </resources>

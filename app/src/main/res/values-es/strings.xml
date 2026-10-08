@@ -93,7 +93,7 @@
 	<string name="brokers_add">Agregar corredor</string>
 	<string name="brokers_discover">Descubra sensores en %1$s</string>
 	<string name="brokers_reconnect">Reconectarse a %1$s</string>
-	<string name="brokers_summary">%1$s:%2$d · %3$s · %4$s</string>
+
 	<string name="brokers_title">Corredores</string>
 	<string name="common_add">Agregar</string>
 	<string name="common_back">Atrás</string>
@@ -147,7 +147,7 @@
 	</plurals>
 	<string name="discover_auto_none">Ningún dispositivo con una configuración válida estaba listo todavía; inténtelo de nuevo en un momento o use el ícono de actualización que aparece arriba</string>
 	<string name="discover_bad_config">Encontré %1$s pero no pude leerlo como una configuración de dispositivo; verifique que sea JSON válido con una matriz ‘panels’ no vacía</string>
-	<string name="discover_field">%1$s (%2$s)</string>
+
 	<string name="discover_ideal_range">rango ideal</string>
 	<string name="discover_instructions">Marque los campos que desee como mosaicos del panel o utilice ‘Aplicar configuración del dispositivo’ si el dispositivo publica su propia configuración &lt;tema&gt;/aplicación</string>
 	<string name="discover_new_group">+ Nuevo grupo</string>
@@ -165,7 +165,7 @@
 	<string name="discover_title">Descubra los sensores</string>
 	<string name="filter_active">Activo</string>
 	<string name="filter_fab">Filtrar el tablero</string>
-	<string name="filter_fab_active">Filtro: muestra solo %1$s - toca para cambiar</string>
+	<string name="filter_fab_active">Filtro: muestra solo %1$s – toca para cambiar</string>
 	<string name="filter_high_moisture">Humedad por encima del rango ideal</string>
 	<string name="filter_low_battery">Batería 20% o menos</string>
 	<string name="filter_low_moisture">Humedad por debajo del rango ideal</string>
@@ -176,7 +176,7 @@
 	<string name="home_add_group">Agregar grupo</string>
 	<string name="home_add_panel_to">Agregar panel a %1$s</string>
 	<string name="home_add_tile_to">Agregar mosaico a %1$s</string>
-	<string name="home_age">• %1$s</string>
+
 	<string name="home_another_group">otro grupo</string>
 	<string name="home_change_topic_broad_warning">No todos los paneles de este clúster comparten un tema de dispositivo limpio, solo ese espacio de nombres simple; probablemente algunos paneles que no coinciden en lugar de un dispositivo real. Al moverlo, se reemplaza solo esa parte compartida, por lo que es posible que no se aplique de la forma esperada. Vale la pena revisar primero los paneles de este grupo individualmente</string>
 	<string name="home_change_topic_cluster">Cambiar tema para %1$s</string>
@@ -293,7 +293,7 @@
 	<string name="panel_icon">Icono</string>
 	<string name="panel_ideal_help">Cuando está configurado, este mosaico parpadea en rojo por debajo del mínimo, en verde dentro del rango y en azul por encima del máximo</string>
 	<string name="panel_ideal_topic">Tema de rango ideal (opcional)</string>
-	<string name="panel_ideal_topic_hint">p.ej. z2m2/SoilSensor_01/ideal – publica {‘min’:x,‘max’:y}</string>
+	<string name="panel_ideal_topic_hint">p.ej. zigbee2mqtt/SoilSensor_01/ideal – publica {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">Campo JSON (en blanco = carga útil sin formato)</string>
 	<string name="panel_json_field_hint">p.ej. temperatura o estado.batería</string>
 	<string name="panel_label">Etiqueta</string>
@@ -332,8 +332,8 @@
 	<string name="permit_join_via_help">Nombre descriptivo de un enrutador específico para extender la unión, o ‘Coordinador’ solo para el coordinador. Déjelo en blanco para permitir unirse a través de cada enrutador y coordinador a la vez</string>
 	<string name="permit_join_via_hint">En blanco = toda la red</string>
 	<string name="protocol_ssl">SSL: capa de sockets seguros</string>
-	<string name="protocol_tcp">TCP - Protocolo de control de transmisión</string>
-	<string name="protocol_ws">WS - Enchufes web</string>
+	<string name="protocol_tcp">TCP – Protocolo de control de transmisión</string>
+	<string name="protocol_ws">WS – Enchufes web</string>
 	<string name="protocol_wss">WSS: sockets web seguros</string>
 	<string name="settings_about">Acerca de</string>
 	<string name="settings_about_tagline">%1$s – sin nube, sin cuenta, sin bloqueo</string>

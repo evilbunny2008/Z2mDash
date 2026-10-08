@@ -12,14 +12,14 @@
 	<string name="alerts_open_settings">ਸੈਟਿੰਗਾਂ</string>
 	<string name="alerts_smoke">ਧੂੰਏਂ ਦੀਆਂ ਚਿਤਾਵਨੀਆਂ</string>
 	<string name="alerts_smoke_detail">ਸੂਚਿਤ ਕਰੋ ਜੇਕਰ ਕੋਈ ਡਿਵਾਈਸ ਧੂੰਏਂ ਦਾ ਪਤਾ ਲਗਦੀ ਹੈ</string>
-	<string name="alerts_smoke_test_detail">ਇੱਕ ਅਸਲੀ ਸੂਚਨਾ (ਅਵਾਜ਼ ਦੇ ਨਾਲ, ਜੇਕਰ ਉੱਪਰ ਯੋਗ ਕੀਤੀ ਗਈ ਹੈ) ਨੂੰ ਅਸਲ ਸਮੋਕ ਅਲਰਟ ਦੇ ਤੌਰ ‘ਤੇ ਉਸੇ ਤਰਕ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਫਾਇਰ ਕਰਦਾ ਹੈ - ਇਹ ਪੁਸ਼ਟੀ ਕਰਨ ਦਾ ਇੱਕ ਵਧੀਆ ਤਰੀਕਾ ਹੈ ਕਿ ਤੁਹਾਨੂੰ ਲੋੜ ਪੈਣ ਤੋਂ ਪਹਿਲਾਂ ਇਹ ਅਸਲ ਵਿੱਚ ਤੁਹਾਡਾ ਧਿਆਨ ਖਿੱਚੇਗਾ।</string>
+	<string name="alerts_smoke_test_detail">ਇੱਕ ਅਸਲੀ ਸੂਚਨਾ (ਅਵਾਜ਼ ਦੇ ਨਾਲ, ਜੇਕਰ ਉੱਪਰ ਯੋਗ ਕੀਤੀ ਗਈ ਹੈ) ਨੂੰ ਅਸਲ ਸਮੋਕ ਅਲਰਟ ਦੇ ਤੌਰ ‘ਤੇ ਉਸੇ ਤਰਕ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਫਾਇਰ ਕਰਦਾ ਹੈ – ਇਹ ਪੁਸ਼ਟੀ ਕਰਨ ਦਾ ਇੱਕ ਵਧੀਆ ਤਰੀਕਾ ਹੈ ਕਿ ਤੁਹਾਨੂੰ ਲੋੜ ਪੈਣ ਤੋਂ ਪਹਿਲਾਂ ਇਹ ਅਸਲ ਵਿੱਚ ਤੁਹਾਡਾ ਧਿਆਨ ਖਿੱਚੇਗਾ।</string>
 	<string name="alerts_sound">ਚੇਤਾਵਨੀ ਧੁਨੀ</string>
 	<string name="alerts_sound_detail">ਸੂਚਨਾ ਦੇ ਨਾਲ ਇੱਕ ਉੱਚੀ ਅਲਾਰਮ ਸ਼ੈਲੀ ਦੀ ਆਵਾਜ਼ ਚਲਾਓ</string>
 	<string name="alerts_test">ਟੈਸਟ ਸੂਚਨਾ</string>
 	<string name="alerts_title">ਅਲਾਰਮ/ਸੁਚੇਤਨਾ</string>
 	<string name="alerts_watering">ਪਾਣੀ ਦੇਣ ਦੀਆਂ ਚੇਤਾਵਨੀਆਂ</string>
 	<string name="alerts_watering_detail">ਜਦੋਂ ਨਮੀ ਦਾ ਸੈਂਸਰ ਆਪਣੀ ਆਦਰਸ਼ ਰੇਂਜ ਦੇ ਵਿਚਕਾਰੋਂ ਵੱਧਦਾ ਹੈ ਤਾਂ ਵਾਈਬ੍ਰੇਟ ਅਤੇ ਚਾਈਮ ਕਰੋ</string>
-	<string name="alerts_watering_test_detail">ਉਪਰੋਕਤ ਟੌਗਲ ਦੀ ਪਰਵਾਹ ਕੀਤੇ ਬਿਨਾਂ, ਵਾਟਰਿੰਗ ਚਾਈਮ ਅਤੇ ਵਾਈਬ੍ਰੇਸ਼ਨ ਦੇ ਨਾਲ ਇੱਕ ਅਸਲ ਸੂਚਨਾ ਨੂੰ ਫਾਇਰ ਕਰਦਾ ਹੈ - ਇਸ ‘ਤੇ ਭਰੋਸਾ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਇਸਨੂੰ ਸੁਣਨ ਦਾ ਇੱਕ ਵਧੀਆ ਤਰੀਕਾ</string>
+	<string name="alerts_watering_test_detail">ਉਪਰੋਕਤ ਟੌਗਲ ਦੀ ਪਰਵਾਹ ਕੀਤੇ ਬਿਨਾਂ, ਵਾਟਰਿੰਗ ਚਾਈਮ ਅਤੇ ਵਾਈਬ੍ਰੇਸ਼ਨ ਦੇ ਨਾਲ ਇੱਕ ਅਸਲ ਸੂਚਨਾ ਨੂੰ ਫਾਇਰ ਕਰਦਾ ਹੈ – ਇਸ ‘ਤੇ ਭਰੋਸਾ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਇਸਨੂੰ ਸੁਣਨ ਦਾ ਇੱਕ ਵਧੀਆ ਤਰੀਕਾ</string>
 	<string name="backup_brokers_imported">ਦਲਾਲ ਆਯਾਤ</string>
 	<string name="backup_config_imported">ਸੰਰਚਨਾ ਆਯਾਤ ਕੀਤੀ ਗਈ</string>
 	<string name="backup_encrypt">ਬੈਕਅੱਪ ਇਨਕ੍ਰਿਪਟ ਕਰੋ</string>
@@ -37,11 +37,11 @@
 	<string name="backup_password">ਪਾਸਵਰਡ</string>
 	<string name="backup_replace_everything">ਹਰ ਚੀਜ਼ ਨੂੰ ਬਦਲੋ</string>
 	<string name="backup_restore">ਰੀਸਟੋਰ ਕਰੋ</string>
-	<string name="backup_restore_brokers_detail">ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਸੈਟਅਪ ਵਿੱਚ ਫਾਈਲ ਤੋਂ ਦਲਾਲਾਂ ਨੂੰ ਮਿਲਾਉਂਦਾ ਹੈ - ਸਮੂਹ ਅਤੇ ਪੈਨਲ ਅਛੂਤੇ ਰਹਿ ਗਏ ਹਨ</string>
+	<string name="backup_restore_brokers_detail">ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਸੈਟਅਪ ਵਿੱਚ ਫਾਈਲ ਤੋਂ ਦਲਾਲਾਂ ਨੂੰ ਮਿਲਾਉਂਦਾ ਹੈ – ਸਮੂਹ ਅਤੇ ਪੈਨਲ ਅਛੂਤੇ ਰਹਿ ਗਏ ਹਨ</string>
 	<string name="backup_restore_full_detail">ਤੁਹਾਡੀ ਪੂਰੀ ਸੰਰਚਨਾ ਨੂੰ ਫਾਈਲ ਵਿੱਚ ਮੌਜੂਦ ਚੀਜ਼ਾਂ ਨਾਲ ਬਦਲਦਾ ਹੈ</string>
 	<string name="backup_scope_brokers">ਸਿਰਫ਼ ਦਲਾਲ</string>
 	<string name="backup_scope_full">ਪੂਰੀ ਸੰਰਚਨਾ</string>
-	<string name="backup_set_password_text">ਇਸ ਬੈਕਅੱਪ ਨੂੰ ਇਨਕ੍ਰਿਪਟ ਕਰਨ ਲਈ ਇੱਕ ਪਾਸਵਰਡ ਚੁਣੋ। ਇਹ ਅਗਲੀ ਵਾਰ ਲਈ ਯਾਦ ਰੱਖਿਆ ਗਿਆ ਹੈ - ਤੁਹਾਨੂੰ ਮੁੜ ਬਹਾਲ ਕਰਨ ਲਈ ਇਸਦੀ ਲੋੜ ਪਵੇਗੀ</string>
+	<string name="backup_set_password_text">ਇਸ ਬੈਕਅੱਪ ਨੂੰ ਇਨਕ੍ਰਿਪਟ ਕਰਨ ਲਈ ਇੱਕ ਪਾਸਵਰਡ ਚੁਣੋ। ਇਹ ਅਗਲੀ ਵਾਰ ਲਈ ਯਾਦ ਰੱਖਿਆ ਗਿਆ ਹੈ – ਤੁਹਾਨੂੰ ਮੁੜ ਬਹਾਲ ਕਰਨ ਲਈ ਇਸਦੀ ਲੋੜ ਪਵੇਗੀ</string>
 	<string name="backup_set_password_title">ਐਕਸਪੋਰਟ ਪਾਸਵਰਡ ਸੈੱਟ ਕਰੋ</string>
 	<string name="backup_unencrypted_text">ਇਸ ਬੈਕਅੱਪ ਵਿੱਚ ਤੁਹਾਡੇ ਦਲਾਲਾਂ ਦੇ ਉਪਭੋਗਤਾ ਨਾਮ ਅਤੇ ਪਾਸਵਰਡ ਸ਼ਾਮਲ ਹੁੰਦੇ ਹਨ, ਜੋ ਸਾਦੇ ਟੈਕਸਟ ਦੇ ਰੂਪ ਵਿੱਚ ਸਟੋਰ ਕੀਤੇ ਜਾਂਦੇ ਹਨ। ਕੋਈ ਵੀ ਜੋ ਫਾਈਲ ਨੂੰ ਫੜ ਲੈਂਦਾ ਹੈ ਉਹ ਉਹਨਾਂ ਨੂੰ ਪੜ੍ਹ ਸਕਦਾ ਹੈ. ਇਸਦੀ ਬਜਾਏ ਇੱਕ ਪਾਸਵਰਡ ਨਾਲ ਇਸਨੂੰ ਸੁਰੱਖਿਅਤ ਕਰਨ ਲਈ ਐਨਕ੍ਰਿਪਟ ਬੈਕਅੱਪ ਚਾਲੂ ਕਰੋ</string>
 	<string name="backup_unencrypted_title">ਕੀ ਏਨਕ੍ਰਿਪਸ਼ਨ ਤੋਂ ਬਿਨਾਂ ਨਿਰਯਾਤ ਕਰਨਾ ਹੈ?</string>
@@ -58,11 +58,11 @@
 	<string name="broker_add_title">ਬ੍ਰੋਕਰ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="broker_additional">ਵਾਧੂ ਮਾਪਦੰਡ</string>
 	<string name="broker_auth">ਪ੍ਰਮਾਣਿਕਤਾ</string>
-	<string name="broker_auto_accept">ਖੋਜੀਆਂ ਗਈਆਂ ਡਿਵਾਈਸਾਂ ਨੂੰ ਆਟੋ-ਸਵੀਕਾਰ ਕਰੋ</string>
-	<string name="broker_auto_accept_detail">ਹਰ ਇੱਕ ਨੂੰ ਸਵੀਕਾਰ ਕਰਨ ਦੀ ਬਜਾਏ, ਇੱਕ ਨਵੇਂ-ਦੇਖੇ ਡਿਵਾਈਸ ਦੇ ਸਮੂਹ/ਕਲੱਸਟਰ/ਪੈਨਲਾਂ ਨੂੰ ਤੁਰੰਤ ਸ਼ਾਮਲ ਕਰੋ</string>
+	<string name="broker_auto_accept">ਖੋਜੀਆਂ ਗਈਆਂ ਡਿਵਾਈਸਾਂ ਨੂੰ ਆਟੋ–ਸਵੀਕਾਰ ਕਰੋ</string>
+	<string name="broker_auto_accept_detail">ਹਰ ਇੱਕ ਨੂੰ ਸਵੀਕਾਰ ਕਰਨ ਦੀ ਬਜਾਏ, ਇੱਕ ਨਵੇਂ–ਦੇਖੇ ਡਿਵਾਈਸ ਦੇ ਸਮੂਹ/ਕਲੱਸਟਰ/ਪੈਨਲਾਂ ਨੂੰ ਤੁਰੰਤ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="broker_auto_connect">ਆਟੋ ਕਨੈਕਟ ਕਰੋ</string>
 	<string name="broker_base_topic">ਅਧਾਰ ਵਿਸ਼ਾ</string>
-	<string name="broker_base_topic_help">ਐਪ ਬ੍ਰੋਕਰ ‘ਤੇ ਹਰ ਵਿਸ਼ੇ ਦੀ ਬਜਾਏ, ਡਿਵਾਈਸਾਂ ਅਤੇ ਉਹਨਾਂ ਦੇ /ਐਪ ਸੰਰਚਨਾਵਾਂ ਲਈ ’&lt;ਬੇਸ ਵਿਸ਼ਾ&gt;/#‘ ਦੇਖਦੀ ਹੈ। ਇਸੇ ਬ੍ਰੋਕਰ ’ਤੇ ਇੱਕ ਤੋਂ ਵੱਧ Zigbee2MQTT ਨੇਮਸਪੇਸ ਦੇਖਣ ਲਈ ਇੱਕ ਕੌਮੇ ਨਾਲ ਵੱਖ ਕੀਤੀ ਸੂਚੀ (ਜਿਵੇਂ ਕਿ ‘zigbee2mqtt, zigbee2mqtt2’) ਦਰਜ ਕਰੋ - ਹਰੇਕ ਨੂੰ ਆਪਣਾ ਆਪਣਾ ਪਰਮਿਟ ਪ੍ਰਾਪਤ ਹੁੰਦਾ ਹੈ ਹੇਠਾਂ ਟੌਗਲ ਕਰੋ।</string>
+	<string name="broker_base_topic_help">ਐਪ ਬ੍ਰੋਕਰ ‘ਤੇ ਹਰ ਵਿਸ਼ੇ ਦੀ ਬਜਾਏ, ਡਿਵਾਈਸਾਂ ਅਤੇ ਉਹਨਾਂ ਦੇ /ਐਪ ਸੰਰਚਨਾਵਾਂ ਲਈ ’&lt;ਬੇਸ ਵਿਸ਼ਾ&gt;/#‘ ਦੇਖਦੀ ਹੈ। ਇਸੇ ਬ੍ਰੋਕਰ ’ਤੇ ਇੱਕ ਤੋਂ ਵੱਧ Zigbee2MQTT ਨੇਮਸਪੇਸ ਦੇਖਣ ਲਈ ਇੱਕ ਕੌਮੇ ਨਾਲ ਵੱਖ ਕੀਤੀ ਸੂਚੀ (ਜਿਵੇਂ ਕਿ ‘zigbee2mqtt, zigbee2mqtt2’) ਦਰਜ ਕਰੋ – ਹਰੇਕ ਨੂੰ ਆਪਣਾ ਆਪਣਾ ਪਰਮਿਟ ਪ੍ਰਾਪਤ ਹੁੰਦਾ ਹੈ ਹੇਠਾਂ ਟੌਗਲ ਕਰੋ।</string>
 	<string name="broker_cert_selected">ਸਰਟੀਫਿਕੇਟ ਚੁਣਿਆ ਗਿਆ ✓</string>
 	<string name="broker_clean_session">ਸਾਫ਼ ਸੈਸ਼ਨ</string>
 	<string name="broker_clean_session_detail">ਹਰੇਕ ਕੁਨੈਕਸ਼ਨ ‘ਤੇ ਨਵਾਂ ਸੈਸ਼ਨ ਸ਼ੁਰੂ ਕਰੋ (ਸੁਨੇਹੇ ਬਰਕਰਾਰ ਨਹੀਂ ਰੱਖੇ ਗਏ)</string>
@@ -76,24 +76,24 @@
 	<string name="broker_host">ਮੇਜ਼ਬਾਨ</string>
 	<string name="broker_import_code">ਕੋਡ ਰਾਹੀਂ ਆਯਾਤ ਕਰੋ</string>
 	<string name="broker_keep_alive">ਜਿੰਦਾ ਅੰਤਰਾਲ ਰੱਖੋ</string>
-	<string name="broker_keep_alive_help">ਲਾਈਵ ਸੁਨੇਹਿਆਂ ਦੇ ਵਿਚਕਾਰ ਸਕਿੰਟਾਂ ਵਿੱਚ ਸਮਾਂ ਅੰਤਰਾਲ। ਪੂਰਵ-ਨਿਰਧਾਰਤ: 60 ਸਕਿੰਟ। ਰੇਂਜ: 5–120 ਸਕਿੰਟ</string>
+	<string name="broker_keep_alive_help">ਲਾਈਵ ਸੁਨੇਹਿਆਂ ਦੇ ਵਿਚਕਾਰ ਸਕਿੰਟਾਂ ਵਿੱਚ ਸਮਾਂ ਅੰਤਰਾਲ। ਪੂਰਵ–ਨਿਰਧਾਰਤ: 60 ਸਕਿੰਟ। ਰੇਂਜ: 5–120 ਸਕਿੰਟ</string>
 	<string name="broker_name">ਨਾਮ</string>
 	<string name="broker_port">ਪੋਰਟ</string>
 	<string name="broker_protocol">ਪ੍ਰੋਟੋਕੋਲ</string>
 	<string name="broker_select_cert">ਸਰਟੀਫਿਕੇਟ ਫਾਈਲ ਚੁਣੋ</string>
-	<string name="broker_self_signed">ਇਹ ਬ੍ਰੋਕਰ ਸਵੈ-ਦਸਤਖਤ ਕੀਤੇ SSL/TLS ਸਰਟੀਫਿਕੇਟ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ</string>
+	<string name="broker_self_signed">ਇਹ ਬ੍ਰੋਕਰ ਸਵੈ–ਦਸਤਖਤ ਕੀਤੇ SSL/TLS ਸਰਟੀਫਿਕੇਟ ਦੀ ਵਰਤੋਂ ਕਰਦਾ ਹੈ</string>
 	<string name="broker_self_signed_risk">ਆਪਣੇ ਖੁਦ ਦੇ ਜੋਖਮ ‘ਤੇ ਵਰਤੋ</string>
 	<string name="broker_show">ਦਿਖਾਓ</string>
-	<string name="broker_show_reconnect">ਮੁੜ-ਕਨੈਕਸ਼ਨ ਸਥਿਤੀ ਦਿਖਾਓ</string>
-	<string name="broker_show_reconnect_detail">ਮੁੱਖ ਸਕ੍ਰੀਨ ‘ਤੇ ਪੁਨਰ-ਕਨੈਕਸ਼ਨ ਸੂਚਨਾਵਾਂ ਦਿਖਾਓ</string>
+	<string name="broker_show_reconnect">ਮੁੜ–ਕਨੈਕਸ਼ਨ ਸਥਿਤੀ ਦਿਖਾਓ</string>
+	<string name="broker_show_reconnect_detail">ਮੁੱਖ ਸਕ੍ਰੀਨ ‘ਤੇ ਪੁਨਰ–ਕਨੈਕਸ਼ਨ ਸੂਚਨਾਵਾਂ ਦਿਖਾਓ</string>
 	<string name="broker_timeout">ਕਨੈਕਸ਼ਨ ਸਮਾਂ ਸਮਾਪਤ</string>
-	<string name="broker_timeout_help">ਕੁਨੈਕਸ਼ਨ ਲਈ ਅਧਿਕਤਮ ਉਡੀਕ ਸਮਾਂ। ਪੂਰਵ-ਨਿਰਧਾਰਤ: 30 ਸਕਿੰਟ। ਰੇਂਜ: 1–300 ਸਕਿੰਟ</string>
+	<string name="broker_timeout_help">ਕੁਨੈਕਸ਼ਨ ਲਈ ਅਧਿਕਤਮ ਉਡੀਕ ਸਮਾਂ। ਪੂਰਵ–ਨਿਰਧਾਰਤ: 30 ਸਕਿੰਟ। ਰੇਂਜ: 1–300 ਸਕਿੰਟ</string>
 	<string name="broker_username">ਯੂਜ਼ਰਨੇਮ</string>
 	<string name="broker_ws_path">WebSocket ਮਾਰਗ</string>
 	<string name="brokers_add">ਦਲਾਲ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="brokers_discover">%1$s ‘ਤੇ ਸੈਂਸਰ ਖੋਜੋ</string>
 	<string name="brokers_reconnect">%1$s ਨਾਲ ਮੁੜ ਕਨੈਕਟ ਕਰੋ</string>
-	<string name="brokers_summary">%1$s:%2$d · %3$s · %4$s</string>
+
 	<string name="brokers_title">ਦਲਾਲ</string>
 	<string name="common_add">ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="common_back">ਪਿੱਛੇ</string>
@@ -113,19 +113,19 @@
 	<string name="connection_state_disconnected">ਡਿਸਕਨੈਕਟ ਕੀਤਾ</string>
 	<string name="connection_state_failed">ਅਸਫਲ ਰਿਹਾ</string>
 	<string name="cred_consent">ਇਹ ਵਿਕਲਪਿਕ ਵਿਸ਼ੇਸ਼ਤਾ ਡਿਵੈਲਪਰ, %1$s ਦੁਆਰਾ ਚਲਾਈ ਜਾਂਦੀ ਇੱਕ ਔਨਲਾਈਨ ਸੇਵਾ ਦੀ ਵਰਤੋਂ ਕਰਦੀ ਹੈ। ਤੁਸੀਂ ਉੱਥੇ ਇੱਕ ਖਾਤੇ ਵਿੱਚ ਲੌਗਇਨ ਕਰਦੇ ਹੋ ਅਤੇ ਇੱਕ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ਪ੍ਰਮਾਣ ਪੱਤਰ ਚੁਣਦੇ ਹੋ, ਅਤੇ ਬ੍ਰੋਕਰ ਦਾ ਹੋਸਟਨਾਮ, ਉਪਭੋਗਤਾ ਨਾਮ ਅਤੇ ਪਾਸਵਰਡ ਉਸ ਸਰਵਰ ਦੁਆਰਾ ਇਸ ਡਿਵਾਈਸ ਤੇ ਵਾਪਸ ਭੇਜੇ ਜਾਂਦੇ ਹਨ। ਜਦੋਂ ਤੱਕ ਤੁਸੀਂ ਜਾਰੀ ਨਹੀਂ ਰੱਖਦੇ ਕੁਝ ਵੀ ਨਹੀਂ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ</string>
-	<string name="cred_expired">ਕੋਡ ਦੀ ਮਿਆਦ ਪੁੱਗ ਗਈ - ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਲਈ ਇਸਨੂੰ ਦੁਬਾਰਾ ਖੋਲ੍ਹੋ</string>
+	<string name="cred_expired">ਕੋਡ ਦੀ ਮਿਆਦ ਪੁੱਗ ਗਈ – ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰਨ ਲਈ ਇਸਨੂੰ ਦੁਬਾਰਾ ਖੋਲ੍ਹੋ</string>
 	<string name="cred_instructions">ਇਸਨੂੰ ਸਕੈਨ ਕਰੋ, ਜਾਂ %2$s ਖੋਲ੍ਹੋ ਅਤੇ ਕੋਡ ਦਾਖਲ ਕਰੋ, ਫਿਰ ਭੇਜਣ ਲਈ ਇੱਕ ਸੁਰੱਖਿਅਤ ਕੀਤਾ ‘%1$s’ ਕ੍ਰੈਡੈਂਸ਼ੀਅਲ ਚੁਣੋ</string>
-	<string name="cred_no_hostname">ਉਸ ਪ੍ਰੀਸੈਟ ਵਿੱਚ ਇੱਕ ਹੋਸਟਨਾਮ ਖੇਤਰ ਸ਼ਾਮਲ ਨਹੀਂ ਸੀ - ਇਸਨੂੰ %1$s ‘ਤੇ ਦੇਖੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
+	<string name="cred_no_hostname">ਉਸ ਪ੍ਰੀਸੈਟ ਵਿੱਚ ਇੱਕ ਹੋਸਟਨਾਮ ਖੇਤਰ ਸ਼ਾਮਲ ਨਹੀਂ ਸੀ – ਇਸਨੂੰ %1$s ‘ਤੇ ਦੇਖੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
 	<string name="cred_qr_description">ਕੋਡ %1$s ਲਈ QR ਕੋਡ</string>
 	<string name="cred_starting">ਸ਼ੁਰੂ ਹੋ ਰਿਹਾ ਹੈ</string>
 	<string name="cred_title">ਬ੍ਰੋਕਰ ਪ੍ਰਮਾਣ ਪੱਤਰ ਆਯਾਤ ਕਰੋ</string>
-	<string name="cred_unreachable">%1$s ਤੱਕ ਨਹੀਂ ਪਹੁੰਚ ਸਕਿਆ - ਆਪਣੇ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
+	<string name="cred_unreachable">%1$s ਤੱਕ ਨਹੀਂ ਪਹੁੰਚ ਸਕਿਆ – ਆਪਣੇ ਕਨੈਕਸ਼ਨ ਦੀ ਜਾਂਚ ਕਰੋ ਅਤੇ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ</string>
 	<string name="cred_waiting">ਪਿਕਅੱਪ ਦੀ ਉਡੀਕ ਕਰ ਰਿਹਾ ਹੈ</string>
 	<plurals name="discover_add_panels">
 		<item quantity="one">%1$d ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</item>
 		<item quantity="other">%1$d ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</item>
 	</plurals>
-	<string name="discover_all_applied">ਸਾਰੀਆਂ ਖੋਜੀਆਂ ਗਈਆਂ ਡਿਵਾਈਸਾਂ ਲਾਗੂ ਕੀਤੀਆਂ ਗਈਆਂ ਹਨ - ਇੱਥੇ ਕੌਂਫਿਗਰ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ ਬਚਿਆ ਹੈ</string>
+	<string name="discover_all_applied">ਸਾਰੀਆਂ ਖੋਜੀਆਂ ਗਈਆਂ ਡਿਵਾਈਸਾਂ ਲਾਗੂ ਕੀਤੀਆਂ ਗਈਆਂ ਹਨ – ਇੱਥੇ ਕੌਂਫਿਗਰ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ ਬਚਿਆ ਹੈ</string>
 	<string name="discover_apply">ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਲਾਗੂ ਕਰੋ</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">ਹੇਠਾਂ ਦਿੱਤੇ ਚੈਕਬਾਕਸਾਂ ਨੂੰ ਛੱਡ ਕੇ, %1$d ਪੈਨਲ ਨੂੰ %2$s ਵਿੱਚ ਸੂਚੀਬੱਧ ਕੀਤੇ ਗਰੁੱਪ ‘%3$s’ ਵਿੱਚ ਬਣਾਉਂਦਾ ਹੈ</item>
@@ -136,21 +136,21 @@
 		<item quantity="other">ਹੇਠਾਂ ਦਿੱਤੇ ਚੈਕਬਾਕਸਾਂ ਨੂੰ ਛੱਡ ਕੇ, %2$s ਵਿੱਚ ਸੂਚੀਬੱਧ ਕੀਤੇ ਅਨੁਸਾਰ %1$d ਪੈਨਲ ਬਣਾਉਂਦਾ ਹੈ</item>
 	</plurals>
 	<string name="discover_apply_named">ਡੀਵਾਈਸ ਸੰਰੂਪਣ ਲਾਗੂ ਕਰੋ: %1$s</string>
-	<string name="discover_auto_all">ਸਾਰੀਆਂ ਲੱਭੀਆਂ ਡਿਵਾਈਸਾਂ ਨੂੰ ਸਵੈ-ਸੰਰਚਨਾ ਕਰੋ</string>
+	<string name="discover_auto_all">ਸਾਰੀਆਂ ਲੱਭੀਆਂ ਡਿਵਾਈਸਾਂ ਨੂੰ ਸਵੈ–ਸੰਰਚਨਾ ਕਰੋ</string>
 	<plurals name="discover_auto_done">
-		<item quantity="one">ਸਵੈ-ਸੰਰੂਪਿਤ %1$d ਡੀਵਾਈਸ</item>
-		<item quantity="other">ਸਵੈ-ਸੰਰੂਪਿਤ %1$d ਡੀਵਾਈਸ</item>
+		<item quantity="one">ਸਵੈ–ਸੰਰੂਪਿਤ %1$d ਡੀਵਾਈਸ</item>
+		<item quantity="other">ਸਵੈ–ਸੰਰੂਪਿਤ %1$d ਡੀਵਾਈਸ</item>
 	</plurals>
-	<string name="discover_auto_none">ਵੈਧ ਸੰਰਚਨਾ ਵਾਲੀ ਕੋਈ ਵੀ ਡਿਵਾਈਸ ਅਜੇ ਤਿਆਰ ਨਹੀਂ ਸੀ - ਇੱਕ ਪਲ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਜਾਂ ਉੱਪਰ ਦਿੱਤੇ ਰਿਫ੍ਰੈਸ਼ ਆਈਕਨ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
-	<string name="discover_bad_config">%1$s ਮਿਲਿਆ ਪਰ ਇਸਨੂੰ ਇੱਕ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਦੇ ਰੂਪ ਵਿੱਚ ਨਹੀਂ ਪੜ੍ਹ ਸਕਿਆ – ਜਾਂਚ ਕਰੋ ਕਿ ਇਹ ਇੱਕ ਗੈਰ-ਖਾਲੀ ‘ਪੈਨਲ’ ਐਰੇ ਨਾਲ ਵੈਧ JSON ਹੈ</string>
-	<string name="discover_field">%1$s (%2$s)</string>
+	<string name="discover_auto_none">ਵੈਧ ਸੰਰਚਨਾ ਵਾਲੀ ਕੋਈ ਵੀ ਡਿਵਾਈਸ ਅਜੇ ਤਿਆਰ ਨਹੀਂ ਸੀ – ਇੱਕ ਪਲ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਜਾਂ ਉੱਪਰ ਦਿੱਤੇ ਰਿਫ੍ਰੈਸ਼ ਆਈਕਨ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
+	<string name="discover_bad_config">%1$s ਮਿਲਿਆ ਪਰ ਇਸਨੂੰ ਇੱਕ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਦੇ ਰੂਪ ਵਿੱਚ ਨਹੀਂ ਪੜ੍ਹ ਸਕਿਆ – ਜਾਂਚ ਕਰੋ ਕਿ ਇਹ ਇੱਕ ਗੈਰ–ਖਾਲੀ ‘ਪੈਨਲ’ ਐਰੇ ਨਾਲ ਵੈਧ JSON ਹੈ</string>
+
 	<string name="discover_ideal_range">ਆਦਰਸ਼ ਸੀਮਾ</string>
 	<string name="discover_instructions">ਡੈਸ਼ਬੋਰਡ ਟਾਈਲਾਂ ਦੇ ਤੌਰ ‘ਤੇ ਤੁਸੀਂ ਜੋ ਖੇਤਰ ਚਾਹੁੰਦੇ ਹੋ ਉਸ ’ਤੇ ਨਿਸ਼ਾਨ ਲਗਾਓ, ਜਾਂ ਜੇਕਰ ਡਿਵਾਈਸ ਆਪਣੀ &lt;topic&gt;/ਐਪ ਸੰਰਚਨਾ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦੀ ਹੈ ਤਾਂ ‘ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਲਾਗੂ ਕਰੋ’ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
 	<string name="discover_new_group">+ ਨਵਾਂ ਸਮੂਹ</string>
 	<string name="discover_new_group_name">ਨਵਾਂ ਸਮੂਹ ਨਾਮ</string>
 	<string name="discover_no_broker">ਸੈਂਸਰ ਖੋਜਣ ਤੋਂ ਪਹਿਲਾਂ ਪਹਿਲਾਂ ਇੱਕ ਬ੍ਰੋਕਰ (ਸੈਟਿੰਗਜ਼ → ਬ੍ਰੋਕਰ) ਸ਼ਾਮਲ ਕਰੋ</string>
-	<string name="discover_none_found">ਅਜੇ ਤੱਕ ਕੋਈ ਸੈਂਸਰ-ਆਕਾਰ ਵਾਲਾ ਵਿਸ਼ਾ ਨਹੀਂ ਮਿਲਿਆ। ਰਿਟੇਨ ਕੀਤੇ ਸੁਨੇਹਿਆਂ ਨੂੰ ਸਬਸਕ੍ਰਾਈਬ ਕਰਨ ਤੋਂ ਬਾਅਦ ਪਹੁੰਚਣ ਵਿੱਚ ਕੁਝ ਸਮਾਂ ਲੱਗ ਸਕਦਾ ਹੈ - ਉੱਪਰ ਦਿੱਤੇ ਰਿਫ੍ਰੈਸ਼ ਆਈਕਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਜਾਂ ਜਾਂਚ ਕਰੋ ਕਿ ਬ੍ਰੋਕਰ ਅਸਲ ਵਿੱਚ ਉਹਨਾਂ ਵਿਸ਼ਿਆਂ ‘ਤੇ ਸੁਨੇਹਿਆਂ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖ ਰਿਹਾ ਹੈ।</string>
-	<string name="discover_rescan">ਮੁੜ-ਸਕੈਨ ਕਰੋ</string>
+	<string name="discover_none_found">ਅਜੇ ਤੱਕ ਕੋਈ ਸੈਂਸਰ–ਆਕਾਰ ਵਾਲਾ ਵਿਸ਼ਾ ਨਹੀਂ ਮਿਲਿਆ। ਰਿਟੇਨ ਕੀਤੇ ਸੁਨੇਹਿਆਂ ਨੂੰ ਸਬਸਕ੍ਰਾਈਬ ਕਰਨ ਤੋਂ ਬਾਅਦ ਪਹੁੰਚਣ ਵਿੱਚ ਕੁਝ ਸਮਾਂ ਲੱਗ ਸਕਦਾ ਹੈ – ਉੱਪਰ ਦਿੱਤੇ ਰਿਫ੍ਰੈਸ਼ ਆਈਕਨ ਦੀ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਜਾਂ ਜਾਂਚ ਕਰੋ ਕਿ ਬ੍ਰੋਕਰ ਅਸਲ ਵਿੱਚ ਉਹਨਾਂ ਵਿਸ਼ਿਆਂ ‘ਤੇ ਸੁਨੇਹਿਆਂ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖ ਰਿਹਾ ਹੈ।</string>
+	<string name="discover_rescan">ਮੁੜ–ਸਕੈਨ ਕਰੋ</string>
 	<string name="discover_sample">ਨਮੂਨਾ: %1$s</string>
 	<plurals name="discover_selected">
 		<item quantity="one">%2$d ਵਿੱਚੋਂ %1$d ਚੁਣਿਆ ਗਿਆ</item>
@@ -160,7 +160,7 @@
 	<string name="discover_title">ਸੈਂਸਰ ਖੋਜੋ</string>
 	<string name="filter_active">ਕਿਰਿਆਸ਼ੀਲ</string>
 	<string name="filter_fab">ਡੈਸ਼ਬੋਰਡ ਨੂੰ ਫਿਲਟਰ ਕਰੋ</string>
-	<string name="filter_fab_active">ਫਿਲਟਰ: ਸਿਰਫ਼ %1$s ਦਿਖਾ ਰਿਹਾ ਹੈ - ਬਦਲਣ ਲਈ ਟੈਪ ਕਰੋ</string>
+	<string name="filter_fab_active">ਫਿਲਟਰ: ਸਿਰਫ਼ %1$s ਦਿਖਾ ਰਿਹਾ ਹੈ – ਬਦਲਣ ਲਈ ਟੈਪ ਕਰੋ</string>
 	<string name="filter_high_moisture">ਨਮੀ ਆਦਰਸ਼ ਰੇਂਜ ਤੋਂ ਵੱਧ</string>
 	<string name="filter_low_battery">ਬੈਟਰੀ 20% ਜਾਂ ਘੱਟ</string>
 	<string name="filter_low_moisture">ਨਮੀ ਆਦਰਸ਼ ਰੇਂਜ ਤੋਂ ਘੱਟ</string>
@@ -171,11 +171,11 @@
 	<string name="home_add_group">ਸਮੂਹ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="home_add_panel_to">%1$s ਵਿੱਚ ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="home_add_tile_to">%1$s ਵਿੱਚ ਟਾਈਲ ਸ਼ਾਮਲ ਕਰੋ</string>
-	<string name="home_age">• %1$s</string>
+
 	<string name="home_another_group">ਕੋਈ ਹੋਰ ਸਮੂਹ</string>
-	<string name="home_change_topic_broad_warning">ਇਸ ਕਲੱਸਟਰ ਦੇ ਸਾਰੇ ਪੈਨਲ ਇੱਕ ਸਾਫ਼ ਡਿਵਾਈਸ ਵਿਸ਼ਾ ਸਾਂਝਾ ਨਹੀਂ ਕਰਦੇ, ਸਿਰਫ਼ ਉਹ ਖਾਲੀ ਨੇਮਸਪੇਸ - ਸ਼ਾਇਦ ਇੱਕ ਅਸਲ ਡਿਵਾਈਸ ਦੀ ਬਜਾਏ ਕੁਝ ਬੇਮੇਲ ਪੈਨਲ। ਇਸਨੂੰ ਲਿਜਾਣ ਨਾਲ ਸਿਰਫ਼ ਉਹ ਸਾਂਝਾ ਹਿੱਸਾ ਬਦਲਦਾ ਹੈ, ਇਸ ਲਈ ਇਹ ਉਸ ਤਰ੍ਹਾਂ ਲਾਗੂ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਿਵੇਂ ਤੁਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹੋ। ਪਹਿਲਾਂ ਇਸ ਕਲੱਸਟਰ ਦੇ ਪੈਨਲਾਂ ਦੀ ਵੱਖਰੇ ਤੌਰ ‘ਤੇ ਜਾਂਚ ਕਰਨਾ ਚੰਗਾ ਹੈ</string>
+	<string name="home_change_topic_broad_warning">ਇਸ ਕਲੱਸਟਰ ਦੇ ਸਾਰੇ ਪੈਨਲ ਇੱਕ ਸਾਫ਼ ਡਿਵਾਈਸ ਵਿਸ਼ਾ ਸਾਂਝਾ ਨਹੀਂ ਕਰਦੇ, ਸਿਰਫ਼ ਉਹ ਖਾਲੀ ਨੇਮਸਪੇਸ – ਸ਼ਾਇਦ ਇੱਕ ਅਸਲ ਡਿਵਾਈਸ ਦੀ ਬਜਾਏ ਕੁਝ ਬੇਮੇਲ ਪੈਨਲ। ਇਸਨੂੰ ਲਿਜਾਣ ਨਾਲ ਸਿਰਫ਼ ਉਹ ਸਾਂਝਾ ਹਿੱਸਾ ਬਦਲਦਾ ਹੈ, ਇਸ ਲਈ ਇਹ ਉਸ ਤਰ੍ਹਾਂ ਲਾਗੂ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਿਵੇਂ ਤੁਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹੋ। ਪਹਿਲਾਂ ਇਸ ਕਲੱਸਟਰ ਦੇ ਪੈਨਲਾਂ ਦੀ ਵੱਖਰੇ ਤੌਰ ‘ਤੇ ਜਾਂਚ ਕਰਨਾ ਚੰਗਾ ਹੈ</string>
 	<string name="home_change_topic_cluster">%1$s ਲਈ ਵਿਸ਼ਾ ਬਦਲੋ</string>
-	<string name="home_change_topic_text">ਇਸ ਕਲੱਸਟਰ ਦੇ ਹਰ ਪੈਨਲ ਨੂੰ ਇੱਕ ਨਵੇਂ MQTT ਵਿਸ਼ੇ ‘ਤੇ ਲਿਜਾਂਦਾ ਹੈ - ਜਿਵੇਂ ਕਿ Zigbee ਨੈੱਟਵਰਕ ਨੂੰ ਦੂਜੇ ਬ੍ਰਿਜ ’ਤੇ ਵੰਡਣ ਤੋਂ ਬਾਅਦ, ਸਿਰਫ਼ ਉਹਨਾਂ ਡਿਵਾਈਸਾਂ ਲਈ ਜੋ ਅਸਲ ਵਿੱਚ ਹਿੱਲੀਆਂ। ਹੋਰ ਕਲੱਸਟਰ ਅਛੂਤੇ ਰਹਿੰਦੇ ਹਨ</string>
+	<string name="home_change_topic_text">ਇਸ ਕਲੱਸਟਰ ਦੇ ਹਰ ਪੈਨਲ ਨੂੰ ਇੱਕ ਨਵੇਂ MQTT ਵਿਸ਼ੇ ‘ਤੇ ਲਿਜਾਂਦਾ ਹੈ – ਜਿਵੇਂ ਕਿ Zigbee ਨੈੱਟਵਰਕ ਨੂੰ ਦੂਜੇ ਬ੍ਰਿਜ ’ਤੇ ਵੰਡਣ ਤੋਂ ਬਾਅਦ, ਸਿਰਫ਼ ਉਹਨਾਂ ਡਿਵਾਈਸਾਂ ਲਈ ਜੋ ਅਸਲ ਵਿੱਚ ਹਿੱਲੀਆਂ। ਹੋਰ ਕਲੱਸਟਰ ਅਛੂਤੇ ਰਹਿੰਦੇ ਹਨ</string>
 	<string name="home_change_topic_title">‘%1$s’ ਲਈ ਵਿਸ਼ਾ ਬਦਲੋ</string>
 	<string name="home_cluster_copy">%1$s ਕਾਪੀ</string>
 	<string name="home_cluster_copy_n">%1$s ਕਾਪੀ %2$d</string>
@@ -193,7 +193,7 @@
 	<string name="home_delete_group_text">ਇਹ ਸਮੂਹ ਅਤੇ ਇਸ ਵਿਚਲੇ ਹਰ ਪੈਨਲ ਨੂੰ ਹਟਾਉਂਦਾ ਹੈ</string>
 	<string name="home_delete_group_title">ਸਮੂਹ ਮਿਟਾਉਣਾ ਹੈ?</string>
 	<string name="home_duplicate">ਡੁਪਲੀਕੇਟ ਕਰੋ</string>
-	<string name="home_duplicate_broad_warning">ਇਸ ਕਲੱਸਟਰ ਦੇ ਸਾਰੇ ਪੈਨਲ ਇੱਕ ਸਾਫ਼ ਡਿਵਾਈਸ ਵਿਸ਼ਾ ਸਾਂਝਾ ਨਹੀਂ ਕਰਦੇ (ਸਿਰਫ਼ ‘%1$s’ ਸਾਂਝਾ ਹੈ) - ਸ਼ਾਇਦ ਇੱਕ ਅਸਲ ਡਿਵਾਈਸ ਦੀ ਬਜਾਏ ਕੁਝ ਬੇਮੇਲ ਪੈਨਲ। ਹੇਠਾਂ ਦਿੱਤਾ ਵਿਸ਼ਾ ਸਿਰਫ਼ ਉਹ ਸਾਂਝਾ ਹਿੱਸਾ ਬਦਲਦਾ ਹੈ, ਇਸ ਲਈ ਇਹ ਉਸ ਤਰ੍ਹਾਂ ਲਾਗੂ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਿਵੇਂ ਤੁਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹੋ। ਪਹਿਲਾਂ ਇਸ ਕਲੱਸਟਰ ਦੇ ਪੈਨਲਾਂ ਦੀ ਵੱਖਰੇ ਤੌਰ ‘ਤੇ ਜਾਂਚ ਕਰਨਾ ਚੰਗਾ ਹੈ</string>
+	<string name="home_duplicate_broad_warning">ਇਸ ਕਲੱਸਟਰ ਦੇ ਸਾਰੇ ਪੈਨਲ ਇੱਕ ਸਾਫ਼ ਡਿਵਾਈਸ ਵਿਸ਼ਾ ਸਾਂਝਾ ਨਹੀਂ ਕਰਦੇ (ਸਿਰਫ਼ ‘%1$s’ ਸਾਂਝਾ ਹੈ) – ਸ਼ਾਇਦ ਇੱਕ ਅਸਲ ਡਿਵਾਈਸ ਦੀ ਬਜਾਏ ਕੁਝ ਬੇਮੇਲ ਪੈਨਲ। ਹੇਠਾਂ ਦਿੱਤਾ ਵਿਸ਼ਾ ਸਿਰਫ਼ ਉਹ ਸਾਂਝਾ ਹਿੱਸਾ ਬਦਲਦਾ ਹੈ, ਇਸ ਲਈ ਇਹ ਉਸ ਤਰ੍ਹਾਂ ਲਾਗੂ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਿਵੇਂ ਤੁਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹੋ। ਪਹਿਲਾਂ ਇਸ ਕਲੱਸਟਰ ਦੇ ਪੈਨਲਾਂ ਦੀ ਵੱਖਰੇ ਤੌਰ ‘ਤੇ ਜਾਂਚ ਕਰਨਾ ਚੰਗਾ ਹੈ</string>
 	<string name="home_duplicate_cluster">%1$s ਡੁਪਲੀਕੇਟ ਕਰੋ</string>
 	<string name="home_duplicate_title">‘%1$s’ ਡੁਪਲੀਕੇਟ ਕਰੋ</string>
 	<string name="home_edit_group">ਸਮੂਹ ਸੰਪਾਦਿਤ ਕਰੋ</string>
@@ -201,7 +201,7 @@
 	<string name="home_expand_all_groups">ਸਾਰੇ ਸਮੂਹ ਫੈਲਾਓ</string>
 	<string name="home_expand_group">%1$s ਫੈਲਾਓ</string>
 	<string name="home_force_upload_copy">ਨਵੀਂ ਕਾਪੀ ਜ਼ਬਰਦਸਤੀ ਅੱਪਲੋਡ ਕਰੋ</string>
-	<string name="home_force_upload_copy_detail">ਇਸ ਫ਼ੋਨ ਦੀਆਂ ਮੌਜੂਦਾ ਸੈਟਿੰਗਾਂ ਤੋਂ ਇਸ ਸਮੂਹ ਦੀ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਵਿੱਚ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਦੁਬਾਰਾ ਬਣਾਉਂਦਾ ਅਤੇ ਮੁੜ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ, ਬ੍ਰੋਕਰ ‘ਤੇ ਮੌਜੂਦ ਜੋ ਵੀ ਹੈ ਉਸਨੂੰ ਓਵਰਰਾਈਟ ਕਰਦੇ ਹੋਏ - ਇਸਦੀ ਵਰਤੋਂ ਕਰੋ ਜੇਕਰ ਕਿਸੇ ਹੋਰ ਫ਼ੋਨ ਜਾਂ ਬ੍ਰੋਕਰ ਦੀ ਸਮੱਸਿਆ ਨੇ ਕੁਝ ਸਿੰਕ ਤੋਂ ਬਾਹਰ ਛੱਡ ਦਿੱਤਾ ਹੈ</string>
+	<string name="home_force_upload_copy_detail">ਇਸ ਫ਼ੋਨ ਦੀਆਂ ਮੌਜੂਦਾ ਸੈਟਿੰਗਾਂ ਤੋਂ ਇਸ ਸਮੂਹ ਦੀ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਵਿੱਚ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਦੁਬਾਰਾ ਬਣਾਉਂਦਾ ਅਤੇ ਮੁੜ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ, ਬ੍ਰੋਕਰ ‘ਤੇ ਮੌਜੂਦ ਜੋ ਵੀ ਹੈ ਉਸਨੂੰ ਓਵਰਰਾਈਟ ਕਰਦੇ ਹੋਏ – ਇਸਦੀ ਵਰਤੋਂ ਕਰੋ ਜੇਕਰ ਕਿਸੇ ਹੋਰ ਫ਼ੋਨ ਜਾਂ ਬ੍ਰੋਕਰ ਦੀ ਸਮੱਸਿਆ ਨੇ ਕੁਝ ਸਿੰਕ ਤੋਂ ਬਾਹਰ ਛੱਡ ਦਿੱਤਾ ਹੈ</string>
 	<string name="home_force_upload_text">ਇਹ ਇਸ ਸਮੂਹ ਦੇ ਹਰ ਕਲੱਸਟਰ ਲਈ ਬ੍ਰੋਕਰ ‘ਤੇ ਸੁਰੱਖਿਅਤ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਨੂੰ ਇਸ ਫ਼ੋਨ ਦੀਆਂ ਮੌਜੂਦਾ ਸੈਟਿੰਗਾਂ ਤੋਂ ਬਣੀ ਇੱਕ ਨਵੀਂ ਕਾਪੀ ਨਾਲ ਓਵਰਰਾਈਟ ਕਰਦਾ ਹੈ। ਬ੍ਰੋਕਰ ’ਤੇ ਮੌਜੂਦ ਕੋਈ ਵੀ ਵੱਖਰੀ ਸੰਰਚਨਾ (ਜਿਵੇਂ ਕਿ ਕਿਸੇ ਹੋਰ ਫ਼ੋਨ ਤੋਂ) ਬਦਲ ਦਿੱਤੀ ਜਾਵੇਗੀ, ਮਿਲਾਈ ਨਹੀਂ ਜਾਵੇਗੀ। ਇਸਨੂੰ ਆਪਣੇ ਆਪ ਅਨਡੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</string>
 	<string name="home_force_upload_title">‘%1$s’ ਨੂੰ ਜ਼ਬਰਦਸਤੀ ਅੱਪਲੋਡ ਕਰਨਾ ਹੈ?</string>
 	<string name="home_group_fallback">ਸਮੂਹ</string>
@@ -223,8 +223,8 @@
 	<string name="home_republished">‘%1$s’ ਨੂੰ ਬ੍ਰੋਕਰ ‘ਤੇ ਮੁੜ ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ</string>
 	<string name="home_retopic">ਵਿਸ਼ਾ ਬਦਲੋ</string>
 	<string name="home_retopic_all">ਸਾਰੇ ਕਲੱਸਟਰਾਂ ਦਾ ਵਿਸ਼ਾ ਬਦਲੋ</string>
-	<string name="home_retopic_all_detail">ਇਸ ਸਮੂਹ ਦੇ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਜੋ ਇਸ ਵੇਲੇ ਇੱਕ ਪੁਰਾਣੇ MQTT ਵਿਸ਼ੇ ‘ਤੇ ਹੈ, ਇੱਕ ਵਾਰ ਵਿੱਚ ਇੱਕ ਨਵੇਂ ਵਿਸ਼ੇ ’ਤੇ ਲਿਜਾਂਦਾ ਹੈ - ਜਿਵੇਂ ਕਿ Zigbee ਨੈੱਟਵਰਕ ਨੂੰ ਦੂਜੇ ਬ੍ਰਿਜ ‘ਤੇ ਵੰਡਣ ਤੋਂ ਬਾਅਦ, ਹਰ ਹਿੱਲੀ ਡਿਵਾਈਸ ਲਈ। ਕਿਸੇ ਵੱਖਰੇ ਵਿਸ਼ੇ ਵਾਲੇ ਕਲੱਸਟਰ ਅਛੂਤੇ ਰਹਿੰਦੇ ਹਨ</string>
-	<string name="home_retopic_all_text">ਇਸ ਸਮੂਹ ਦੇ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਜਿਸਦਾ ਵਿਸ਼ਾ ‘ਪੁਰਾਣਾ ਵਿਸ਼ਾ’ ਨਾਲ ਬਿਲਕੁਲ ਮੇਲ ਖਾਂਦਾ ਹੈ, ‘ਨਵਾਂ ਵਿਸ਼ਾ’ ‘ਤੇ ਲਿਜਾਂਦਾ ਹੈ - ਇਸ ਸਮੂਹ ਦੇ ਬਾਕੀ ਕਲੱਸਟਰ ਅਛੂਤੇ ਰਹਿੰਦੇ ਹਨ। ਇਸਨੂੰ ਆਪਣੇ ਆਪ ਅਨਡੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</string>
+	<string name="home_retopic_all_detail">ਇਸ ਸਮੂਹ ਦੇ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਜੋ ਇਸ ਵੇਲੇ ਇੱਕ ਪੁਰਾਣੇ MQTT ਵਿਸ਼ੇ ‘ਤੇ ਹੈ, ਇੱਕ ਵਾਰ ਵਿੱਚ ਇੱਕ ਨਵੇਂ ਵਿਸ਼ੇ ’ਤੇ ਲਿਜਾਂਦਾ ਹੈ – ਜਿਵੇਂ ਕਿ Zigbee ਨੈੱਟਵਰਕ ਨੂੰ ਦੂਜੇ ਬ੍ਰਿਜ ‘ਤੇ ਵੰਡਣ ਤੋਂ ਬਾਅਦ, ਹਰ ਹਿੱਲੀ ਡਿਵਾਈਸ ਲਈ। ਕਿਸੇ ਵੱਖਰੇ ਵਿਸ਼ੇ ਵਾਲੇ ਕਲੱਸਟਰ ਅਛੂਤੇ ਰਹਿੰਦੇ ਹਨ</string>
+	<string name="home_retopic_all_text">ਇਸ ਸਮੂਹ ਦੇ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਜਿਸਦਾ ਵਿਸ਼ਾ ‘ਪੁਰਾਣਾ ਵਿਸ਼ਾ’ ਨਾਲ ਬਿਲਕੁਲ ਮੇਲ ਖਾਂਦਾ ਹੈ, ‘ਨਵਾਂ ਵਿਸ਼ਾ’ ‘ਤੇ ਲਿਜਾਂਦਾ ਹੈ – ਇਸ ਸਮੂਹ ਦੇ ਬਾਕੀ ਕਲੱਸਟਰ ਅਛੂਤੇ ਰਹਿੰਦੇ ਹਨ। ਇਸਨੂੰ ਆਪਣੇ ਆਪ ਅਨਡੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</string>
 	<string name="home_retopic_all_title">‘%1$s’ ਦੇ ਸਾਰੇ ਕਲੱਸਟਰਾਂ ਦਾ ਵਿਸ਼ਾ ਬਦਲਣਾ ਹੈ?</string>
 	<plurals name="home_retopic_moved">
 		<item quantity="one">%1$d ਕਲੱਸਟਰ ਨੂੰ ‘%2$s’ ਵਿੱਚ ਲਿਜਾਇਆ ਗਿਆ</item>
@@ -241,7 +241,7 @@
 	<string name="mqtt_backup_delete_text">%1$s ਦਾ ਸੁਰੱਖਿਅਤ ਬੈਕਅੱਪ ਹਟਾਉਂਦਾ ਹੈ। ਇਸਨੂੰ ਅਨਡੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</string>
 	<string name="mqtt_backup_delete_title">ਇਹ ਬੈਕਅੱਪ ਮਿਟਾਉਣਾ ਹੈ?</string>
 	<string name="mqtt_backup_deleted">%1$s ਦਾ ਬੈਕਅੱਪ ਮਿਟਾਇਆ ਗਿਆ</string>
-	<string name="mqtt_backup_explain">ਤੁਹਾਡੇ ਸਮੂਹਾਂ ਅਤੇ ਪੈਨਲਾਂ ਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ (ਬ੍ਰੋਕਰ ਹੋਸਟ/ਯੂਜ਼ਰਨੇਮ/ਪਾਸਵਰਡ ਨਹੀਂ - ਉਹ ਇਸ ਡਿਵਾਈਸ ‘ਤੇ ਹੀ ਰਹਿੰਦੇ ਹਨ) - gzip ਨਾਲ ਸੰਕੁਚਿਤ, ਫਿਰ base64-ਐਨਕੋਡ ਕੀਤਾ ਤਾਂ ਜੋ ਇਹ ਇੱਕ ਆਮ MQTT ਪੇਲੋਡ ਵਜੋਂ ਜਾਵੇ - ’%1$s/&lt;timestamp&gt;‘ ਹੇਠ ਇੱਕ ਨਵੇਂ ਸੁਰੱਖਿਅਤ ਸੁਨੇਹੇ ਵਜੋਂ, ਹਰ ਪਿਛਲੇ ਬੈਕਅੱਪ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖਦੇ ਹੋਏ</string>
+	<string name="mqtt_backup_explain">ਤੁਹਾਡੇ ਸਮੂਹਾਂ ਅਤੇ ਪੈਨਲਾਂ ਨੂੰ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ (ਬ੍ਰੋਕਰ ਹੋਸਟ/ਯੂਜ਼ਰਨੇਮ/ਪਾਸਵਰਡ ਨਹੀਂ – ਉਹ ਇਸ ਡਿਵਾਈਸ ‘ਤੇ ਹੀ ਰਹਿੰਦੇ ਹਨ) – gzip ਨਾਲ ਸੰਕੁਚਿਤ, ਫਿਰ base64–ਐਨਕੋਡ ਕੀਤਾ ਤਾਂ ਜੋ ਇਹ ਇੱਕ ਆਮ MQTT ਪੇਲੋਡ ਵਜੋਂ ਜਾਵੇ – ’%1$s/&lt;timestamp&gt;‘ ਹੇਠ ਇੱਕ ਨਵੇਂ ਸੁਰੱਖਿਅਤ ਸੁਨੇਹੇ ਵਜੋਂ, ਹਰ ਪਿਛਲੇ ਬੈਕਅੱਪ ਨੂੰ ਬਰਕਰਾਰ ਰੱਖਦੇ ਹੋਏ</string>
 	<string name="mqtt_backup_mode_backup">ਬੈਕਅੱਪ</string>
 	<string name="mqtt_backup_mode_restore">ਰੀਸਟੋਰ</string>
 	<string name="mqtt_backup_no_broker">ਇਸਦੀ ਵਰਤੋਂ ਕਰਨ ਤੋਂ ਪਹਿਲਾਂ ਪਹਿਲਾਂ ਇੱਕ ਬ੍ਰੋਕਰ (ਸੈਟਿੰਗਜ਼ → ਬ੍ਰੋਕਰ) ਸ਼ਾਮਲ ਕਰੋ</string>
@@ -253,10 +253,10 @@
 	</plurals>
 	<string name="mqtt_backup_title">MQTT ਰਾਹੀਂ ਬੈਕਅੱਪ / ਰੀਸਟੋਰ</string>
 	<string name="mqtt_restore_done">%1$s ਤੋਂ ਰੀਸਟੋਰ ਕੀਤਾ ਗਿਆ</string>
-	<string name="mqtt_restore_explain">‘%1$s/#’ ਵਿੱਚ ਉਸ ਬ੍ਰੋਕਰ ਦੁਆਰਾ ਸੁਰੱਖਿਅਤ ਰੱਖੇ ਹਰ ਬੈਕਅੱਪ ਨੂੰ ਸਕੈਨ ਕਰਦਾ ਹੈ, ਸਭ ਤੋਂ ਨਵਾਂ ਪਹਿਲਾਂ। ਰੀਸਟੋਰ ਕਰਨਾ ਤੁਹਾਡੇ ਸਮੂਹਾਂ ਅਤੇ ਪੈਨਲਾਂ ਨੂੰ ਬਦਲ ਦਿੰਦਾ ਹੈ, ਪਰ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਬ੍ਰੋਕਰਾਂ ਨੂੰ ਜਿਵੇਂ ਹਨ ਰੱਖਦਾ ਹੈ (ਉਹ ਬੈਕਅੱਪ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਸਨ) - ਇਸ ਲਈ ਇਹ ਸਿਰਫ਼ ਉਸੇ ਬ੍ਰੋਕਰ ਸੈਟਅਪ ‘ਤੇ ਸਾਫ਼-ਸੁਥਰੇ ਢੰਗ ਨਾਲ ਦੁਬਾਰਾ ਜੁੜਦਾ ਹੈ ਜਿਸ ਤੋਂ ਬੈਕਅੱਪ ਲਿਆ ਗਿਆ ਸੀ</string>
+	<string name="mqtt_restore_explain">‘%1$s/#’ ਵਿੱਚ ਉਸ ਬ੍ਰੋਕਰ ਦੁਆਰਾ ਸੁਰੱਖਿਅਤ ਰੱਖੇ ਹਰ ਬੈਕਅੱਪ ਨੂੰ ਸਕੈਨ ਕਰਦਾ ਹੈ, ਸਭ ਤੋਂ ਨਵਾਂ ਪਹਿਲਾਂ। ਰੀਸਟੋਰ ਕਰਨਾ ਤੁਹਾਡੇ ਸਮੂਹਾਂ ਅਤੇ ਪੈਨਲਾਂ ਨੂੰ ਬਦਲ ਦਿੰਦਾ ਹੈ, ਪਰ ਤੁਹਾਡੇ ਮੌਜੂਦਾ ਬ੍ਰੋਕਰਾਂ ਨੂੰ ਜਿਵੇਂ ਹਨ ਰੱਖਦਾ ਹੈ (ਉਹ ਬੈਕਅੱਪ ਵਿੱਚ ਸ਼ਾਮਲ ਨਹੀਂ ਸਨ) – ਇਸ ਲਈ ਇਹ ਸਿਰਫ਼ ਉਸੇ ਬ੍ਰੋਕਰ ਸੈਟਅਪ ‘ਤੇ ਸਾਫ਼–ਸੁਥਰੇ ਢੰਗ ਨਾਲ ਦੁਬਾਰਾ ਜੁੜਦਾ ਹੈ ਜਿਸ ਤੋਂ ਬੈਕਅੱਪ ਲਿਆ ਗਿਆ ਸੀ</string>
 	<string name="mqtt_restore_failed">ਰੀਸਟੋਰ ਅਸਫਲ: ਉਸ ਵਿਸ਼ੇ ਦਾ ਪੇਲੋਡ ਵੈਧ ਬੈਕਅੱਪ ਨਹੀਂ ਸੀ</string>
-	<string name="mqtt_restore_none">‘%1$s/’ ਹੇਠ ਅਜੇ ਕੋਈ ਬੈਕਅੱਪ ਨਹੀਂ ਮਿਲਿਆ - ਸਕੈਨ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸੁਰੱਖਿਅਤ ਸੁਨੇਹਿਆਂ ਨੂੰ ਪਹੁੰਚਣ ਵਿੱਚ ਥੋੜ੍ਹਾ ਸਮਾਂ ਲੱਗ ਸਕਦਾ ਹੈ, ਜਾਂ ਉੱਥੇ ਕੋਈ ਪ੍ਰਕਾਸ਼ਿਤ ਨਹੀਂ ਹੋ ਸਕਦਾ</string>
-	<string name="mqtt_restore_not_loaded">ਉਸ ਬੈਕਅੱਪ ਦਾ ਡਾਟਾ ਅਜੇ ਲੋਡ ਨਹੀਂ ਹੋਇਆ - ਦੁਬਾਰਾ ਸਕੈਨ ਕਰਕੇ ਦੇਖੋ</string>
+	<string name="mqtt_restore_none">‘%1$s/’ ਹੇਠ ਅਜੇ ਕੋਈ ਬੈਕਅੱਪ ਨਹੀਂ ਮਿਲਿਆ – ਸਕੈਨ ਕਰਨ ਤੋਂ ਬਾਅਦ ਸੁਰੱਖਿਅਤ ਸੁਨੇਹਿਆਂ ਨੂੰ ਪਹੁੰਚਣ ਵਿੱਚ ਥੋੜ੍ਹਾ ਸਮਾਂ ਲੱਗ ਸਕਦਾ ਹੈ, ਜਾਂ ਉੱਥੇ ਕੋਈ ਪ੍ਰਕਾਸ਼ਿਤ ਨਹੀਂ ਹੋ ਸਕਦਾ</string>
+	<string name="mqtt_restore_not_loaded">ਉਸ ਬੈਕਅੱਪ ਦਾ ਡਾਟਾ ਅਜੇ ਲੋਡ ਨਹੀਂ ਹੋਇਆ – ਦੁਬਾਰਾ ਸਕੈਨ ਕਰਕੇ ਦੇਖੋ</string>
 	<string name="mqtt_restore_restoring">ਰੀਸਟੋਰ ਹੋ ਰਿਹਾ ਹੈ…</string>
 	<string name="mqtt_restore_scan">ਬੈਕਅੱਪ ਲਈ ਸਕੈਨ ਕਰੋ</string>
 	<string name="mqtt_restore_scan_hint">ਇਸ ਬ੍ਰੋਕਰ ‘ਤੇ ਸੁਰੱਖਿਅਤ ਬੈਕਅੱਪ ਲੱਭਣ ਲਈ ’ਬੈਕਅੱਪ ਲਈ ਸਕੈਨ ਕਰੋ‘ ’ਤੇ ਟੈਪ ਕਰੋ</string>
@@ -268,7 +268,7 @@
 	<string name="notif_mqtt_connection_text">ਬ੍ਰੋਕਰ ਕਨੈਕਸ਼ਨ ਬਣਾਏ ਰੱਖ ਰਿਹਾ ਹੈ</string>
 	<string name="notif_test_title">ਟੈਸਟ ਚੇਤਾਵਨੀ</string>
 	<string name="panel_add_title">ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</string>
-	<string name="panel_button_help">ਹਰ ਵਾਰ ਜਦੋਂ ਇਹ ਬਟਨ ਟੈਪ ਕੀਤਾ ਜਾਂਦਾ ਹੈ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ - ਟਰੈਕ ਕਰਨ ਲਈ ਕੋਈ ਚਾਲੂ/ਬੰਦ ਸਥਿਤੀ ਨਹੀਂ ਹੈ</string>
+	<string name="panel_button_help">ਹਰ ਵਾਰ ਜਦੋਂ ਇਹ ਬਟਨ ਟੈਪ ਕੀਤਾ ਜਾਂਦਾ ਹੈ ਭੇਜਿਆ ਜਾਂਦਾ ਹੈ – ਟਰੈਕ ਕਰਨ ਲਈ ਕੋਈ ਚਾਲੂ/ਬੰਦ ਸਥਿਤੀ ਨਹੀਂ ਹੈ</string>
 	<string name="panel_cluster">ਕਲੱਸਟਰ ਦਾ ਨਾਮ (ਵਿਕਲਪਿਕ)</string>
 	<string name="panel_cluster_hint">ਜਿਵੇਂ ਕਿ Soil Sensor 1 – ਇਸਨੂੰ ਉਸੇ ਨਾਮ ਵਾਲੇ ਹੋਰ ਪੈਨਲਾਂ ਨਾਲ ਸਮੂਹਬੱਧ ਕਰਦਾ ਹੈ</string>
 	<string name="panel_command_topic">ਕਮਾਂਡ ਵਿਸ਼ਾ</string>
@@ -281,16 +281,16 @@
 	<string name="panel_delete_title">ਪੈਨਲ ਮਿਟਾਉਣਾ ਹੈ?</string>
 	<string name="panel_edit_title">ਪੈਨਲ ਸੰਪਾਦਿਤ ਕਰੋ</string>
 	<string name="panel_editable">ਸੰਪਾਦਨਯੋਗ ਮੁੱਲ</string>
-	<string name="panel_editable_detail">ਇਸ ਟਾਈਲ ‘ਤੇ ਟੈਪ ਕਰਨ ਨਾਲ ਤੁਸੀਂ ਇੱਕ ਨਵਾਂ ਨੰਬਰ ਲਿਖ ਸਕਦੇ ਹੋ, ਜੋ ਇਸੇ ਵਿਸ਼ੇ/ਖੇਤਰ ’ਤੇ ਮੁੜ ਪ੍ਰਕਾਸ਼ਿਤ ਹੁੰਦਾ ਹੈ (ਸੁਰੱਖਿਅਤ) - ਕਿਸੇ ਸਥਿਰ ਤਰਜੀਹ ਲਈ ਜੋ ਇੱਕ ਆਟੋਮੇਸ਼ਨ ਸਕ੍ਰਿਪਟ ਪੜ੍ਹਦੀ ਹੈ (ਜਿਵੇਂ ਕਿ ਨਮੀ ਦੀ ਸੀਮਾ), ਨਾ ਕਿ ਕਿਸੇ ਲਾਈਵ ਹਾਰਡਵੇਅਰ ਰੀਡਿੰਗ ਲਈ, ਜਿਸਨੂੰ ਅਗਲਾ ਅੱਪਡੇਟ ਬਸ ਓਵਰਰਾਈਟ ਕਰ ਦੇਵੇਗਾ</string>
+	<string name="panel_editable_detail">ਇਸ ਟਾਈਲ ‘ਤੇ ਟੈਪ ਕਰਨ ਨਾਲ ਤੁਸੀਂ ਇੱਕ ਨਵਾਂ ਨੰਬਰ ਲਿਖ ਸਕਦੇ ਹੋ, ਜੋ ਇਸੇ ਵਿਸ਼ੇ/ਖੇਤਰ ’ਤੇ ਮੁੜ ਪ੍ਰਕਾਸ਼ਿਤ ਹੁੰਦਾ ਹੈ (ਸੁਰੱਖਿਅਤ) – ਕਿਸੇ ਸਥਿਰ ਤਰਜੀਹ ਲਈ ਜੋ ਇੱਕ ਆਟੋਮੇਸ਼ਨ ਸਕ੍ਰਿਪਟ ਪੜ੍ਹਦੀ ਹੈ (ਜਿਵੇਂ ਕਿ ਨਮੀ ਦੀ ਸੀਮਾ), ਨਾ ਕਿ ਕਿਸੇ ਲਾਈਵ ਹਾਰਡਵੇਅਰ ਰੀਡਿੰਗ ਲਈ, ਜਿਸਨੂੰ ਅਗਲਾ ਅੱਪਡੇਟ ਬਸ ਓਵਰਰਾਈਟ ਕਰ ਦੇਵੇਗਾ</string>
 	<string name="panel_icon">ਆਈਕਨ</string>
-	<string name="panel_ideal_help">ਸੈੱਟ ਹੋਣ ‘ਤੇ, ਇਹ ਟਾਈਲ ਘੱਟੋ-ਘੱਟ ਤੋਂ ਹੇਠਾਂ ਲਾਲ, ਰੇਂਜ ਦੇ ਅੰਦਰ ਹਰੀ, ਅਤੇ ਵੱਧ ਤੋਂ ਵੱਧ ਤੋਂ ਉੱਪਰ ਨੀਲੀ ਚਮਕਦੀ ਹੈ</string>
+	<string name="panel_ideal_help">ਸੈੱਟ ਹੋਣ ‘ਤੇ, ਇਹ ਟਾਈਲ ਘੱਟੋ–ਘੱਟ ਤੋਂ ਹੇਠਾਂ ਲਾਲ, ਰੇਂਜ ਦੇ ਅੰਦਰ ਹਰੀ, ਅਤੇ ਵੱਧ ਤੋਂ ਵੱਧ ਤੋਂ ਉੱਪਰ ਨੀਲੀ ਚਮਕਦੀ ਹੈ</string>
 	<string name="panel_ideal_topic">ਆਦਰਸ਼ ਰੇਂਜ ਵਿਸ਼ਾ (ਵਿਕਲਪਿਕ)</string>
-	<string name="panel_ideal_topic_hint">ਜਿਵੇਂ ਕਿ z2m2/SoilSensor_01/ideal – {‘min’:x,‘max’:y} ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ</string>
+	<string name="panel_ideal_topic_hint">ਜਿਵੇਂ ਕਿ zigbee2mqtt/SoilSensor_01/ideal – {‘min’:x,‘max’:y} ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ</string>
 	<string name="panel_json_field">JSON ਖੇਤਰ (ਖਾਲੀ = ਕੱਚਾ ਪੇਲੋਡ)</string>
 	<string name="panel_json_field_hint">ਜਿਵੇਂ ਕਿ temperature ਜਾਂ state.battery</string>
 	<string name="panel_label">ਲੇਬਲ</string>
 	<string name="panel_max_field">ਵੱਧ ਤੋਂ ਵੱਧ ਖੇਤਰ ਦਾ ਨਾਮ</string>
-	<string name="panel_min_field">ਘੱਟੋ-ਘੱਟ ਖੇਤਰ ਦਾ ਨਾਮ</string>
+	<string name="panel_min_field">ਘੱਟੋ–ਘੱਟ ਖੇਤਰ ਦਾ ਨਾਮ</string>
 	<string name="panel_min_max_help">ਸਿਰਫ਼ ਤਾਂ ਹੀ ਲੋੜੀਂਦਾ ਹੈ ਜੇ ਵਿਸ਼ਾ ਸਾਦੀਆਂ ‘min’/‘max’ ਕੁੰਜੀਆਂ ਨਹੀਂ ਵਰਤਦਾ – ਜਿਵੇਂ ਕਿ ਸਾਂਝੇ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਵਿਸ਼ੇ ਲਈ ਇਹਨਾਂ ਨੂੰ ‘moisture_min’/‘moisture_max’ ‘ਤੇ ਸੈੱਟ ਕਰੋ</string>
 	<string name="panel_no_broker">ਪੈਨਲ ਬਣਾਉਣ ਤੋਂ ਪਹਿਲਾਂ ਪਹਿਲਾਂ ਇੱਕ ਬ੍ਰੋਕਰ (ਸੈਟਿੰਗਜ਼ → ਬ੍ਰੋਕਰ) ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="panel_off_payload">OFF ਪੇਲੋਡ</string>
@@ -323,10 +323,10 @@
 	<string name="permit_join_via">ਇਸ ਰਾਹੀਂ ਜੁੜਨ ਦੀ ਇਜਾਜ਼ਤ (ਵਿਕਲਪਿਕ)</string>
 	<string name="permit_join_via_help">ਕਿਸੇ ਖਾਸ ਰਾਊਟਰ ਦਾ ਦੋਸਤਾਨਾ ਨਾਮ ਜਿਸ ਰਾਹੀਂ ਜੁੜਨਾ ਵਧਾਉਣਾ ਹੈ, ਜਾਂ ਸਿਰਫ਼ ਕੋਆਰਡੀਨੇਟਰ ਲਈ ‘Coordinator’। ਹਰ ਰਾਊਟਰ ਅਤੇ ਕੋਆਰਡੀਨੇਟਰ ਰਾਹੀਂ ਇੱਕੋ ਵਾਰ ਜੁੜਨ ਦੀ ਇਜਾਜ਼ਤ ਦੇਣ ਲਈ ਖਾਲੀ ਛੱਡੋ</string>
 	<string name="permit_join_via_hint">ਖਾਲੀ = ਪੂਰਾ ਨੈੱਟਵਰਕ</string>
-	<string name="protocol_ssl">SSL - ਸੁਰੱਖਿਅਤ ਸਾਕਟ ਲੇਅਰ</string>
-	<string name="protocol_tcp">TCP - ਟ੍ਰਾਂਸਮਿਸ਼ਨ ਕੰਟਰੋਲ ਪ੍ਰੋਟੋਕੋਲ</string>
-	<string name="protocol_ws">WS - ਵੈੱਬ ਸਾਕਟ</string>
-	<string name="protocol_wss">WSS - ਸੁਰੱਖਿਅਤ ਵੈੱਬ ਸਾਕਟ</string>
+	<string name="protocol_ssl">SSL – ਸੁਰੱਖਿਅਤ ਸਾਕਟ ਲੇਅਰ</string>
+	<string name="protocol_tcp">TCP – ਟ੍ਰਾਂਸਮਿਸ਼ਨ ਕੰਟਰੋਲ ਪ੍ਰੋਟੋਕੋਲ</string>
+	<string name="protocol_ws">WS – ਵੈੱਬ ਸਾਕਟ</string>
+	<string name="protocol_wss">WSS – ਸੁਰੱਖਿਅਤ ਵੈੱਬ ਸਾਕਟ</string>
 	<string name="settings_about">ਬਾਰੇ</string>
 	<string name="settings_about_tagline">%1$s – ਕੋਈ ਕਲਾਊਡ ਨਹੀਂ, ਕੋਈ ਖਾਤਾ ਨਹੀਂ, ਕੋਈ ਬੰਧਨ ਨਹੀਂ</string>
 	<string name="settings_alerts_detail">ਧੂੰਏਂ ਅਤੇ ਪਾਣੀ ਦੇਣ ਦੀਆਂ ਚੇਤਾਵਨੀਆਂ, ਆਵਾਜ਼, ਅਤੇ ਟੈਸਟ ਸੂਚਨਾਵਾਂ</string>
@@ -343,17 +343,17 @@
 	<string name="settings_force_upload_all">ਸਾਰੇ ਸਮੂਹ ਜ਼ਬਰਦਸਤੀ ਅੱਪਲੋਡ ਕਰੋ</string>
 	<string name="settings_force_upload_all_confirm">ਇਹ ਹਰ ਸਮੂਹ ਦੇ ਹਰ ਕਲੱਸਟਰ ਲਈ ਬ੍ਰੋਕਰ ‘ਤੇ ਸੁਰੱਖਿਅਤ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਨੂੰ ਇਸ ਫ਼ੋਨ ਦੀਆਂ ਮੌਜੂਦਾ ਸੈਟਿੰਗਾਂ ਤੋਂ ਬਣੀ ਇੱਕ ਨਵੀਂ ਕਾਪੀ ਨਾਲ ਓਵਰਰਾਈਟ ਕਰਦਾ ਹੈ। ਬ੍ਰੋਕਰ ’ਤੇ ਮੌਜੂਦ ਕੋਈ ਵੀ ਵੱਖਰੀ ਸੰਰਚਨਾ (ਜਿਵੇਂ ਕਿ ਕਿਸੇ ਹੋਰ ਫ਼ੋਨ ਤੋਂ) ਬਦਲ ਦਿੱਤੀ ਜਾਵੇਗੀ, ਮਿਲਾਈ ਨਹੀਂ ਜਾਵੇਗੀ। ਇਸਨੂੰ ਆਪਣੇ ਆਪ ਅਨਡੂ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ</string>
 	<string name="settings_force_upload_all_confirm_title">ਸਾਰੇ ਸਮੂਹ ਜ਼ਬਰਦਸਤੀ ਅੱਪਲੋਡ ਕਰਨੇ ਹਨ?</string>
-	<string name="settings_force_upload_all_detail">ਇਸ ਫ਼ੋਨ ਦੀਆਂ ਮੌਜੂਦਾ ਸੈਟਿੰਗਾਂ ਤੋਂ ਹਰ ਸਮੂਹ ਦੀ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਵਿੱਚ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਦੁਬਾਰਾ ਬਣਾਉਂਦਾ ਅਤੇ ਮੁੜ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ - ਇਸਦੀ ਵਰਤੋਂ ਕਰੋ ਜੇਕਰ ਬ੍ਰੋਕਰ ਦੀ ਸਮੱਸਿਆ ਜਾਂ ਕਿਸੇ ਹੋਰ ਫ਼ੋਨ ਨੇ ਇੱਕ ਤੋਂ ਵੱਧ ਸਮੂਹਾਂ ਨੂੰ ਸਿੰਕ ਤੋਂ ਬਾਹਰ ਛੱਡ ਦਿੱਤਾ ਹੈ</string>
+	<string name="settings_force_upload_all_detail">ਇਸ ਫ਼ੋਨ ਦੀਆਂ ਮੌਜੂਦਾ ਸੈਟਿੰਗਾਂ ਤੋਂ ਹਰ ਸਮੂਹ ਦੀ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਵਿੱਚ ਹਰ ਕਲੱਸਟਰ ਨੂੰ ਦੁਬਾਰਾ ਬਣਾਉਂਦਾ ਅਤੇ ਮੁੜ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦਾ ਹੈ – ਇਸਦੀ ਵਰਤੋਂ ਕਰੋ ਜੇਕਰ ਬ੍ਰੋਕਰ ਦੀ ਸਮੱਸਿਆ ਜਾਂ ਕਿਸੇ ਹੋਰ ਫ਼ੋਨ ਨੇ ਇੱਕ ਤੋਂ ਵੱਧ ਸਮੂਹਾਂ ਨੂੰ ਸਿੰਕ ਤੋਂ ਬਾਹਰ ਛੱਡ ਦਿੱਤਾ ਹੈ</string>
 	<plurals name="settings_force_upload_all_done">
-		<item quantity="one">ਬ੍ਰੋਕਰ ਲਈ %1$d ਸਮੂਹ ਨੂੰ ਮੁੜ-ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ</item>
-		<item quantity="other">ਬ੍ਰੋਕਰ ਲਈ %1$d ਸਮੂਹਾਂ ਨੂੰ ਮੁੜ-ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ</item>
+		<item quantity="one">ਬ੍ਰੋਕਰ ਲਈ %1$d ਸਮੂਹ ਨੂੰ ਮੁੜ–ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ</item>
+		<item quantity="other">ਬ੍ਰੋਕਰ ਲਈ %1$d ਸਮੂਹਾਂ ਨੂੰ ਮੁੜ–ਪ੍ਰਕਾਸ਼ਿਤ ਕੀਤਾ ਗਿਆ</item>
 	</plurals>
 	<string name="settings_orphans">ਅਨਾਥ ਡਾਟਾ ਸਾਫ਼ ਕਰੋ</string>
 	<string name="settings_orphans_clean">ਸਾਫ਼ ਕਰੋ</string>
 	<string name="settings_orphans_confirm_title">ਅਨਾਥ ਡਾਟਾ ਸਾਫ਼ ਕਰਨਾ ਹੈ?</string>
 	<plurals name="settings_orphans_confirm">
-		<item quantity="one">ਇਹ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਟੈਗ ਕੀਤੇ %1$d ਪੈਨਲ ਨੂੰ ਹਟਾਉਂਦਾ ਹੈ ਜੋ ਹੁਣ ਮੌਜੂਦ ਨਹੀਂ ਹੈ - ਅਕਸਰ ਇੱਕ ਬ੍ਰੋਕਰ ਨੂੰ ਮਿਟਾਉਣ ਅਤੇ ਇਸਨੂੰ ਦੁਬਾਰਾ ਜੋੜ ਕੇ ਪਿੱਛੇ ਛੱਡ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ। ਪੈਨਲ ਅਜੇ ਵੀ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਜੁੜੇ ਹੋਏ ਹਨ ਜੋ ਤੁਸੀਂ ਅਸਲ ਵਿੱਚ ਕੌਂਫਿਗਰ ਕੀਤੇ ਹਨ ਕਦੇ ਵੀ ਛੂਹਿਆ ਨਹੀਂ ਜਾਂਦਾ ਹੈ</item>
-		<item quantity="other">ਇਹ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਟੈਗ ਕੀਤੇ %1$d ਪੈਨਲਾਂ ਨੂੰ ਹਟਾਉਂਦਾ ਹੈ ਜੋ ਹੁਣ ਮੌਜੂਦ ਨਹੀਂ ਹੈ - ਅਕਸਰ ਇੱਕ ਬ੍ਰੋਕਰ ਨੂੰ ਮਿਟਾਉਣ ਅਤੇ ਇਸਨੂੰ ਦੁਬਾਰਾ ਜੋੜ ਕੇ ਪਿੱਛੇ ਛੱਡ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ। ਪੈਨਲ ਅਜੇ ਵੀ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਜੁੜੇ ਹੋਏ ਹਨ ਜੋ ਤੁਸੀਂ ਅਸਲ ਵਿੱਚ ਕੌਂਫਿਗਰ ਕੀਤੇ ਹਨ ਕਦੇ ਵੀ ਛੂਹਿਆ ਨਹੀਂ ਜਾਂਦਾ ਹੈ</item>
+		<item quantity="one">ਇਹ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਟੈਗ ਕੀਤੇ %1$d ਪੈਨਲ ਨੂੰ ਹਟਾਉਂਦਾ ਹੈ ਜੋ ਹੁਣ ਮੌਜੂਦ ਨਹੀਂ ਹੈ – ਅਕਸਰ ਇੱਕ ਬ੍ਰੋਕਰ ਨੂੰ ਮਿਟਾਉਣ ਅਤੇ ਇਸਨੂੰ ਦੁਬਾਰਾ ਜੋੜ ਕੇ ਪਿੱਛੇ ਛੱਡ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ। ਪੈਨਲ ਅਜੇ ਵੀ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਜੁੜੇ ਹੋਏ ਹਨ ਜੋ ਤੁਸੀਂ ਅਸਲ ਵਿੱਚ ਕੌਂਫਿਗਰ ਕੀਤੇ ਹਨ ਕਦੇ ਵੀ ਛੂਹਿਆ ਨਹੀਂ ਜਾਂਦਾ ਹੈ</item>
+		<item quantity="other">ਇਹ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਟੈਗ ਕੀਤੇ %1$d ਪੈਨਲਾਂ ਨੂੰ ਹਟਾਉਂਦਾ ਹੈ ਜੋ ਹੁਣ ਮੌਜੂਦ ਨਹੀਂ ਹੈ – ਅਕਸਰ ਇੱਕ ਬ੍ਰੋਕਰ ਨੂੰ ਮਿਟਾਉਣ ਅਤੇ ਇਸਨੂੰ ਦੁਬਾਰਾ ਜੋੜ ਕੇ ਪਿੱਛੇ ਛੱਡ ਦਿੱਤਾ ਜਾਂਦਾ ਹੈ। ਪੈਨਲ ਅਜੇ ਵੀ ਇੱਕ ਬ੍ਰੋਕਰ ਨਾਲ ਜੁੜੇ ਹੋਏ ਹਨ ਜੋ ਤੁਸੀਂ ਅਸਲ ਵਿੱਚ ਕੌਂਫਿਗਰ ਕੀਤੇ ਹਨ ਕਦੇ ਵੀ ਛੂਹਿਆ ਨਹੀਂ ਜਾਂਦਾ ਹੈ</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
 		<item quantity="one">ਮਿਟਾਏ ਗਏ ਬ੍ਰੋਕਰ ਤੋਂ ਬਚੇ ਹੋਏ %1$d ਪੈਨਲ ਨੂੰ ਹਟਾਇਆ ਜਾ ਸਕਦਾ ਹੈ</item>
@@ -364,10 +364,10 @@
 		<item quantity="other">%1$d ਪੈਨਲਾਂ ਨੂੰ ਹਟਾਇਆ ਗਿਆ</item>
 	</plurals>
 	<string name="settings_tile_width">ਟਾਈਲ &amp; ਕਲੱਸਟਰ ਦੀ ਚੌੜਾਈ</string>
-	<string name="settings_tile_width_detail">ਟਾਈਲਾਂ (ਅਤੇ ਇਸ ਲਈ ਕਲੱਸਟਰ ਕਾਰਡ, 3 ਟਾਈਲਾਂ ਚੌੜੇ) ਕਿੰਨੀਆਂ ਚੌੜੀਆਂ ਹੋ ਸਕਦੀਆਂ ਹਨ, ਸਕ੍ਰੀਨ ਭਰਨ ਤੱਕ - ਇਸ ਵੇਲੇ %1$ddp</string>
+	<string name="settings_tile_width_detail">ਟਾਈਲਾਂ (ਅਤੇ ਇਸ ਲਈ ਕਲੱਸਟਰ ਕਾਰਡ, 3 ਟਾਈਲਾਂ ਚੌੜੇ) ਕਿੰਨੀਆਂ ਚੌੜੀਆਂ ਹੋ ਸਕਦੀਆਂ ਹਨ, ਸਕ੍ਰੀਨ ਭਰਨ ਤੱਕ – ਇਸ ਵੇਲੇ %1$ddp</string>
 	<string name="settings_undo">ਅਨਡੂ ਟੋਸਟ ਦੀ ਮਿਆਦ</string>
-	<string name="settings_undo_detail">ਟਾਈਲ, ਕਲੱਸਟਰ, ਜਾਂ ਸਮੂਹ ਨੂੰ ਘਸੀਟਣ ਤੋਂ ਬਾਅਦ ‘ਅਨਡੂ’ ਪ੍ਰੋਂਪਟ ਕਿੰਨੀ ਦੇਰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ - ਇਸ ਵੇਲੇ %1$ds</string>
-	<string name="settings_undo_detail_off">ਟਾਈਲ, ਕਲੱਸਟਰ, ਜਾਂ ਸਮੂਹ ਨੂੰ ਘਸੀਟਣ ਤੋਂ ਬਾਅਦ ‘ਅਨਡੂ’ ਪ੍ਰੋਂਪਟ ਕਿੰਨੀ ਦੇਰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ - ਇਸ ਵੇਲੇ ਬੰਦ</string>
+	<string name="settings_undo_detail">ਟਾਈਲ, ਕਲੱਸਟਰ, ਜਾਂ ਸਮੂਹ ਨੂੰ ਘਸੀਟਣ ਤੋਂ ਬਾਅਦ ‘ਅਨਡੂ’ ਪ੍ਰੋਂਪਟ ਕਿੰਨੀ ਦੇਰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ – ਇਸ ਵੇਲੇ %1$ds</string>
+	<string name="settings_undo_detail_off">ਟਾਈਲ, ਕਲੱਸਟਰ, ਜਾਂ ਸਮੂਹ ਨੂੰ ਘਸੀਟਣ ਤੋਂ ਬਾਅਦ ‘ਅਨਡੂ’ ਪ੍ਰੋਂਪਟ ਕਿੰਨੀ ਦੇਰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ – ਇਸ ਵੇਲੇ ਬੰਦ</string>
 	<string name="settings_version">ਸੰਸਕਰਣ %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">ਧੂੰਏਂ ਦੀਆਂ ਚੇਤਾਵਨੀਆਂ (ਚੁੱਪ)</string>
 	<string name="smoke_channel_silent_desc">ਜਦੋਂ ਕੋਈ ਡਿਵਾਈਸ ਧੂੰਆਂ ਖੋਜਣ ਦੀ ਰਿਪੋਰਟ ਕਰਦੀ ਹੈ ਤਾਂ ਬਿਨਾਂ ਆਵਾਜ਼ ਦੇ ਚੇਤਾਵਨੀ ਦਿੰਦਾ ਹੈ</string>
@@ -401,7 +401,7 @@
 	<string name="watering_notif_title">%1$s ਟੀਚੇ ਦੀ ਨਮੀ ‘ਤੇ ਪਹੁੰਚ ਗਿਆ</string>
 	<string name="watering_test_sensor">ਟੈਸਟ ਸੈਂਸਰ</string>
 	<string name="welcome_add_broker">ਇੱਕ ਬ੍ਰੋਕਰ ਸ਼ਾਮਲ ਕਰੋ</string>
-	<string name="welcome_intro">ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ ਘੱਟੋ-ਘੱਟ ਇੱਕ MQTT ਬ੍ਰੋਕਰ ਦੀ ਲੋੜ ਪਵੇਗੀ – ਹੁਣੇ ਇੱਕ ਸ਼ਾਮਲ ਕਰੋ, ਜਾਂ ਉਹ ਸੰਰਚਨਾ ਰੀਸਟੋਰ ਕਰੋ ਜਿਸਦਾ ਤੁਸੀਂ ਪਹਿਲਾਂ ਬੈਕਅੱਪ ਲਿਆ ਸੀ</string>
+	<string name="welcome_intro">ਸ਼ੁਰੂ ਕਰਨ ਲਈ ਤੁਹਾਨੂੰ ਘੱਟੋ–ਘੱਟ ਇੱਕ MQTT ਬ੍ਰੋਕਰ ਦੀ ਲੋੜ ਪਵੇਗੀ – ਹੁਣੇ ਇੱਕ ਸ਼ਾਮਲ ਕਰੋ, ਜਾਂ ਉਹ ਸੰਰਚਨਾ ਰੀਸਟੋਰ ਕਰੋ ਜਿਸਦਾ ਤੁਸੀਂ ਪਹਿਲਾਂ ਬੈਕਅੱਪ ਲਿਆ ਸੀ</string>
 	<string name="welcome_restore">ਬੈਕਅੱਪ ਤੋਂ ਰੀਸਟੋਰ ਕਰੋ</string>
 	<string name="welcome_title">ਜੀ ਆਇਆਂ ਨੂੰ</string>
 </resources>

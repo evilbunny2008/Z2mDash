@@ -6,20 +6,20 @@
 	<string name="alerts_allow">Permettre</string>
 	<string name="alerts_battery">Alertes de batterie faible</string>
 	<string name="alerts_battery_detail">Avertir lorsqu’un appareil signale un niveau de batterie de 20 % ou moins</string>
-	<string name="alerts_battery_test_detail">Déclenche une véritable notification en utilisant exactement la même logique qu’une véritable alerte de batterie faible, quelle que soit la bascule ci-dessus</string>
+	<string name="alerts_battery_test_detail">Déclenche une véritable notification en utilisant exactement la même logique qu’une véritable alerte de batterie faible, quelle que soit la bascule ci–dessus</string>
 	<string name="alerts_notifications_off">Les notifications sont désactivées</string>
 	<string name="alerts_notifications_off_detail">Les alertes ne peuvent pas être affichées tant que %1$s n’est pas autorisé à publier des notifications</string>
 	<string name="alerts_open_settings">Paramètres</string>
 	<string name="alerts_smoke">Alertes à la fumée</string>
 	<string name="alerts_smoke_detail">Avertir si un appareil signale de la fumée détectée</string>
-	<string name="alerts_smoke_test_detail">Déclenche une véritable notification (avec son, si activé ci-dessus) en utilisant exactement la même logique qu’une véritable alerte à la fumée – un bon moyen de confirmer qu’elle attirera réellement votre attention avant que vous en ayez besoin</string>
+	<string name="alerts_smoke_test_detail">Déclenche une véritable notification (avec son, si activé ci–dessus) en utilisant exactement la même logique qu’une véritable alerte à la fumée – un bon moyen de confirmer qu’elle attirera réellement votre attention avant que vous en ayez besoin</string>
 	<string name="alerts_sound">Son d’alerte</string>
 	<string name="alerts_sound_detail">Jouez un son fort de style alarme à côté de la notification</string>
 	<string name="alerts_test">Avis de test</string>
 	<string name="alerts_title">Alarme/Alerte</string>
 	<string name="alerts_watering">Alertes d’arrosage</string>
 	<string name="alerts_watering_detail">Vibre et sonne lorsqu’un capteur d’humidité atteint le milieu de sa plage idéale</string>
-	<string name="alerts_watering_test_detail">Déclenche une véritable notification avec le carillon d’arrosage et les vibrations, quelle que soit la bascule ci-dessus – un bon moyen de l’entendre avant de vous y fier</string>
+	<string name="alerts_watering_test_detail">Déclenche une véritable notification avec le carillon d’arrosage et les vibrations, quelle que soit la bascule ci–dessus – un bon moyen de l’entendre avant de vous y fier</string>
 	<string name="backup_brokers_imported">Courtiers importés</string>
 	<string name="backup_config_imported">Configuration importée</string>
 	<string name="backup_encrypt">Chiffrer la sauvegarde</string>
@@ -62,7 +62,7 @@
 	<string name="broker_auto_accept_detail">Ajoutez immédiatement les groupes/clusters/panneaux d’un appareil nouvellement vu, au lieu de demander à accepter chacun d’entre eux</string>
 	<string name="broker_auto_connect">Connexion automatique</string>
 	<string name="broker_base_topic">Sujet de base</string>
-	<string name="broker_base_topic_help">L’application surveille ‘ &lt;base topic&gt;/# ’ pour les appareils et leurs configurations /app, au lieu de chaque sujet sur le courtier. Entrez une liste séparée par des virgules (par exemple ‘ zigbee2mqtt, zigbee2mqtt2 ’) pour surveiller plusieurs espaces de noms Zigbee2MQTT sur ce même courtier - chacun obtient son propre bouton de jointure d’autorisation ci-dessous</string>
+	<string name="broker_base_topic_help">L’application surveille ‘ &lt;base topic&gt;/# ’ pour les appareils et leurs configurations /app, au lieu de chaque sujet sur le courtier. Entrez une liste séparée par des virgules (par exemple ‘ zigbee2mqtt, zigbee2mqtt2 ’) pour surveiller plusieurs espaces de noms Zigbee2MQTT sur ce même courtier – chacun obtient son propre bouton de jointure d’autorisation ci–dessous</string>
 	<string name="broker_cert_selected">Certificat sélectionné ✓</string>
 	<string name="broker_clean_session">Session propre</string>
 	<string name="broker_clean_session_detail">Démarrer une nouvelle session à chaque connexion (messages non conservés)</string>
@@ -81,7 +81,7 @@
 	<string name="broker_port">Port</string>
 	<string name="broker_protocol">Protocole</string>
 	<string name="broker_select_cert">Sélectionnez le fichier de certificat</string>
-	<string name="broker_self_signed">Ce courtier utilise un certificat SSL/TLS auto-signé</string>
+	<string name="broker_self_signed">Ce courtier utilise un certificat SSL/TLS auto–signé</string>
 	<string name="broker_self_signed_risk">Utilisez à vos propres risques</string>
 	<string name="broker_show">Montrer</string>
 	<string name="broker_show_reconnect">Afficher l’état de la reconnexion</string>
@@ -92,8 +92,8 @@
 	<string name="broker_ws_path">Chemin WebSocket</string>
 	<string name="brokers_add">Ajouter un courtier</string>
 	<string name="brokers_discover">Découvrez les capteurs sur %1$s</string>
-	<string name="brokers_reconnect">Reconnectez-vous à %1$s</string>
-	<string name="brokers_summary">%1$s :%2$d · %3$s · %4$s</string>
+	<string name="brokers_reconnect">Reconnectez–vous à %1$s</string>
+
 	<string name="brokers_title">Courtiers</string>
 	<string name="common_add">Ajouter</string>
 	<string name="common_back">Dos</string>
@@ -112,14 +112,14 @@
 	<string name="connection_state_connecting">De liaison</string>
 	<string name="connection_state_disconnected">Déconnecté</string>
 	<string name="connection_state_failed">Échoué</string>
-	<string name="cred_consent">Cette fonctionnalité facultative utilise un service en ligne géré par le développeur, %1$s. Vous vous connectez à un compte là-bas et choisissez un identifiant enregistré, et le nom d’hôte, le nom d’utilisateur et le mot de passe du courtier sont renvoyés à cet appareil via ce serveur. Rien n’est envoyé tant que vous n’avez pas continué</string>
-	<string name="cred_expired">Code expiré - rouvrez-le pour réessayer</string>
-	<string name="cred_instructions">Scannez-le ou ouvrez %2$s et entrez le code, puis choisissez un identifiant ‘ %1$s ’ enregistré à envoyer</string>
-	<string name="cred_no_hostname">Ce préréglage n’incluait pas de champ Nom d’hôte : vérifiez-le sur %1$s et réessayez</string>
+	<string name="cred_consent">Cette fonctionnalité facultative utilise un service en ligne géré par le développeur, %1$s. Vous vous connectez à un compte là–bas et choisissez un identifiant enregistré, et le nom d’hôte, le nom d’utilisateur et le mot de passe du courtier sont renvoyés à cet appareil via ce serveur. Rien n’est envoyé tant que vous n’avez pas continué</string>
+	<string name="cred_expired">Code expiré – rouvrez–le pour réessayer</string>
+	<string name="cred_instructions">Scannez–le ou ouvrez %2$s et entrez le code, puis choisissez un identifiant ‘ %1$s ’ enregistré à envoyer</string>
+	<string name="cred_no_hostname">Ce préréglage n’incluait pas de champ Nom d’hôte : vérifiez–le sur %1$s et réessayez</string>
 	<string name="cred_qr_description">Code QR pour le code %1$s</string>
 	<string name="cred_starting">Départ</string>
 	<string name="cred_title">Importer les identifiants du courtier</string>
-	<string name="cred_unreachable">Impossible d’atteindre %1$s - vérifiez votre connexion et réessayez</string>
+	<string name="cred_unreachable">Impossible d’atteindre %1$s – vérifiez votre connexion et réessayez</string>
 	<string name="cred_waiting">En attendant le ramassage</string>
 	<plurals name="discover_add_panels">
 		<item quantity="many">Ajouter %1$d panneaux</item>
@@ -129,14 +129,14 @@
 	<string name="discover_all_applied">Tous les appareils découverts ont été appliqués – il ne reste plus rien à configurer ici</string>
 	<string name="discover_apply">Appliquer la configuration de l’appareil</string>
 	<plurals name="discover_apply_detail_group">
-		<item quantity="many">Crée %1$d panneaux exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci-dessous</item>
-		<item quantity="one">Crée %1$d panneau exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci-dessous</item>
-		<item quantity="other">Crée %1$d panneaux exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci-dessous</item>
+		<item quantity="many">Crée %1$d panneaux exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci–dessous</item>
+		<item quantity="one">Crée %1$d panneau exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci–dessous</item>
+		<item quantity="other">Crée %1$d panneaux exactement comme indiqué dans %2$s dans le groupe ‘ %3$s ’, en ignorant les cases ci–dessous</item>
 	</plurals>
 	<plurals name="discover_apply_detail">
-		<item quantity="many">Crée %1$d panneaux exactement comme indiqué dans %2$s, en ignorant les cases ci-dessous</item>
-		<item quantity="one">Crée %1$d panneau exactement comme indiqué dans %2$s, en ignorant les cases ci-dessous</item>
-		<item quantity="other">Crée %1$d panneaux exactement comme indiqué dans %2$s, en ignorant les cases ci-dessous</item>
+		<item quantity="many">Crée %1$d panneaux exactement comme indiqué dans %2$s, en ignorant les cases ci–dessous</item>
+		<item quantity="one">Crée %1$d panneau exactement comme indiqué dans %2$s, en ignorant les cases ci–dessous</item>
+		<item quantity="other">Crée %1$d panneaux exactement comme indiqué dans %2$s, en ignorant les cases ci–dessous</item>
 	</plurals>
 	<string name="discover_apply_named">Appliquer la configuration du périphérique : %1$s</string>
 	<string name="discover_auto_all">Configurer automatiquement tous les appareils trouvés</string>
@@ -145,15 +145,15 @@
 		<item quantity="one">Appareil %1$d configuré automatiquement</item>
 		<item quantity="other">Appareils %1$d configurés automatiquement</item>
 	</plurals>
-	<string name="discover_auto_none">Aucun appareil avec une configuration valide n’était encore prêt – réessayez dans un instant ou utilisez l’icône d’actualisation ci-dessus</string>
+	<string name="discover_auto_none">Aucun appareil avec une configuration valide n’était encore prêt – réessayez dans un instant ou utilisez l’icône d’actualisation ci–dessus</string>
 	<string name="discover_bad_config">Trouvé %1$s mais n’a pas pu le lire en tant que configuration de périphérique – vérifiez qu’il s’agit d’un JSON valide avec un tableau ‘ panneaux ’ non vide</string>
-	<string name="discover_field">%1$s (%2$s)</string>
+
 	<string name="discover_ideal_range">gamme idéale</string>
 	<string name="discover_instructions">Cochez les champs que vous souhaitez utiliser comme vignettes du tableau de bord ou utilisez ‘ Appliquer la configuration de l’appareil ’ si l’appareil publie sa propre configuration &lt;topic&gt;/app</string>
 	<string name="discover_new_group">+ Nouveau groupe</string>
 	<string name="discover_new_group_name">Nouveau nom de groupe</string>
 	<string name="discover_no_broker">Ajoutez d’abord un courtier (Paramètres → Courtiers) avant de découvrir les capteurs</string>
-	<string name="discover_none_found">Aucun sujet en forme de capteur trouvé pour l’instant. Les messages conservés peuvent mettre un certain temps à arriver après l’abonnement - essayez l’icône d’actualisation ci-dessus ou vérifiez que le courtier conserve réellement les messages sur ces sujets</string>
+	<string name="discover_none_found">Aucun sujet en forme de capteur trouvé pour l’instant. Les messages conservés peuvent mettre un certain temps à arriver après l’abonnement – essayez l’icône d’actualisation ci–dessus ou vérifiez que le courtier conserve réellement les messages sur ces sujets</string>
 	<string name="discover_rescan">Nouvelle analyse</string>
 	<string name="discover_sample">échantillon : %1$s</string>
 	<plurals name="discover_selected">
@@ -165,7 +165,7 @@
 	<string name="discover_title">Découvrez les capteurs</string>
 	<string name="filter_active">Actif</string>
 	<string name="filter_fab">Filtrer le tableau de bord</string>
-	<string name="filter_fab_active">Filtre : affichant uniquement %1$s - appuyez pour modifier</string>
+	<string name="filter_fab_active">Filtre : affichant uniquement %1$s – appuyez pour modifier</string>
 	<string name="filter_high_moisture">Humidité supérieure à la plage idéale</string>
 	<string name="filter_low_battery">Batterie 20 % ou moins</string>
 	<string name="filter_low_moisture">Humidité inférieure à la plage idéale</string>
@@ -176,11 +176,11 @@
 	<string name="home_add_group">Ajouter un groupe</string>
 	<string name="home_add_panel_to">Ajouter un panneau à %1$s</string>
 	<string name="home_add_tile_to">Ajouter une vignette à %1$s</string>
-	<string name="home_age">• %1$s</string>
+
 	<string name="home_another_group">un autre groupe</string>
-	<string name="home_change_topic_broad_warning">Les panneaux de ce cluster ne partagent pas tous un seul sujet de périphérique propre, seulement cet espace de noms nu - probablement quelques panneaux incompatibles plutôt qu’un seul périphérique réel. Le déplacer remplace uniquement cette partie partagée, il se peut donc qu’il ne s’applique pas comme prévu. Cela vaut la peine de vérifier d’abord les panneaux de ce cluster individuellement</string>
+	<string name="home_change_topic_broad_warning">Les panneaux de ce cluster ne partagent pas tous un seul sujet de périphérique propre, seulement cet espace de noms nu – probablement quelques panneaux incompatibles plutôt qu’un seul périphérique réel. Le déplacer remplace uniquement cette partie partagée, il se peut donc qu’il ne s’applique pas comme prévu. Cela vaut la peine de vérifier d’abord les panneaux de ce cluster individuellement</string>
 	<string name="home_change_topic_cluster">Changer de sujet pour %1$s</string>
-	<string name="home_change_topic_text">Déplace chaque panneau de ce cluster vers un nouveau sujet MQTT - par ex. après avoir divisé un réseau Zigbee sur un deuxième pont, uniquement pour les appareils réellement déplacés. Les autres clusters sont intacts</string>
+	<string name="home_change_topic_text">Déplace chaque panneau de ce cluster vers un nouveau sujet MQTT – par ex. après avoir divisé un réseau Zigbee sur un deuxième pont, uniquement pour les appareils réellement déplacés. Les autres clusters sont intacts</string>
 	<string name="home_change_topic_title">Changer de sujet pour ‘ %1$s ’</string>
 	<string name="home_cluster_copy">Copie de %1$s</string>
 	<string name="home_cluster_copy_n">%1$s copie %2$d</string>
@@ -199,7 +199,7 @@
 	<string name="home_delete_group_text">Cela supprime le groupe et tous les panneaux qu’il contient</string>
 	<string name="home_delete_group_title">Supprimer le groupe ?</string>
 	<string name="home_duplicate">Double</string>
-	<string name="home_duplicate_broad_warning">Les panneaux de ce cluster ne partagent pas tous un seul sujet de périphérique propre (seulement ‘ %1$s ’ en commun) - probablement quelques panneaux incompatibles plutôt qu’un seul périphérique réel. Le sujet ci-dessous remplace uniquement cette partie partagée. Il se peut donc qu’il ne s’applique pas comme vous le souhaitez. Cela vaut la peine de vérifier d’abord les panneaux de ce cluster individuellement</string>
+	<string name="home_duplicate_broad_warning">Les panneaux de ce cluster ne partagent pas tous un seul sujet de périphérique propre (seulement ‘ %1$s ’ en commun) – probablement quelques panneaux incompatibles plutôt qu’un seul périphérique réel. Le sujet ci–dessous remplace uniquement cette partie partagée. Il se peut donc qu’il ne s’applique pas comme vous le souhaitez. Cela vaut la peine de vérifier d’abord les panneaux de ce cluster individuellement</string>
 	<string name="home_duplicate_cluster">Dupliquer %1$s</string>
 	<string name="home_duplicate_title">Dupliquer ‘%1$s’</string>
 	<string name="home_edit_group">Modifier le groupe</string>
@@ -207,7 +207,7 @@
 	<string name="home_expand_all_groups">Développer tous les groupes</string>
 	<string name="home_expand_group">Développer %1$s</string>
 	<string name="home_force_upload_copy">Forcer le téléchargement d’une nouvelle copie</string>
-	<string name="home_force_upload_copy_detail">Reconstruit et republie chaque cluster dans la configuration de périphérique de ce groupe à partir des paramètres actuels de ce téléphone, en écrasant tout ce qui se trouve actuellement sur le courtier - utilisez-le si un autre téléphone ou un problème de courtier a laissé quelque chose de désynchronisé</string>
+	<string name="home_force_upload_copy_detail">Reconstruit et republie chaque cluster dans la configuration de périphérique de ce groupe à partir des paramètres actuels de ce téléphone, en écrasant tout ce qui se trouve actuellement sur le courtier – utilisez–le si un autre téléphone ou un problème de courtier a laissé quelque chose de désynchronisé</string>
 	<string name="home_force_upload_text">Cela écrase la configuration de périphérique conservée sur le courtier pour chaque cluster de ce groupe par une nouvelle copie créée à partir des paramètres actuels de ce téléphone. Toute configuration différente actuellement sur le courtier (par exemple à partir d’un autre téléphone) sera remplacée et non fusionnée. Cela ne peut pas être annulé automatiquement</string>
 	<string name="home_force_upload_title">Forcer le téléchargement de ‘ %1$s ’ ?</string>
 	<string name="home_group_fallback">Groupe</string>
@@ -220,7 +220,7 @@
 	<string name="home_moved_within">Déplacement de ‘ %1$s ’ dans ‘ %2$s ’</string>
 	<string name="home_new_topic">Nouveau sujet</string>
 	<string name="home_no_groups">Aucun groupe pour l’instant</string>
-	<string name="home_no_groups_detail">Appuyez sur + pour créer votre premier groupe, puis ajoutez-y des panneaux</string>
+	<string name="home_no_groups_detail">Appuyez sur + pour créer votre premier groupe, puis ajoutez–y des panneaux</string>
 	<string name="home_no_matching_clusters">Aucun cluster correspondant</string>
 	<string name="home_none">(aucun)</string>
 	<string name="home_nothing">(rien)</string>
@@ -229,8 +229,8 @@
 	<string name="home_republished">Republié ‘ %1$s ’ auprès du courtier</string>
 	<string name="home_retopic">Retopique</string>
 	<string name="home_retopic_all">Retopiquer tous les clusters</string>
-	<string name="home_retopic_all_detail">Déplace chaque cluster de ce groupe actuellement sur un ancien sujet MQTT vers un nouveau, en une seule fois - par ex. après avoir divisé un réseau Zigbee sur un deuxième pont, pour chaque appareil déplacé. Les clusters sur un sujet différent sont intacts</string>
-	<string name="home_retopic_all_text">Déplace chaque cluster de ce groupe dont le sujet correspond exactement à ‘ Ancien sujet ’ vers ‘ Nouveau sujet ’ - le reste des clusters de ce groupe reste intact. Cela ne peut pas être annulé automatiquement</string>
+	<string name="home_retopic_all_detail">Déplace chaque cluster de ce groupe actuellement sur un ancien sujet MQTT vers un nouveau, en une seule fois – par ex. après avoir divisé un réseau Zigbee sur un deuxième pont, pour chaque appareil déplacé. Les clusters sur un sujet différent sont intacts</string>
+	<string name="home_retopic_all_text">Déplace chaque cluster de ce groupe dont le sujet correspond exactement à ‘ Ancien sujet ’ vers ‘ Nouveau sujet ’ – le reste des clusters de ce groupe reste intact. Cela ne peut pas être annulé automatiquement</string>
 	<string name="home_retopic_all_title">Retopiquer tous les clusters dans ‘ %1$s ’ ?</string>
 	<plurals name="home_retopic_moved">
 		<item quantity="many">%1$d clusters déplacés vers ‘ %2$s ’</item>
@@ -248,7 +248,7 @@
 	<string name="mqtt_backup_delete_text">Supprime la sauvegarde conservée de %1$s. Cela ne peut pas être annulé</string>
 	<string name="mqtt_backup_delete_title">Supprimer cette sauvegarde ?</string>
 	<string name="mqtt_backup_deleted">Sauvegarde supprimée de %1$s</string>
-	<string name="mqtt_backup_explain">Publie vos groupes et panneaux (et non l’hôte/nom d’utilisateur/mot de passe du courtier - ceux-ci restent sur cet appareil) - compressés en gzip, puis codés en base64 afin qu’ils se déplacent comme une charge utile MQTT normale - en tant que nouveau message conservé sous ‘ %1$s/&lt;timestamp&gt; ’, en gardant intacte chaque sauvegarde précédente</string>
+	<string name="mqtt_backup_explain">Publie vos groupes et panneaux (et non l’hôte/nom d’utilisateur/mot de passe du courtier – ceux–ci restent sur cet appareil) – compressés en gzip, puis codés en base64 afin qu’ils se déplacent comme une charge utile MQTT normale – en tant que nouveau message conservé sous ‘ %1$s/&lt;timestamp&gt; ’, en gardant intacte chaque sauvegarde précédente</string>
 	<string name="mqtt_backup_mode_backup">Sauvegarde</string>
 	<string name="mqtt_backup_mode_restore">Restaurer</string>
 	<string name="mqtt_backup_no_broker">Ajoutez d’abord un courtier (Paramètres → Courtiers) avant de l’utiliser</string>
@@ -261,7 +261,7 @@
 	</plurals>
 	<string name="mqtt_backup_title">Sauvegarde / Restauration via MQTT</string>
 	<string name="mqtt_restore_done">Restauré à partir de %1$s</string>
-	<string name="mqtt_restore_explain">Analyse ‘ %1$s/# ’ pour chaque sauvegarde conservée par le courtier, la plus récente en premier. La restauration remplace vos groupes et panneaux, mais conserve vos courtiers actuels tels quels (ils n’ont pas été inclus dans la sauvegarde) - donc cela ne se reconnecte proprement que sur la même configuration de courtier à partir de laquelle la sauvegarde a été effectuée</string>
+	<string name="mqtt_restore_explain">Analyse ‘ %1$s/# ’ pour chaque sauvegarde conservée par le courtier, la plus récente en premier. La restauration remplace vos groupes et panneaux, mais conserve vos courtiers actuels tels quels (ils n’ont pas été inclus dans la sauvegarde) – donc cela ne se reconnecte proprement que sur la même configuration de courtier à partir de laquelle la sauvegarde a été effectuée</string>
 	<string name="mqtt_restore_failed">Échec de la restauration : la charge utile de ce sujet n’était pas une sauvegarde valide</string>
 	<string name="mqtt_restore_none">Aucune sauvegarde trouvée pour l’instant sous ‘ %1$s/ ’ : les messages conservés peuvent mettre un certain temps à arriver après l’analyse, ou il se peut qu’aucun message n’y soit publié</string>
 	<string name="mqtt_restore_not_loaded">Les données de cette sauvegarde ne sont pas encore chargées : essayez à nouveau de numériser</string>
@@ -276,7 +276,7 @@
 	<string name="notif_mqtt_connection_text">Maintenir les connexions avec les courtiers</string>
 	<string name="notif_test_title">Alerte test</string>
 	<string name="panel_add_title">Ajouter un panneau</string>
-	<string name="panel_button_help">Envoyé chaque fois que vous appuyez sur ce bouton - il n’y a pas d’état marche/arrêt à suivre</string>
+	<string name="panel_button_help">Envoyé chaque fois que vous appuyez sur ce bouton – il n’y a pas d’état marche/arrêt à suivre</string>
 	<string name="panel_cluster">Nom du cluster (facultatif)</string>
 	<string name="panel_cluster_hint">par ex. Capteur de sol 1 – le regroupe avec d’autres panneaux du même nom</string>
 	<string name="panel_command_topic">Sujet de commande</string>
@@ -289,17 +289,17 @@
 	<string name="panel_delete_title">Supprimer le panneau ?</string>
 	<string name="panel_edit_title">Panneau d’édition</string>
 	<string name="panel_editable">Valeur modifiable</string>
-	<string name="panel_editable_detail">Appuyer sur cette vignette vous permet de saisir un nouveau numéro, qui est republié dans ce même sujet/champ (conservé) - pour une préférence fixe, un script d’automatisation lit (par exemple un seuil d’humidité), et non une lecture matérielle en direct, que la prochaine mise à jour écraserait simplement</string>
+	<string name="panel_editable_detail">Appuyer sur cette vignette vous permet de saisir un nouveau numéro, qui est republié dans ce même sujet/champ (conservé) – pour une préférence fixe, un script d’automatisation lit (par exemple un seuil d’humidité), et non une lecture matérielle en direct, que la prochaine mise à jour écraserait simplement</string>
 	<string name="panel_icon">Icône</string>
-	<string name="panel_ideal_help">Lorsqu’elle est définie, cette vignette clignote en rouge en dessous du minimum, en vert dans la plage et en bleu au-dessus du maximum</string>
+	<string name="panel_ideal_help">Lorsqu’elle est définie, cette vignette clignote en rouge en dessous du minimum, en vert dans la plage et en bleu au–dessus du maximum</string>
 	<string name="panel_ideal_topic">Sujet de gamme idéal (facultatif)</string>
-	<string name="panel_ideal_topic_hint">par ex. z2m2/SoilSensor_01/ideal – publie {‘min’:x,‘max’:y}</string>
+	<string name="panel_ideal_topic_hint">par ex. zigbee2mqtt/SoilSensor_01/ideal – publie {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">Champ JSON (vide = charge utile brute)</string>
 	<string name="panel_json_field_hint">par ex. température ou état.batterie</string>
 	<string name="panel_label">Étiquette</string>
 	<string name="panel_max_field">Nom de champ maximum</string>
 	<string name="panel_min_field">Nom du champ minimum</string>
-	<string name="panel_min_max_help">Nécessaire uniquement si le sujet n’utilise pas de simples touches ‘ min ’/‘ max ’ – par ex. définissez-les sur ‘ moisture_min ’/‘ moisture_max ’ pour un sujet de configuration d’appareil partagé</string>
+	<string name="panel_min_max_help">Nécessaire uniquement si le sujet n’utilise pas de simples touches ‘ min ’/‘ max ’ – par ex. définissez–les sur ‘ moisture_min ’/‘ moisture_max ’ pour un sujet de configuration d’appareil partagé</string>
 	<string name="panel_no_broker">Ajoutez d’abord un courtier (Paramètres → Courtiers) avant de créer des panneaux</string>
 	<string name="panel_off_payload">Charge utile OFF</string>
 	<string name="panel_on_payload">Charge utile activée</string>
@@ -331,14 +331,14 @@
 	<string name="permit_join_via">Autoriser la participation via (facultatif)</string>
 	<string name="permit_join_via_help">Nom convivial d’un routeur spécifique via lequel étendre la connexion, ou ‘ Coordinateur ’ pour le coordinateur uniquement. Laissez vide pour permettre la connexion via chaque routeur et le coordinateur à la fois</string>
 	<string name="permit_join_via_hint">Vide = tout le réseau</string>
-	<string name="protocol_ssl">SSL - Couche de sockets sécurisée</string>
-	<string name="protocol_tcp">TCP - Protocole de contrôle de transmission</string>
-	<string name="protocol_ws">WS - Sockets Web</string>
-	<string name="protocol_wss">WSS - Web Sockets sécurisé</string>
+	<string name="protocol_ssl">SSL – Couche de sockets sécurisée</string>
+	<string name="protocol_tcp">TCP – Protocole de contrôle de transmission</string>
+	<string name="protocol_ws">WS – Sockets Web</string>
+	<string name="protocol_wss">WSS – Web Sockets sécurisé</string>
 	<string name="settings_about">À propos</string>
 	<string name="settings_about_tagline">%1$s – pas de cloud, pas de compte, pas de verrouillage</string>
 	<string name="settings_alerts_detail">Alertes de fumée et d’arrosage, notifications sonores et de test</string>
-	<string name="settings_background">Travail en arrière-plan</string>
+	<string name="settings_background">Travail en arrière–plan</string>
 	<string name="settings_background_detail">Maintenir les connexions des courtiers actives lorsque l’application est fermée</string>
 	<string name="settings_backup">Sauvegarde et restauration</string>
 	<string name="settings_backup_detail">Enregistrez ou restaurez votre configuration, complète ou courtiers uniquement</string>
@@ -352,7 +352,7 @@
 	<string name="settings_force_upload_all">Forcer le téléchargement de tous les groupes</string>
 	<string name="settings_force_upload_all_confirm">Cela écrase la configuration de périphérique conservée sur le courtier pour chaque cluster de chaque groupe par une nouvelle copie créée à partir des paramètres actuels de ce téléphone. Toute configuration différente actuellement sur le courtier (par exemple à partir d’un autre téléphone) sera remplacée et non fusionnée. Cela ne peut pas être annulé automatiquement</string>
 	<string name="settings_force_upload_all_confirm_title">Forcer le téléchargement de tous les groupes ?</string>
-	<string name="settings_force_upload_all_detail">Reconstruit et republie chaque cluster dans la configuration de périphérique de chaque groupe à partir des paramètres actuels de ce téléphone - utilisez-le si un problème de courtier ou un autre téléphone a laissé plusieurs groupes désynchronisés</string>
+	<string name="settings_force_upload_all_detail">Reconstruit et republie chaque cluster dans la configuration de périphérique de chaque groupe à partir des paramètres actuels de ce téléphone – utilisez–le si un problème de courtier ou un autre téléphone a laissé plusieurs groupes désynchronisés</string>
 	<plurals name="settings_force_upload_all_done">
 		<item quantity="many">%1$d groupes republiés sur le courtier</item>
 		<item quantity="one">Groupe %1$d republié auprès du courtier</item>
@@ -362,9 +362,9 @@
 	<string name="settings_orphans_clean">Nettoyer</string>
 	<string name="settings_orphans_confirm_title">Nettoyer les données orphelines ?</string>
 	<plurals name="settings_orphans_confirm">
-		<item quantity="many">Cela supprime %1$d panneaux étiquetés avec un courtier qui n’existe plus - le plus souvent laissés de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
-		<item quantity="one">Cela supprime %1$d panneau étiqueté avec un courtier qui n’existe plus - le plus souvent laissé de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
-		<item quantity="other">Cela supprime %1$d panneaux étiquetés avec un courtier qui n’existe plus - le plus souvent laissés de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
+		<item quantity="many">Cela supprime %1$d panneaux étiquetés avec un courtier qui n’existe plus – le plus souvent laissés de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
+		<item quantity="one">Cela supprime %1$d panneau étiqueté avec un courtier qui n’existe plus – le plus souvent laissé de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
+		<item quantity="other">Cela supprime %1$d panneaux étiquetés avec un courtier qui n’existe plus – le plus souvent laissés de côté en supprimant un courtier et en le rajoutant. Les panneaux toujours liés à un courtier que vous avez réellement configuré ne sont jamais touchés</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
 		<item quantity="many">%1$d panneaux restants d’un courtier supprimé peuvent être supprimés</item>
@@ -377,9 +377,9 @@
 		<item quantity="other">%1$d panneaux supprimés</item>
 	</plurals>
 	<string name="settings_tile_width">Largeur des tuiles et des clusters</string>
-	<string name="settings_tile_width_detail">Quelle largeur les tuiles (et donc les cartes de cluster, 3 tuiles de large) peuvent croître, jusqu’à remplir l’écran - actuellement %1$ddp</string>
+	<string name="settings_tile_width_detail">Quelle largeur les tuiles (et donc les cartes de cluster, 3 tuiles de large) peuvent croître, jusqu’à remplir l’écran – actuellement %1$ddp</string>
 	<string name="settings_undo">Annuler la durée du toast</string>
-	<string name="settings_undo_detail">Combien de temps l’invite ‘ Annuler ’ reste affichée après le déplacement d’une vignette, d’un cluster ou d’un groupe - actuellement %1$ds</string>
+	<string name="settings_undo_detail">Combien de temps l’invite ‘ Annuler ’ reste affichée après le déplacement d’une vignette, d’un cluster ou d’un groupe – actuellement %1$ds</string>
 	<string name="settings_undo_detail_off">Combien de temps l’invite ‘ Annuler ’ reste affichée après le déplacement d’une vignette, d’un cluster ou d’un groupe – actuellement désactivée</string>
 	<string name="settings_version">Version %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">Alertes à la fumée (silencieuses)</string>
@@ -401,7 +401,7 @@
 		<item quantity="one">%1$d sur %2$d message (le plus ancien en premier, le dernier %3$d conservé)</item>
 		<item quantity="other">%1$d sur %2$d messages (le plus ancien en premier, le dernier %3$d conservé)</item>
 	</plurals>
-	<string name="terminal_empty">Aucun message reçu pour l’instant. Assurez-vous qu’un courtier est connecté et abonné (vérifiez Courtiers dans Paramètres ou que son sujet de base correspond à votre configuration)</string>
+	<string name="terminal_empty">Aucun message reçu pour l’instant. Assurez–vous qu’un courtier est connecté et abonné (vérifiez Courtiers dans Paramètres ou que son sujet de base correspond à votre configuration)</string>
 	<string name="terminal_filter">Filtrer par sujet ou charge utile</string>
 	<string name="terminal_jump_newest">Aller au plus récent</string>
 	<string name="terminal_no_match">Aucun message ne correspond à ce filtre</string>
@@ -415,7 +415,7 @@
 	<string name="watering_notif_title">%1$s ont atteint l’humidité cible</string>
 	<string name="watering_test_sensor">Tester le capteur</string>
 	<string name="welcome_add_broker">Ajouter un courtier</string>
-	<string name="welcome_intro">Vous aurez besoin d’au moins un courtier MQTT pour commencer : ajoutez-en un maintenant ou restaurez une configuration que vous avez précédemment sauvegardée</string>
+	<string name="welcome_intro">Vous aurez besoin d’au moins un courtier MQTT pour commencer : ajoutez–en un maintenant ou restaurez une configuration que vous avez précédemment sauvegardée</string>
 	<string name="welcome_restore">Restaurer à partir d’une sauvegarde</string>
 	<string name="welcome_title">Accueillir</string>
 </resources>

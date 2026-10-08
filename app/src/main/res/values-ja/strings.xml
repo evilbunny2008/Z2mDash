@@ -41,7 +41,7 @@
 	<string name="backup_restore_full_detail">設定全体をファイル内の内容に置き換えます</string>
 	<string name="backup_scope_brokers">ブローカーのみ</string>
 	<string name="backup_scope_full">完全な構成</string>
-	<string name="backup_set_password_text">このバックアップを暗号化するためのパスワードを選択します。次回のために記憶されます - 復元するために再度必要になります</string>
+	<string name="backup_set_password_text">このバックアップを暗号化するためのパスワードを選択します。次回のために記憶されます – 復元するために再度必要になります</string>
 	<string name="backup_set_password_title">エクスポートパスワードの設定</string>
 	<string name="backup_unencrypted_text">このバックアップにはブローカーのユーザー名とパスワードが含まれており、プレーン テキストとして保存されます。ファイルを入手した人は誰でも読むことができます。代わりにパスワードで保護するには、バックアップの暗号化をオンにします</string>
 	<string name="backup_unencrypted_title">暗号化せずにエクスポートしますか?</string>
@@ -93,7 +93,7 @@
 	<string name="brokers_add">ブローカーを追加</string>
 	<string name="brokers_discover">%1$s でセンサーを検出</string>
 	<string name="brokers_reconnect">%1$s に再接続します</string>
-	<string name="brokers_summary">%1$s:%2$d · %3$s · %4$s</string>
+
 	<string name="brokers_title">ブローカー</string>
 	<string name="common_add">追加</string>
 	<string name="common_back">戻る</string>
@@ -113,13 +113,13 @@
 	<string name="connection_state_disconnected">切断されました</string>
 	<string name="connection_state_failed">失敗した</string>
 	<string name="cred_consent">このオプション機能は、開発者 %1$s が運営するオンライン サービスを使用します。そこでアカウントにログインし、保存されている認証情報を選択すると、ブローカーのホスト名、ユーザー名、パスワードがそのサーバーを通じてこのデバイスに中継されます。続行するまで何も送信されません</string>
-	<string name="cred_expired">コードの有効期限が切れました - これを再度開いて再試行してください</string>
+	<string name="cred_expired">コードの有効期限が切れました – これを再度開いて再試行してください</string>
 	<string name="cred_instructions">これをスキャンするか、%2$s を開いてコードを入力し、保存されている「%1$s」認証情報を選択して送信します</string>
-	<string name="cred_no_hostname">そのプリセットにはホスト名フィールドが含まれていません - %1$s で確認して、もう一度試してください</string>
+	<string name="cred_no_hostname">そのプリセットにはホスト名フィールドが含まれていません – %1$s で確認して、もう一度試してください</string>
 	<string name="cred_qr_description">コード %1$s の QR コード</string>
 	<string name="cred_starting">起動</string>
 	<string name="cred_title">ブローカー資格情報をインポートする</string>
-	<string name="cred_unreachable">%1$s にアクセスできませんでした - 接続を確認して、もう一度お試しください</string>
+	<string name="cred_unreachable">%1$s にアクセスできませんでした – 接続を確認して、もう一度お試しください</string>
 	<string name="cred_waiting">ピックアップを待っています</string>
 	<plurals name="discover_add_panels">
 		<item quantity="other">%1$d パネルを追加</item>
@@ -139,7 +139,7 @@
 	</plurals>
 	<string name="discover_auto_none">有効な構成を持つデバイスの準備がまだできていません。しばらくしてから再試行するか、上の更新アイコンを使用してください</string>
 	<string name="discover_bad_config">%1$s が見つかりましたが、デバイス構成として読み取れませんでした – 空ではない「panels」配列を含む有効な JSON であることを確認してください</string>
-	<string name="discover_field">%1$s (%2$s)</string>
+
 	<string name="discover_ideal_range">理想的な範囲</string>
 	<string name="discover_instructions">ダッシュボード タイルとして使用するフィールドにチェックを入れるか、デバイスが独自の &lt;topic&gt;/app config を公開している場合は、「Apply device config」を使用します。</string>
 	<string name="discover_new_group">+ 新しいグループ</string>
@@ -155,7 +155,7 @@
 	<string name="discover_title">センサーの発見</string>
 	<string name="filter_active">アクティブ</string>
 	<string name="filter_fab">ダッシュボードをフィルタリングする</string>
-	<string name="filter_fab_active">フィルター: %1$s のみを表示 - タップして変更します</string>
+	<string name="filter_fab_active">フィルター: %1$s のみを表示 – タップして変更します</string>
 	<string name="filter_high_moisture">理想的な範囲を超える水分</string>
 	<string name="filter_low_battery">バッテリー残量が20%以下</string>
 	<string name="filter_low_moisture">理想的な範囲を下回る水分</string>
@@ -166,7 +166,7 @@
 	<string name="home_add_group">グループを追加</string>
 	<string name="home_add_panel_to">%1$s にパネルを追加</string>
 	<string name="home_add_tile_to">%1$s にタイルを追加</string>
-	<string name="home_age">• %1$s</string>
+
 	<string name="home_another_group">別のグループ</string>
 	<string name="home_change_topic_broad_warning">このクラスターのパネルはすべて、1 つのクリーンなデバイス トピックを共有しているわけではなく、その裸の名前空間だけを共有しています。おそらく、1 つの実際のデバイスではなく、いくつかの不一致のパネルです。移動すると、その共有部分のみが置き換えられるため、期待どおりに適用されない可能性があります。最初にこのクラスターのパネルを個別に確認する価値があります</string>
 	<string name="home_change_topic_cluster">%1$s のトピックを変更します</string>
@@ -234,7 +234,7 @@
 	<string name="mqtt_backup_delete_text">保持されているバックアップを %1$s から削除します。これは取り消しできません</string>
 	<string name="mqtt_backup_delete_title">このバックアップを削除しますか?</string>
 	<string name="mqtt_backup_deleted">%1$s からバックアップを削除しました</string>
-	<string name="mqtt_backup_explain">グループとパネルを公開します (ブローカーのホスト/ユーザー名/パスワードではなく、これらはこのデバイス上に残ります) - gzip 圧縮され、その後 Base64 でエンコードされるため、通常の MQTT ペイロードとして送信されます - 以前のすべてのバックアップをそのまま保持し、「%1$s/&lt;タイムスタンプ&gt;」の下に新しい保持メッセージとして送信されます</string>
+	<string name="mqtt_backup_explain">グループとパネルを公開します (ブローカーのホスト/ユーザー名/パスワードではなく、これらはこのデバイス上に残ります) – gzip 圧縮され、その後 Base64 でエンコードされるため、通常の MQTT ペイロードとして送信されます – 以前のすべてのバックアップをそのまま保持し、「%1$s/&lt;タイムスタンプ&gt;」の下に新しい保持メッセージとして送信されます</string>
 	<string name="mqtt_backup_mode_backup">バックアップ</string>
 	<string name="mqtt_backup_mode_restore">復元する</string>
 	<string name="mqtt_backup_no_broker">これを使用する前に、まずブローカーを追加してください ([設定] → [ブローカー])。</string>
@@ -247,8 +247,8 @@
 	<string name="mqtt_restore_done">%1$s から復元されました</string>
 	<string name="mqtt_restore_explain">ブローカーが保持しているすべてのバックアップについて「%1$s/#」を最新のものから順にスキャンします。復元するとグループとパネルが置き換えられますが、現在のブローカーはそのまま維持されます (バックアップには含まれていません)。そのため、バックアップが取得されたのと同じブローカー設定でのみ正常に再接続されます。</string>
 	<string name="mqtt_restore_failed">復元に失敗しました: そのトピックのペイロードは有効なバックアップではありませんでした</string>
-	<string name="mqtt_restore_none">「%1$s/」の下にまだバックアップが見つかりません - 保持されたメッセージはスキャン後に到着するまでに時間がかかる場合があり、またはそこに公開されていない可能性があります</string>
-	<string name="mqtt_restore_not_loaded">そのバックアップのデータはまだロードされていません - もう一度スキャンしてみてください</string>
+	<string name="mqtt_restore_none">「%1$s/」の下にまだバックアップが見つかりません – 保持されたメッセージはスキャン後に到着するまでに時間がかかる場合があり、またはそこに公開されていない可能性があります</string>
+	<string name="mqtt_restore_not_loaded">そのバックアップのデータはまだロードされていません – もう一度スキャンしてみてください</string>
 	<string name="mqtt_restore_restoring">復元中</string>
 	<string name="mqtt_restore_scan">バックアップのスキャン</string>
 	<string name="mqtt_restore_scan_hint">「バックアップをスキャン」をタップして、このブローカーに保持されているバックアップを探します</string>
@@ -260,7 +260,7 @@
 	<string name="notif_mqtt_connection_text">ブローカー接続の維持</string>
 	<string name="notif_test_title">テストアラート</string>
 	<string name="panel_add_title">パネルの追加</string>
-	<string name="panel_button_help">このボタンがタップされるたびに送信されます - 追跡するオン/オフ状態はありません</string>
+	<string name="panel_button_help">このボタンがタップされるたびに送信されます – 追跡するオン/オフ状態はありません</string>
 	<string name="panel_cluster">クラスター名 (オプション)</string>
 	<string name="panel_cluster_hint">例えば土壌センサー 1 – これを同じ名前の他のパネルとグループ化します。</string>
 	<string name="panel_command_topic">コマンドトピック</string>
@@ -277,7 +277,7 @@
 	<string name="panel_icon">アイコン</string>
 	<string name="panel_ideal_help">設定すると、このタイルは最小値を下回ると赤、範囲内では緑、最大値を超えると青で点滅します。</string>
 	<string name="panel_ideal_topic">理想的な範囲のトピック (オプション)</string>
-	<string name="panel_ideal_topic_hint">例えばz2m2/SoilSensor_01/ideal – {‘min’:x,‘max’:y} を公開します</string>
+	<string name="panel_ideal_topic_hint">例えばzigbee2mqtt/SoilSensor_01/ideal – {‘min’:x,‘max’:y} を公開します</string>
 	<string name="panel_json_field">JSON フィールド (空白 = 生のペイロード)</string>
 	<string name="panel_json_field_hint">例えば温度または状態.バッテリー</string>
 	<string name="panel_label">ラベル</string>
@@ -315,10 +315,10 @@
 	<string name="permit_join_via">経由での参加を許可する (オプション)</string>
 	<string name="permit_join_via_help">参加を拡張するための特定のルーターのフレンドリ名、またはコーディネーターのみの場合は「コーディネーター」。すべてのルーターとコーディネーターを介して同時に参加できるようにするには、空白のままにします</string>
 	<string name="permit_join_via_hint">空白 = ネットワーク全体</string>
-	<string name="protocol_ssl">SSL - セキュアソケットレイヤー</string>
-	<string name="protocol_tcp">TCP - 伝送制御プロトコル</string>
-	<string name="protocol_ws">WS - ウェブソケット</string>
-	<string name="protocol_wss">WSS - 安全な Web ソケット</string>
+	<string name="protocol_ssl">SSL – セキュアソケットレイヤー</string>
+	<string name="protocol_tcp">TCP – 伝送制御プロトコル</string>
+	<string name="protocol_ws">WS – ウェブソケット</string>
+	<string name="protocol_wss">WSS – 安全な Web ソケット</string>
 	<string name="settings_about">について</string>
 	<string name="settings_about_tagline">%1$s – クラウド、アカウント、ロックインなし</string>
 	<string name="settings_alerts_detail">煙と散水の警報、音、テスト通知</string>
@@ -351,10 +351,10 @@
 		<item quantity="other">%1$d 個のパネルを削除しました</item>
 	</plurals>
 	<string name="settings_tile_width">タイルとクラスターの幅</string>
-	<string name="settings_tile_width_detail">タイル (およびクラスター カード、つまり 3 タイル幅) の幅を画面いっぱいまで拡大できる範囲 - 現在 %1$ddp</string>
+	<string name="settings_tile_width_detail">タイル (およびクラスター カード、つまり 3 タイル幅) の幅を画面いっぱいまで拡大できる範囲 – 現在 %1$ddp</string>
 	<string name="settings_undo">トースト期間を元に戻す</string>
-	<string name="settings_undo_detail">タイル、クラスター、またはグループをドラッグした後に「元に戻す」プロンプトが表示される時間 - 現在 %1$ds</string>
-	<string name="settings_undo_detail_off">タイル、クラスター、またはグループをドラッグした後に「元に戻す」プロンプトが表示される時間 - 現在はオフになっています</string>
+	<string name="settings_undo_detail">タイル、クラスター、またはグループをドラッグした後に「元に戻す」プロンプトが表示される時間 – 現在 %1$ds</string>
+	<string name="settings_undo_detail_off">タイル、クラスター、またはグループをドラッグした後に「元に戻す」プロンプトが表示される時間 – 現在はオフになっています</string>
 	<string name="settings_version">バージョン %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">煙警報（サイレント）</string>
 	<string name="smoke_channel_silent_desc">デバイスが煙の検出を報告すると、音なしで警告します</string>

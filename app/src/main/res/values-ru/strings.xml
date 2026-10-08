@@ -5,13 +5,13 @@
 	<string name="add_group_title">Добавить группу</string>
 	<string name="alerts_allow">Позволять</string>
 	<string name="alerts_battery">Оповещения о низком заряде батареи</string>
-	<string name="alerts_battery_detail">Уведомлять, когда какое-либо устройство сообщает об уровне заряда батареи 20 % или ниже</string>
+	<string name="alerts_battery_detail">Уведомлять, когда какое–либо устройство сообщает об уровне заряда батареи 20 % или ниже</string>
 	<string name="alerts_battery_test_detail">Выдает настоящее уведомление, используя ту же логику, что и при подлинном оповещении о низком заряде батареи, независимо от переключателя выше</string>
 	<string name="alerts_notifications_off">Уведомления отключены</string>
 	<string name="alerts_notifications_off_detail">Оповещения не могут отображаться до тех пор, пока %1$s не разрешит публиковать уведомления</string>
 	<string name="alerts_open_settings">Настройки</string>
 	<string name="alerts_smoke">Оповещения о дыме</string>
-	<string name="alerts_smoke_detail">Уведомлять, если какое-либо устройство сообщает об обнаружении дыма</string>
+	<string name="alerts_smoke_detail">Уведомлять, если какое–либо устройство сообщает об обнаружении дыма</string>
 	<string name="alerts_smoke_test_detail">Выдает настоящее уведомление (со звуком, если оно включено выше), используя ту же логику, что и настоящее оповещение о дыме — хороший способ убедиться, что оно действительно привлечет ваше внимание до того, как оно вам понадобится</string>
 	<string name="alerts_sound">Звук оповещения</string>
 	<string name="alerts_sound_detail">Одновременно с уведомлением воспроизводится громкий звук будильника</string>
@@ -41,7 +41,7 @@
 	<string name="backup_restore_full_detail">Заменяет всю вашу конфигурацию тем, что находится в файле</string>
 	<string name="backup_scope_brokers">Только брокеры</string>
 	<string name="backup_scope_full">Полная конфигурация</string>
-	<string name="backup_set_password_text">Выберите пароль для шифрования этой резервной копии. Запомнится на следующий раз - понадобится еще раз для восстановления</string>
+	<string name="backup_set_password_text">Выберите пароль для шифрования этой резервной копии. Запомнится на следующий раз – понадобится еще раз для восстановления</string>
 	<string name="backup_set_password_title">Установить пароль экспорта</string>
 	<string name="backup_unencrypted_text">Эта резервная копия включает имена пользователей и пароли ваших брокеров, хранящиеся в виде обычного текста. Любой, у кого есть файл, сможет их прочитать. Вместо этого включите шифрование резервной копии, чтобы защитить ее паролем</string>
 	<string name="backup_unencrypted_title">Экспортировать без шифрования?</string>
@@ -67,7 +67,7 @@
 	<string name="broker_clean_session">Чистая сессия</string>
 	<string name="broker_clean_session_detail">Начинать новый сеанс при каждом подключении (сообщения не сохраняются)</string>
 	<string name="broker_client_id">Идентификатор клиента</string>
-	<string name="broker_default_name">Мой MQTT-брокер</string>
+	<string name="broker_default_name">Мой MQTT–брокер</string>
 	<string name="broker_delete">Удалить брокера</string>
 	<string name="broker_delete_text">Это удалит ‘%1$s’ и отключится от него. Панели, связанные с ним, перестанут обновляться</string>
 	<string name="broker_delete_title">Удалить брокера?</string>
@@ -86,14 +86,14 @@
 	<string name="broker_show">Показывать</string>
 	<string name="broker_show_reconnect">Показать статус переподключения</string>
 	<string name="broker_show_reconnect_detail">Показывать уведомления о повторном подключении на главном экране</string>
-	<string name="broker_timeout">Тайм-аут соединения</string>
+	<string name="broker_timeout">Тайм–аут соединения</string>
 	<string name="broker_timeout_help">Максимальное время ожидания соединения. По умолчанию: 30 секунд. Диапазон: 1–300 секунд</string>
 	<string name="broker_username">Имя пользователя</string>
-	<string name="broker_ws_path">Путь к веб-сокету</string>
+	<string name="broker_ws_path">Путь к веб–сокету</string>
 	<string name="brokers_add">Добавить брокера</string>
 	<string name="brokers_discover">Обнаружьте датчики на %1$s</string>
 	<string name="brokers_reconnect">Повторно подключиться к %1$s</string>
-	<string name="brokers_summary">%1$s:%2$d · %3$s · %4$s</string>
+
 	<string name="brokers_title">Брокеры</string>
 	<string name="common_add">Добавлять</string>
 	<string name="common_back">Назад</string>
@@ -112,11 +112,11 @@
 	<string name="connection_state_connecting">Подключение</string>
 	<string name="connection_state_disconnected">Отключено</string>
 	<string name="connection_state_failed">Неуспешный</string>
-	<string name="cred_consent">Эта дополнительная функция использует онлайн-сервис %1$s, управляемый разработчиком. Вы входите в учетную запись и выбираете сохраненные учетные данные, а имя хоста, имя пользователя и пароль брокера передаются обратно на это устройство через этот сервер. Ничего не будет отправлено, пока вы не продолжите</string>
+	<string name="cred_consent">Эта дополнительная функция использует онлайн–сервис %1$s, управляемый разработчиком. Вы входите в учетную запись и выбираете сохраненные учетные данные, а имя хоста, имя пользователя и пароль брокера передаются обратно на это устройство через этот сервер. Ничего не будет отправлено, пока вы не продолжите</string>
 	<string name="cred_expired">Срок действия кода истек. Откройте его еще раз и повторите попытку</string>
 	<string name="cred_instructions">Отсканируйте это или откройте %2$s и введите код, затем выберите сохраненные учетные данные ‘%1$s’ для отправки</string>
 	<string name="cred_no_hostname">В этой предустановке не было поля имени хоста — проверьте его на %1$s и повторите попытку</string>
-	<string name="cred_qr_description">QR-код для кода %1$s</string>
+	<string name="cred_qr_description">QR–код для кода %1$s</string>
 	<string name="cred_starting">Начало</string>
 	<string name="cred_title">Импорт учетных данных брокера</string>
 	<string name="cred_unreachable">Не удалось связаться с %1$s. Проверьте подключение и повторите попытку</string>
@@ -151,7 +151,7 @@
 	</plurals>
 	<string name="discover_auto_none">Ни одно устройство с действующей конфигурацией еще не было готово. Повторите попытку через минуту или воспользуйтесь значком обновления выше</string>
 	<string name="discover_bad_config">Найден %1$s, но не удалось прочитать его как конфигурацию устройства. Проверьте корректность JSON с помощью непустого массива панелей</string>
-	<string name="discover_field">%1$s (%2$s)</string>
+
 	<string name="discover_ideal_range">идеальный диапазон</string>
 	<string name="discover_instructions">Отметьте поля, которые вы хотите использовать в качестве плиток панели мониторинга, или используйте ‘Применить конфигурацию устройства’, если устройство публикует собственную конфигурацию &lt;topic&gt;/app</string>
 	<string name="discover_new_group">+ Новая группа</string>
@@ -181,7 +181,7 @@
 	<string name="home_add_group">Добавить группу</string>
 	<string name="home_add_panel_to">Добавить панель в %1$s</string>
 	<string name="home_add_tile_to">Добавить плитку в %1$s</string>
-	<string name="home_age">• %1$s</string>
+
 	<string name="home_another_group">другая группа</string>
 	<string name="home_change_topic_broad_warning">Не все панели этого кластера имеют одну чистую тему устройства, а только одно пустое пространство имен — скорее всего, это несколько несовпадающих панелей, а не одно реальное устройство. При его перемещении заменяется только эта общая часть, поэтому оно может применяться не так, как вы ожидаете. Стоит сначала проверить панели этого кластера по отдельности</string>
 	<string name="home_change_topic_cluster">Изменить тему для %1$s</string>
@@ -213,7 +213,7 @@
 	<string name="home_expand_all_groups">Развернуть все группы</string>
 	<string name="home_expand_group">Развернуть %1$s</string>
 	<string name="home_force_upload_copy">Принудительно загрузить новую копию</string>
-	<string name="home_force_upload_copy_detail">Перестраивает и повторно публикует каждый кластер в конфигурации устройства этой группы на основе текущих настроек этого телефона, перезаписывая все, что в данный момент находится на брокере. Используйте это, если другой телефон или проблема с брокером привели к тому, что что-то не синхронизировалось</string>
+	<string name="home_force_upload_copy_detail">Перестраивает и повторно публикует каждый кластер в конфигурации устройства этой группы на основе текущих настроек этого телефона, перезаписывая все, что в данный момент находится на брокере. Используйте это, если другой телефон или проблема с брокером привели к тому, что что–то не синхронизировалось</string>
 	<string name="home_force_upload_text">При этом сохраненная конфигурация устройства в брокере для каждого кластера в этой группе будет перезаписана новой копией, созданной на основе текущих настроек этого телефона. Любая другая конфигурация, находящаяся в данный момент на брокере (например, с другого телефона), будет заменена, а не объединена. Это действие нельзя отменить автоматически</string>
 	<string name="home_force_upload_title">Принудительно загрузить ‘%1$s’?</string>
 	<string name="home_group_fallback">Группа</string>
@@ -235,7 +235,7 @@
 	<string name="home_republished">Повторно опубликован ‘%1$s’ брокеру</string>
 	<string name="home_retopic">Ретопик</string>
 	<string name="home_retopic_all">Ретопировать все кластеры</string>
-	<string name="home_retopic_all_detail">Перемещает каждый кластер в этой группе, находящийся в настоящее время в одной старой теме MQTT, на новую за один раз - например. после разделения сети Zigbee на второй мост для каждого перемещающегося устройства. Кластеры по другой теме остаются нетронутыми</string>
+	<string name="home_retopic_all_detail">Перемещает каждый кластер в этой группе, находящийся в настоящее время в одной старой теме MQTT, на новую за один раз – например. после разделения сети Zigbee на второй мост для каждого перемещающегося устройства. Кластеры по другой теме остаются нетронутыми</string>
 	<string name="home_retopic_all_text">Перемещает каждый кластер в этой группе, тема которого точно соответствует ‘Старой теме’, в ‘Новую тему’ ​​— остальные кластеры этой группы остаются нетронутыми. Это действие нельзя отменить автоматически</string>
 	<string name="home_retopic_all_title">Перетемизировать все кластеры в ‘%1$s’?</string>
 	<plurals name="home_retopic_moved">
@@ -280,7 +280,7 @@
 	<string name="new_device_text">%1$s опубликовал собственную конфигурацию информационной панели – откройте %2$s, чтобы добавить ее</string>
 	<string name="new_device_title">Найдено новое устройство</string>
 	<string name="no_file_picker">На этом устройстве недоступно приложение для выбора файлов</string>
-	<string name="notif_channel_mqtt_connection">MQTT-соединение</string>
+	<string name="notif_channel_mqtt_connection">MQTT–соединение</string>
 	<string name="notif_mqtt_connection_text">Поддержание брокерских связей</string>
 	<string name="notif_test_title">Тестовое оповещение</string>
 	<string name="panel_add_title">Добавить панель</string>
@@ -301,7 +301,7 @@
 	<string name="panel_icon">Икона</string>
 	<string name="panel_ideal_help">Если установлено, эта плитка мигает красным ниже минимума, зеленым в пределах диапазона и синим выше максимума</string>
 	<string name="panel_ideal_topic">Тема идеального диапазона (необязательно)</string>
-	<string name="panel_ideal_topic_hint">например z2m2/SoilSensor_01/ideal – публикует {‘min’:x,‘max’:y}</string>
+	<string name="panel_ideal_topic_hint">например zigbee2mqtt/SoilSensor_01/ideal – публикует {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">Поле JSON (пусто = необработанные полезные данные)</string>
 	<string name="panel_json_field_hint">например температура или состояние.батарея</string>
 	<string name="panel_label">Этикетка</string>
@@ -341,8 +341,8 @@
 	<string name="permit_join_via_hint">Пусто = вся сеть</string>
 	<string name="protocol_ssl">SSL — уровень защищенных сокетов</string>
 	<string name="protocol_tcp">TCP — протокол управления передачей</string>
-	<string name="protocol_ws">WS — веб-сокеты</string>
-	<string name="protocol_wss">WSS — безопасность веб-сокетов</string>
+	<string name="protocol_ws">WS — веб–сокеты</string>
+	<string name="protocol_wss">WSS — безопасность веб–сокетов</string>
 	<string name="settings_about">О</string>
 	<string name="settings_about_tagline">%1$s – без облака, без учетной записи, без блокировки</string>
 	<string name="settings_alerts_detail">Оповещения о дыме и поливе, звуковые уведомления и уведомления о тестировании</string>
@@ -429,7 +429,7 @@
 	<string name="watering_notif_title">%1$s достиг целевой влажности</string>
 	<string name="watering_test_sensor">Тестовый датчик</string>
 	<string name="welcome_add_broker">Добавить брокера</string>
-	<string name="welcome_intro">Для начала вам понадобится хотя бы один MQTT-брокер — добавьте его сейчас или восстановите конфигурацию, резервную копию которой вы ранее создали</string>
+	<string name="welcome_intro">Для начала вам понадобится хотя бы один MQTT–брокер — добавьте его сейчас или восстановите конфигурацию, резервную копию которой вы ранее создали</string>
 	<string name="welcome_restore">Восстановление из резервной копии</string>
 	<string name="welcome_title">Добро пожаловать</string>
 </resources>

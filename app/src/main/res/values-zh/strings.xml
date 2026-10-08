@@ -19,7 +19,7 @@
 	<string name="alerts_title">警報/警報</string>
 	<string name="alerts_watering">澆水警報</string>
 	<string name="alerts_watering_detail">當濕度感測器上升到其理想範圍的中間時振動並發出提示音</string>
-	<string name="alerts_watering_test_detail">無論上面的切換如何，都會通過澆水鈴聲和振動發出真正的通知 - 這是在依賴它之前聽到它的好方法。</string>
+	<string name="alerts_watering_test_detail">無論上面的切換如何，都會通過澆水鈴聲和振動發出真正的通知 – 這是在依賴它之前聽到它的好方法。</string>
 	<string name="backup_brokers_imported">經紀進口</string>
 	<string name="backup_config_imported">導入配置</string>
 	<string name="backup_encrypt">加密備份</string>
@@ -37,11 +37,11 @@
 	<string name="backup_password">密碼</string>
 	<string name="backup_replace_everything">更換一切</string>
 	<string name="backup_restore">恢復</string>
-	<string name="backup_restore_brokers_detail">將文件中的代理合併到您目前的設定中 - 群組和麵板保持不變。</string>
+	<string name="backup_restore_brokers_detail">將文件中的代理合併到您目前的設定中 – 群組和麵板保持不變。</string>
 	<string name="backup_restore_full_detail">將整個配置替換為文件中的內容。</string>
 	<string name="backup_scope_brokers">僅限經紀商</string>
 	<string name="backup_scope_full">完整配置</string>
-	<string name="backup_set_password_text">選擇用於加密此備份的密碼。它會被記住，以便下次使用 - 您將再次需要它來恢復。</string>
+	<string name="backup_set_password_text">選擇用於加密此備份的密碼。它會被記住，以便下次使用 – 您將再次需要它來恢復。</string>
 	<string name="backup_set_password_title">設定導出密碼</string>
 	<string name="backup_unencrypted_text">此備份包括您的經紀人的使用者名稱和密碼，以純文字形式儲存。任何獲得該文件的人都可以閱讀它們。打開加密備份以使用密碼保護它。</string>
 	<string name="backup_unencrypted_title">匯出時不加密？</string>
@@ -62,7 +62,7 @@
 	<string name="broker_auto_accept_detail">立即新增新看到的設備的群組/集群/面板，而不是提示接受每一個</string>
 	<string name="broker_auto_connect">自動連線</string>
 	<string name="broker_base_topic">基礎主題</string>
-	<string name="broker_base_topic_help">該應用程式監視設備及其 /app 配置的‘&lt;基本主題&gt;/#’，而不是代理上的每個主題。輸入以逗號分隔的清單（例如 ‘zigbee2mqtt, zigbee2mqtt2’）以監視同一代理上的多個 Zigbee2MQTT 命名空間 - 每個命名空間都有自己的「允許加入」切換開關。</string>
+	<string name="broker_base_topic_help">該應用程式監視設備及其 /app 配置的‘&lt;基本主題&gt;/#’，而不是代理上的每個主題。輸入以逗號分隔的清單（例如 ‘zigbee2mqtt, zigbee2mqtt2’）以監視同一代理上的多個 Zigbee2MQTT 命名空間 – 每個命名空間都有自己的「允許加入」切換開關。</string>
 	<string name="broker_cert_selected">已選擇證書 ✓</string>
 	<string name="broker_clean_session">清潔會議</string>
 	<string name="broker_clean_session_detail">在每個連線上啟動一個新會話（訊息不保留）</string>
@@ -93,7 +93,7 @@
 	<string name="brokers_add">新增經紀商</string>
 	<string name="brokers_discover">發現 %1$s 上的感測器</string>
 	<string name="brokers_reconnect">重新連接到%1$s</string>
-	<string name="brokers_summary">%1$s：%2$d·%3$s·%4$s</string>
+
 	<string name="brokers_title">經紀人</string>
 	<string name="common_add">添加</string>
 	<string name="common_back">後退</string>
@@ -113,18 +113,18 @@
 	<string name="connection_state_disconnected">已斷開連接</string>
 	<string name="connection_state_failed">失敗的</string>
 	<string name="cred_consent">此選用功能使用由開發人員運行的線上服務，%1$s。您登入那裡的帳戶並選擇已儲存的憑證，經紀人的主機名稱、使用者名稱和密碼將透過該伺服器轉發回該裝置。在您繼續之前，不會發送任何內容。</string>
-	<string name="cred_expired">代碼已過期 - 重新開啟此代碼以重試。</string>
+	<string name="cred_expired">代碼已過期 – 重新開啟此代碼以重試。</string>
 	<string name="cred_instructions">掃描此鏈接，或打開%2$s並輸入代碼，然後選擇已儲存的‘%1$s’憑證進行傳送。</string>
-	<string name="cred_no_hostname">此預設不包含主機名字段 - 請在%1$s 上檢查並重試。</string>
+	<string name="cred_no_hostname">此預設不包含主機名字段 – 請在%1$s 上檢查並重試。</string>
 	<string name="cred_qr_description">代碼 %1$s 的二維碼</string>
 	<string name="cred_starting">開始</string>
 	<string name="cred_title">導入經紀商憑證</string>
-	<string name="cred_unreachable">無法存取%1$s - 檢查您的連線並重試。</string>
+	<string name="cred_unreachable">無法存取%1$s – 檢查您的連線並重試。</string>
 	<string name="cred_waiting">等待接機</string>
 	<plurals name="discover_add_panels">
 		<item quantity="other">增加 %1$d 個面板</item>
 	</plurals>
-	<string name="discover_all_applied">所有發現的設備均已套用 - 此處無需配置。</string>
+	<string name="discover_all_applied">所有發現的設備均已套用 – 此處無需配置。</string>
 	<string name="discover_apply">應用設備配置</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">完全按照 %2$s 中列出的方式將 %1$d 個面板​​建立到群組「%3$s」中，並跳過下面的複選框。</item>
@@ -137,15 +137,15 @@
 	<plurals name="discover_auto_done">
 		<item quantity="other">自動配置 %1$d 台設備。</item>
 	</plurals>
-	<string name="discover_auto_none">尚未準備好具有有效配置的設備 - 請稍後重試，或使用上面的刷新圖示。</string>
-	<string name="discover_bad_config">找到 %1$s 但無法將其讀取為設備配置 - 使用非空’panels’數組檢查其是否有效 JSON。</string>
-	<string name="discover_field">%1$s（%2$s）</string>
+	<string name="discover_auto_none">尚未準備好具有有效配置的設備 – 請稍後重試，或使用上面的刷新圖示。</string>
+	<string name="discover_bad_config">找到 %1$s 但無法將其讀取為設備配置 – 使用非空’panels’數組檢查其是否有效 JSON。</string>
+
 	<string name="discover_ideal_range">理想範圍</string>
 	<string name="discover_instructions">勾選您想要作為儀表板圖塊的字段，或者如果設備發布自己的 &lt;topic&gt;/app 配置，則使用「應用設備配置」。</string>
 	<string name="discover_new_group">+ 新組</string>
 	<string name="discover_new_group_name">新群組名</string>
 	<string name="discover_no_broker">在發現感測器之前，首先添加代理（設定 → 代理）。</string>
-	<string name="discover_none_found">尚未找到感測器形狀的主題。訂閱後保留的訊息可能需要一段時間才能到達 - 請嘗試上面的刷新圖標，或者檢查代理是否確實保留了這些主題的訊息。</string>
+	<string name="discover_none_found">尚未找到感測器形狀的主題。訂閱後保留的訊息可能需要一段時間才能到達 – 請嘗試上面的刷新圖標，或者檢查代理是否確實保留了這些主題的訊息。</string>
 	<string name="discover_rescan">重新掃描</string>
 	<string name="discover_sample">樣本：%1$s</string>
 	<plurals name="discover_selected">
@@ -155,7 +155,7 @@
 	<string name="discover_title">探索感測器</string>
 	<string name="filter_active">積極的</string>
 	<string name="filter_fab">過濾儀表板</string>
-	<string name="filter_fab_active">過濾器：僅顯示 %1$s - 點擊即可更改</string>
+	<string name="filter_fab_active">過濾器：僅顯示 %1$s – 點擊即可更改</string>
 	<string name="filter_high_moisture">濕度高於理想範圍</string>
 	<string name="filter_low_battery">電池電量 20% 或更少</string>
 	<string name="filter_low_moisture">水分低於理想範圍</string>
@@ -166,11 +166,11 @@
 	<string name="home_add_group">新增群組</string>
 	<string name="home_add_panel_to">將面板加到%1$s</string>
 	<string name="home_add_tile_to">將圖塊加到%1$s</string>
-	<string name="home_age">• %1$s</string>
+
 	<string name="home_another_group">另一組</string>
-	<string name="home_change_topic_broad_warning">该集群的面板并不都共享一个干净的设备主题，仅共享一个裸命名空间 - 可能是一些不匹配的面板而不是一个真实的设备。移動它只會替換共享部分，因此它可能不會以您期望的方式應用。值得先單獨檢查該群集的面板。</string>
+	<string name="home_change_topic_broad_warning">该集群的面板并不都共享一个干净的设备主题，仅共享一个裸命名空间 – 可能是一些不匹配的面板而不是一个真实的设备。移動它只會替換共享部分，因此它可能不會以您期望的方式應用。值得先單獨檢查該群集的面板。</string>
 	<string name="home_change_topic_cluster">改變 %1$s 的主題</string>
-	<string name="home_change_topic_text">將此叢集中的每個面板移至新的 MQTT 主題 - 例如將 Zigbee 網路分割到第二個網橋後，僅用於實際移動的裝置。其他集群未受影響。</string>
+	<string name="home_change_topic_text">將此叢集中的每個面板移至新的 MQTT 主題 – 例如將 Zigbee 網路分割到第二個網橋後，僅用於實際移動的裝置。其他集群未受影響。</string>
 	<string name="home_change_topic_title">改變「%1$s」的主題</string>
 	<string name="home_cluster_copy">%1$s 副本</string>
 	<string name="home_cluster_copy_n">%1$s 副本 %2$d</string>
@@ -187,7 +187,7 @@
 	<string name="home_delete_group_text">這將刪除該群組及其中的每個面板。</string>
 	<string name="home_delete_group_title">刪除群組？</string>
 	<string name="home_duplicate">複製</string>
-	<string name="home_duplicate_broad_warning">該集群的面板並非全部共享一個乾淨的設備主題（只有‘%1$s’是共同的） - 可能是一些不匹配的面板而不是一個真實的設備。下面的主題僅取代該共享部分，因此它可能不會以您期望的方式套用。值得先單獨檢查該群集的面板。</string>
+	<string name="home_duplicate_broad_warning">該集群的面板並非全部共享一個乾淨的設備主題（只有‘%1$s’是共同的） – 可能是一些不匹配的面板而不是一個真實的設備。下面的主題僅取代該共享部分，因此它可能不會以您期望的方式套用。值得先單獨檢查該群集的面板。</string>
 	<string name="home_duplicate_cluster">重複%1$s</string>
 	<string name="home_duplicate_title">重複‘%1$s’</string>
 	<string name="home_edit_group">編輯群組</string>
@@ -195,7 +195,7 @@
 	<string name="home_expand_all_groups">展開所有群組</string>
 	<string name="home_expand_group">展開%1$s</string>
 	<string name="home_force_upload_copy">強制上傳新副本</string>
-	<string name="home_force_upload_copy_detail">從該手機的當前設定重建並重新發布該組設備配置中的每個集群，覆蓋代理上當前的所有內容 - 如果另一部手機或代理問題導致某些內容不同步，請使用此功能。</string>
+	<string name="home_force_upload_copy_detail">從該手機的當前設定重建並重新發布該組設備配置中的每個集群，覆蓋代理上當前的所有內容 – 如果另一部手機或代理問題導致某些內容不同步，請使用此功能。</string>
 	<string name="home_force_upload_text">這會使用根據該手機的當前設定構建的新副本覆蓋該組中每個集群的代理上保留的設備配置。目前代理上的任何不同配置（例如來自另一部手機的配置）都將被替換，而不是合併。此操作無法自動撤銷。</string>
 	<string name="home_force_upload_title">強制上傳‘%1$s’？</string>
 	<string name="home_group_fallback">團體</string>
@@ -217,8 +217,8 @@
 	<string name="home_republished">已將「%1$s」重新發佈到代理</string>
 	<string name="home_retopic">重新主題</string>
 	<string name="home_retopic_all">重新調整所有集群的主題</string>
-	<string name="home_retopic_all_detail">一次將該組中目前位於一個舊 MQTT 主題的每個集群移至新主題 - 例如對於每個移動的設備，將 Zigbee 網路拆分到第二個網橋後。不同主題的集群保持不變。</string>
-	<string name="home_retopic_all_text">將該組中主題與’舊主題’完全匹配的每個集群移動到’新主題’上 - 該組的其餘集群保持不變。此操作無法自動撤銷。</string>
+	<string name="home_retopic_all_detail">一次將該組中目前位於一個舊 MQTT 主題的每個集群移至新主題 – 例如對於每個移動的設備，將 Zigbee 網路拆分到第二個網橋後。不同主題的集群保持不變。</string>
+	<string name="home_retopic_all_text">將該組中主題與’舊主題’完全匹配的每個集群移動到’新主題’上 – 該組的其餘集群保持不變。此操作無法自動撤銷。</string>
 	<string name="home_retopic_all_title">重新主題‘%1$s’中的所有集群？</string>
 	<plurals name="home_retopic_moved">
 		<item quantity="other">已將 %1$d 個集群移至‘%2$s’</item>
@@ -234,7 +234,7 @@
 	<string name="mqtt_backup_delete_text">从 %1$s 中删除保留的备份。此操作無法撤銷。</string>
 	<string name="mqtt_backup_delete_title">刪除這個備份嗎？</string>
 	<string name="mqtt_backup_deleted">已從 %1$s 刪除備份</string>
-	<string name="mqtt_backup_explain">發布您的群組和麵板（不是代理主機/用戶名/密碼 - 它們保留在此設備上） - gzip 壓縮，然後進行 base64 編碼，以便它作為正常 MQTT 負載傳輸 - 作為 ‘%1$s/&lt;timestamp&gt;’ 下的新保留訊息，保持以前的每個備份完好無損。</string>
+	<string name="mqtt_backup_explain">發布您的群組和麵板（不是代理主機/用戶名/密碼 – 它們保留在此設備上） – gzip 壓縮，然後進行 base64 編碼，以便它作為正常 MQTT 負載傳輸 – 作為 ‘%1$s/&lt;timestamp&gt;’ 下的新保留訊息，保持以前的每個備份完好無損。</string>
 	<string name="mqtt_backup_mode_backup">備份</string>
 	<string name="mqtt_backup_mode_restore">恢復</string>
 	<string name="mqtt_backup_no_broker">使用此功能之前，請先新增經紀人（設定 → 經紀人）。</string>
@@ -245,10 +245,10 @@
 	</plurals>
 	<string name="mqtt_backup_title">透過 MQTT 備份/恢復</string>
 	<string name="mqtt_restore_done">從 %1$s 恢復</string>
-	<string name="mqtt_restore_explain">掃描‘%1$s/#’以查找代理保留的每個備份，最新的在前。恢复会替换您的组和面板，但会按原样保留当前的代理（它们不包含在备份中） - 因此这只能在从中获取备份的同一代理设置上干净地重新连接。</string>
+	<string name="mqtt_restore_explain">掃描‘%1$s/#’以查找代理保留的每個備份，最新的在前。恢复会替换您的组和面板，但会按原样保留当前的代理（它们不包含在备份中） – 因此这只能在从中获取备份的同一代理设置上干净地重新连接。</string>
 	<string name="mqtt_restore_failed">恢復失敗：該主題的有效負載不是有效的備份</string>
-	<string name="mqtt_restore_none">在‘%1$s/’下尚未找到備份 - 掃描後保留的訊息可能需要一段時間才能到達，或者那裡可能沒有發布任何訊息。</string>
-	<string name="mqtt_restore_not_loaded">該備份的資料尚未載入 - 請再次嘗試掃描。</string>
+	<string name="mqtt_restore_none">在‘%1$s/’下尚未找到備份 – 掃描後保留的訊息可能需要一段時間才能到達，或者那裡可能沒有發布任何訊息。</string>
+	<string name="mqtt_restore_not_loaded">該備份的資料尚未載入 – 請再次嘗試掃描。</string>
 	<string name="mqtt_restore_restoring">正在恢復</string>
 	<string name="mqtt_restore_scan">掃描備份</string>
 	<string name="mqtt_restore_scan_hint">點擊「掃描備份」以尋找此代理上保留的備份。</string>
@@ -260,7 +260,7 @@
 	<string name="notif_mqtt_connection_text">維護經紀人連接</string>
 	<string name="notif_test_title">測試警報</string>
 	<string name="panel_add_title">新增面板</string>
-	<string name="panel_button_help">每次點擊此按鈕時都會發送 - 沒有可追蹤的開/關狀態。</string>
+	<string name="panel_button_help">每次點擊此按鈕時都會發送 – 沒有可追蹤的開/關狀態。</string>
 	<string name="panel_cluster">叢集名稱（可選）</string>
 	<string name="panel_cluster_hint">例如土壤感測器 1 – 將其與其他同名面板分組</string>
 	<string name="panel_command_topic">命令主題</string>
@@ -273,11 +273,11 @@
 	<string name="panel_delete_title">刪除面板？</string>
 	<string name="panel_edit_title">編輯面板</string>
 	<string name="panel_editable">可編輯值</string>
-	<string name="panel_editable_detail">點擊此圖塊可讓您輸入一個新數字，該數字將重新發佈到同一主題/欄位（保留） - 對於自動化腳本讀取的固定首選項（例如濕度閾值），而不是即時硬體讀數，下一次更新將覆蓋該讀數。</string>
+	<string name="panel_editable_detail">點擊此圖塊可讓您輸入一個新數字，該數字將重新發佈到同一主題/欄位（保留） – 對於自動化腳本讀取的固定首選項（例如濕度閾值），而不是即時硬體讀數，下一次更新將覆蓋該讀數。</string>
 	<string name="panel_icon">圖示</string>
 	<string name="panel_ideal_help">設定後，該圖塊在最小值以下閃爍紅色，在範圍內閃爍綠色，在最大值以上閃爍藍色。</string>
 	<string name="panel_ideal_topic">理想範圍主題（可選）</string>
-	<string name="panel_ideal_topic_hint">例如z2m2/SoilSensor_01/ideal – 發佈 {‘min’:x,‘max’:y}</string>
+	<string name="panel_ideal_topic_hint">例如zigbee2mqtt/SoilSensor_01/ideal – 發佈 {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">JSON 欄位（空白 = 原始負載）</string>
 	<string name="panel_json_field_hint">例如溫度或狀態.電池</string>
 	<string name="panel_label">標籤</string>
@@ -298,7 +298,7 @@
 	<string name="panel_topic">話題</string>
 	<string name="panel_topic_hint">例如zigbee2mqtt/土壤感測器1</string>
 	<string name="panel_type_button">按鈕</string>
-	<string name="panel_type_locked">面板類型一旦創建就無法更改 - 而是刪除並重新添加。</string>
+	<string name="panel_type_locked">面板類型一旦創建就無法更改 – 而是刪除並重新添加。</string>
 	<string name="panel_type_sensor">感應器</string>
 	<string name="panel_type_toggle">切換</string>
 	<string name="panel_unit">單位（可選）</string>
@@ -315,10 +315,10 @@
 	<string name="permit_join_via">允許透過以下方式加入（可選）</string>
 	<string name="permit_join_via_help">用於擴展加入的特定路由器的友善名稱，或僅表示協調器的「協調器」。留空以允許立即通過每個路由器和協調器加入。</string>
 	<string name="permit_join_via_hint">空白=整個網絡</string>
-	<string name="protocol_ssl">SSL - 安全通訊端層</string>
-	<string name="protocol_tcp">TCP - 傳輸控制協定</string>
-	<string name="protocol_ws">WS - Web 套接字</string>
-	<string name="protocol_wss">WSS - Web 套接字安全</string>
+	<string name="protocol_ssl">SSL – 安全通訊端層</string>
+	<string name="protocol_tcp">TCP – 傳輸控制協定</string>
+	<string name="protocol_ws">WS – Web 套接字</string>
+	<string name="protocol_wss">WSS – Web 套接字安全</string>
 	<string name="settings_about">關於</string>
 	<string name="settings_about_tagline">%1$s – 無雲端、無帳號、無鎖定</string>
 	<string name="settings_alerts_detail">煙霧和澆水警報、聲音和測試通知</string>
@@ -334,7 +334,7 @@
 	<string name="settings_force_upload_all">強制上傳所有群組</string>
 	<string name="settings_force_upload_all_confirm">这将使用根据该手机的当前设置构建的新副本覆盖每个组中每个集群的代理上保留的设备配置。当前代理上的任何不同配置（例如来自另一部手机的配置）都将被替换，而不是合并。此操作無法自動撤銷。</string>
 	<string name="settings_force_upload_all_confirm_title">強制上傳所有組？</string>
-	<string name="settings_force_upload_all_detail">根據此手機的當前設定重建並重新發布每個群組裝置配置中的每個叢集 - 如果代理問題或另一部手機導致多個群組不同步，請使用此功能</string>
+	<string name="settings_force_upload_all_detail">根據此手機的當前設定重建並重新發布每個群組裝置配置中的每個叢集 – 如果代理問題或另一部手機導致多個群組不同步，請使用此功能</string>
 	<plurals name="settings_force_upload_all_done">
 		<item quantity="other">已將 %1$d 個群組重新發佈到代理程式。</item>
 	</plurals>
@@ -342,7 +342,7 @@
 	<string name="settings_orphans_clean">清理</string>
 	<string name="settings_orphans_confirm_title">清理孤立資料？</string>
 	<plurals name="settings_orphans_confirm">
-		<item quantity="other">這將刪除 %1$d 個標記有不再存在的代理的面板 - 通常是透過刪除代理並重新添加它而留下的。仍然與您實際配置的代理程式綁定的面板永遠不會被觸及。</item>
+		<item quantity="other">這將刪除 %1$d 個標記有不再存在的代理的面板 – 通常是透過刪除代理並重新添加它而留下的。仍然與您實際配置的代理程式綁定的面板永遠不會被觸及。</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
 		<item quantity="other">已刪除經紀商留下的 %1$d 個面板​​可以刪除</item>
@@ -351,10 +351,10 @@
 		<item quantity="other">已刪除 %1$d 個面板​​。</item>
 	</plurals>
 	<string name="settings_tile_width">平鋪和簇寬度</string>
-	<string name="settings_tile_width_detail">圖塊（以及簇卡，3 個圖塊寬）可以增長多寬，直至填滿屏幕 - 目前為 %1$ddp</string>
+	<string name="settings_tile_width_detail">圖塊（以及簇卡，3 個圖塊寬）可以增長多寬，直至填滿屏幕 – 目前為 %1$ddp</string>
 	<string name="settings_undo">撤銷 Toast 持續時間</string>
-	<string name="settings_undo_detail">拖曳圖塊、簇或群組後「撤銷」提示保持多久 - 目前為 %1$ds</string>
-	<string name="settings_undo_detail_off">拖曳圖塊、群組或群組後「撤銷」提示保持多久 - 目前處於關閉狀態</string>
+	<string name="settings_undo_detail">拖曳圖塊、簇或群組後「撤銷」提示保持多久 – 目前為 %1$ds</string>
+	<string name="settings_undo_detail_off">拖曳圖塊、群組或群組後「撤銷」提示保持多久 – 目前處於關閉狀態</string>
 	<string name="settings_version">版本 %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">煙霧警報（靜音）</string>
 	<string name="smoke_channel_silent_desc">當設備報告偵測到煙霧時發出警報，但沒有聲音</string>
@@ -387,7 +387,7 @@
 	<string name="watering_notif_title">%1$s 達到目標濕度</string>
 	<string name="watering_test_sensor">測試感測器</string>
 	<string name="welcome_add_broker">新增經紀人</string>
-	<string name="welcome_intro">您至少需要一個 MQTT 代理才能開始 - 立即新增一個，或還原您先前備份的配置。</string>
+	<string name="welcome_intro">您至少需要一個 MQTT 代理才能開始 – 立即新增一個，或還原您先前備份的配置。</string>
 	<string name="welcome_restore">從備份中恢復</string>
 	<string name="welcome_title">歡迎</string>
 </resources>

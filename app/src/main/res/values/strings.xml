@@ -5,7 +5,7 @@
 	<string name="add_group_title">Add Group</string>
 	<string name="alerts_allow">Allow</string>
 	<string name="alerts_battery">Low Battery Alerts</string>
-	<string name="alerts_battery_detail" formatted="false">Notify when any device reports a battery level of 20% or below</string>
+	<string name="alerts_battery_detail">Notify when any device reports a battery level of 20% or below</string>
 	<string name="alerts_battery_test_detail">Fires a real notification using the exact same logic as a genuine low battery alert, regardless of the toggle above</string>
 	<string name="alerts_notifications_off">Notifications are off</string>
 	<string name="alerts_notifications_off_detail">Alerts can’t be shown until %1$s is allowed to post notifications</string>
@@ -14,7 +14,7 @@
 	<string name="alerts_smoke_detail">Notify if any device reports smoke detected</string>
 	<string name="alerts_smoke_test_detail">Fires a real notification (with sound, if enabled above) using the exact same logic as a genuine smoke alert – a good way to confirm it’ll actually get your attention before you need it to</string>
 	<string name="alerts_sound">Alert Sound</string>
-	<string name="alerts_sound_detail">Play a loud alarm-style sound alongside the notification</string>
+	<string name="alerts_sound_detail">Play a loud alarm–style sound alongside the notification</string>
 	<string name="alerts_test">Test Notification</string>
 	<string name="alerts_title">Alarm/Alert</string>
 	<string name="alerts_watering">Watering Alerts</string>
@@ -42,7 +42,7 @@
 	<string name="backup_restore_full_detail">Replaces your entire configuration with what’s in the file</string>
 	<string name="backup_scope_brokers">Brokers Only</string>
 	<string name="backup_scope_full">Full Configuration</string>
-	<string name="backup_set_password_text">Choose a password to encrypt this backup with. It’s remembered for next time - you’ll need it again to restore</string>
+	<string name="backup_set_password_text">Choose a password to encrypt this backup with. It’s remembered for next time – you’ll need it again to restore</string>
 	<string name="backup_set_password_title">Set Export Password</string>
 	<string name="backup_unencrypted_text">This backup includes your brokers‘ usernames and passwords, stored as plain text. Anyone who gets hold of the file can read them. Turn on Encrypt Backup to protect it with a password instead</string>
 	<string name="backup_unencrypted_title">Export without encryption?</string>
@@ -59,11 +59,11 @@
 	<string name="broker_add_title">Add Broker</string>
 	<string name="broker_additional">Additional Parameters</string>
 	<string name="broker_auth">Authentication</string>
-	<string name="broker_auto_accept">Auto-Accept Discovered Devices</string>
-	<string name="broker_auto_accept_detail">Add a newly-seen device’s group/clusters/panels immediately, instead of prompting to accept each one</string>
+	<string name="broker_auto_accept">Auto–Accept Discovered Devices</string>
+	<string name="broker_auto_accept_detail">Add a newly–seen device’s group/clusters/panels immediately, instead of prompting to accept each one</string>
 	<string name="broker_auto_connect">Auto Connect</string>
 	<string name="broker_base_topic">Base topic</string>
-	<string name="broker_base_topic_help">The app watches ‘&lt;base topic&gt;/#’ for devices and their /app configs, instead of every topic on the broker. Enter a comma-separated list (e.g. ‘zigbee2mqtt, zigbee2mqtt2’) to watch more than one Zigbee2MQTT namespace on this same broker - each gets its own Permit Join toggle below</string>
+	<string name="broker_base_topic_help">The app watches ‘&lt;base topic&gt;/#’ for devices and their /app configs, instead of every topic on the broker. Enter a comma–separated list (e.g. ‘zigbee2mqtt, zigbee2mqtt2’) to watch more than one Zigbee2MQTT namespace on this same broker – each gets its own Permit Join toggle below</string>
 	<string name="broker_cert_selected">Certificate selected ✓</string>
 	<string name="broker_clean_session">Clean Session</string>
 	<string name="broker_clean_session_detail">Start a new session on each connection (messages not retained)</string>
@@ -82,7 +82,7 @@
 	<string name="broker_port">Port</string>
 	<string name="broker_protocol">Protocol</string>
 	<string name="broker_select_cert">Select certificate file</string>
-	<string name="broker_self_signed">This broker uses self-signed SSL/TLS certificate</string>
+	<string name="broker_self_signed">This broker uses self–signed SSL/TLS certificate</string>
 	<string name="broker_self_signed_risk">Use at your own risk</string>
 	<string name="broker_show">Show</string>
 	<string name="broker_show_reconnect">Show Reconnection Status</string>
@@ -94,7 +94,7 @@
 	<string name="brokers_add">Add broker</string>
 	<string name="brokers_discover">Discover sensors on %1$s</string>
 	<string name="brokers_reconnect">Reconnect to %1$s</string>
-	<string name="brokers_summary">%1$s:%2$d · %3$s · %4$s</string>
+	<string name="brokers_summary" translatable="false">%1$s:%2$d · %3$s · %4$s</string>
 	<string name="brokers_title">Brokers</string>
 	<string name="common_add">Add</string>
 	<string name="common_back">Back</string>
@@ -114,13 +114,13 @@
 	<string name="connection_state_disconnected">Disconnected</string>
 	<string name="connection_state_failed">Failed</string>
 	<string name="cred_consent">This optional feature uses an online service run by the developer, %1$s. You log in to an account there and pick a saved credential, and the broker’s hostname, username and password are relayed back to this device through that server. Nothing is sent until you continue</string>
-	<string name="cred_expired">Code expired - reopen this to try again</string>
+	<string name="cred_expired">Code expired – reopen this to try again</string>
 	<string name="cred_instructions">Scan this, or open %2$s and enter the code, then pick a saved ‘%1$s’ credential to send</string>
-	<string name="cred_no_hostname">That preset didn’t include a Hostname field - check it on %1$s and try again</string>
+	<string name="cred_no_hostname">That preset didn’t include a Hostname field – check it on %1$s and try again</string>
 	<string name="cred_qr_description">QR code for code %1$s</string>
 	<string name="cred_starting">Starting…</string>
 	<string name="cred_title">Import broker credentials</string>
-	<string name="cred_unreachable">Couldn’t reach %1$s - check your connection and try again</string>
+	<string name="cred_unreachable">Couldn’t reach %1$s – check your connection and try again</string>
 	<string name="cred_waiting">Waiting for pickup…</string>
 	<plurals name="discover_add_panels">
 		<item quantity="one">Add %1$d panel</item>
@@ -137,20 +137,20 @@
 		<item quantity="other">Creates %1$d panels exactly as listed in %2$s, skipping the checkboxes below</item>
 	</plurals>
 	<string name="discover_apply_named">Apply device config: %1$s</string>
-	<string name="discover_auto_all">Auto-configure all found devices</string>
+	<string name="discover_auto_all">Auto–configure all found devices</string>
 	<plurals name="discover_auto_done">
-		<item quantity="one">Auto-configured %1$d device</item>
-		<item quantity="other">Auto-configured %1$d devices</item>
+		<item quantity="one">Auto–configured %1$d device</item>
+		<item quantity="other">Auto–configured %1$d devices</item>
 	</plurals>
 	<string name="discover_auto_none">No devices with a valid config were ready yet – try again in a moment, or use the refresh icon above</string>
-	<string name="discover_bad_config">Found %1$s but couldn’t read it as a device config – check it’s valid JSON with a non-empty ‘panels’ array</string>
-	<string name="discover_field">%1$s (%2$s)</string>
+	<string name="discover_bad_config">Found %1$s but couldn’t read it as a device config – check it’s valid JSON with a non–empty ‘panels’ array</string>
+	<string name="discover_field" translatable="false">%1$s (%2$s)</string>
 	<string name="discover_ideal_range">ideal range</string>
 	<string name="discover_instructions">Tick the fields you want as dashboard tiles, or use ‘Apply device config’ if the device publishes its own &lt;topic&gt;/app config</string>
 	<string name="discover_new_group">+ New group</string>
 	<string name="discover_new_group_name">New group name</string>
 	<string name="discover_no_broker">Add a broker first (Settings → Brokers) before discovering sensors</string>
-	<string name="discover_none_found">No sensor-shaped topics found yet. Retained messages can take a moment to arrive after subscribing - try the refresh icon above, or check the broker is actually retaining messages on those topics</string>
+	<string name="discover_none_found">No sensor–shaped topics found yet. Retained messages can take a moment to arrive after subscribing – try the refresh icon above, or check the broker is actually retaining messages on those topics</string>
 	<string name="discover_rescan">Rescan</string>
 	<string name="discover_sample">sample: %1$s</string>
 	<plurals name="discover_selected">
@@ -161,9 +161,9 @@
 	<string name="discover_title">Discover Sensors</string>
 	<string name="filter_active">Active</string>
 	<string name="filter_fab">Filter the dashboard</string>
-	<string name="filter_fab_active">Filter: showing only %1$s - tap to change</string>
+	<string name="filter_fab_active">Filter: showing only %1$s – tap to change</string>
 	<string name="filter_high_moisture">Moisture above ideal range</string>
-	<string name="filter_low_battery" formatted="false">Battery 20% or less</string>
+	<string name="filter_low_battery">Battery 20% or less</string>
 	<string name="filter_low_moisture">Moisture below ideal range</string>
 	<string name="filter_show_everything">Show everything</string>
 	<string name="filter_stale">Not reporting recently</string>
@@ -172,11 +172,11 @@
 	<string name="home_add_group">Add group</string>
 	<string name="home_add_panel_to">Add panel to %1$s</string>
 	<string name="home_add_tile_to">Add tile to %1$s</string>
-	<string name="home_age">• %1$s</string>
+	<string name="home_age" translatable="false">• %1$s</string>
 	<string name="home_another_group">another group</string>
-	<string name="home_change_topic_broad_warning">This cluster’s panels don’t all share one clean device topic, only that bare namespace - likely a few mismatched panels rather than one real device. Moving it replaces only that shared part, so it may not apply the way you expect. Worth checking this cluster’s panels individually first</string>
+	<string name="home_change_topic_broad_warning">This cluster’s panels don’t all share one clean device topic, only that bare namespace – likely a few mismatched panels rather than one real device. Moving it replaces only that shared part, so it may not apply the way you expect. Worth checking this cluster’s panels individually first</string>
 	<string name="home_change_topic_cluster">Change topic for %1$s</string>
-	<string name="home_change_topic_text">Moves every panel in this cluster onto a new MQTT topic - e.g. after splitting a Zigbee network onto a second bridge, for just the devices that actually moved. Other clusters are untouched</string>
+	<string name="home_change_topic_text">Moves every panel in this cluster onto a new MQTT topic – e.g. after splitting a Zigbee network onto a second bridge, for just the devices that actually moved. Other clusters are untouched</string>
 	<string name="home_change_topic_title">Change topic for ‘%1$s’</string>
 	<string name="home_cluster_copy">%1$s copy</string>
 	<string name="home_cluster_copy_n">%1$s copy %2$d</string>
@@ -194,7 +194,7 @@
 	<string name="home_delete_group_text">This removes the group and every panel in it</string>
 	<string name="home_delete_group_title">Delete group?</string>
 	<string name="home_duplicate">Duplicate</string>
-	<string name="home_duplicate_broad_warning">This cluster’s panels don’t all share one clean device topic (only ‘%1$s’ in common) - likely a few mismatched panels rather than one real device. The topic below replaces only that shared part, so it may not apply the way you expect. Worth checking this cluster’s panels individually first</string>
+	<string name="home_duplicate_broad_warning">This cluster’s panels don’t all share one clean device topic (only ‘%1$s’ in common) – likely a few mismatched panels rather than one real device. The topic below replaces only that shared part, so it may not apply the way you expect. Worth checking this cluster’s panels individually first</string>
 	<string name="home_duplicate_cluster">Duplicate %1$s</string>
 	<string name="home_duplicate_title">Duplicate ‘%1$s’</string>
 	<string name="home_edit_group">Edit group</string>
@@ -202,13 +202,13 @@
 	<string name="home_expand_all_groups">Expand all groups</string>
 	<string name="home_expand_group">Expand %1$s</string>
 	<string name="home_force_upload_copy">Force Upload New Copy</string>
-	<string name="home_force_upload_copy_detail">Rebuilds and republishes every cluster in this group’s device config from this phone’s current settings, overwriting whatever’s currently on the broker - use this if another phone or a broker issue left something out of sync</string>
+	<string name="home_force_upload_copy_detail">Rebuilds and republishes every cluster in this group’s device config from this phone’s current settings, overwriting whatever’s currently on the broker – use this if another phone or a broker issue left something out of sync</string>
 	<string name="home_force_upload_text">This overwrites the retained device config on the broker for every cluster in this group with a fresh copy built from this phone’s current settings. Any different config currently on the broker (e.g. from another phone) will be replaced, not merged. This can’t be undone automatically</string>
 	<string name="home_force_upload_title">Force upload ‘%1$s’?</string>
 	<string name="home_group_fallback">Group</string>
 	<string name="home_loading">Loading…</string>
 	<string name="home_loading_detail">Still reading your saved configuration</string>
-	<string name="home_low_battery_description" formatted="false">Battery at 20% or less</string>
+	<string name="home_low_battery_description">Battery at 20% or less</string>
 	<string name="home_moved">Moved ‘%1$s’</string>
 	<string name="home_moved_into">Moved ‘%1$s’ into ‘%2$s’</string>
 	<string name="home_moved_to">Moved ‘%1$s’ to ‘%2$s’</string>
@@ -221,11 +221,11 @@
 	<string name="home_nothing">(nothing)</string>
 	<string name="home_old_topic">Old topic</string>
 	<string name="home_rename_group">Rename %1$s</string>
-	<string name="home_republished">Re-published ‘%1$s’ to the broker</string>
+	<string name="home_republished">Re–published ‘%1$s’ to the broker</string>
 	<string name="home_retopic">Retopic</string>
 	<string name="home_retopic_all">Retopic All Clusters</string>
-	<string name="home_retopic_all_detail">Moves every cluster in this group currently on one old MQTT topic onto a new one, in one go - e.g. after splitting a Zigbee network onto a second bridge, for every device that moved. Clusters on a different topic are untouched</string>
-	<string name="home_retopic_all_text">Moves every cluster in this group whose topic exactly matches ‘Old topic’ onto ‘New topic’ - the rest of this group’s clusters are untouched. This can’t be undone automatically</string>
+	<string name="home_retopic_all_detail">Moves every cluster in this group currently on one old MQTT topic onto a new one, in one go – e.g. after splitting a Zigbee network onto a second bridge, for every device that moved. Clusters on a different topic are untouched</string>
+	<string name="home_retopic_all_text">Moves every cluster in this group whose topic exactly matches ‘Old topic’ onto ‘New topic’ – the rest of this group’s clusters are untouched. This can’t be undone automatically</string>
 	<string name="home_retopic_all_title">Retopic all clusters in ‘%1$s’?</string>
 	<plurals name="home_retopic_moved">
 		<item quantity="one">Moved %1$d cluster to ‘%2$s’</item>
@@ -242,7 +242,7 @@
 	<string name="mqtt_backup_delete_text">Removes the retained backup from %1$s. This can’t be undone</string>
 	<string name="mqtt_backup_delete_title">Delete this backup?</string>
 	<string name="mqtt_backup_deleted">Deleted backup from %1$s</string>
-	<string name="mqtt_backup_explain">Publishes your groups and panels (not broker host/username/password - those stay on this device) - gzip compressed, then base64-encoded so it travels as a normal MQTT payload - as a new retained message under ‘%1$s/&lt;timestamp&gt;’, keeping every previous backup intact</string>
+	<string name="mqtt_backup_explain">Publishes your groups and panels (not broker host/username/password – those stay on this device) – gzip compressed, then base64–encoded so it travels as a normal MQTT payload – as a new retained message under ‘%1$s/&lt;timestamp&gt;’, keeping every previous backup intact</string>
 	<string name="mqtt_backup_mode_backup">Backup</string>
 	<string name="mqtt_backup_mode_restore">Restore</string>
 	<string name="mqtt_backup_no_broker">Add a broker first (Settings → Brokers) before using this</string>
@@ -254,10 +254,10 @@
 	</plurals>
 	<string name="mqtt_backup_title">Backup / Restore via MQTT</string>
 	<string name="mqtt_restore_done">Restored from %1$s</string>
-	<string name="mqtt_restore_explain">Scans ‘%1$s/#’ for every backup that broker has retained, newest first. Restoring replaces your groups and panels, but keeps your current brokers as-is (they weren’t included in the backup) - so this only reconnects cleanly on the same broker setup the backup was taken from</string>
+	<string name="mqtt_restore_explain">Scans ‘%1$s/#’ for every backup that broker has retained, newest first. Restoring replaces your groups and panels, but keeps your current brokers as–is (they weren’t included in the backup) – so this only reconnects cleanly on the same broker setup the backup was taken from</string>
 	<string name="mqtt_restore_failed">Restore failed: that topic’s payload wasn’t a valid backup</string>
-	<string name="mqtt_restore_none">No backups found yet under ‘%1$s/’ - retained messages can take a moment to arrive after scanning, or there may not be any published there</string>
-	<string name="mqtt_restore_not_loaded">That backup’s data isn’t loaded yet - try scanning again</string>
+	<string name="mqtt_restore_none">No backups found yet under ‘%1$s/’ – retained messages can take a moment to arrive after scanning, or there may not be any published there</string>
+	<string name="mqtt_restore_not_loaded">That backup’s data isn’t loaded yet – try scanning again</string>
 	<string name="mqtt_restore_restoring">Restoring…</string>
 	<string name="mqtt_restore_scan">Scan for Backups</string>
 	<string name="mqtt_restore_scan_hint">Tap ‘Scan for Backups’ to look for retained backups on this broker</string>
@@ -269,7 +269,7 @@
 	<string name="notif_mqtt_connection_text">Maintaining broker connections</string>
 	<string name="notif_test_title">Test alert</string>
 	<string name="panel_add_title">Add Panel</string>
-	<string name="panel_button_help">Sent every time this button is tapped - there’s no on/off state to track</string>
+	<string name="panel_button_help">Sent every time this button is tapped – there’s no on/off state to track</string>
 	<string name="panel_cluster">Cluster name (optional)</string>
 	<string name="panel_cluster_hint">e.g. Soil Sensor 1 – groups this with other panels of the same name</string>
 	<string name="panel_command_topic">Command topic</string>
@@ -282,11 +282,11 @@
 	<string name="panel_delete_title">Delete panel?</string>
 	<string name="panel_edit_title">Edit Panel</string>
 	<string name="panel_editable">Editable value</string>
-	<string name="panel_editable_detail">Tapping this tile lets you type a new number, which republishes to this same topic/field (retained) - for a fixed preference an automation script reads (e.g. a moisture threshold), not a live hardware reading, which the next update would just overwrite</string>
+	<string name="panel_editable_detail">Tapping this tile lets you type a new number, which republishes to this same topic/field (retained) – for a fixed preference an automation script reads (e.g. a moisture threshold), not a live hardware reading, which the next update would just overwrite</string>
 	<string name="panel_icon">Icon</string>
 	<string name="panel_ideal_help">When set, this tile flashes red below min, green within range, and blue above max</string>
 	<string name="panel_ideal_topic">Ideal range topic (optional)</string>
-	<string name="panel_ideal_topic_hint">e.g. z2m2/SoilSensor_01/ideal – publishes {‘min’:x,‘max’:y}</string>
+	<string name="panel_ideal_topic_hint">e.g. zigbee2mqtt/SoilSensor_01/ideal – publishes {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">JSON field (blank = raw payload)</string>
 	<string name="panel_json_field_hint">e.g. temperature or state.battery</string>
 	<string name="panel_label">Label</string>
@@ -307,7 +307,7 @@
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">e.g. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Button</string>
-	<string name="panel_type_locked">Panel type can’t be changed once created – delete and re-add instead</string>
+	<string name="panel_type_locked">Panel type can’t be changed once created – delete and re–add instead</string>
 	<string name="panel_type_sensor">Sensor</string>
 	<string name="panel_type_toggle">Toggle</string>
 	<string name="panel_unit">Unit (optional)</string>
@@ -324,19 +324,19 @@
 	<string name="permit_join_via">Permit join via (optional)</string>
 	<string name="permit_join_via_help">Friendly name of a specific router to extend joining through, or ‘Coordinator’ for just the coordinator. Leave blank to permit joining via every router and the coordinator at once</string>
 	<string name="permit_join_via_hint">Blank = whole network</string>
-	<string name="protocol_ssl">SSL - Secure Sockets Layer</string>
-	<string name="protocol_tcp">TCP - Transmission Control Protocol</string>
-	<string name="protocol_ws">WS - Web Sockets</string>
-	<string name="protocol_wss">WSS - Web Sockets Secure</string>
+	<string name="protocol_ssl">SSL – Secure Sockets Layer</string>
+	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
+	<string name="protocol_ws">WS – Web Sockets</string>
+	<string name="protocol_wss">WSS – Web Sockets Secure</string>
 	<string name="settings_about">About</string>
-	<string name="settings_about_tagline">%1$s – no cloud, no account, no lock-in</string>
+	<string name="settings_about_tagline">%1$s – no cloud, no account, no lock–in</string>
 	<string name="settings_alerts_detail">Smoke and watering alerts, sound, and test notifications</string>
 	<string name="settings_background">Background Work</string>
 	<string name="settings_background_detail">Keep broker connections alive when the app is closed</string>
 	<string name="settings_backup">Backup &amp; Restore</string>
 	<string name="settings_backup_detail">Save or restore your configuration, full or brokers only</string>
 	<string name="settings_blink">Blink Warnings</string>
-	<string name="settings_blink_detail">Pulse out-of-range sensor tile alerts, instead of a static color</string>
+	<string name="settings_blink_detail">Pulse out–of–range sensor tile alerts, instead of a static color</string>
 	<plurals name="settings_brokers_count">
 		<item quantity="one">%1$d configured</item>
 		<item quantity="other">%1$d configured</item>
@@ -344,17 +344,17 @@
 	<string name="settings_force_upload_all">Force Upload All Groups</string>
 	<string name="settings_force_upload_all_confirm">This overwrites the retained device config on the broker for every cluster in every group with a fresh copy built from this phone’s current settings. Any different config currently on the broker (e.g. from another phone) will be replaced, not merged. This can’t be undone automatically</string>
 	<string name="settings_force_upload_all_confirm_title">Force upload all groups?</string>
-	<string name="settings_force_upload_all_detail">Rebuilds and republishes every cluster in every group’s device config from this phone’s current settings - use this if a broker issue or another phone left more than one group out of sync</string>
+	<string name="settings_force_upload_all_detail">Rebuilds and republishes every cluster in every group’s device config from this phone’s current settings – use this if a broker issue or another phone left more than one group out of sync</string>
 	<plurals name="settings_force_upload_all_done">
-		<item quantity="one">Re-published %1$d group to the broker</item>
-		<item quantity="other">Re-published %1$d groups to the broker</item>
+		<item quantity="one">Re–published %1$d group to the broker</item>
+		<item quantity="other">Re–published %1$d groups to the broker</item>
 	</plurals>
 	<string name="settings_orphans">Clean Up Orphaned Data</string>
 	<string name="settings_orphans_clean">Clean Up</string>
 	<string name="settings_orphans_confirm_title">Clean up orphaned data?</string>
 	<plurals name="settings_orphans_confirm">
-		<item quantity="one">This removes %1$d panel tagged with a broker that no longer exists - most often left behind by deleting a broker and re-adding it. Panels still tied to a broker you actually have configured are never touched</item>
-		<item quantity="other">This removes %1$d panels tagged with a broker that no longer exists - most often left behind by deleting a broker and re-adding it. Panels still tied to a broker you actually have configured are never touched</item>
+		<item quantity="one">This removes %1$d panel tagged with a broker that no longer exists – most often left behind by deleting a broker and re–adding it. Panels still tied to a broker you actually have configured are never touched</item>
+		<item quantity="other">This removes %1$d panels tagged with a broker that no longer exists – most often left behind by deleting a broker and re–adding it. Panels still tied to a broker you actually have configured are never touched</item>
 	</plurals>
 	<plurals name="settings_orphans_detail">
 		<item quantity="one">%1$d panel left over from a deleted broker can be removed</item>
@@ -365,15 +365,15 @@
 		<item quantity="other">Removed %1$d panels</item>
 	</plurals>
 	<string name="settings_tile_width">Tile &amp; Cluster Width</string>
-	<string name="settings_tile_width_detail">How wide tiles (and so cluster cards, 3 tiles wide) can grow, up to filling the screen - currently %1$ddp</string>
+	<string name="settings_tile_width_detail">How wide tiles (and so cluster cards, 3 tiles wide) can grow, up to filling the screen – currently %1$ddp</string>
 	<string name="settings_undo">Undo Toast Duration</string>
-	<string name="settings_undo_detail">How long the ‘Undo’ prompt stays up after dragging a tile, cluster, or group - currently %1$ds</string>
-	<string name="settings_undo_detail_off">How long the ‘Undo’ prompt stays up after dragging a tile, cluster, or group - currently off</string>
+	<string name="settings_undo_detail">How long the ‘Undo’ prompt stays up after dragging a tile, cluster, or group – currently %1$ds</string>
+	<string name="settings_undo_detail_off">How long the ‘Undo’ prompt stays up after dragging a tile, cluster, or group – currently off</string>
 	<string name="settings_version">Version %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">Smoke alerts (silent)</string>
 	<string name="smoke_channel_silent_desc">Alerts when a device reports smoke detected, without sound</string>
 	<string name="smoke_channel_sound">Smoke alerts (with sound)</string>
-	<string name="smoke_channel_sound_desc">Alerts when a device reports smoke detected, with an alarm-style sound</string>
+	<string name="smoke_channel_sound_desc">Alerts when a device reports smoke detected, with an alarm–style sound</string>
 	<string name="smoke_notif_test_text">This is what a smoke alert notification looks like</string>
 	<string name="smoke_notif_text">%1$s reported smoke – tap to open %2$s</string>
 	<string name="smoke_notif_title">Smoke detected!</string>
