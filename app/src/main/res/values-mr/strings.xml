@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="add_group_create">तयार करा</string>
+	<string name="add_group_name">गटाचे नाव</string>
+	<string name="add_group_title">गट जोडा</string>
+	<string name="alerts_allow">परवानगी द्या</string>
+	<string name="alerts_battery">कमी बॅटरी अलर्ट</string>
+	<string name="alerts_battery_detail">जेव्हा कोणतेही dव्हाइस 20% किंवा त्यापेक्षा कमी बॅटरी पातळी नोंदवते तेव्हा सूचित करा</string>
+	<string name="alerts_battery_test_detail">वरील टॉगलची पर्वा न करता, वास्तविक कमी बॅटरी अलर्ट सारखेच तर्क वापरून वास्तविक सूचना फायर करते</string>
+	<string name="alerts_notifications_off">सूचना बंद आहेत</string>
+	<string name="alerts_notifications_off_detail">जोपर्यंत %1$s ला सूचना पोस्ट करण्याची परवानगी मिळत नाही तोपर्यंत सूचना दाखवल्या जाऊ शकत नाहीत</string>
+	<string name="alerts_open_settings">सेटिंग्ज</string>
+	<string name="alerts_smoke">स्मोक अलर्ट</string>
+	<string name="alerts_smoke_detail">कोणत्याही dव्हाइसला धूर आढळून आल्यास सूचित करा</string>
+	<string name="alerts_smoke_test_detail">वास्तविक स्मोक अलर्ट सारखेच तर्क वापरून खरी सूचना (ध्वनीसह, वर सक्षम असल्यास) फायर करते – हे निश्चित करण्याचा एक चांगला मार्ग आहे की आपल्याला त्याची आवश्यकता होण्यापूर्वीच आपले लक्ष वेधून घेतले जाईल</string>
+	<string name="alerts_sound">अलर्ट ध्वनी</string>
+	<string name="alerts_sound_detail">सूचनेच्या बाजूने मोठा अलार्म–शैलीचा आवाज वाजवा</string>
+	<string name="alerts_test">चाचणी सूचना</string>
+	<string name="alerts_title">अलार्म/सूचना</string>
+	<string name="alerts_watering">पाणी पिण्याची सूचना</string>
+	<string name="alerts_watering_detail">जेव्हा मॉइश्चर सेन्सर त्याच्या आदर्श श्रेणीच्या मध्यभागी जातो तेव्हा कंपन करा आणि चाइम करा</string>
+	<string name="alerts_watering_test_detail">वरील टॉगलची पर्वा न करता, वॉटरिंग चाइम आणि कंपनासह वास्तविक सूचना फायर करते – तुम्ही त्यावर अवलंबून राहण्यापूर्वी ते ऐकण्याचा एक चांगला मार्ग</string>
+	<string name="backup_brokers_imported">दलाल आयात केले</string>
+	<string name="backup_config_imported">कॉन्फिगरेशन आयात केले</string>
+	<string name="backup_encrypt">एन्क्रिप्ट बॅकअप</string>
+	<string name="backup_encrypt_detail">तुम्ही निवडलेल्या पासवर्डसह निर्यात केलेल्या फाइलचे संरक्षण करा</string>
+	<string name="backup_encrypted_text">हा बॅकअप एनक्रिप्ट केलेला आहे. तो एन्क्रिप्ट केलेला पासवर्ड टाका</string>
+	<string name="backup_encrypted_title">एनक्रिप्टेड बॅकअप</string>
+	<string name="backup_export">निर्यात करा</string>
+	<string name="backup_export_brokers_detail">फक्त तुमचे ब्रोकर कनेक्शन तपशील संकुचित फाइल म्हणून जतन करा</string>
+	<string name="backup_export_config">कॉन्फिगरेशन निर्यात करा</string>
+	<string name="backup_export_full_detail">तुमचे ब्रोकर, गट आणि पॅनेल तुमच्या मालकीची संकुचित फाइल म्हणून सेव्ह करा</string>
+	<string name="backup_exported">कॉन्फिगरेशन निर्यात केले</string>
+	<string name="backup_import_config">इंपोर्ट कॉन्फिगरेशन</string>
+	<string name="backup_import_config_detail">पूर्वी निर्यात केलेल्या बॅकअप फाइलमधून पुनर्संचयित करा</string>
+	<string name="backup_mqtt_detail">फाईलऐवजी ब्रोकर विषयावर संकुचित बॅकअप प्रकाशित करा किंवा वाचा</string>
+	<string name="backup_password">पासवर्ड</string>
+	<string name="backup_replace_everything">सर्वकाही पुनर्स्थित करा</string>
+	<string name="backup_restore">पुनर्संचयित करा</string>
+	<string name="backup_restore_brokers_detail">तुमच्या वर्तमान सेटअपमध्ये फाइलमधील दलाल विलीन करते – गट आणि पॅनेल अस्पर्शित राहिले आहेत</string>
+	<string name="backup_restore_full_detail">तुमचे संपूर्ण कॉन्फिगरेशन फाइलमध्ये असलेल्या गोष्टींसह पुनर्स्थित करते</string>
+	<string name="backup_scope_brokers">दलाल फक्त</string>
+	<string name="backup_scope_full">पूर्ण कॉन्फिगरेशन</string>
+	<string name="backup_set_password_text">हा बॅकअप एनक्रिप्ट करण्यासाठी पासवर्ड निवडा. हे पुढच्या वेळेसाठी लक्षात ठेवले आहे – तुम्हाला पुनर्संचयित करण्यासाठी पुन्हा त्याची आवश्यकता असेल</string>
+	<string name="backup_set_password_title">एक्सपोर्ट पासवर्ड सेट करा</string>
+	<string name="backup_unencrypted_text">या बॅकअपमध्ये तुमच्या ब्रोकर्सची वापरकर्तानावे आणि पासवर्ड समाविष्ट आहेत, साधा मजकूर म्हणून संग्रहित. फाईल पकडलेल्या कोणीही ती वाचू शकतात. त्याऐवजी पासवर्डसह संरक्षित करण्यासाठी एन्क्रिप्ट बॅकअप चालू करा</string>
+	<string name="backup_unencrypted_title">एन्क्रिप्शनशिवाय निर्यात करायचे?</string>
+	<string name="backup_unlock">अनलॉक करा</string>
+	<string name="backup_wrong_password">चुकीचा पासवर्ड, किंवा फाइल दूषित आहे</string>
+	<string name="battery_channel">कमी बॅटरी सूचना</string>
+	<string name="battery_channel_desc">dव्हाइसचे बॅटरी वाचन कमी झाल्यावर सूचना</string>
+	<string name="battery_notif_test_text">कमी बॅटरी नोटिफिकेशन असे दिसते</string>
+	<string name="battery_notif_text">बॅटरी कमी होत आहे – %1$s उघडण्यासाठी टॅप करा</string>
+	<string name="battery_notif_text_percent">%1$d%% वर बॅटरी – %2$s उघडण्यासाठी टॅप करा</string>
+	<string name="battery_notif_title">%1$s बॅटरी कमी आहे</string>
+	<string name="battery_notif_title_percent">%1$s बॅटरी कमी आहे (%2$d%%)</string>
+	<string name="battery_test_device">चाचणी dव्हाइस</string>
+	<string name="broker_add_title">ब्रोकर जोडा</string>
+	<string name="broker_additional">अतिरिक्त पॅरामीटर्स</string>
+	<string name="broker_auth">प्रमाणीकरण</string>
+	<string name="broker_auto_accept">शोधलेली उपकरणे स्वयं–स्वीकारा</string>
+	<string name="broker_auto_accept_detail">नवीन–दिसलेल्या dव्हाइसचे गट/क्लस्टर/पॅनल ताबडतोब जोडा, प्रत्येकाला स्वीकारण्यासाठी सूचित करण्याऐवजी</string>
+	<string name="broker_auto_connect">ऑटो कनेक्ट</string>
+	<string name="broker_base_topic">मूळ विषय</string>
+	<string name="broker_base_topic_help">ॲप ब्रोकरवरील प्रत्येक विषयाऐवजी dव्हाइसेस आणि त्यांच्या /ॲप कॉन्फिगसाठी ‘&lt;बेस विषय&gt;/#’ पाहतो. याच ब्रोकरवर एकापेक्षा जास्त Zigbee2MQTT नेमस्पेस पाहण्यासाठी स्वल्पविरामाने विभक्त केलेली यादी (उदा. ‘zigbee2mqtt, zigbee2mqtt2’) एंटर करा – प्रत्येकाला स्वतःचे परमिट खाली सामील व्हा टॉगल मिळते</string>
+	<string name="broker_cert_selected">प्रमाणपत्र निवडले ✓</string>
+	<string name="broker_clean_session">स्वच्छ सत्र</string>
+	<string name="broker_clean_session_detail">प्रत्येक कनेक्शनवर नवीन सत्र सुरू करा (संदेश राखून ठेवलेले नाहीत)</string>
+	<string name="broker_client_id">क्लायंट आयडी</string>
+	<string name="broker_default_name">माझा MQTT दलाल</string>
+	<string name="broker_delete">दलाल हटवा</string>
+	<string name="broker_delete_text">हे ‘%1$s’ काढून टाकते आणि त्यातून dस्कनेक्ट होते. त्याच्याशी लिंक केलेले पॅनेल अपडेट करणे थांबवतील</string>
+	<string name="broker_delete_title">ब्रोकर हटवायचा?</string>
+	<string name="broker_edit_title">ब्रोकर संपादित करा</string>
+	<string name="broker_hide">लपवा</string>
+	<string name="broker_host">यजमान</string>
+	<string name="broker_import_code">कोडद्वारे आयात करा</string>
+	<string name="broker_keep_alive">इंटरव्हल जिवंत ठेवा</string>
+	<string name="broker_keep_alive_help">संदेश जिवंत ठेवा दरम्यान सेकंदांमध्ये वेळ मध्यांतर. डीफॉल्ट: 60 सेकंद. श्रेणी: 5–120 सेकंद</string>
+	<string name="broker_name">नाव</string>
+	<string name="broker_port">बंदर</string>
+	<string name="broker_protocol">प्रोटोकॉल</string>
+	<string name="broker_select_cert">प्रमाणपत्र फाइल निवडा</string>
+	<string name="broker_self_signed">हा ब्रोकर स्व–स्वाक्षरी केलेले SSL/TLS प्रमाणपत्र वापरतो</string>
+	<string name="broker_self_signed_risk">आपल्या स्वत: च्या जोखमीवर वापरा</string>
+	<string name="broker_show">दाखवा</string>
+	<string name="broker_show_reconnect">रीकनेक्शन स्थिती दर्शवा</string>
+	<string name="broker_show_reconnect_detail">मुख्य स्क्रीनवर पुन्हा कनेक्शन सूचना दर्शवा</string>
+	<plurals name="discover_add_panels">
+		<item quantity="one">%1$d पॅनेल जोडा</item>
+		<item quantity="other">%1$d पॅनेल जोडा</item>
+	</plurals>
+	<plurals name="discover_apply_detail_group">
+		<item quantity="one">खालील चेकबॉक्सेस वगळून, गट ‘%3$s’ मध्ये %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
+		<item quantity="other">खालील चेकबॉक्सेस वगळून, गट ‘%3$s’ मध्ये %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
+	</plurals>
+	<plurals name="discover_apply_detail">
+		<item quantity="one">खालील चेकबॉक्सेस वगळून, %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
+		<item quantity="other">खालील चेकबॉक्सेस वगळून, %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
+	</plurals>
+	<plurals name="discover_auto_done">
+		<item quantity="one">स्वयं–कॉन्फिगर केलेले %1$d dव्हाइस</item>
+		<item quantity="other">स्वयं–कॉन्फिगर केलेले %1$d dव्हाइस</item>
+	</plurals>
+	<plurals name="discover_selected">
+		<item quantity="one">%2$d पैकी %1$d निवडले</item>
+		<item quantity="other">%2$d पैकी %1$d निवडले</item>
+	</plurals>
+	<plurals name="home_delete_cluster_text">
+		<item quantity="one">हे या dव्हाइससाठी %1$d पॅनेल काढून टाकते</item>
+		<item quantity="other">हे या dव्हाइससाठी सर्व %1$d पॅनेल काढून टाकते</item>
+	</plurals>
+	<plurals name="home_retopic_moved">
+		<item quantity="one">%1$d क्लस्टर ‘%2$s’ वर हलवले</item>
+		<item quantity="other">%1$d क्लस्टर ‘%2$s’ वर हलवले</item>
+	</plurals>
+	<plurals name="mqtt_backup_published">
+		<item quantity="one">(%1$d बाइट) %2$s वर प्रकाशित</item>
+		<item quantity="other">(%1$d बाइट) %2$s वर प्रकाशित</item>
+	</plurals>
+	<plurals name="settings_brokers_count">
+		<item quantity="one">%1$d कॉन्फिगर केले</item>
+		<item quantity="other">%1$d कॉन्फिगर केले</item>
+	</plurals>
+	<plurals name="settings_force_upload_all_done">
+		<item quantity="one">ब्रोकरवर %1$d गट पुन्हा प्रकाशित केला</item>
+		<item quantity="other">ब्रोकरला %1$d गट पुन्हा प्रकाशित केले</item>
+	</plurals>
+	<plurals name="settings_orphans_confirm">
+		<item quantity="one">हे यापुढे अस्तित्वात नसलेल्या ब्रोकरसह टॅग केलेले %1$d पॅनेल काढून टाकते – बहुतेकदा ब्रोकर हटवून आणि पुन्हा जोडून मागे सोडले जाते. तुम्ही प्रत्यक्षात कॉन्फिगर केलेल्या ब्रोकरशी जोडलेल्या पॅनेलला कधीही स्पर्श केला जात नाही</item>
+		<item quantity="other">हे ब्रोकरसह टॅग केलेले %1$d पॅनेल काढून टाकते जे यापुढे अस्तित्वात नाही – बहुतेकदा ब्रोकर हटवून आणि पुन्हा जोडून मागे सोडले जाते. तुम्ही प्रत्यक्षात कॉन्फिगर केलेल्या ब्रोकरशी जोडलेल्या पॅनेलला कधीही स्पर्श केला जात नाही</item>
+	</plurals>
+	<plurals name="settings_orphans_detail">
+		<item quantity="one">हटवलेल्या ब्रोकरचे उरलेले %1$d पॅनेल काढले जाऊ शकते</item>
+		<item quantity="other">हटवलेल्या ब्रोकरकडून उरलेले %1$d पॅनेल काढले जाऊ शकतात</item>
+	</plurals>
+	<plurals name="settings_orphans_removed">
+		<item quantity="one">%1$d पॅनल काढले</item>
+		<item quantity="other">%1$d पॅनेल काढले</item>
+	</plurals>
+	<plurals name="terminal_count">
+		<item quantity="one">%2$d पैकी %1$d संदेश (सर्वात जुना पहिला, शेवटचा %3$d ठेवलेला)</item>
+		<item quantity="other">%2$d संदेशांपैकी %1$d (सर्वात जुने पहिले, शेवटचे %3$d ठेवलेले)</item>
+	</plurals>
+</resources>
