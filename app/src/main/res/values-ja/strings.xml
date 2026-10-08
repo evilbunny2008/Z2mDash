@@ -93,7 +93,6 @@
 	<string name="brokers_add">ブローカーを追加</string>
 	<string name="brokers_discover">%1$s でセンサーを検出</string>
 	<string name="brokers_reconnect">%1$s に再接続します</string>
-
 	<string name="brokers_title">ブローカー</string>
 	<string name="common_add">追加</string>
 	<string name="common_back">戻る</string>
@@ -139,7 +138,6 @@
 	</plurals>
 	<string name="discover_auto_none">有効な構成を持つデバイスの準備がまだできていません。しばらくしてから再試行するか、上の更新アイコンを使用してください</string>
 	<string name="discover_bad_config">%1$s が見つかりましたが、デバイス構成として読み取れませんでした – 空ではない「panels」配列を含む有効な JSON であることを確認してください</string>
-
 	<string name="discover_ideal_range">理想的な範囲</string>
 	<string name="discover_instructions">ダッシュボード タイルとして使用するフィールドにチェックを入れるか、デバイスが独自の &lt;topic&gt;/app config を公開している場合は、「Apply device config」を使用します。</string>
 	<string name="discover_new_group">+ 新しいグループ</string>
@@ -166,7 +164,6 @@
 	<string name="home_add_group">グループを追加</string>
 	<string name="home_add_panel_to">%1$s にパネルを追加</string>
 	<string name="home_add_tile_to">%1$s にタイルを追加</string>
-
 	<string name="home_another_group">別のグループ</string>
 	<string name="home_change_topic_broad_warning">このクラスターのパネルはすべて、1 つのクリーンなデバイス トピックを共有しているわけではなく、その裸の名前空間だけを共有しています。おそらく、1 つの実際のデバイスではなく、いくつかの不一致のパネルです。移動すると、その共有部分のみが置き換えられるため、期待どおりに適用されない可能性があります。最初にこのクラスターのパネルを個別に確認する価値があります</string>
 	<string name="home_change_topic_cluster">%1$s のトピックを変更します</string>

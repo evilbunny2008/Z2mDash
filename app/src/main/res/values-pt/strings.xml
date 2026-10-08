@@ -93,7 +93,6 @@
 	<string name="brokers_add">Adicionar corretor</string>
 	<string name="brokers_discover">Descubra sensores em %1$s</string>
 	<string name="brokers_reconnect">Reconectar–se a %1$s</string>
-
 	<string name="brokers_title">Corretores</string>
 	<string name="common_add">Adicionar</string>
 	<string name="common_back">Voltar</string>
@@ -147,7 +146,6 @@
 	</plurals>
 	<string name="discover_auto_none">Nenhum dispositivo com configuração válida estava pronto ainda. Tente novamente em alguns instantes ou use o ícone de atualização acima</string>
 	<string name="discover_bad_config">Encontrado %1$s, mas não foi possível lê–lo como uma configuração de dispositivo – verifique se é JSON válido com uma matriz de ‘painéis’ não vazia</string>
-
 	<string name="discover_ideal_range">faixa ideal</string>
 	<string name="discover_instructions">Marque os campos que você deseja como blocos do painel ou use ‘Aplicar configuração do dispositivo’ se o dispositivo publicar seu próprio &lt;topic&gt;/app config</string>
 	<string name="discover_new_group">+ Novo grupo</string>
@@ -176,7 +174,6 @@
 	<string name="home_add_group">Adicionar grupo</string>
 	<string name="home_add_panel_to">Adicionar painel a %1$s</string>
 	<string name="home_add_tile_to">Adicionar bloco a %1$s</string>
-
 	<string name="home_another_group">outro grupo</string>
 	<string name="home_change_topic_broad_warning">Nem todos os painéis deste cluster compartilham um tópico de dispositivo limpo, apenas aquele namespace vazio – provavelmente alguns painéis incompatíveis em vez de um dispositivo real. Movê–lo substitui apenas a parte compartilhada, portanto, pode não se aplicar da maneira esperada. Vale a pena verificar primeiro os painéis deste cluster individualmente</string>
 	<string name="home_change_topic_cluster">Alterar tópico para %1$s</string>

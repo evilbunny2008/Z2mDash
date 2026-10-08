@@ -93,7 +93,6 @@
 	<string name="brokers_add">ब्रोकर जोड़ें</string>
 	<string name="brokers_discover">%1$s पर सेंसर खोजें</string>
 	<string name="brokers_reconnect">%1$s से पुनः कनेक्ट करें</string>
-
 	<string name="brokers_title">दलाल</string>
 	<string name="common_add">जोड़ना</string>
 	<string name="common_back">पीछे</string>
@@ -143,7 +142,6 @@
 	</plurals>
 	<string name="discover_auto_none">वैध कॉन्फिगरेशन वाला कोई भी उपकरण अभी तक तैयार नहीं था – एक क्षण में पुनः प्रयास करें, या ऊपर ताज़ा आइकन का उपयोग करें</string>
 	<string name="discover_bad_config">%1$s मिला लेकिन इसे dवाइस कॉन्फ़िगरेशन के रूप में नहीं पढ़ा जा सका – गैर–रिक्त ‘पैनल’ सरणी के साथ इसकी वैध JSON की जांच करें</string>
-
 	<string name="discover_ideal_range">आदर्श रेंज</string>
 	<string name="discover_instructions">डैशबोर्ड टाइल्स के रूप में आप जो फ़ील्ड चाहते हैं, उन्हें टिक करें, या यदि dवाइस अपना स्वयं का &lt;विषय&gt;/ऐप कॉन्फिगरेशन प्रकाशित करता है, तो ‘dवाइस कॉन्फिग लागू करें’ का उपयोग करें।</string>
 	<string name="discover_new_group">+ नया समूह</string>
@@ -171,7 +169,6 @@
 	<string name="home_add_group">समूह जोड़ें</string>
 	<string name="home_add_panel_to">%1$s में पैनल जोड़ें</string>
 	<string name="home_add_tile_to">%1$s में टाइल जोड़ें</string>
-
 	<string name="home_another_group">दूसरा समूह</string>
 	<string name="home_change_topic_broad_warning">इस क्लस्टर के सभी पैनल एक साफ़ dवाइस विषय को साझा नहीं करते हैं, केवल वह खाली नामस्थान – संभवतः एक वास्तविक dवाइस के बजाय कुछ बेमेल पैनल। इसे हिलाने से केवल वह साझा भाग ही प्रतिस्थापित होता है, इसलिए हो सकता है कि यह आपकी अपेक्षा के अनुरूप लागू न हो। पहले इस क्लस्टर के पैनल को व्यक्तिगत रूप से जांचना उचित है</string>
 	<string name="home_change_topic_cluster">%1$s के लिए विषय बदलें</string>

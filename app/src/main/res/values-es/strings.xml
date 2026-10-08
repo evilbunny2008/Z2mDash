@@ -93,7 +93,6 @@
 	<string name="brokers_add">Agregar corredor</string>
 	<string name="brokers_discover">Descubra sensores en %1$s</string>
 	<string name="brokers_reconnect">Reconectarse a %1$s</string>
-
 	<string name="brokers_title">Corredores</string>
 	<string name="common_add">Agregar</string>
 	<string name="common_back">Atrás</string>
@@ -147,7 +146,6 @@
 	</plurals>
 	<string name="discover_auto_none">Ningún dispositivo con una configuración válida estaba listo todavía; inténtelo de nuevo en un momento o use el ícono de actualización que aparece arriba</string>
 	<string name="discover_bad_config">Encontré %1$s pero no pude leerlo como una configuración de dispositivo; verifique que sea JSON válido con una matriz ‘panels’ no vacía</string>
-
 	<string name="discover_ideal_range">rango ideal</string>
 	<string name="discover_instructions">Marque los campos que desee como mosaicos del panel o utilice ‘Aplicar configuración del dispositivo’ si el dispositivo publica su propia configuración &lt;tema&gt;/aplicación</string>
 	<string name="discover_new_group">+ Nuevo grupo</string>
@@ -176,7 +174,6 @@
 	<string name="home_add_group">Agregar grupo</string>
 	<string name="home_add_panel_to">Agregar panel a %1$s</string>
 	<string name="home_add_tile_to">Agregar mosaico a %1$s</string>
-
 	<string name="home_another_group">otro grupo</string>
 	<string name="home_change_topic_broad_warning">No todos los paneles de este clúster comparten un tema de dispositivo limpio, solo ese espacio de nombres simple; probablemente algunos paneles que no coinciden en lugar de un dispositivo real. Al moverlo, se reemplaza solo esa parte compartida, por lo que es posible que no se aplique de la forma esperada. Vale la pena revisar primero los paneles de este grupo individualmente</string>
 	<string name="home_change_topic_cluster">Cambiar tema para %1$s</string>

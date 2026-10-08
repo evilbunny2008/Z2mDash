@@ -93,7 +93,6 @@
 	<string name="brokers_add">Добавить брокера</string>
 	<string name="brokers_discover">Обнаружьте датчики на %1$s</string>
 	<string name="brokers_reconnect">Повторно подключиться к %1$s</string>
-
 	<string name="brokers_title">Брокеры</string>
 	<string name="common_add">Добавлять</string>
 	<string name="common_back">Назад</string>
@@ -151,7 +150,6 @@
 	</plurals>
 	<string name="discover_auto_none">Ни одно устройство с действующей конфигурацией еще не было готово. Повторите попытку через минуту или воспользуйтесь значком обновления выше</string>
 	<string name="discover_bad_config">Найден %1$s, но не удалось прочитать его как конфигурацию устройства. Проверьте корректность JSON с помощью непустого массива панелей</string>
-
 	<string name="discover_ideal_range">идеальный диапазон</string>
 	<string name="discover_instructions">Отметьте поля, которые вы хотите использовать в качестве плиток панели мониторинга, или используйте ‘Применить конфигурацию устройства’, если устройство публикует собственную конфигурацию &lt;topic&gt;/app</string>
 	<string name="discover_new_group">+ Новая группа</string>
@@ -181,7 +179,6 @@
 	<string name="home_add_group">Добавить группу</string>
 	<string name="home_add_panel_to">Добавить панель в %1$s</string>
 	<string name="home_add_tile_to">Добавить плитку в %1$s</string>
-
 	<string name="home_another_group">другая группа</string>
 	<string name="home_change_topic_broad_warning">Не все панели этого кластера имеют одну чистую тему устройства, а только одно пустое пространство имен — скорее всего, это несколько несовпадающих панелей, а не одно реальное устройство. При его перемещении заменяется только эта общая часть, поэтому оно может применяться не так, как вы ожидаете. Стоит сначала проверить панели этого кластера по отдельности</string>
 	<string name="home_change_topic_cluster">Изменить тему для %1$s</string>

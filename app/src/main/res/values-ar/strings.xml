@@ -93,7 +93,6 @@
 	<string name="brokers_add">إضافة وسيط</string>
 	<string name="brokers_discover">اكتشف المستشعرات على %1$s</string>
 	<string name="brokers_reconnect">أعد الاتصال بـ %1$s</string>
-
 	<string name="brokers_title">وسطاء</string>
 	<string name="common_add">يضيف</string>
 	<string name="common_back">خلف</string>
@@ -159,7 +158,6 @@
 	</plurals>
 	<string name="discover_auto_none">لم تكن هناك أجهزة ذات تكوين صالح جاهزة بعد – حاول مرة أخرى بعد قليل، أو استخدم رمز التحديث أعلاه</string>
 	<string name="discover_bad_config">تم العثور على %1$s ولكن لا يمكن قراءتها كتكوين للجهاز – تأكد من أنها صالحة JSON باستخدام مصفوفة ‘لوحات’ غير فارغة</string>
-
 	<string name="discover_ideal_range">النطاق المثالي</string>
 	<string name="discover_instructions">حدد الحقول التي تريدها كمربعات للوحة المعلومات، أو استخدم ‘تطبيق تكوين الجهاز’ إذا كان الجهاز ينشر &lt;topic&gt;/تكوين التطبيق الخاص به</string>
 	<string name="discover_new_group">+ مجموعة جديدة</string>
@@ -191,7 +189,6 @@
 	<string name="home_add_group">أضف مجموعة</string>
 	<string name="home_add_panel_to">إضافة لوحة إلى %1$s</string>
 	<string name="home_add_tile_to">أضف بلاطة إلى %1$s</string>
-
 	<string name="home_another_group">مجموعة أخرى</string>
 	<string name="home_change_topic_broad_warning">لا تشترك لوحات هذه المجموعة جميعًا في موضوع جهاز واحد نظيف، بل مساحة الاسم العارية فقط – من المحتمل أن تكون هناك لوحات قليلة غير متطابقة بدلاً من جهاز حقيقي واحد. يؤدي نقله إلى استبدال ذلك الجزء المشترك فقط، لذا قد لا ينطبق بالطريقة التي تتوقعها. يستحق التحقق من لوحات هذه المجموعة بشكل فردي أولاً</string>
 	<string name="home_change_topic_cluster">تغيير الموضوع لـ %1$s</string>

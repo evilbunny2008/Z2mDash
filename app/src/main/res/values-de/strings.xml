@@ -93,7 +93,6 @@
 	<string name="brokers_add">Broker hinzufügen</string>
 	<string name="brokers_discover">Entdecken Sie Sensoren auf %1$s</string>
 	<string name="brokers_reconnect">Stellen Sie die Verbindung zu %1$s wieder her</string>
-
 	<string name="brokers_title">Makler</string>
 	<string name="common_add">Hinzufügen</string>
 	<string name="common_back">Zurück</string>
@@ -143,7 +142,6 @@
 	</plurals>
 	<string name="discover_auto_none">Es waren noch keine Geräte mit einer gültigen Konfiguration bereit – versuchen Sie es gleich noch einmal oder verwenden Sie das Aktualisierungssymbol oben</string>
 	<string name="discover_bad_config">%1$s wurde gefunden, konnte es aber nicht als Gerätekonfiguration lesen – überprüfen Sie, ob es sich um gültiges JSON mit einem nicht leeren ‘Panels’–Array handelt</string>
-
 	<string name="discover_ideal_range">ideale Reichweite</string>
 	<string name="discover_instructions">Markieren Sie die Felder, die Sie als Dashboard–Kacheln verwenden möchten, oder verwenden Sie ‘Gerätekonfiguration anwenden’, wenn das Gerät seine eigene &lt;topic&gt;/app–Konfiguration veröffentlicht</string>
 	<string name="discover_new_group">+ Neue Gruppe</string>
@@ -171,7 +169,6 @@
 	<string name="home_add_group">Gruppe hinzufügen</string>
 	<string name="home_add_panel_to">Panel zu %1$s hinzufügen</string>
 	<string name="home_add_tile_to">Kachel zu %1$s hinzufügen</string>
-
 	<string name="home_another_group">eine andere Gruppe</string>
 	<string name="home_change_topic_broad_warning">Die Panels dieses Clusters haben nicht alle ein sauberes Gerätethema gemeinsam, sondern nur diesen bloßen Namensraum – wahrscheinlich eher ein paar nicht übereinstimmende Panels als ein echtes Gerät. Durch das Verschieben wird nur der gemeinsam genutzte Teil ersetzt, sodass er möglicherweise nicht wie erwartet angewendet wird. Es lohnt sich, zunächst die Panels dieses Clusters einzeln zu prüfen</string>
 	<string name="home_change_topic_cluster">Thema für %1$s ändern</string>

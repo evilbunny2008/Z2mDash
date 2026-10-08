@@ -93,7 +93,6 @@
 	<string name="brokers_add">Ajouter un courtier</string>
 	<string name="brokers_discover">Découvrez les capteurs sur %1$s</string>
 	<string name="brokers_reconnect">Reconnectez–vous à %1$s</string>
-
 	<string name="brokers_title">Courtiers</string>
 	<string name="common_add">Ajouter</string>
 	<string name="common_back">Dos</string>
@@ -147,7 +146,6 @@
 	</plurals>
 	<string name="discover_auto_none">Aucun appareil avec une configuration valide n’était encore prêt – réessayez dans un instant ou utilisez l’icône d’actualisation ci–dessus</string>
 	<string name="discover_bad_config">Trouvé %1$s mais n’a pas pu le lire en tant que configuration de périphérique – vérifiez qu’il s’agit d’un JSON valide avec un tableau ‘ panneaux ’ non vide</string>
-
 	<string name="discover_ideal_range">gamme idéale</string>
 	<string name="discover_instructions">Cochez les champs que vous souhaitez utiliser comme vignettes du tableau de bord ou utilisez ‘ Appliquer la configuration de l’appareil ’ si l’appareil publie sa propre configuration &lt;topic&gt;/app</string>
 	<string name="discover_new_group">+ Nouveau groupe</string>
@@ -176,7 +174,6 @@
 	<string name="home_add_group">Ajouter un groupe</string>
 	<string name="home_add_panel_to">Ajouter un panneau à %1$s</string>
 	<string name="home_add_tile_to">Ajouter une vignette à %1$s</string>
-
 	<string name="home_another_group">un autre groupe</string>
 	<string name="home_change_topic_broad_warning">Les panneaux de ce cluster ne partagent pas tous un seul sujet de périphérique propre, seulement cet espace de noms nu – probablement quelques panneaux incompatibles plutôt qu’un seul périphérique réel. Le déplacer remplace uniquement cette partie partagée, il se peut donc qu’il ne s’applique pas comme prévu. Cela vaut la peine de vérifier d’abord les panneaux de ce cluster individuellement</string>
 	<string name="home_change_topic_cluster">Changer de sujet pour %1$s</string>

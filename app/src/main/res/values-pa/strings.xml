@@ -93,7 +93,6 @@
 	<string name="brokers_add">ਦਲਾਲ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="brokers_discover">%1$s ‘ਤੇ ਸੈਂਸਰ ਖੋਜੋ</string>
 	<string name="brokers_reconnect">%1$s ਨਾਲ ਮੁੜ ਕਨੈਕਟ ਕਰੋ</string>
-
 	<string name="brokers_title">ਦਲਾਲ</string>
 	<string name="common_add">ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="common_back">ਪਿੱਛੇ</string>
@@ -143,7 +142,6 @@
 	</plurals>
 	<string name="discover_auto_none">ਵੈਧ ਸੰਰਚਨਾ ਵਾਲੀ ਕੋਈ ਵੀ ਡਿਵਾਈਸ ਅਜੇ ਤਿਆਰ ਨਹੀਂ ਸੀ – ਇੱਕ ਪਲ ਵਿੱਚ ਦੁਬਾਰਾ ਕੋਸ਼ਿਸ਼ ਕਰੋ, ਜਾਂ ਉੱਪਰ ਦਿੱਤੇ ਰਿਫ੍ਰੈਸ਼ ਆਈਕਨ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
 	<string name="discover_bad_config">%1$s ਮਿਲਿਆ ਪਰ ਇਸਨੂੰ ਇੱਕ ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਦੇ ਰੂਪ ਵਿੱਚ ਨਹੀਂ ਪੜ੍ਹ ਸਕਿਆ – ਜਾਂਚ ਕਰੋ ਕਿ ਇਹ ਇੱਕ ਗੈਰ–ਖਾਲੀ ‘ਪੈਨਲ’ ਐਰੇ ਨਾਲ ਵੈਧ JSON ਹੈ</string>
-
 	<string name="discover_ideal_range">ਆਦਰਸ਼ ਸੀਮਾ</string>
 	<string name="discover_instructions">ਡੈਸ਼ਬੋਰਡ ਟਾਈਲਾਂ ਦੇ ਤੌਰ ‘ਤੇ ਤੁਸੀਂ ਜੋ ਖੇਤਰ ਚਾਹੁੰਦੇ ਹੋ ਉਸ ’ਤੇ ਨਿਸ਼ਾਨ ਲਗਾਓ, ਜਾਂ ਜੇਕਰ ਡਿਵਾਈਸ ਆਪਣੀ &lt;topic&gt;/ਐਪ ਸੰਰਚਨਾ ਪ੍ਰਕਾਸ਼ਿਤ ਕਰਦੀ ਹੈ ਤਾਂ ‘ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਲਾਗੂ ਕਰੋ’ ਦੀ ਵਰਤੋਂ ਕਰੋ</string>
 	<string name="discover_new_group">+ ਨਵਾਂ ਸਮੂਹ</string>
@@ -171,7 +169,6 @@
 	<string name="home_add_group">ਸਮੂਹ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="home_add_panel_to">%1$s ਵਿੱਚ ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="home_add_tile_to">%1$s ਵਿੱਚ ਟਾਈਲ ਸ਼ਾਮਲ ਕਰੋ</string>
-
 	<string name="home_another_group">ਕੋਈ ਹੋਰ ਸਮੂਹ</string>
 	<string name="home_change_topic_broad_warning">ਇਸ ਕਲੱਸਟਰ ਦੇ ਸਾਰੇ ਪੈਨਲ ਇੱਕ ਸਾਫ਼ ਡਿਵਾਈਸ ਵਿਸ਼ਾ ਸਾਂਝਾ ਨਹੀਂ ਕਰਦੇ, ਸਿਰਫ਼ ਉਹ ਖਾਲੀ ਨੇਮਸਪੇਸ – ਸ਼ਾਇਦ ਇੱਕ ਅਸਲ ਡਿਵਾਈਸ ਦੀ ਬਜਾਏ ਕੁਝ ਬੇਮੇਲ ਪੈਨਲ। ਇਸਨੂੰ ਲਿਜਾਣ ਨਾਲ ਸਿਰਫ਼ ਉਹ ਸਾਂਝਾ ਹਿੱਸਾ ਬਦਲਦਾ ਹੈ, ਇਸ ਲਈ ਇਹ ਉਸ ਤਰ੍ਹਾਂ ਲਾਗੂ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਿਵੇਂ ਤੁਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹੋ। ਪਹਿਲਾਂ ਇਸ ਕਲੱਸਟਰ ਦੇ ਪੈਨਲਾਂ ਦੀ ਵੱਖਰੇ ਤੌਰ ‘ਤੇ ਜਾਂਚ ਕਰਨਾ ਚੰਗਾ ਹੈ</string>
 	<string name="home_change_topic_cluster">%1$s ਲਈ ਵਿਸ਼ਾ ਬਦਲੋ</string>

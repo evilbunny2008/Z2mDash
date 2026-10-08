@@ -93,7 +93,6 @@
 	<string name="brokers_add">新增經紀商</string>
 	<string name="brokers_discover">發現 %1$s 上的感測器</string>
 	<string name="brokers_reconnect">重新連接到%1$s</string>
-
 	<string name="brokers_title">經紀人</string>
 	<string name="common_add">添加</string>
 	<string name="common_back">後退</string>
@@ -139,7 +138,6 @@
 	</plurals>
 	<string name="discover_auto_none">尚未準備好具有有效配置的設備 – 請稍後重試，或使用上面的刷新圖示。</string>
 	<string name="discover_bad_config">找到 %1$s 但無法將其讀取為設備配置 – 使用非空’panels’數組檢查其是否有效 JSON。</string>
-
 	<string name="discover_ideal_range">理想範圍</string>
 	<string name="discover_instructions">勾選您想要作為儀表板圖塊的字段，或者如果設備發布自己的 &lt;topic&gt;/app 配置，則使用「應用設備配置」。</string>
 	<string name="discover_new_group">+ 新組</string>
@@ -166,7 +164,6 @@
 	<string name="home_add_group">新增群組</string>
 	<string name="home_add_panel_to">將面板加到%1$s</string>
 	<string name="home_add_tile_to">將圖塊加到%1$s</string>
-
 	<string name="home_another_group">另一組</string>
 	<string name="home_change_topic_broad_warning">该集群的面板并不都共享一个干净的设备主题，仅共享一个裸命名空间 – 可能是一些不匹配的面板而不是一个真实的设备。移動它只會替換共享部分，因此它可能不會以您期望的方式應用。值得先單獨檢查該群集的面板。</string>
 	<string name="home_change_topic_cluster">改變 %1$s 的主題</string>
