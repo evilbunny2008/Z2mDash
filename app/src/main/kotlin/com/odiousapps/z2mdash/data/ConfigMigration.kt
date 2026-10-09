@@ -68,7 +68,7 @@ object ConfigMigration {
         }
 
         val clusters = (group["clusters"] as? JsonArray)
-            ?.mapNotNull { it as? JsonObject }
+            ?.filterIsInstance<JsonObject>()
             ?.mapNotNull { c -> c.string("id")?.let { id -> id to c.string("name").orEmpty() } }
             ?.toMap(LinkedHashMap())
             ?: linkedMapOf()

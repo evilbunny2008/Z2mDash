@@ -5,7 +5,7 @@
 	<string name="add_group_title">गट जोडा</string>
 	<string name="alerts_allow">परवानगी द्या</string>
 	<string name="alerts_battery">कमी बॅटरी सूचना</string>
-	<string name="alerts_battery_detail">जेव्हा कोणतेही डिव्हाइस 20% किंवा त्यापेक्षा कमी बॅटरी पातळी नोंदवते तेव्हा सूचित करा</string>
+	<string name="alerts_battery_detail" formatted="false">जेव्हा कोणतेही डिव्हाइस 20% किंवा त्यापेक्षा कमी बॅटरी पातळी नोंदवते तेव्हा सूचित करा</string>
 	<string name="alerts_battery_test_detail">वरील टॉगलची पर्वा न करता, वास्तविक कमी बॅटरी अलर्ट सारखेच तर्क वापरून खरी सूचना देते</string>
 	<string name="alerts_notifications_off">सूचना बंद आहेत</string>
 	<string name="alerts_notifications_off_detail">जोपर्यंत %1$s ला सूचना पोस्ट करण्याची परवानगी मिळत नाही तोपर्यंत सूचना दाखवल्या जाऊ शकत नाहीत</string>
@@ -20,7 +20,6 @@
 	<string name="alerts_watering">पाणी पिण्याची सूचना</string>
 	<string name="alerts_watering_detail">जेव्हा आर्द्रता सेन्सर त्याच्या आदर्श श्रेणीच्या मध्यभागातून जाते तेव्हा कंपन करा आणि चाइम करा</string>
 	<string name="alerts_watering_test_detail">वरील टॉगलची पर्वा न करता, वॉटरिंग चाइम आणि कंपनासह वास्तविक सूचना देते – तुम्हाला त्यावर अवलंबून राहण्यापूर्वी ते ऐकण्याचा चांगला मार्ग आहे</string>
-	<string name="app_name">Z2M Dash</string>
 	<string name="backup_brokers_imported">दलाल आयात केले</string>
 	<string name="backup_config_imported">कॉन्फिगरेशन आयात केले</string>
 	<string name="backup_encrypt">एन्क्रिप्ट बॅकअप</string>
@@ -94,7 +93,6 @@
 	<string name="brokers_add">ब्रोकर जोडा</string>
 	<string name="brokers_discover">%1$s वर सेन्सर्स शोधा</string>
 	<string name="brokers_reconnect">%1$s शी पुन्हा कनेक्ट करा</string>
-	<string name="brokers_summary">ब्रोकर: %1$s:%2$d · %3$s · %4$s</string>
 	<string name="brokers_title">ब्रोकर</string>
 	<string name="common_add">जोडा</string>
 	<string name="common_back">मागे</string>
@@ -144,7 +142,6 @@
 	</plurals>
 	<string name="discover_auto_none">अद्याप वैध कॉन्फिग असलेले कोणतेही डिव्हाइस तयार नव्हते – कृपया थोड्या वेळाने पुन्हा प्रयत्न करा, किंवा वरील रिफ्रेश आयकॉन वापरा</string>
 	<string name="discover_bad_config">%1$s आढळले पण ते डिव्हाइस कॉन्फिगरेशन म्हणून वाचता आले नाही – तपासा की त्यात वैध JSON आहे आणि ‘panels‘ अरे रिकामा नाही</string>
-	<string name="discover_field">%1$s (%2$s)</string>
 	<string name="discover_ideal_range">आदर्श श्रेणी</string>
 	<string name="discover_instructions">डॅशबोर्ड टाइल्स म्हणून तुम्हाला आवश्यक असलेले क्षेत्र टिक करा, किंवा डिव्हाइस स्वतःचे &lt;टॉपिक&gt;/app कॉन्फिग प्रकाशित करत असल्यास ‘डिव्हाइस कॉन्फिगरेशन लागू करा’ वापरा</string>
 	<string name="discover_new_group">+ नवीन गट</string>
@@ -163,7 +160,7 @@
 	<string name="filter_fab">डॅशबोर्ड फिल्टर करा</string>
 	<string name="filter_fab_active">फिल्टर: केवळ %1$s दर्शविले जात आहे – बदलण्यासाठी टॅप करा</string>
 	<string name="filter_high_moisture">आदर्श श्रेणीपेक्षा जास्त आर्द्रता</string>
-	<string name="filter_low_battery">बॅटरी 20% किंवा त्याखाली</string>
+	<string name="filter_low_battery" formatted="false">बॅटरी 20% किंवा त्याखाली</string>
 	<string name="filter_low_moisture">आदर्श श्रेणीपेक्षा कमी आर्द्रता</string>
 	<string name="filter_show_everything">सर्व काही दाखवा</string>
 	<string name="filter_stale">अलीकडे रिपोर्ट केले नाही</string>
@@ -172,7 +169,6 @@
 	<string name="home_add_group">गट जोडा</string>
 	<string name="home_add_panel_to">पॅनेल %1$s मध्ये जोडा</string>
 	<string name="home_add_tile_to">टाइल %1$s मध्ये जोडा</string>
-	<string name="home_age">• %1$s</string>
 	<string name="home_another_group">दुसरा गट</string>
 	<string name="home_change_topic_broad_warning">या क्लस्टरचे पॅनेल सर्व एकाच स्वच्छ डिव्हाइस विषयाला सामायिक करत नाहीत, फक्त तो आधारभूत नेमस्पेस आहे – हे कदाचित वास्तविक उपकरणाऐवजी काही जुळणारे पॅनेल असू शकते. याला हलवल्याने केवळ ती सामायिक भाग बदलेल, त्यामुळे तुम्हाला तसा अपेक्षित परिणाम दिसू शकत नाही. आधी हे क्लस्टरचे पॅनेल वैयक्तिकरित्या तपासणे योग्य आहे</string>
 	<string name="home_change_topic_cluster">विषयासाठी %1$s बदला</string>
@@ -208,7 +204,7 @@
 	<string name="home_group_fallback">गट</string>
 	<string name="home_loading">लोड करत आहे…</string>
 	<string name="home_loading_detail">तुमचे जतन केलेले कॉन्फिगरेशन वाचत आहोत</string>
-	<string name="home_low_battery_description">बॅटरी २०% किंवा त्याखाली</string>
+	<string name="home_low_battery_description" formatted="false">बॅटरी 20% किंवा त्याखाली</string>
 	<string name="home_moved">%1$s हलवले</string>
 	<string name="home_moved_into">‘%1$s’ हा ‘%2$s’ मध्ये हलवला गेला</string>
 	<string name="home_moved_to">‘%1$s’ हा ‘%2$s’ वर हलवला गेला</string>

@@ -5,7 +5,7 @@
 	<string name="add_group_title">Grup Ekle</string>
 	<string name="alerts_allow">İzin vermek</string>
 	<string name="alerts_battery">Düşük Pil Uyarıları</string>
-	<string name="alerts_battery_detail">Herhangi bir cihaz 20% veya daha düşük pil seviyesi bildirdiğinde bildirim alın</string>
+	<string name="alerts_battery_detail" formatted="true">Herhangi bir cihaz 20% veya daha düşük pil seviyesi bildirdiğinde bildirim alın</string>
 	<string name="alerts_battery_test_detail">Yukarıdaki geçişe bakılmaksızın, gerçek bir düşük pil uyarısıyla tamamen aynı mantığı kullanarak gerçek bir bildirim başlatır</string>
 	<string name="alerts_notifications_off">Bildirimler kapalı</string>
 	<string name="alerts_notifications_off_detail">%1$s uygulamasının bildirim göndermesine izin verilene kadar uyarılar gösterilemez</string>
@@ -160,7 +160,7 @@
 	<string name="filter_fab">Kontrol panelini filtrele</string>
 	<string name="filter_fab_active">Filtre: yalnızca %1$s gösteriliyor – değiştirmek için dokunun</string>
 	<string name="filter_high_moisture">İdeal aralığın üzerinde nem</string>
-	<string name="filter_low_battery">Pil 20% veya daha az</string>
+	<string name="filter_low_battery" formatted="true">Pil 20% veya daha az</string>
 	<string name="filter_low_moisture">Nem ideal aralığın altında</string>
 	<string name="filter_show_everything">Her şeyi göster</string>
 	<string name="filter_stale">Yakın zamanda rapor vermiyorum</string>
@@ -204,7 +204,7 @@
 	<string name="home_group_fallback">Grup</string>
 	<string name="home_loading">Yükleniyor</string>
 	<string name="home_loading_detail">Kayıtlı konfigürasyonunuz hâlâ okunuyor</string>
-	<string name="home_low_battery_description">Pil %20 veya daha az</string>
+	<string name="home_low_battery_description" formatted="false">Pil %20 veya daha az</string>
 	<string name="home_moved">‘%1$s’ taşındı</string>
 	<string name="home_moved_into">‘%1$s’, ‘%2$s’e taşındı</string>
 	<string name="home_moved_to">‘%1$s’, ‘%2$s’e taşındı</string>

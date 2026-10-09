@@ -198,7 +198,7 @@
 	<string name="home_group_fallback">Nhóm</string>
 	<string name="home_loading">Đang tải</string>
 	<string name="home_loading_detail">Vẫn đang đọc cấu hình đã lưu của bạn</string>
-	<string name="home_low_battery_description">Pin ở mức 20% hoặc ít hơn</string>
+	<string name="home_low_battery_description" formatted="false">Pin ở mức 20% hoặc ít hơn</string>
 	<string name="home_moved">Đã di chuyển ‘%1$s’</string>
 	<string name="home_moved_into">Đã chuyển ‘%1$s’ vào ‘%2$s’</string>
 	<string name="home_moved_to">Đã chuyển ‘%1$s’ sang ‘%2$s’</string>

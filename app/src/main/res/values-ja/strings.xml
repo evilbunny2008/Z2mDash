@@ -5,7 +5,7 @@
 	<string name="add_group_title">グループの追加</string>
 	<string name="alerts_allow">許可する</string>
 	<string name="alerts_battery">バッテリー残量低下アラート</string>
-	<string name="alerts_battery_detail">いずれかのデバイスがバッテリー残量が 20% 以下であると報告した場合に通知します</string>
+	<string name="alerts_battery_detail" formatted="false">いずれかのデバイスがバッテリー残量が 20% 以下であると報告した場合に通知します</string>
 	<string name="alerts_battery_test_detail">上の切り替えに関係なく、本物のバッテリー低下アラートとまったく同じロジックを使用して実際の通知を発行します。</string>
 	<string name="alerts_notifications_off">通知はオフになっています</string>
 	<string name="alerts_notifications_off_detail">%1$s が通知の投稿を許可されるまで、アラートは表示できません</string>
@@ -155,7 +155,7 @@
 	<string name="filter_fab">ダッシュボードをフィルタリングする</string>
 	<string name="filter_fab_active">フィルター: %1$s のみを表示 – タップして変更します</string>
 	<string name="filter_high_moisture">理想的な範囲を超える水分</string>
-	<string name="filter_low_battery">バッテリー残量が20%以下</string>
+	<string name="filter_low_battery" formatted="false">バッテリー残量が20%以下</string>
 	<string name="filter_low_moisture">理想的な範囲を下回る水分</string>
 	<string name="filter_show_everything">すべてを表示</string>
 	<string name="filter_stale">最近報告してない</string>
@@ -198,7 +198,7 @@
 	<string name="home_group_fallback">グループ</string>
 	<string name="home_loading">読み込み中</string>
 	<string name="home_loading_detail">保存された設定をまだ読み取っています</string>
-	<string name="home_low_battery_description">バッテリー残量が 20% 以下</string>
+	<string name="home_low_battery_description" formatted="false">バッテリー残量が 20% 以下</string>
 	<string name="home_moved">「%1$s」を移動しました</string>
 	<string name="home_moved_into">「%1$s」を「%2$s」に移動しました</string>
 	<string name="home_moved_to">「%1$s」を「%2$s」に移動しました</string>

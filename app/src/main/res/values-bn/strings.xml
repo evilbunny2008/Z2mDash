@@ -5,7 +5,7 @@
 	<string name="add_group_title">গ্রুপ যোগ করুন</string>
 	<string name="alerts_allow">অনুমতি দিন</string>
 	<string name="alerts_battery">কম ব্যাটারি সতর্কতা</string>
-	<string name="alerts_battery_detail">যখন যেকোন ডিভাইসে 20% বা তার নিচে ব্যাটারি লেভেলের রিপোর্ট করা হয় তখন অবহিত করুন</string>
+	<string name="alerts_battery_detail" formatted="false">যখন যেকোন ডিভাইসে 20% বা তার নিচে ব্যাটারি লেভেলের রিপোর্ট করা হয় তখন অবহিত করুন</string>
 	<string name="alerts_battery_test_detail">উপরের টগল নির্বিশেষে একটি প্রকৃত কম ব্যাটারি সতর্কতার মতো একই যুক্তি ব্যবহার করে একটি বাস্তব বিজ্ঞপ্তি প্রকাশ করে</string>
 	<string name="alerts_notifications_off">বিজ্ঞপ্তি বন্ধ আছে</string>
 	<string name="alerts_notifications_off_detail">%1$s কে বিজ্ঞপ্তি পোস্ট করার অনুমতি না দেওয়া পর্যন্ত সতর্কতা দেখানো যাবে না</string>
@@ -160,7 +160,7 @@
 	<string name="filter_fab">ড্যাশবোর্ড ফিল্টার করুন</string>
 	<string name="filter_fab_active">ফিল্টার: শুধুমাত্র %1$s দেখাচ্ছে – পরিবর্তন করতে আলতো চাপুন</string>
 	<string name="filter_high_moisture">আর্দ্রতা আদর্শ পরিসরের উপরে</string>
-	<string name="filter_low_battery">ব্যাটারি 20% বা তার কম</string>
+	<string name="filter_low_battery" formatted="false">ব্যাটারি 20% বা তার কম</string>
 	<string name="filter_low_moisture">আর্দ্রতা আদর্শ পরিসরের নিচে</string>
 	<string name="filter_show_everything">সব দেখান</string>
 	<string name="filter_stale">সম্প্রতি রিপোর্টিং না</string>
@@ -204,7 +204,7 @@
 	<string name="home_group_fallback">গ্রুপ</string>
 	<string name="home_loading">লোড হচ্ছে</string>
 	<string name="home_loading_detail">এখনও আপনার সংরক্ষিত কনফিগারেশন পড়া</string>
-	<string name="home_low_battery_description">ব্যাটারি 20% বা তার কম</string>
+	<string name="home_low_battery_description" formatted="false">ব্যাটারি 20% বা তার কম</string>
 	<string name="home_moved">‘%1$s’ সরানো হয়েছে</string>
 	<string name="home_moved_into">‘%1$s’ কে ‘%2$s’ এ সরানো হয়েছে</string>
 	<string name="home_moved_to">‘%1$s’ থেকে ‘%2$s’ এ সরানো হয়েছে</string>

@@ -5,7 +5,7 @@
 	<string name="add_group_title">समूह जोड़ें</string>
 	<string name="alerts_allow">अनुमति दें</string>
 	<string name="alerts_battery">कम बैटरी अलर्ट</string>
-	<string name="alerts_battery_detail">जब कोई dवाइस 20% या उससे कम बैटरी स्तर की रिपोर्ट करे तो सूचित करें</string>
+	<string name="alerts_battery_detail" formatted="false">जब कोई dवाइस 20% या उससे कम बैटरी स्तर की रिपोर्ट करे तो सूचित करें</string>
 	<string name="alerts_battery_test_detail">उपरोक्त टॉगल की परवाह किए बिना, वास्तविक कम बैटरी अलर्ट के समान तर्क का उपयोग करके एक वास्तविक अधिसूचना सक्रिय करता है</string>
 	<string name="alerts_notifications_off">सूचनाएं बंद हैं</string>
 	<string name="alerts_notifications_off_detail">जब तक %1$s को सूचनाएं पोस्ट करने की अनुमति नहीं दी जाती तब तक अलर्ट नहीं दिखाए जा सकते</string>
@@ -160,7 +160,7 @@
 	<string name="filter_fab">डैशबोर्ड को फ़िल्टर करें</string>
 	<string name="filter_fab_active">फ़िल्टर: केवल %1$s दिखा रहा है – बदलने के लिए टैप करें</string>
 	<string name="filter_high_moisture">आदर्श सीमा से ऊपर नमी</string>
-	<string name="filter_low_battery">बैटरी 20% या उससे कम</string>
+	<string name="filter_low_battery" formatted="false">बैटरी 20% या उससे कम</string>
 	<string name="filter_low_moisture">आदर्श सीमा से नीचे नमी</string>
 	<string name="filter_show_everything">सब कुछ दिखाओ</string>
 	<string name="filter_stale">हाल ही में रिपोर्ट नहीं कर रहा हूँ</string>
@@ -204,7 +204,7 @@
 	<string name="home_group_fallback">समूह</string>
 	<string name="home_loading">लोड हो रहा है</string>
 	<string name="home_loading_detail">अभी भी आपका सहेजा गया कॉन्फ़िगरेशन पढ़ रहा है</string>
-	<string name="home_low_battery_description">बैटरी 20% या उससे कम</string>
+	<string name="home_low_battery_description" formatted="false">बैटरी 20% या उससे कम</string>
 	<string name="home_moved">‘%1$s’ ले जाया गया</string>
 	<string name="home_moved_into">‘%1$s’ को ‘%2$s’ में ले जाया गया</string>
 	<string name="home_moved_to">‘%1$s’ को ‘%2$s’ में ले जाया गया</string>

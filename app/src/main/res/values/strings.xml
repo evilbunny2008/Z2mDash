@@ -5,7 +5,7 @@
 	<string name="add_group_title">Add Group</string>
 	<string name="alerts_allow">Allow</string>
 	<string name="alerts_battery">Low Battery Alerts</string>
-	<string name="alerts_battery_detail">Notify when any device reports a battery level of 20% or below</string>
+	<string name="alerts_battery_detail" formatted="false">Notify when any device reports a battery level of 20% or below</string>
 	<string name="alerts_battery_test_detail">Fires a real notification using the exact same logic as a genuine low battery alert, regardless of the toggle above</string>
 	<string name="alerts_notifications_off">Notifications are off</string>
 	<string name="alerts_notifications_off_detail">Alerts can’t be shown until %1$s is allowed to post notifications</string>
@@ -163,7 +163,7 @@
 	<string name="filter_fab">Filter the dashboard</string>
 	<string name="filter_fab_active">Filter: showing only %1$s – tap to change</string>
 	<string name="filter_high_moisture">Moisture above ideal range</string>
-	<string name="filter_low_battery">Battery 20% or less</string>
+	<string name="filter_low_battery" formatted="false">Battery 20% or less</string>
 	<string name="filter_low_moisture">Moisture below ideal range</string>
 	<string name="filter_show_everything">Show everything</string>
 	<string name="filter_stale">Not reporting recently</string>
@@ -208,7 +208,7 @@
 	<string name="home_group_fallback">Group</string>
 	<string name="home_loading">Loading…</string>
 	<string name="home_loading_detail">Still reading your saved configuration</string>
-	<string name="home_low_battery_description">Battery at 20% or less</string>
+	<string name="home_low_battery_description" formatted="false">Battery at 20% or less</string>
 	<string name="home_moved">Moved ‘%1$s’</string>
 	<string name="home_moved_into">Moved ‘%1$s’ into ‘%2$s’</string>
 	<string name="home_moved_to">Moved ‘%1$s’ to ‘%2$s’</string>

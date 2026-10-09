@@ -5,7 +5,7 @@
 	<string name="add_group_title">Adicionar grupo</string>
 	<string name="alerts_allow">Permitir</string>
 	<string name="alerts_battery">Alertas de bateria fraca</string>
-	<string name="alerts_battery_detail">Notificar quando qualquer dispositivo relatar um nível de bateria de 20% ou menos</string>
+	<string name="alerts_battery_detail" formatted="false">Notificar quando qualquer dispositivo relatar um nível de bateria de 20% ou menos</string>
 	<string name="alerts_battery_test_detail">Dispara uma notificação real usando exatamente a mesma lógica de um alerta genuíno de bateria fraca, independentemente da alternância acima</string>
 	<string name="alerts_notifications_off">As notificações estão desativadas</string>
 	<string name="alerts_notifications_off_detail">Os alertas não poderão ser exibidos até que %1$s tenha permissão para postar notificações</string>
@@ -165,7 +165,7 @@
 	<string name="filter_fab">Filtrar o painel</string>
 	<string name="filter_fab_active">Filtro: mostrando apenas %1$s – toque para alterar</string>
 	<string name="filter_high_moisture">Umidade acima da faixa ideal</string>
-	<string name="filter_low_battery">Bateria 20% ou menos</string>
+	<string name="filter_low_battery" formatted="false">Bateria 20% ou menos</string>
 	<string name="filter_low_moisture">Umidade abaixo da faixa ideal</string>
 	<string name="filter_show_everything">Mostrar tudo</string>
 	<string name="filter_stale">Não reportando recentemente</string>
@@ -210,7 +210,7 @@
 	<string name="home_group_fallback">Grupo</string>
 	<string name="home_loading">Carregando</string>
 	<string name="home_loading_detail">Ainda lendo sua configuração salva</string>
-	<string name="home_low_battery_description">Bateria em 20% ou menos</string>
+	<string name="home_low_battery_description" formatted="false">Bateria em 20% ou menos</string>
 	<string name="home_moved">‘%1$s’ movido</string>
 	<string name="home_moved_into">‘%1$s’ movido para ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ movido para ‘%2$s’</string>

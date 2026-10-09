@@ -5,7 +5,7 @@
 	<string name="add_group_title">Ajouter un groupe</string>
 	<string name="alerts_allow">Permettre</string>
 	<string name="alerts_battery">Alertes de batterie faible</string>
-	<string name="alerts_battery_detail">Avertir lorsqu’un appareil signale un niveau de batterie de 20% ou moins</string>
+	<string name="alerts_battery_detail" formatted="false">Avertir lorsqu’un appareil signale un niveau de batterie de 20% ou moins</string>
 	<string name="alerts_battery_test_detail">Déclenche une véritable notification en utilisant exactement la même logique qu’une véritable alerte de batterie faible, quelle que soit la bascule ci–dessus</string>
 	<string name="alerts_notifications_off">Les notifications sont désactivées</string>
 	<string name="alerts_notifications_off_detail">Les alertes ne peuvent pas être affichées tant que %1$s n’est pas autorisé à publier des notifications</string>
@@ -163,9 +163,9 @@
 	<string name="discover_title">Découvrez les capteurs</string>
 	<string name="filter_active">Actif</string>
 	<string name="filter_fab">Filtrer le tableau de bord</string>
-	<string name="filter_fab_active">Filtre : affichant uniquement %1$s – appuyez pour modifier</string>
+	<string name="filter_fab_active">Filtre: affichant uniquement %1$s – appuyez pour modifier</string>
 	<string name="filter_high_moisture">Humidité supérieure à la plage idéale</string>
-	<string name="filter_low_battery">Batterie 20% ou moins</string>
+	<string name="filter_low_battery" formatted="false">Batterie 20% ou moins</string>
 	<string name="filter_low_moisture">Humidité inférieure à la plage idéale</string>
 	<string name="filter_show_everything">Montrer tout</string>
 	<string name="filter_stale">Je n’ai pas signalé récemment</string>
@@ -210,9 +210,9 @@
 	<string name="home_group_fallback">Groupe</string>
 	<string name="home_loading">Chargement</string>
 	<string name="home_loading_detail">Je lis toujours votre configuration enregistrée</string>
-	<string name="home_low_battery_description">Batterie à 20 % ou moins</string>
-	<string name="home_moved">‘ %1$s ’ déplacé</string>
-	<string name="home_moved_into">Déplacement de ‘ %1$s ’ vers ‘ %2$s ’</string>
+	<string name="home_low_battery_description" formatted="false">Batterie à 20% ou moins</string>
+	<string name="home_moved">‘%1$s’ déplacé</string>
+	<string name="home_moved_into">Déplacement de ‘%1$s’ vers ‘%2$s’</string>
 	<string name="home_moved_to">Déplacement de ‘ %1$s ’ vers ‘ %2$s ’</string>
 	<string name="home_moved_within">Déplacement de ‘ %1$s ’ dans ‘ %2$s ’</string>
 	<string name="home_new_topic">Nouveau sujet</string>

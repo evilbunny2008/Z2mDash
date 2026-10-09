@@ -185,7 +185,7 @@ object SensorDiscovery {
 
             val panelsArray = obj["panels"] as? JsonArray
             if (panelsArray != null) {
-                val panelOrderArray = panelsArray.mapIndexed { index, _ ->
+                val panelOrderArray = List(panelsArray.size) { index ->
                     val order = panelOrderByIndex[index]
                     if (order != null) JsonPrimitive(order) else JsonNull
                 }
@@ -236,7 +236,7 @@ object SensorDiscovery {
     /**
      * Rewrites a device's "/app" payload with "dashboard_order" updated and "order_version"
      * stamped (see updateOrderingInAppPayload's doc) - everything else passes through unchanged.
-     * Used when a top-level dashboard group reorder shifts [group]'s position among sibling
+     * Used when a top-level dashboard group reorder shifts group's position among sibling
      * groups. Distinct from updateGroupOrderInAppPayload, which ranks clusters *within* a group.
      * Returns null if the payload isn't a JSON object.
      */
@@ -652,11 +652,11 @@ object SensorDiscovery {
     fun fieldKeysOf(payload: String): Set<String> = numericFieldsOf(payload).map { it.key }.toSet()
 
     /**
-     * Builds the panels described by [deviceConfig]: Sensor panels from panelFields, plus
+     * Builds the panels described by deviceConfig: Sensor panels from panelFields, plus
      * Toggle/Button panels from declared controls. A sensor field is pointed at the app-config
      * topic if found there (e.g. "moisture_min"), else the main sensor topic, trusting
      * panelFields' declaration regardless of whether a live message has been seen yet.
-     * [sensorFieldKeys] is currently unused (kept to avoid churning call sites) - an earlier
+     * sensorFieldKeys is currently unused (kept to avoid churning call sites) - an earlier
      * version required a field to be confirmed live first, which meant a valid device could never
      * be added if its topic simply hadn't published recently. Fields in a detected
      * "<base>_min"/"<base>_max" pair get an ideal range wired to the app-config topic, except the

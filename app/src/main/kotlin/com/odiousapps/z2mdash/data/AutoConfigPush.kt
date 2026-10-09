@@ -1,3 +1,5 @@
+@file:Suppress("KDocUnresolvedReference", "KDocUnresolvedReference")
+
 package com.odiousapps.z2mdash.data
 
 import com.odiousapps.z2mdash.Z2mDashApplication
@@ -555,31 +557,6 @@ fun retopicGroupTopicPrefix(app: Z2mDashApplication, groupId: String, oldTopicPr
     return matchingClusterIds.map { group.clusterName(it) }
 }
 
-/**
- * Rebuilds and republishes a fresh "<topic>/app" payload, from this phone's current local
- * config, for every cluster (and standalone panel, each treated as its own single-panel
- * "cluster") in [groupId] that has a coherent common topic - unlike
- * [publishAppTopicForClusterIfMissing], overwriting whatever's already retained rather than
- * only filling a gap. Meant for the "force upload" action on the group edit screen: the deliberate,
- * manual fix for a group/broker that's drifted out of sync (e.g. another phone sharing the same
- * broker published a stale or conflicting payload - see the multi-phone-deployment setup this app
- * expects), re-asserting this phone's local config.json as the canonical source of truth for
- * every device the group owns.
- *
- * A Sensor field whose own topic *is* the appTopic being republished (e.g. an editable min/max
- * threshold - see buildAppConfigPayload's own doc) has its current value read back out of the
- * existing retained payload first and re-seeded, so a force-republish doesn't silently reset a
- * threshold the user had set via that field's own edit action. If that read-back comes up empty -
- * this topic isn't in latestPayloads at all yet, e.g. right after a broker's base topic was just
- * widened to cover it and nothing's arrived from the broker for it yet - the whole cluster is left
- * untouched rather than published with buildAppConfigPayload's own "0" placeholder standing in for
- * an unknown real threshold: for an ordinary reading that "0" is harmless (it just shows "--" or
- * gets overwritten by the next real value), but for a moisture ideal-range min/max it collapses
- * the midpoint to 0, and since virtually any reading is "above" a midpoint of 0,
- * WateringAlertManager would score every subsequent reading as already above target - confirmed by
- * a user report of repeated spurious watering alerts right after a force-upload run against a
- * topic namespace that had only just been subscribed to.
- */
 /**
  * [forceRepublishGroupAppTopics] for every group in the local config, one at a time - the "force
  * upload" action on the Settings screen, for when drift isn't confined to one group (e.g. after a

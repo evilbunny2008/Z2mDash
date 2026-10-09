@@ -5,7 +5,7 @@
 	<string name="add_group_title">Tambahkan Grup</string>
 	<string name="alerts_allow">Mengizinkan</string>
 	<string name="alerts_battery">Peringatan Baterai Lemah</string>
-	<string name="alerts_battery_detail">Beritahukan bila ada perangkat yang melaporkan tingkat baterai 20% atau lebih rendah</string>
+	<string name="alerts_battery_detail" formatted="false">Beritahukan bila ada perangkat yang melaporkan tingkat baterai 20% atau lebih rendah</string>
 	<string name="alerts_battery_test_detail">Meluncurkan notifikasi nyata menggunakan logika yang sama persis dengan peringatan baterai lemah, apa pun tombol di atas</string>
 	<string name="alerts_notifications_off">Notifikasi tidak aktif</string>
 	<string name="alerts_notifications_off_detail">Lansiran tidak dapat ditampilkan sampai %1$s diizinkan mengeposkan pemberitahuan</string>
@@ -155,7 +155,7 @@
 	<string name="filter_fab">Filter dasbor</string>
 	<string name="filter_fab_active">Filter: hanya menampilkan %1$s – ketuk untuk mengubahnya</string>
 	<string name="filter_high_moisture">Kelembapan di atas kisaran ideal</string>
-	<string name="filter_low_battery">Baterai 20% atau kurang</string>
+	<string name="filter_low_battery" formatted="false">Baterai 20% atau kurang</string>
 	<string name="filter_low_moisture">Kelembapan di bawah kisaran ideal</string>
 	<string name="filter_show_everything">Tunjukkan semuanya</string>
 	<string name="filter_stale">Tidak melaporkan baru–baru ini</string>
@@ -198,7 +198,7 @@
 	<string name="home_group_fallback">Kelompok</string>
 	<string name="home_loading">Memuat</string>
 	<string name="home_loading_detail">Masih membaca konfigurasi tersimpan Anda</string>
-	<string name="home_low_battery_description">Baterai 20% atau kurang</string>
+	<string name="home_low_battery_description" formatted="false">Baterai 20% atau kurang</string>
 	<string name="home_moved">Memindahkan ‘%1$s’</string>
 	<string name="home_moved_into">Memindahkan ‘%1$s’ ke ‘%2$s’</string>
 	<string name="home_moved_to">Memindahkan ‘%1$s’ ke ‘%2$s’</string>

@@ -5,7 +5,7 @@
 	<string name="add_group_title">సమూహాన్ని జోడించండి</string>
 	<string name="alerts_allow">అనుమతించు</string>
 	<string name="alerts_battery">తక్కువ బ్యాటరీ హెచ్చరికలు</string>
-	<string name="alerts_battery_detail">ఏదైనా పరికరం బ్యాటరీ స్థాయి 20% లేదా అంతకంటే తక్కువ ఉన్నట్లు నివేదించినప్పుడు తెలియజేయండి</string>
+	<string name="alerts_battery_detail" formatted="false">ఏదైనా పరికరం బ్యాటరీ స్థాయి 20% లేదా అంతకంటే తక్కువ ఉన్నట్లు నివేదించినప్పుడు తెలియజేయండి</string>
 	<string name="alerts_battery_test_detail">ఎగువ టోగుల్‌తో సంబంధం లేకుండా నిజమైన తక్కువ బ్యాటరీ హెచ్చరిక వలె ఖచ్చితమైన లాజిక్‌ని ఉపయోగించి నిజమైన నోటిఫికేషన్‌ను పంపుతుంది</string>
 	<string name="alerts_notifications_off">నోటిఫికేషన్‌లు ఆఫ్‌లో ఉన్నాయి</string>
 	<string name="alerts_notifications_off_detail">నోటిఫికేషన్‌లను పోస్ట్ చేయడానికి %1$s అనుమతించబడే వరకు హెచ్చరికలు చూపబడవు</string>
@@ -160,7 +160,7 @@
 	<string name="filter_fab">డాష్‌బోర్డ్‌ను ఫిల్టర్ చేయండి</string>
 	<string name="filter_fab_active">ఫిల్టర్: %1$s మాత్రమే చూపుతోంది – మార్చడానికి నొక్కండి</string>
 	<string name="filter_high_moisture">ఆదర్శ పరిధి కంటే తేమ</string>
-	<string name="filter_low_battery">బ్యాటరీ 20% లేదా అంతకంటే తక్కువ</string>
+	<string name="filter_low_battery" formatted="false">బ్యాటరీ 20% లేదా అంతకంటే తక్కువ</string>
 	<string name="filter_low_moisture">ఆదర్శ పరిధిలో తేమ</string>
 	<string name="filter_show_everything">అన్నీ చూపించు</string>
 	<string name="filter_stale">ఇటీవల నివేదించడం లేదు</string>
@@ -204,7 +204,7 @@
 	<string name="home_group_fallback">సమూహం</string>
 	<string name="home_loading">లోడ్ అవుతోంది</string>
 	<string name="home_loading_detail">మీరు సేవ్ చేసిన కాన్ఫిగరేషన్‌ని ఇంకా చదువుతున్నారు</string>
-	<string name="home_low_battery_description">బ్యాటరీ 20% లేదా అంతకంటే తక్కువ</string>
+	<string name="home_low_battery_description" formatted="false">బ్యాటరీ 20% లేదా అంతకంటే తక్కువ</string>
 	<string name="home_moved">‘%1$s’ తరలించబడింది</string>
 	<string name="home_moved_into">‘%1$s’ని ’%2$s’కి తరలించారు</string>
 	<string name="home_moved_to">‘%1$s’ని ’%2$s’కి తరలించారు</string>

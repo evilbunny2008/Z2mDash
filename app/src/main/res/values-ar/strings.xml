@@ -5,7 +5,7 @@
 	<string name="add_group_title">أضف مجموعة</string>
 	<string name="alerts_allow">يسمح</string>
 	<string name="alerts_battery">تنبيهات انخفاض البطارية</string>
-	<string name="alerts_battery_detail">إعلام عندما يبلغ أي جهاز عن مستوى بطارية يبلغ 20% أو أقل</string>
+	<string name="alerts_battery_detail" formatted="false">إعلام عندما يبلغ أي جهاز عن مستوى بطارية يبلغ 20% أو أقل</string>
 	<string name="alerts_battery_test_detail">يطلق إشعارًا حقيقيًا باستخدام نفس المنطق تمامًا مثل تنبيه انخفاض البطارية الحقيقي، بغض النظر عن التبديل أعلاه</string>
 	<string name="alerts_notifications_off">الإخطارات معطلة</string>
 	<string name="alerts_notifications_off_detail">لا يمكن عرض التنبيهات إلا بعد السماح لـ %1$s بنشر الإشعارات</string>
@@ -180,7 +180,7 @@
 	<string name="filter_fab">تصفية لوحة القيادة</string>
 	<string name="filter_fab_active">الفلتر: يظهر %1$s فقط – انقر للتغيير</string>
 	<string name="filter_high_moisture">الرطوبة فوق النطاق المثالي</string>
-	<string name="filter_low_battery">البطارية 20% أو أقل</string>
+	<string name="filter_low_battery" formatted="false">البطارية 20% أو أقل</string>
 	<string name="filter_low_moisture">الرطوبة أقل من النطاق المثالي</string>
 	<string name="filter_show_everything">عرض كل شيء</string>
 	<string name="filter_stale">لم يقدم تقريرا في الآونة الأخيرة</string>
@@ -228,7 +228,7 @@
 	<string name="home_group_fallback">مجموعة</string>
 	<string name="home_loading">تحميل</string>
 	<string name="home_loading_detail">لا تزال تقرأ التكوين المحفوظ الخاص بك</string>
-	<string name="home_low_battery_description">البطارية بنسبة 20% أو أقل</string>
+	<string name="home_low_battery_description" formatted="false">البطارية بنسبة 20% أو أقل</string>
 	<string name="home_moved">تم نقل ‘%1$s’</string>
 	<string name="home_moved_into">تم نقل ‘%1$s’ إلى ‘%2$s’</string>
 	<string name="home_moved_to">تم نقل ‘%1$s’ إلى ‘%2$s’</string>

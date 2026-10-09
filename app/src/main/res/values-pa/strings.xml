@@ -5,7 +5,7 @@
 	<string name="add_group_title">ਗਰੁੱਪ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="alerts_allow">ਇਜਾਜ਼ਤ ਦਿਓ</string>
 	<string name="alerts_battery">ਘੱਟ ਬੈਟਰੀ ਚੇਤਾਵਨੀਆਂ</string>
-	<string name="alerts_battery_detail">ਜਦੋਂ ਕੋਈ ਵੀ ਡਿਵਾਈਸ 20% ਜਾਂ ਇਸ ਤੋਂ ਘੱਟ ਬੈਟਰੀ ਪੱਧਰ ਦੀ ਰਿਪੋਰਟ ਕਰਦੀ ਹੈ ਤਾਂ ਸੂਚਿਤ ਕਰੋ</string>
+	<string name="alerts_battery_detail" formatted="false">ਜਦੋਂ ਕੋਈ ਵੀ ਡਿਵਾਈਸ 20% ਜਾਂ ਇਸ ਤੋਂ ਘੱਟ ਬੈਟਰੀ ਪੱਧਰ ਦੀ ਰਿਪੋਰਟ ਕਰਦੀ ਹੈ ਤਾਂ ਸੂਚਿਤ ਕਰੋ</string>
 	<string name="alerts_battery_test_detail">ਉਪਰੋਕਤ ਟੌਗਲ ਦੀ ਪਰਵਾਹ ਕੀਤੇ ਬਿਨਾਂ, ਇੱਕ ਅਸਲੀ ਘੱਟ ਬੈਟਰੀ ਚੇਤਾਵਨੀ ਦੇ ਤੌਰ ਤੇ ਬਿਲਕੁਲ ਉਸੇ ਤਰਕ ਦੀ ਵਰਤੋਂ ਕਰਦੇ ਹੋਏ ਇੱਕ ਅਸਲ ਸੂਚਨਾ ਫਾਇਰ ਕਰਦਾ ਹੈ</string>
 	<string name="alerts_notifications_off">ਸੂਚਨਾਵਾਂ ਬੰਦ ਹਨ</string>
 	<string name="alerts_notifications_off_detail">ਚੇਤਾਵਨੀਆਂ ਉਦੋਂ ਤੱਕ ਨਹੀਂ ਦਿਖਾਈਆਂ ਜਾ ਸਕਦੀਆਂ ਜਦੋਂ ਤੱਕ %1$s ਨੂੰ ਸੂਚਨਾਵਾਂ ਪੋਸਟ ਕਰਨ ਦੀ ਇਜਾਜ਼ਤ ਨਹੀਂ ਦਿੱਤੀ ਜਾਂਦੀ</string>
@@ -160,7 +160,7 @@
 	<string name="filter_fab">ਡੈਸ਼ਬੋਰਡ ਨੂੰ ਫਿਲਟਰ ਕਰੋ</string>
 	<string name="filter_fab_active">ਫਿਲਟਰ: ਸਿਰਫ਼ %1$s ਦਿਖਾ ਰਿਹਾ ਹੈ – ਬਦਲਣ ਲਈ ਟੈਪ ਕਰੋ</string>
 	<string name="filter_high_moisture">ਨਮੀ ਆਦਰਸ਼ ਰੇਂਜ ਤੋਂ ਵੱਧ</string>
-	<string name="filter_low_battery">ਬੈਟਰੀ 20% ਜਾਂ ਘੱਟ</string>
+	<string name="filter_low_battery" formatted="false">ਬੈਟਰੀ 20% ਜਾਂ ਘੱਟ</string>
 	<string name="filter_low_moisture">ਨਮੀ ਆਦਰਸ਼ ਰੇਂਜ ਤੋਂ ਘੱਟ</string>
 	<string name="filter_show_everything">ਸਭ ਕੁਝ ਦਿਖਾਓ</string>
 	<string name="filter_stale">ਹਾਲ ਹੀ ਵਿੱਚ ਰਿਪੋਰਟ ਨਹੀਂ ਕਰ ਰਿਹਾ</string>
@@ -204,7 +204,7 @@
 	<string name="home_group_fallback">ਸਮੂਹ</string>
 	<string name="home_loading">ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…</string>
 	<string name="home_loading_detail">ਅਜੇ ਵੀ ਤੁਹਾਡੀ ਸੁਰੱਖਿਅਤ ਕੀਤੀ ਸੰਰਚਨਾ ਪੜ੍ਹ ਰਿਹਾ ਹੈ</string>
-	<string name="home_low_battery_description">ਬੈਟਰੀ 20% ਜਾਂ ਘੱਟ ‘ਤੇ</string>
+	<string name="home_low_battery_description" formatted="false">ਬੈਟਰੀ 20% ਜਾਂ ਘੱਟ ‘ਤੇ</string>
 	<string name="home_moved">‘%1$s’ ਲਿਜਾਇਆ ਗਿਆ</string>
 	<string name="home_moved_into">‘%1$s’ ਨੂੰ ‘%2$s’ ਵਿੱਚ ਲਿਜਾਇਆ ਗਿਆ</string>
 	<string name="home_moved_to">‘%1$s’ ਨੂੰ ‘%2$s’ ਵਿੱਚ ਲਿਜਾਇਆ ਗਿਆ</string>

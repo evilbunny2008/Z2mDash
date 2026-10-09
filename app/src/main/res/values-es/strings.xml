@@ -5,7 +5,7 @@
 	<string name="add_group_title">Agregar grupo</string>
 	<string name="alerts_allow">Permitir</string>
 	<string name="alerts_battery">Alertas de batería baja</string>
-	<string name="alerts_battery_detail">Notificar cuando algún dispositivo informe un nivel de batería del 20% o menos</string>
+	<string name="alerts_battery_detail" formatted="false">Notificar cuando algún dispositivo informe un nivel de batería del 20% o menos</string>
 	<string name="alerts_battery_test_detail">Activa una notificación real usando exactamente la misma lógica que una alerta genuina de batería baja, independientemente de la opción anterior</string>
 	<string name="alerts_notifications_off">Las notificaciones están desactivadas</string>
 	<string name="alerts_notifications_off_detail">Las alertas no se pueden mostrar hasta que %1$s tenga permiso para publicar notificaciones</string>
@@ -165,7 +165,7 @@
 	<string name="filter_fab">Filtrar el tablero</string>
 	<string name="filter_fab_active">Filtro: muestra solo %1$s – toca para cambiar</string>
 	<string name="filter_high_moisture">Humedad por encima del rango ideal</string>
-	<string name="filter_low_battery">Batería 20% o menos</string>
+	<string name="filter_low_battery" formatted="false">Batería 20% o menos</string>
 	<string name="filter_low_moisture">Humedad por debajo del rango ideal</string>
 	<string name="filter_show_everything">mostrar todo</string>
 	<string name="filter_stale">No informar recientemente</string>
@@ -210,7 +210,7 @@
 	<string name="home_group_fallback">Grupo</string>
 	<string name="home_loading">Cargando</string>
 	<string name="home_loading_detail">Sigo leyendo tu configuración guardada</string>
-	<string name="home_low_battery_description">Batería al 20% o menos</string>
+	<string name="home_low_battery_description" formatted="false">Batería al 20% o menos</string>
 	<string name="home_moved">Movido ‘%1$s’</string>
 	<string name="home_moved_into">Se movió ‘%1$s’ a ‘%2$s’</string>
 	<string name="home_moved_to">Se movió ‘%1$s’ a ‘%2$s’</string>

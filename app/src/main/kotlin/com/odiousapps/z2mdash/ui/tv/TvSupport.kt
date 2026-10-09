@@ -101,16 +101,12 @@ fun Modifier.horizontalSliderDpadFocusNav(): Modifier = composed {
 fun Modifier.tvLeftEdgeFallbackToRail(railFocusRequester: FocusRequester?): Modifier = composed {
     val focusManager = LocalFocusManager.current
     onKeyEvent { event ->
-        if (event.type != KeyEventType.KeyDown || event.key != Key.DirectionLeft) {
-            false
-        } else if (focusManager.moveFocus(FocusDirection.Left)) {
-            true
-        } else if (railFocusRequester != null) {
+        !(event.type != KeyEventType.KeyDown || event.key != Key.DirectionLeft) && (focusManager.moveFocus(FocusDirection.Left) || if (railFocusRequester != null) {
             railFocusRequester.requestFocus()
             true
         } else {
             false
-        }
+        })
     }
 }
 

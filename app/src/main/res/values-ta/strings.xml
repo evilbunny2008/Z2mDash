@@ -5,7 +5,7 @@
 	<string name="add_group_title">குழுவைச் சேர்க்கவும்</string>
 	<string name="alerts_allow">அனுமதி</string>
 	<string name="alerts_battery">குறைந்த பேட்டரி எச்சரிக்கைகள்</string>
-	<string name="alerts_battery_detail">எந்தவொரு சாதனமும் 20% அல்லது அதற்கும் குறைவான பேட்டரி அளவைப் புகாரளித்தால் தெரிவிக்கவும்</string>
+	<string name="alerts_battery_detail" formatted="false">எந்தவொரு சாதனமும் 20% அல்லது அதற்கும் குறைவான பேட்டரி அளவைப் புகாரளித்தால் தெரிவிக்கவும்</string>
 	<string name="alerts_battery_test_detail">மேலே உள்ள நிலைமாற்றத்தைப் பொருட்படுத்தாமல், உண்மையான குறைந்த பேட்டரி எச்சரிக்கை போன்ற அதே தர்க்கத்தைப் பயன்படுத்தி உண்மையான அறிவிப்பை வெளியிடுகிறது</string>
 	<string name="alerts_notifications_off">அறிவிப்புகள் முடக்கப்பட்டுள்ளன</string>
 	<string name="alerts_notifications_off_detail">அறிவிப்புகளை இடுகையிட %1$s அனுமதிக்கப்படும் வரை விழிப்பூட்டல்களைக் காட்ட முடியாது</string>
@@ -160,7 +160,7 @@
 	<string name="filter_fab">டாஷ்போர்டை வடிகட்டவும்</string>
 	<string name="filter_fab_active">வடிப்பான்: %1$s மட்டுமே காட்டுகிறது – மாற்ற தட்டவும்</string>
 	<string name="filter_high_moisture">உகந்த வரம்பிற்கு மேல் ஈரப்பதம்</string>
-	<string name="filter_low_battery">பேட்டரி 20% அல்லது அதற்கும் குறைவானது</string>
+	<string name="filter_low_battery" formatted="false">பேட்டரி 20% அல்லது அதற்கும் குறைவானது</string>
 	<string name="filter_low_moisture">உகந்த வரம்பிற்குக் கீழே ஈரப்பதம்</string>
 	<string name="filter_show_everything">எல்லாவற்றையும் காட்டு</string>
 	<string name="filter_stale">சமீபத்தில் புகாரளிக்கவில்லை</string>
@@ -204,7 +204,7 @@
 	<string name="home_group_fallback">குழு</string>
 	<string name="home_loading">ஏற்றுகிறது</string>
 	<string name="home_loading_detail">நீங்கள் சேமித்த உள்ளமைவை இன்னும் படிக்கிறேன்</string>
-	<string name="home_low_battery_description">20% அல்லது அதற்கும் குறைவான பேட்டரி</string>
+	<string name="home_low_battery_description" formatted="false">20% அல்லது அதற்கும் குறைவான பேட்டரி</string>
 	<string name="home_moved">‘%1$s’ நகர்த்தப்பட்டது</string>
 	<string name="home_moved_into">‘%1$s’ ஆனது ‘%2$s’ ஆக நகர்த்தப்பட்டது</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’க்கு நகர்த்தப்பட்டது</string>
