@@ -118,7 +118,7 @@
 	<string name="cred_instructions">हे स्कॅन करा, किंवा %2$s उघडा आणि कोड प्रविष्ट करा, त्यानंतर पाठवण्यासाठी जतन केलेला ‘%1$s’ क्रेडेन्शियल निवडा</string>
 	<string name="cred_no_hostname">या प्रीसेटमध्ये होस्टनेम क्षेत्र समाविष्ट नव्हते – कृपया %1$s वर तपासा आणि पुन्हा प्रयत्न करा</string>
 	<string name="cred_qr_description">कोडसाठी QR कोड %1$s</string>
-	<string name="cred_starting">प्रारंभ करत आहे…</string>
+	<string name="cred_starting">प्रारंभ करत आहे… </string>
 	<string name="cred_title">ब्रोकर क्रेडेन्शियल्स आयात करा</string>
 	<string name="cred_unreachable">%1$s ला पोहोचू शकले नाही – तुमच्या कनेक्शनची तपासणी करा आणि पुन्हा प्रयत्न करा</string>
 	<string name="cred_waiting">उचलण्याची प्रतीक्षा करत आहे…</string>
@@ -143,7 +143,7 @@
 		<item quantity="other">स्वयंचलितपणे १ dव्हाइस कॉन्फिगर केले</item>
 	</plurals>
 	<string name="discover_auto_none">अद्याप वैध कॉन्फिग असलेले कोणतेही dव्हाइस तयार नव्हते – कृपया थोड्या वेळाने पुन्हा प्रयत्न करा, किंवा वरील ता정을 वापरा</string>
-	<string name="discover_bad_config">%1$s आढळले पण ते dव्हाइस कॉन्फिगरेशन म्हणून वाचता आले नाही – तपासा की त्यात वैध JSON आहे आणि 'panels' अरे रिकामा नाही</string>
+	<string name="discover_bad_config">%1$s आढळले पण ते dव्हाइस कॉन्फिगरेशन म्हणून वाचता आले नाही – तपासा की त्यात वैध JSON आहे आणि ‘panels‘ अरे रिकामा नाही</string>
 	<string name="discover_field">%1$s (%2$s)</string>
 	<string name="discover_ideal_range">आदर्श श्रेणी</string>
 	<string name="discover_instructions">डॅशबोर्ड टाइल्स म्हणून तुम्हाला आवश्यक असलेले क्षेत्र टिक करा, किंवा डिव्हाइस स्वतःचे &lt;टॉपिक&gt;/app कॉन्फिग प्रकाशित करत असल्यास ‘dव्हाइस कॉन्फिगरेशन लागू करा’ वापरा</string>
@@ -153,10 +153,10 @@
 	<string name="discover_none_found">अद्याप कोणतेही सेन्सर-आकाराचे विषय आढळले नाहीत. सबस्क्राइब केल्यानंतर टिकवून ठेवलेले संदेश पोहोचायला थोडा वेळ लागू शकतो – कृपया वरील ता정을 वापरून प्रयत्न करा, किंवा ब्रोकर खरोखरच त्या विषयांवर संदेश टिकवून ठेवत असल्याची खात्री करा</string>
 	<string name="discover_rescan">पुन्हा स्कॅन करा</string>
 	<string name="discover_sample">उदाहरण: %1$s</string>
-	<string name="plurals_discover_selected">
+	<plurals name="discover_selected">
 		<item quantity="one">%1$d पैकी %2$d निवडले</item>
 		<item quantity="other">%1$d पैकी %2$d निवडले</item>
-	</plurals_discover_selected>
+	</plurals>
 	<string name="discover_target_group">गटमध्ये पॅनेल जोडा</string>
 	<string name="discover_title">सेन्सर्स शोधा</string>
 	<string name="filter_active">सक्रिय</string>
@@ -224,8 +224,8 @@
 	<string name="home_republished">ब्रोकरवर ‘%1$s’ पुन्हा प्रकाशित केले</string>
 	<string name="home_retopic">विषय बदलणे (Retopic)</string>
 	<string name="home_retopic_all">सर्व क्लस्टरंचे विषय बदला</string>
-	<string name="home_retopic_all_detail">या गटातील प्रत्येक क्लस्टर ज्याचा विषय सध्या 'जुना विषय' आहे त्याला एका नवीन विषयात हलवते, एकाच वेळी – उदा. जेव्हा एक Zigbee नेटवर्क दुसऱ्या ब्रिजवर विभाजित केले जाते, तेव्हा हललेल्या प्रत्येक उपकरणासाठी. वेगळ्या विषयावरील क्लस्टर स्पर्श되지.</string>
-	<string name="home_retopic_all_text">या गटातील ज्याचा विषय बरोबर ‘जुना विषय’ आहे, ते सर्व 'नवीन विषय' वर हलवते – या गटातील उर्वरित क्लस्टर तडजोडीशिवाय राहते. हे स्वयंचलितपणे पूर्ववत करता येणार नाही</string>
+	<string name="home_retopic_all_detail">या गटातील प्रत्येक क्लस्टर ज्याचा विषय सध्या ‘जुना विषय‘ आहे त्याला एका नवीन विषयात हलवते, एकाच वेळी – उदा. जेव्हा एक Zigbee नेटवर्क दुसऱ्या ब्रिजवर विभाजित केले जाते, तेव्हा हललेल्या प्रत्येक उपकरणासाठी. वेगळ्या विषयावरील क्लस्टर स्पर्श되지.</string>
+	<string name="home_retopic_all_text">या गटातील ज्याचा विषय बरोबर ‘जुना विषय’ आहे, ते सर्व ‘नवीन विषय‘ वर हलवते – या गटातील उर्वरित क्लस्टर तडजोडीशिवाय राहते. हे स्वयंचलितपणे पूर्ववत करता येणार नाही</string>
 	<string name="home_retopic_all_title">‘%1$s’ मधील सर्व क्लस्टर्सचे विषय बदला?</string>
 	<plurals name="home_retopic_moved">
 		<item quantity="one">१ क्लस्टर ‘%2$s’ वर हलवला</item>
@@ -286,7 +286,7 @@
 	<string name="panel_icon">आयकॉन</string>
 	<string name="panel_ideal_help">सेट केल्यावर, हे टाइल मिनच्या खाली लाल, रेंजमध्ये हिरवा आणि मॅक्सच्या वरील निळा चमकते</string>
 	<string name="panel_ideal_topic">आदर्श श्रेणी विषय (पर्यायी)</string>
-	<string name="panel_ideal_topic_hint">उदा. zigbee2mqtt/SoilSensor_01/ideal – {‘min’:x,‘max’:y} प्रकाशित करते</string>
+	<string name="panel_ideal_topic_hint">उदा. zigbee2mqtt/SoilSensor_01/ideal – {&apos;min&apos;:x,&apos;max&apos;:y} प्रकाशित करते</string>
 	<string name="panel_json_field">JSON क्षेत्र (रिक्त = कच्चा पेलोड)</string>
 	<string name="panel_json_field_hint">उदा. temperature किंवा state.battery</string>
 	<string name="panel_label">लेबल</string>
@@ -299,7 +299,7 @@
 	<string name="panel_order">दर्शविण्याचा क्रम (पर्यायी)</string>
 	<string name="panel_order_hint">संख्या लहान असलेली प्रथम गटमध्ये दिसतात</string>
 	<string name="panel_payload">पेलोड</string>
-	<string name="panel_payload_hint">उदा. {‘state’: ‘STOP’} किंवा STOP सारखे साधा मूल्य</string>
+	<string name="panel_payload_hint">उदा. {&apos;state&apos;: &apos;STOP&apos;} किंवा STOP सारखे साधा मूल्य</string>
 	<string name="panel_state_field">स्टेट JSON क्षेत्र (पर्यायी)</string>
 	<string name="panel_state_field_hint">उदा. state</string>
 	<string name="panel_state_topic">स्टेट विषय (पर्यायी)</string>
@@ -322,7 +322,7 @@
 	<string name="permit_join_subtitle">%1$s · %2$s</string>
 	<string name="permit_join_title">सहभागी होण्याची परवानगी (Permit Join)</string>
 	<string name="permit_join_via">कधी कधी सामील होण्यासाठी मार्ग (पर्यायी)</string>
-	<string name="permit_join_via_help">विस्तार करण्यासाठी विशिष्ट राउटरचे सोपे नाव, किंवा केवळ समन्वयकासाठी 'Coordinator'. प्रत्येक राउटर आणि समन्वयकद्वारे एकाच वेळी प्रवेश करण्याची परवानगी देण्यासाठी रिकामा सोडा</string>
+	<string name="permit_join_via_help">विस्तार करण्यासाठी विशिष्ट राउटरचे सोपे नाव, किंवा केवळ समन्वयकासाठी ‘Coordinator‘. प्रत्येक राउटर आणि समन्वयकद्वारे एकाच वेळी प्रवेश करण्याची परवानगी देण्यासाठी रिकामा सोडा</string>
 	<string name="permit_join_via_hint">रिक्त = संपूर्ण नेटवर्क</string>
 	<string name="protocol_ssl">SSL – सुरक्षित सॉकेट्स थर (Secure Sockets Layer)</string>
 	<string name="protocol_tcp">TCP – ट्रान्समिशन कंट्रोल प्रोटोकॉल (Transmission Control Protocol)</string>
@@ -356,7 +356,10 @@
 		<item quantity="one">हे अशा ब्रोकरशी टॅग केलेले %1$d पॅनेल काढून टाकते जे आता अस्तित्वात नाही – बहुतेक वेळा ब्रोकर हटवून आणि पुन्हा जोडून मागे सोडले जाते. तुम्ही खरोखर कॉन्फिगर केलेल्या ब्रोकरशी जोडलेले पॅनेल कधीही स्पर्श केले जात नाहीत</item>
 		<item quantity="other">हे अशा ब्रोकरशी टॅग केलेले %1$d पॅनेल काढून टाकते जे आता अस्तित्वात नाही – बहुतेक वेळा ब्रोकर हटवून आणि पुन्हा जोडून मागे सोडले जाते. तुम्ही खरोखर कॉन्फिगर केलेल्या ब्रोकरशी जोडलेले पॅनेल कधीही स्पर्श केले जात नाहीत</item>
 	</plurals>
-	<string name="settings_orphans_detail">ब्रोकर हटवल्यामुळे उरलेले %1$d पॅनेल काढले जाऊ शकतात</string>
+	<plurals name="settings_orphans_detail">
+		<item quantity="one">%1$d पॅनेल एका हटवलेल्या ब्रोकरकडून उरलेले काढले जाऊ शकते</item>
+		<item quantity="other">%1$d पॅनेल एका हटवलेल्या ब्रोकरकडून उरलेले काढले जाऊ शकतात</item>
+	</plurals>
 	<plurals name="settings_orphans_removed">
 		<item quantity="one">%1$d पॅनेल काढून टाकले</item>
 		<item quantity="other">%1$d पॅनेल काढून टाकले</item>
