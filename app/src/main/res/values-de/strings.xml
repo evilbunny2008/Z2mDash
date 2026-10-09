@@ -5,7 +5,7 @@
 	<string name="add_group_title">Gruppe hinzufügen</string>
 	<string name="alerts_allow">Erlauben</string>
 	<string name="alerts_battery">Warnungen bei niedrigem Batteriestand</string>
-	<string name="alerts_battery_detail">Benachrichtigen Sie, wenn ein Gerät einen Akkustand von 20 % oder weniger meldet</string>
+	<string name="alerts_battery_detail">Benachrichtigen Sie, wenn ein Gerät einen Akkustand von 20% oder weniger meldet</string>
 	<string name="alerts_battery_test_detail">Löst eine echte Benachrichtigung aus, die genau die gleiche Logik wie eine echte Warnung bei niedrigem Batteriestand verwendet, unabhängig von der oben genannten Option</string>
 	<string name="alerts_notifications_off">Benachrichtigungen sind deaktiviert</string>
 	<string name="alerts_notifications_off_detail">Benachrichtigungen können erst angezeigt werden, wenn %1$s berechtigt ist, Benachrichtigungen zu posten</string>
@@ -160,7 +160,7 @@
 	<string name="filter_fab">Filtern Sie das Dashboard</string>
 	<string name="filter_fab_active">Filter: Es werden nur %1$s angezeigt – zum Ändern tippen</string>
 	<string name="filter_high_moisture">Feuchtigkeit über dem Idealbereich</string>
-	<string name="filter_low_battery">Batterie 20 % oder weniger</string>
+	<string name="filter_low_battery">Batterie 20% oder weniger</string>
 	<string name="filter_low_moisture">Feuchtigkeit unterhalb des Idealbereichs</string>
 	<string name="filter_show_everything">Alles anzeigen</string>
 	<string name="filter_stale">Ich melde mich in letzter Zeit nicht</string>

@@ -5,7 +5,7 @@
 	<string name="add_group_title">Добавить группу</string>
 	<string name="alerts_allow">Позволять</string>
 	<string name="alerts_battery">Оповещения о низком заряде батареи</string>
-	<string name="alerts_battery_detail">Уведомлять, когда какое–либо устройство сообщает об уровне заряда батареи 20 % или ниже</string>
+	<string name="alerts_battery_detail">Уведомлять, когда какое–либо устройство сообщает об уровне заряда батареи 20% или ниже</string>
 	<string name="alerts_battery_test_detail">Выдает настоящее уведомление, используя ту же логику, что и при подлинном оповещении о низком заряде батареи, независимо от переключателя выше</string>
 	<string name="alerts_notifications_off">Уведомления отключены</string>
 	<string name="alerts_notifications_off_detail">Оповещения не могут отображаться до тех пор, пока %1$s не разрешит публиковать уведомления</string>

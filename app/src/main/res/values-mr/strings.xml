@@ -5,13 +5,13 @@
 	<string name="add_group_title">गट जोडा</string>
 	<string name="alerts_allow">परवानगी द्या</string>
 	<string name="alerts_battery">कमी बॅटरी सूचना</string>
-	<string name="alerts_battery_detail">जेव्हा कोणतेही dव्हाइस २०% किंवा त्यापेक्षा कमी बॅटरी पातळी नोंदवते तेव्हा सूचित करा</string>
+	<string name="alerts_battery_detail">जेव्हा कोणतेही डिव्हाइस 20% किंवा त्यापेक्षा कमी बॅटरी पातळी नोंदवते तेव्हा सूचित करा</string>
 	<string name="alerts_battery_test_detail">वरील टॉगलची पर्वा न करता, वास्तविक कमी बॅटरी अलर्ट सारखेच तर्क वापरून खरी सूचना देते</string>
 	<string name="alerts_notifications_off">सूचना बंद आहेत</string>
 	<string name="alerts_notifications_off_detail">जोपर्यंत %1$s ला सूचना पोस्ट करण्याची परवानगी मिळत नाही तोपर्यंत सूचना दाखवल्या जाऊ शकत नाहीत</string>
 	<string name="alerts_open_settings">सेटिंग्ज</string>
 	<string name="alerts_smoke">स्मोक अलर्ट</string>
-	<string name="alerts_smoke_detail">कोणत्याही dव्हाइसला धूर आढळल्यास सूचित करा</string>
+	<string name="alerts_smoke_detail">कोणत्याही डिव्हाइसला धूर आढळल्यास सूचित करा</string>
 	<string name="alerts_smoke_test_detail">वास्तविक स्मोक अलर्ट सारखेच तर्क वापरून खरी सूचना (वर सक्षम असल्यास ध्वनीसह) देते – आपल्याला ती आवश्यक होण्यापूर्वीच लक्ष वेधून घेण्यासाठी चांगला मार्ग आहे</string>
 	<string name="alerts_sound">अलर्ट ध्वनी</string>
 	<string name="alerts_sound_detail">सूचनासोबत मोठा अलार्म-शैलीचा आवाज वाजवा</string>
@@ -49,21 +49,21 @@
 	<string name="backup_unlock">अनलॉक करा</string>
 	<string name="backup_wrong_password">चुकीचा पासवर्ड, किंवा फाईल दूषित आहे</string>
 	<string name="battery_channel">कमी बॅटरी अलर्ट</string>
-	<string name="battery_channel_desc">dव्हाइसचे बॅटरी वाचन कमी झाल्यावर सूचना</string>
+	<string name="battery_channel_desc">डिव्हाइसचे बॅटरी वाचन कमी झाल्यावर सूचना</string>
 	<string name="battery_notif_test_text">हे एक कमी बॅटरी नोटिफिकेशन कसे दिसेल</string>
 	<string name="battery_notif_text">बॅटरी कमी होत आहे – %1$s उघडण्यासाठी टॅप करा</string>
 	<string name="battery_notif_text_percent">बॅटरी %1$d%% वर – %2$s उघडण्यासाठी टॅप करा</string>
 	<string name="battery_notif_title">%1$s बॅटरी कमी आहे</string>
 	<string name="battery_notif_title_percent">%1$s बॅटरी कमी आहे (%2$d%%)</string>
-	<string name="battery_test_device">चाचणी dव्हाइस</string>
+	<string name="battery_test_device">चाचणी डिव्हाइस</string>
 	<string name="broker_add_title">ब्रोकर जोडा</string>
 	<string name="broker_additional">अतिरिक्त पॅरामीटर्स</string>
 	<string name="broker_auth">प्रमाणीकरण</string>
-	<string name="broker_auto_accept">शोधलेले dव्हाइस आपोआप स्वीकारा</string>
-	<string name="broker_auto_accept_detail">नवीन आढळलेल्या dव्हाइसच्या गट/क्लस्टर/पॅनेलमध्ये त्वरित जोडा, प्रत्येकासाठी स्वीकारण्याची सूचना देण्याऐवजी</string>
+	<string name="broker_auto_accept">शोधलेले डिव्हाइस आपोआप स्वीकारा</string>
+	<string name="broker_auto_accept_detail">नवीन आढळलेल्या डिव्हाइसच्या गट/क्लस्टर/पॅनेलमध्ये त्वरित जोडा, प्रत्येकासाठी स्वीकारण्याची सूचना देण्याऐवजी</string>
 	<string name="broker_auto_connect">स्वयंचलितपणे कनेक्ट करा</string>
 	<string name="broker_base_topic">मूळ विषय</string>
-	<string name="broker_base_topic_help">ॲप ब्रोकरवरील प्रत्येक विषयाऐवजी dव्हाइस आणि त्यांच्या /app कॉन्फिगसाठी ‘&lt;बेस विषय&gt;/#’ पाहते. याच ब्रोकरवर एकापेक्षा जास्त Zigbee2MQTT नेमस्पेस पाहण्यासाठी स्वल्पविरामाने वेगळी केलेली सूची (उदा. ‘zigbee2mqtt, zigbee2mqtt2’) प्रविष्ट करा – प्रत्येक विषयाला खाली स्वतःचे परमिट जॉईन टॉगल मिळेल</string>
+	<string name="broker_base_topic_help">ॲप ब्रोकरवरील प्रत्येक विषयाऐवजी डिव्हाइस आणि त्यांच्या /app कॉन्फिगसाठी ‘&lt;बेस विषय&gt;/#’ पाहते. याच ब्रोकरवर एकापेक्षा जास्त Zigbee2MQTT नेमस्पेस पाहण्यासाठी स्वल्पविरामाने वेगळी केलेली सूची (उदा. ‘zigbee2mqtt, zigbee2mqtt2’) प्रविष्ट करा – प्रत्येक विषयाला खाली स्वतःचे परमिट जॉईन टॉगल मिळेल</string>
 	<string name="broker_cert_selected">प्रमाणपत्र निवडले ✓</string>
 	<string name="broker_clean_session">स्वच्छ सत्र</string>
 	<string name="broker_clean_session_detail">प्रत्येक कनेक्शनवर नवीन सत्र सुरू करा (संदेश टिकवले जात नाहीत)</string>
@@ -94,7 +94,7 @@
 	<string name="brokers_add">ब्रोकर जोडा</string>
 	<string name="brokers_discover">%1$s वर सेन्सर्स शोधा</string>
 	<string name="brokers_reconnect">%1$s शी पुन्हा कनेक्ट करा</string>
-	<string name="brokers_summary">ब्रोकर: %1$d · %2$s · %3$s · %4$s</string>
+	<string name="brokers_summary">ब्रोकर: %1$s:%2$d · %3$s · %4$s</string>
 	<string name="brokers_title">ब्रोकर</string>
 	<string name="common_add">जोडा</string>
 	<string name="common_back">मागे</string>
@@ -123,34 +123,34 @@
 	<string name="cred_unreachable">%1$s ला पोहोचू शकले नाही – तुमच्या कनेक्शनची तपासणी करा आणि पुन्हा प्रयत्न करा</string>
 	<string name="cred_waiting">उचलण्याची प्रतीक्षा करत आहे…</string>
 	<plurals name="discover_add_panels">
-		<item quantity="one">१ पॅनेल जोडा</item>
-		<item quantity="other">१ पॅनेल जोडा</item>
+		<item quantity="one">%1$d पॅनेल जोडा</item>
+		<item quantity="other">%1$d पॅनेल जोडा</item>
 	</plurals>
-	<string name="discover_all_applied">सर्व आढळलेले dव्हाइस लागू केले गेले आहेत – येथे कॉन्फिगर करण्यासाठी काहीही उरले नाही</string>
-	<string name="discover_apply">dव्हाइस कॉन्फिग लागू करा</string>
+	<string name="discover_all_applied">सर्व आढळलेले डिव्हाइस लागू केले गेले आहेत – येथे कॉन्फिगर करण्यासाठी काहीही उरले नाही</string>
+	<string name="discover_apply">डिव्हाइस कॉन्फिग लागू करा</string>
 	<plurals name="discover_apply_detail_group">
-		<item quantity="one">खालील चेकबॉक्सेस वगळून, गट ‘%3$s’ मध्ये %2$s मध्ये सूचीबद्ध केल्याप्रमाणे १ पॅनेल तयार करते</item>
-		<item quantity="other">खालील चेकबॉक्सेस वगळून, गट ‘%3$s’ मध्ये %2$s मध्ये सूचीबद्ध केल्याप्रमाणे १ पॅनेल तयार करते</item>
+		<item quantity="one">खालील चेकबॉक्सेस वगळून, गट ‘%3$s’ मध्ये %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
+		<item quantity="other">खालील चेकबॉक्सेस वगळून, गट ‘%3$s’ मध्ये %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
 	</plurals>
-	<string name="discover_apply_named">dव्हाइस कॉन्फिग लागू करा: %1$s</string>
+	<string name="discover_apply_named">डिव्हाइस कॉन्फिग लागू करा: %1$s</string>
 	<plurals name="discover_apply_detail">
-		<item quantity="one">खालील चेकबॉक्सेस वगळून, %2$s मध्ये सूचीबद्ध केल्याप्रमाणे १ पॅनेल तयार करते</item>
-		<item quantity="other">खालील चेकबॉक्सेस वगळून, %2$s मध्ये सूचीबद्ध केल्याप्रमाणे १ पॅनेल तयार करते</item>
+		<item quantity="one">खालील चेकबॉक्सेस वगळून, %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
+		<item quantity="other">खालील चेकबॉक्सेस वगळून, %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>
 	</plurals>
-	<string name="discover_auto_all">शोधलेले सर्व dव्हाइस आपोआप कॉन्फिगर करा</string>
+	<string name="discover_auto_all">शोधलेले सर्व डिव्हाइस आपोआप कॉन्फिगर करा</string>
 	<plurals name="discover_auto_done">
-		<item quantity="one">स्वयंचलितपणे १ dव्हाइस कॉन्फिगर केले</item>
-		<item quantity="other">स्वयंचलितपणे १ dव्हाइस कॉन्फिगर केले</item>
+		<item quantity="one">स्वयंचलितपणे %1$d डिव्हाइस कॉन्फिगर केले</item>
+		<item quantity="other">स्वयंचलितपणे %1$d डिव्हाइस कॉन्फिगर केले</item>
 	</plurals>
-	<string name="discover_auto_none">अद्याप वैध कॉन्फिग असलेले कोणतेही dव्हाइस तयार नव्हते – कृपया थोड्या वेळाने पुन्हा प्रयत्न करा, किंवा वरील ता정을 वापरा</string>
-	<string name="discover_bad_config">%1$s आढळले पण ते dव्हाइस कॉन्फिगरेशन म्हणून वाचता आले नाही – तपासा की त्यात वैध JSON आहे आणि ‘panels‘ अरे रिकामा नाही</string>
+	<string name="discover_auto_none">अद्याप वैध कॉन्फिग असलेले कोणतेही डिव्हाइस तयार नव्हते – कृपया थोड्या वेळाने पुन्हा प्रयत्न करा, किंवा वरील रिफ्रेश आयकॉन वापरा</string>
+	<string name="discover_bad_config">%1$s आढळले पण ते डिव्हाइस कॉन्फिगरेशन म्हणून वाचता आले नाही – तपासा की त्यात वैध JSON आहे आणि ‘panels‘ अरे रिकामा नाही</string>
 	<string name="discover_field">%1$s (%2$s)</string>
 	<string name="discover_ideal_range">आदर्श श्रेणी</string>
-	<string name="discover_instructions">डॅशबोर्ड टाइल्स म्हणून तुम्हाला आवश्यक असलेले क्षेत्र टिक करा, किंवा डिव्हाइस स्वतःचे &lt;टॉपिक&gt;/app कॉन्फिग प्रकाशित करत असल्यास ‘dव्हाइस कॉन्फिगरेशन लागू करा’ वापरा</string>
+	<string name="discover_instructions">डॅशबोर्ड टाइल्स म्हणून तुम्हाला आवश्यक असलेले क्षेत्र टिक करा, किंवा डिव्हाइस स्वतःचे &lt;टॉपिक&gt;/app कॉन्फिग प्रकाशित करत असल्यास ‘डिव्हाइस कॉन्फिगरेशन लागू करा’ वापरा</string>
 	<string name="discover_new_group">+ नवीन गट</string>
 	<string name="discover_new_group_name">नवीन गटाचे नाव</string>
 	<string name="discover_no_broker">सेन्सर्स शोधण्यापूर्वी कृपया एक ब्रोकर जोडा (सेटिंग्ज → ब्रोकर)</string>
-	<string name="discover_none_found">अद्याप कोणतेही सेन्सर-आकाराचे विषय आढळले नाहीत. सबस्क्राइब केल्यानंतर टिकवून ठेवलेले संदेश पोहोचायला थोडा वेळ लागू शकतो – कृपया वरील ता정을 वापरून प्रयत्न करा, किंवा ब्रोकर खरोखरच त्या विषयांवर संदेश टिकवून ठेवत असल्याची खात्री करा</string>
+	<string name="discover_none_found">अद्याप कोणतेही सेन्सर-आकाराचे विषय आढळले नाहीत. सबस्क्राइब केल्यानंतर टिकवून ठेवलेले संदेश पोहोचायला थोडा वेळ लागू शकतो – कृपया वरील रिफ्रेश आयकॉन वापरून प्रयत्न करा, किंवा ब्रोकर खरोखरच त्या विषयांवर संदेश टिकवून ठेवत असल्याची खात्री करा</string>
 	<string name="discover_rescan">पुन्हा स्कॅन करा</string>
 	<string name="discover_sample">उदाहरण: %1$s</string>
 	<plurals name="discover_selected">
@@ -163,7 +163,7 @@
 	<string name="filter_fab">डॅशबोर्ड फिल्टर करा</string>
 	<string name="filter_fab_active">फिल्टर: केवळ %1$s दर्शविले जात आहे – बदलण्यासाठी टॅप करा</string>
 	<string name="filter_high_moisture">आदर्श श्रेणीपेक्षा जास्त आर्द्रता</string>
-	<string name="filter_low_battery">बॅटरी २०% किंवा त्याखाली</string>
+	<string name="filter_low_battery">बॅटरी 20% किंवा त्याखाली</string>
 	<string name="filter_low_moisture">आदर्श श्रेणीपेक्षा कमी आर्द्रता</string>
 	<string name="filter_show_everything">सर्व काही दाखवा</string>
 	<string name="filter_stale">अलीकडे रिपोर्ट केले नाही</string>
@@ -174,9 +174,9 @@
 	<string name="home_add_tile_to">टाइल %1$s मध्ये जोडा</string>
 	<string name="home_age">• %1$s</string>
 	<string name="home_another_group">दुसरा गट</string>
-	<string name="home_change_topic_broad_warning">या क्लस्टरचे पॅनेल सर्व एकाच स्वच्छ dव्हाइस विषयाला सामायिक करत नाहीत, फक्त तो आधारभूत नेमस्पेस आहे – हे कदाचित वास्तविक उपकरणाऐवजी काही जुळणारे पॅनेल असू शकते. याला हलवल्याने केवळ ती सामायिक भाग बदलेल, त्यामुळे तुम्हाला तसा अपेक्षित परिणाम दिसू शकत नाही. आधी हे क्लस्टरचे पॅनेल वैयक्तिकरित्या तपासणे योग्य आहे</string>
+	<string name="home_change_topic_broad_warning">या क्लस्टरचे पॅनेल सर्व एकाच स्वच्छ डिव्हाइस विषयाला सामायिक करत नाहीत, फक्त तो आधारभूत नेमस्पेस आहे – हे कदाचित वास्तविक उपकरणाऐवजी काही जुळणारे पॅनेल असू शकते. याला हलवल्याने केवळ ती सामायिक भाग बदलेल, त्यामुळे तुम्हाला तसा अपेक्षित परिणाम दिसू शकत नाही. आधी हे क्लस्टरचे पॅनेल वैयक्तिकरित्या तपासणे योग्य आहे</string>
 	<string name="home_change_topic_cluster">विषयासाठी %1$s बदला</string>
-	<string name="home_change_topic_text">हे या गटातील प्रत्येक पॅनेल एका नवीन MQTT विषयावर हलवते – उदा. जेव्हा एक Zigbee नेटवर्क दुसऱ्या ब्रिजवर विभाजित केले जाते, तेव्हा केवळ खरोखरच हललेल्या dव्हाइससाठी. इतर क्लस्टर स्पर्श되지.</string>
+	<string name="home_change_topic_text">हे या गटातील प्रत्येक पॅनेल एका नवीन MQTT विषयावर हलवते – उदा. जेव्हा एक Zigbee नेटवर्क दुसऱ्या ब्रिजवर विभाजित केले जाते, तेव्हा केवळ खरोखरच हललेल्या डिव्हाइससाठी. इतर क्लस्टर स्पर्श केले जात नाहीत.</string>
 	<string name="home_change_topic_title">‘%1$s’ साठी विषय बदला?</string>
 	<string name="home_cluster_copy">%1$s ची प्रत</string>
 	<string name="home_cluster_copy_n">%1$s ची प्रत %2$d</string>
@@ -186,15 +186,15 @@
 	<string name="home_current_topic">सध्याचा विषय: %1$s</string>
 	<string name="home_delete_cluster">%1$s हटवा</string>
 	<plurals name="home_delete_cluster_text">
-		<item quantity="one">हे या dव्हाइससाठी %1$d पॅनेल काढून टाकते</item>
-		<item quantity="other">हे या dव्हाइससाठी सर्व %1$d पॅनेल काढून टाकते</item>
+		<item quantity="one">हे या डिव्हाइससाठी %1$d पॅनेल काढून टाकते</item>
+		<item quantity="other">हे या डिव्हाइससाठी सर्व %1$d पॅनेल काढून टाकते</item>
 	</plurals>
 	<string name="home_delete_cluster_title">‘%1$s’ हटवायचा का?</string>
 	<string name="home_delete_group_named">गट %1$s हटवा</string>
 	<string name="home_delete_group_text">हे गट आणि त्यातील प्रत्येक पॅनेल काढून टाकते</string>
 	<string name="home_delete_group_title">गट हटवायचा का?</string>
 	<string name="home_duplicate">डुप्लिकेट करा</string>
-	<string name="home_duplicate_broad_warning">या क्लस्टरचे पॅनेल सर्व एकाच स्वच्छ dव्हाइस विषयाला सामायिक करत नाहीत (केवळ ‘%1$s’ मध्ये सामान्य) – हे कदाचित वास्तविक उपकरणाऐवजी काही जुळणारे पॅनेल असू शकते. खालील विषय केवळ तो सामायिक भाग बदलते, त्यामुळे तुम्हाला तसा अपेक्षित परिणाम दिसू शकत नाही. आधी या क्लस्टरचे पॅनेल वैयक्तिकरित्या तपासणे योग्य आहे</string>
+	<string name="home_duplicate_broad_warning">या क्लस्टरचे पॅनेल सर्व एकाच स्वच्छ डिव्हाइस विषयाला सामायिक करत नाहीत (केवळ ‘%1$s’ मध्ये सामान्य) – हे कदाचित वास्तविक उपकरणाऐवजी काही जुळणारे पॅनेल असू शकते. खालील विषय केवळ तो सामायिक भाग बदलते, त्यामुळे तुम्हाला तसा अपेक्षित परिणाम दिसू शकत नाही. आधी या क्लस्टरचे पॅनेल वैयक्तिकरित्या तपासणे योग्य आहे</string>
 	<string name="home_duplicate_cluster">डुप्लिकेट %1$s</string>
 	<string name="home_duplicate_title">‘%1$s’ चे डुप्लिकेट करा?</string>
 	<string name="home_edit_group">गट संपादित करा</string>
@@ -203,7 +203,7 @@
 	<string name="home_expand_group">%1$s विस्तृत करा</string>
 	<string name="home_force_upload_copy">नवीन प्रत आपोआप अपलोड करा</string>
 	<string name="home_force_upload_copy_detail">या फोनच्या सध्याच्या सेटिंग्जमधून या गटातील प्रत्येक क्लस्टरचे पुनर्रचना आणि पुनर्प्रकाशन करते, ब्रोकरवर असलेल्या कोणत्याही गोष्टीवर ओव्हरराईट करते – जर दुसरा फोन किंवा ब्रोकर समस्येमुळे काही सिंकमध्ये नसेल तर याचा वापर करा</string>
-	<string name="home_force_upload_text">हे या गटातील प्रत्येक क्लस्टरसाठी ब्रोकरवरील जतन केलेले dव्हाइस कॉन्फिग नवीन प्रतीसह ओव्हरराईट करते जे या फोनच्या सध्याच्या सेटिंग्जमधून तयार केले गेले आहे. ब्रोकरवर असलेले कोणतेही भिन्न कॉन्फिग (उदा. दुसऱ्या फोनकडून) बदलले जातील, विलीन होणार नाहीत. हे स्वयंचलितपणे पूर्ववत करता येणार नाही</string>
+	<string name="home_force_upload_text">हे या गटातील प्रत्येक क्लस्टरसाठी ब्रोकरवरील जतन केलेले डिव्हाइस कॉन्फिग नवीन प्रतीसह ओव्हरराईट करते जे या फोनच्या सध्याच्या सेटिंग्जमधून तयार केले गेले आहे. ब्रोकरवर असलेले कोणतेही भिन्न कॉन्फिग (उदा. दुसऱ्या फोनकडून) बदलले जातील, विलीन होणार नाहीत. हे स्वयंचलितपणे पूर्ववत करता येणार नाही</string>
 	<string name="home_force_upload_title">‘%1$s’ आपोआप अपलोड करायचा का?</string>
 	<string name="home_group_fallback">गट</string>
 	<string name="home_loading">लोड करत आहे…</string>
@@ -224,12 +224,12 @@
 	<string name="home_republished">ब्रोकरवर ‘%1$s’ पुन्हा प्रकाशित केले</string>
 	<string name="home_retopic">विषय बदलणे (Retopic)</string>
 	<string name="home_retopic_all">सर्व क्लस्टरंचे विषय बदला</string>
-	<string name="home_retopic_all_detail">या गटातील प्रत्येक क्लस्टर ज्याचा विषय सध्या ‘जुना विषय‘ आहे त्याला एका नवीन विषयात हलवते, एकाच वेळी – उदा. जेव्हा एक Zigbee नेटवर्क दुसऱ्या ब्रिजवर विभाजित केले जाते, तेव्हा हललेल्या प्रत्येक उपकरणासाठी. वेगळ्या विषयावरील क्लस्टर स्पर्श되지.</string>
+	<string name="home_retopic_all_detail">या गटातील प्रत्येक क्लस्टर ज्याचा विषय सध्या ‘जुना विषय‘ आहे त्याला एका नवीन विषयात हलवते, एकाच वेळी – उदा. जेव्हा एक Zigbee नेटवर्क दुसऱ्या ब्रिजवर विभाजित केले जाते, तेव्हा हललेल्या प्रत्येक उपकरणासाठी. वेगळ्या विषयावरील क्लस्टर स्पर्श केले जात नाहीत.</string>
 	<string name="home_retopic_all_text">या गटातील ज्याचा विषय बरोबर ‘जुना विषय’ आहे, ते सर्व ‘नवीन विषय‘ वर हलवते – या गटातील उर्वरित क्लस्टर तडजोडीशिवाय राहते. हे स्वयंचलितपणे पूर्ववत करता येणार नाही</string>
 	<string name="home_retopic_all_title">‘%1$s’ मधील सर्व क्लस्टर्सचे विषय बदला?</string>
 	<plurals name="home_retopic_moved">
-		<item quantity="one">१ क्लस्टर ‘%2$s’ वर हलवला</item>
-		<item quantity="other">१ क्लस्टर ‘%2$s’ वर हलवले</item>
+		<item quantity="one">%1$d क्लस्टर ‘%2$s’ वर हलवला</item>
+		<item quantity="other">%1$d क्लस्टर ‘%2$s’ वर हलवले</item>
 	</plurals>
 	<string name="home_retopic_none">‘%1$s’ मधील कोणतेही क्लस्टर त्या विषयावर नव्हते</string>
 	<string name="home_search_clusters">क्लस्टर शोधा</string>
@@ -249,8 +249,8 @@
 	<string name="mqtt_backup_prefix">बॅकअप विषय उपसर्ग</string>
 	<string name="mqtt_backup_publish">बॅकअप प्रकाशित करा</string>
 	<plurals name="mqtt_backup_published">
-		<item quantity="one">(१ {1} बाइट) %2$s वर प्रकाशित केले</item>
-		<item quantity="other">(१ {1} बाइट्स) %2$s वर प्रकाशित केले</item>
+		<item quantity="one">(%1$d बाइट) %2$s वर प्रकाशित केले</item>
+		<item quantity="other">(%1$d बाइट्स) %2$s वर प्रकाशित केले</item>
 	</plurals>
 	<string name="mqtt_backup_title">MQTT द्वारे बॅकअप / पुनर्संचयित करा</string>
 	<string name="mqtt_restore_done">%1$s मधून यशस्वीरीत्या पुनर्संचयित केले</string>
@@ -261,9 +261,9 @@
 	<string name="mqtt_restore_restoring">पुनर्संचयित करत आहे…</string>
 	<string name="mqtt_restore_scan">बॅकअप शोधा</string>
 	<string name="mqtt_restore_scan_hint">या ब्रोकरवर जतन केलेल्या बॅकअप्स शोधण्यासाठी ‘बॅकअप शोधा’ वर टॅप करा</string>
-	<string name="new_device_channel">नवीन dव्हाइस आढळले</string>
+	<string name="new_device_channel">नवीन डिव्हाइस आढळले</string>
 	<string name="new_device_text">%1$s ने स्वतःचे डॅशबोर्ड कॉन्फिग प्रकाशित केले – ते जोडण्यासाठी %2$s उघडा</string>
-	<string name="new_device_title">नवीन dव्हाइस आढळले</string>
+	<string name="new_device_title">नवीन डिव्हाइस आढळले</string>
 	<string name="no_file_picker">या डिव्हाइसवर कोणतेही फाईल पिकर ॲप उपलब्ध नाही</string>
 	<string name="notif_channel_mqtt_connection">MQTT कनेक्शन</string>
 	<string name="notif_mqtt_connection_text">ब्रोकर कनेक्शन कायम ठेवणे</string>
@@ -292,7 +292,7 @@
 	<string name="panel_label">लेबल</string>
 	<string name="panel_max_field">जास्तीत जास्त क्षेत्र नाव</string>
 	<string name="panel_min_field">किमान क्षेत्र नाव</string>
-	<string name="panel_min_max_help">केवळ विषय साधे ‘मिन’/‘मॅक्स’ की वापरत नाही तर आवश्यक – उदा. सामायिक dव्हाइस कॉन्फिग विषयासाठी हे ‘moisture_min’/‘moisture_max’ वर सेट करा</string>
+	<string name="panel_min_max_help">केवळ विषय साधे ‘मिन’/‘मॅक्स’ की वापरत नाही तर आवश्यक – उदा. सामायिक डिव्हाइस कॉन्फिग विषयासाठी हे ‘moisture_min’/‘moisture_max’ वर सेट करा</string>
 	<string name="panel_no_broker">पॅनेल तयार करण्यापूर्वी कृपया एक ब्रोकर जोडा (सेटिंग्ज → ब्रोकर)</string>
 	<string name="panel_off_payload">बंद पेलोड</string>
 	<string name="panel_on_payload">चालू पेलोड</string>
@@ -313,10 +313,10 @@
 	<string name="panel_unit">एकक (Optional)</string>
 	<string name="pending_device_text">‘%1$s’ (%2$s) ने स्वतःचे डॅशबोर्ड कॉन्फिग प्रकाशित केले</string>
 	<string name="pending_ignore">दुर्लक्ष करा</string>
-	<string name="permit_join_allow">काही मिनिटांसाठी नवीन Zigbee dव्हाइसना सामील होऊ द्या</string>
+	<string name="permit_join_allow">काही मिनिटांसाठी नवीन Zigbee डिव्हाइसना सामील होऊ द्या</string>
 	<string name="permit_join_dialog_no_brokers">ब्रोकर कॉन्फिगर केले नाही</string>
 	<string name="permit_join_no_brokers">ब्रोकर कॉन्फिगर केले नाही</string>
-	<string name="permit_join_off">बंद – नवीन Zigbee dव्हाइसना सामील होऊ देता येणार नाही</string>
+	<string name="permit_join_off">बंद – नवीन Zigbee डिव्हाइसना सामील होऊ देता येणार नाही</string>
 	<string name="permit_join_open">अधिक %1$s साठी उघडा</string>
 	<string name="permit_join_open_via">%2$s द्वारे अधिक %1$s साठी उघडा</string>
 	<string name="permit_join_subtitle">%1$s · %2$s</string>
@@ -342,12 +342,12 @@
 		<item quantity="other">%1$d कॉन्फिगर केले</item>
 	</plurals>
 	<string name="settings_force_upload_all">सर्व गट आपोआप अपलोड करा</string>
-	<string name="settings_force_upload_all_confirm">हे प्रत्येक गटातील प्रत्येक क्लस्टरसाठी ब्रोकरवरील जतन केलेले dव्हाइस कॉन्फिग या फोनच्या सध्याच्या सेटिंग्जमधून तयार केलेल्या नवीन प्रतीसह ओव्हरराईट करते. ब्रोकरवर असलेले कोणतेही भिन्न कॉन्फिग (उदा. दुसऱ्या फोनकडून) बदलले जातील, विलीन होणार नाहीत. हे स्वयंचलितपणे पूर्ववत करता येणार नाही</string>
+	<string name="settings_force_upload_all_confirm">हे प्रत्येक गटातील प्रत्येक क्लस्टरसाठी ब्रोकरवरील जतन केलेले डिव्हाइस कॉन्फिग या फोनच्या सध्याच्या सेटिंग्जमधून तयार केलेल्या नवीन प्रतीसह ओव्हरराईट करते. ब्रोकरवर असलेले कोणतेही भिन्न कॉन्फिग (उदा. दुसऱ्या फोनकडून) बदलले जातील, विलीन होणार नाहीत. हे स्वयंचलितपणे पूर्ववत करता येणार नाही</string>
 	<string name="settings_force_upload_all_confirm_title">सर्व गट आपोआप अपलोड करायचे आहेत?</string>
 	<string name="settings_force_upload_all_detail">या फोनच्या सध्याच्या सेटिंग्जमधून प्रत्येक गटातील प्रत्येक क्लस्टरचे पुनर्रचना आणि पुनर्प्रकाशन करते – जर ब्रोकर समस्या किंवा दुसरा फोनमुळे एकापेक्षा जास्त गट सिंकमध्ये नसेल तर याचा वापर करा</string>
 	<plurals name="settings_force_upload_all_done">
-		<item quantity="one">१ गटाचे पुन:प्रकाशन ब्रोकरवर केले</item>
-		<item quantity="other">१ गट ब्रोकरवर पुन:प्रकाशन झाले</item>
+		<item quantity="one">%1$d गटाचे पुन:प्रकाशन ब्रोकरवर केले</item>
+		<item quantity="other">%1$d गट ब्रोकरवर पुन:प्रकाशन झाले</item>
 	</plurals>
 	<string name="settings_orphans">विचित्र डेटा स्वच्छ करा (Clean Up Orphaned Data)</string>
 	<string name="settings_orphans_clean">स्वच्छ करा</string>
@@ -371,9 +371,9 @@
 	<string name="settings_undo_detail_off">एखादा टाइल, क्लस्टर किंवा गट ड्रॅग केल्यावर ‘पूर्ववत’ प्रॉम्प्ट किती वेळ दिसतो – सध्या नाही</string>
 	<string name="settings_version">संस्करण %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">स्मोक अलर्ट (मूक)</string>
-	<string name="smoke_channel_silent_desc">ध्वनीशिवाय, जेव्हा एखादे dव्हाइस धूर आढळल्याची सूचना देते</string>
+	<string name="smoke_channel_silent_desc">ध्वनीशिवाय, जेव्हा एखादे डिव्हाइस धूर आढळल्याची सूचना देते</string>
 	<string name="smoke_channel_sound">स्मोक अलर्ट (आवाजासह)</string>
-	<string name="smoke_channel_sound_desc">अलार्म-शैलीच्या आवाजासह, जेव्हा एखादे dव्हाइस धूर आढळल्याची सूचना देते</string>
+	<string name="smoke_channel_sound_desc">अलार्म-शैलीच्या आवाजासह, जेव्हा एखादे डिव्हाइस धूर आढळल्याची सूचना देते</string>
 	<string name="smoke_notif_test_text">हे एक स्मोक अलर्ट नोटिफिकेशन कसे दिसेल</string>
 	<string name="smoke_notif_text">%1$s ने धूर नोंदवला – %2$s उघडण्यासाठी टॅप करा</string>
 	<string name="smoke_notif_title">धूर आढळला!</string>
@@ -385,7 +385,7 @@
 	<string name="terminal_clear">लॉग साफ करा</string>
 	<string name="terminal_connection_error">⚠ कनेक्शन त्रुटी</string>
 	<plurals name="terminal_count">
-		<item quantity="one">%1$d संदेश (सर्वात जुना पहिला, शेवटचे %3$d ठेवलेले)</item>
+		<item quantity="one">%2$d पैकी %1$d संदेश (सर्वात जुना पहिला, शेवटचे %3$d ठेवलेले)</item>
 		<item quantity="other">%1$d संदेशांपैकी (%2$d संदेश, सर्वात जुने पहिले, शेवटचे %3$d ठेवलेले)</item>
 	</plurals>
 	<string name="terminal_empty">अद्याप कोणतेही संदेश प्राप्त झाले नाहीत. कृपया खात्री करा की ब्रोकर कनेक्टेड आणि सबस्क्राइब केलेला आहे (सेटिंग्जमध्ये ब्रोकर तपासा, किंवा त्याचा बेस विषय तुमच्या सेटअपशी जुळतो)</string>
