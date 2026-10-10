@@ -14,7 +14,7 @@
 	<string name="alerts_smoke_detail">Vakaraitaka ke dua na iyaya e kunea na kubou</string>
 	<string name="alerts_smoke_test_detail">E vakauta e dua na itukutuku dina (vata kei na rorogo, ke vakayagataki e cake) ena vakayagataki na sala vata ga me vaka e dua na ivakasala dina ni kubou – e dua na sala vinaka mo vakadeitaka kina ni na dreta dina nomu vakanananu ni bera ni o gadreva</string>
 	<string name="alerts_sound">Rorogo ni ivakasala</string>
-	<string name="alerts_sound_detail">Vakatanginivuli e dua na rorogo levu me vaka na alamu vata kei na itukutuku</string>
+	<string name="alerts_sound_detail">Vakatagira e dua na rorogo levu me vaka na alamu vata kei na itukutuku</string>
 	<string name="alerts_test">Itukutuku ni vakatovotovo</string>
 	<string name="alerts_title">Alamu/ivakasala</string>
 	<string name="alerts_watering">Ivakasala ni vakasuasuataki</string>
@@ -352,7 +352,7 @@
 	<string name="settings_undo">Balavu ni itukutuku Vakalesuya</string>
 	<string name="settings_undo_detail">Na balavu ni gauna e tiko kina na taro ‘Vakalesuya’ ni oti na dreti ni dua na kato, isoqoni se ilawalawa – ena gauna oqo %1$ds</string>
 	<string name="settings_undo_detail_off">Na balavu ni gauna e tiko kina na taro ‘Vakalesuya’ ni oti na dreti ni dua na kato, isoqoni se ilawalawa – e vakamatei ena gauna oqo</string>
-	<string name="settings_version">Vakalesui %1$s (%2$d)</string>
+	<string name="settings_version">Itaba %1$s (%2$d)</string>
 	<string name="smoke_channel_silent">Ivakasala ni kubou (vakanomodi)</string>
 	<string name="smoke_channel_silent_desc">E vakasalataka ni kunea e dua na iyaya na kubou, ka sega na rorogo</string>
 	<string name="smoke_channel_sound">Ivakasala ni kubou (vata kei na rorogo)</string>
