@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.layout.LazyLayoutCacheWindow
@@ -146,6 +147,8 @@ import com.odiousapps.z2mdash.ui.components.SensorTile
 import com.odiousapps.z2mdash.ui.components.ToggleTile
 import com.odiousapps.z2mdash.ui.components.iconFor
 import com.odiousapps.z2mdash.ui.tv.LocalIsTv
+import com.odiousapps.z2mdash.ui.tv.TvListScrollbar
+import com.odiousapps.z2mdash.ui.tv.TvScrollbarWidth
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
@@ -1347,8 +1350,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 },
             // Extra bottom padding so the last group's trailing icons can scroll clear of the
             // FABs, which float on top of content without reserving space for themselves - one
-            // more FAB row's worth for each extra row they've wrapped onto.
-            contentPadding = PaddingValues(bottom = 96.dp + extraFabRowsPadding)
+            // more FAB row's worth for each extra row they've wrapped onto. On TV the end edge is
+            // also kept clear for the scrollbar drawn over it (see TvListScrollbar below).
+            contentPadding = PaddingValues(end = if (isTv) TvScrollbarWidth else 0.dp, bottom = 96.dp + extraFabRowsPadding)
         ) {
             // Only rendered in the list when NOT active - while active it's drawn as a fixed
             // banner above this whole LazyColumn instead (see its own computation/doc further up,
@@ -1545,7 +1549,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         // Row of tiles - without it, the Row's unpadded width silently overflowed
                         // the card by 16dp, clipping the rightmost column's tile.
                         val clusterCardWidth = standaloneTileWidth * columnsPerRow + 8.dp * (columnsPerRow - 1) + 16.dp
-                        val availableRowWidth = screenWidthDp - 24.dp
+                        // Less the TV scrollbar's column, which the list reserves at its end edge.
+                        val availableRowWidth = screenWidthDp - 24.dp - if (isTv) TvScrollbarWidth else 0.dp
                         val packedRows = remember(visibleClusters, standaloneTileWidth, availableRowWidth) {
                             val rows = mutableListOf<MutableList<List<Panel>>>()
                             var currentRow = mutableListOf<List<Panel>>()
@@ -1717,6 +1722,19 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     } // item
                 }
             }
+        }
+        // TV only: a D-pad-operable scrollbar down the right edge, for paging a screen at a time
+        // through a long dashboard instead of stepping tile by tile. Stops above the FABs (the
+        // Scaffold's 16dp margin plus each FAB row), which float over this same corner.
+        if (isTv) {
+            TvListScrollbar(
+                state = listState,
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .fillMaxHeight()
+                    .padding(top = 8.dp, bottom = 16.dp + (56.dp + fabSpacing) * fabRows.size)
+                    .width(TvScrollbarWidth)
+            )
         }
             } // Box(weight)
         } // Column

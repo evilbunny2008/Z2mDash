@@ -1,0 +1,1 @@
+* Android TV: a scrollbar on the right of the home screen pages through the dashboard a screen at a time
