@@ -332,7 +332,7 @@
 	<string name="settings_backup">Kope paʻa a hoʻihoʻi</string>
 	<string name="settings_backup_detail">Mālama a hoʻihoʻi paha i kāu hoʻonohonoho, piha a i ʻole nā broker wale nō</string>
 	<string name="settings_blink">Nā ʻōlelo aʻo ʻōlinolino</string>
-	<string name="settings_blink_detail">E puʻuwai i nā ʻōlelo aʻo kile mea ʻike ma waho o ka pae, ma kahi o kahi waihoʻoluʻu paʻa</string>
+	<string name="settings_blink_detail">E hoʻōlinolino i nā ʻōlelo aʻo kile mea ʻike ma waho o ka pae, ma kahi o kahi waihoʻoluʻu paʻa</string>
 	<plurals name="settings_brokers_count">
 		<item quantity="one">%1$d i hoʻonohonoho ʻia</item>
 		<item quantity="other">%1$d i hoʻonohonoho ʻia</item>
@@ -373,7 +373,7 @@
 	<string name="smoke_notif_test_text">ʻO kēia ke ʻano o kahi hoʻolaha ʻōlelo aʻo uahi</string>
 	<string name="smoke_notif_text">Ua hōʻike ʻo %1$s i ka uahi – kaomi e wehe iā %2$s</string>
 	<string name="smoke_notif_title">Ua ʻike ʻia ka uahi!</string>
-	<string name="tab_home">Home</string>
+	<string name="tab_home">Hale</string>
 	<string name="tab_settings">Nā hoʻonohonoho</string>
 	<string name="tab_terminal">Kelemina</string>
 	<string name="terminal_all_brokers">Nā broker a pau</string>
