@@ -36,8 +36,16 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 125
-        versionName = "0.0.125"
+        versionCode = 126
+        versionName = "0.0.126"
+    }
+
+    // Generates android:localeConfig from the values-*/ folders, so
+    // Android 13+ lists this app under Settings -> App languages (on
+    // devices whose Settings has that screen). Needs res/resources.properties
+    // to say what language the unqualified values/ folder is.
+    androidResources {
+        generateLocaleConfig = true
     }
 
     buildTypes {
