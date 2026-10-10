@@ -26,7 +26,7 @@
 	<string name="backup_encrypt_detail">エクスポートしたファイルを選択したパスワードで保護します</string>
 	<string name="backup_encrypted_text">このバックアップは暗号化されています。暗号化されたパスワードを入力してください</string>
 	<string name="backup_encrypted_title">暗号化されたバックアップ</string>
-	<string name="backup_export">輸出</string>
+	<string name="backup_export">エクスポート</string>
 	<string name="backup_export_brokers_detail">ブローカー接続の詳細のみを圧縮ファイルとして保存します</string>
 	<string name="backup_export_config">設定のエクスポート</string>
 	<string name="backup_export_full_detail">ブローカー、グループ、パネルを独自の圧縮ファイルとして保存します</string>
@@ -101,7 +101,7 @@
 	<string name="common_collapse">崩壊</string>
 	<string name="common_collapse_all">すべて折りたたむ</string>
 	<string name="common_continue">続く</string>
-	<string name="common_delete">消去</string>
+	<string name="common_delete">削除</string>
 	<string name="common_done">終わり</string>
 	<string name="common_expand">拡大する</string>
 	<string name="common_expand_all">すべて展開</string>
@@ -183,10 +183,10 @@
 	<string name="home_delete_group_named">%1$sを削除</string>
 	<string name="home_delete_group_text">これにより、グループとその中のすべてのパネルが削除されます</string>
 	<string name="home_delete_group_title">グループを削除しますか?</string>
-	<string name="home_duplicate">重複</string>
+	<string name="home_duplicate">複製</string>
 	<string name="home_duplicate_broad_warning">このクラスターのパネルはすべて、1 つのクリーンなデバイス トピックを共有しているわけではありません (共通しているのは「%1$s」のみ) です。おそらく、1 つの実際のデバイスではなく、いくつかの不一致のパネルが存在します。以下のトピックはその共有部分のみを置き換えているため、期待どおりに適用されない可能性があります。最初にこのクラスターのパネルを個別に確認する価値があります</string>
-	<string name="home_duplicate_cluster">%1$s を複製します</string>
-	<string name="home_duplicate_title">重複「%1$s」</string>
+	<string name="home_duplicate_cluster">%1$s を複製</string>
+	<string name="home_duplicate_title">「%1$s」を複製</string>
 	<string name="home_edit_group">グループの編集</string>
 	<string name="home_edit_value_title">「%1$s」を編集</string>
 	<string name="home_expand_all_groups">すべてのグループを展開する</string>
@@ -196,7 +196,7 @@
 	<string name="home_force_upload_text">これにより、このグループ内のすべてのクラスタのブローカー上に保持されているデバイス設定が、この電話機の現在の設定から構築された新しいコピーで上書きされます。現在ブローカー上にある異なる設定 (例: 別の電話) はマージされずに置き換えられます。これを自動的に元に戻すことはできません</string>
 	<string name="home_force_upload_title">「%1$s」を強制的にアップロードしますか?</string>
 	<string name="home_group_fallback">グループ</string>
-	<string name="home_loading">読み込み中</string>
+	<string name="home_loading">読み込み中…</string>
 	<string name="home_loading_detail">保存された設定をまだ読み取っています</string>
 	<string name="home_low_battery_description" formatted="false">バッテリー残量が 20% 以下</string>
 	<string name="home_moved">「%1$s」を移動しました</string>
@@ -212,7 +212,7 @@
 	<string name="home_old_topic">古いトピック</string>
 	<string name="home_rename_group">%1$s の名前を変更</string>
 	<string name="home_republished">「%1$s」をブローカーに再公開しました</string>
-	<string name="home_retopic">再トピック</string>
+	<string name="home_retopic">トピックを変更</string>
 	<string name="home_retopic_all">すべてのクラスターのトピックを変更する</string>
 	<string name="home_retopic_all_detail">現在 1 つの古い MQTT トピック上にあるこのグループ内のすべてのクラスターを新しいトピックに一度に移動します。 Zigbee ネットワークを移動したデバイスごとに 2 番目のブリッジに分割した後。別のトピックのクラスターはそのままです</string>
 	<string name="home_retopic_all_text">トピックが「古いトピック」と正確に一致するこのグループ内のすべてのクラスターを「新しいトピック」に移動します。このグループのクラスターの残りの部分は変更されません。これを自動的に元に戻すことはできません</string>
@@ -224,7 +224,7 @@
 	<string name="home_search_clusters">クラスターの検索</string>
 	<string name="home_stale_description">データは 1 時間以上古い</string>
 	<string name="home_undo">元に戻す</string>
-	<string name="home_value">価値</string>
+	<string name="home_value">値</string>
 	<string name="home_weak_signal_description">リンクの品質が %1$d 未満です</string>
 	<string name="import_failed_invalid">インポートに失敗しました: 有効な構成ファイルではありません</string>
 	<string name="mqtt_backup_delete_description">%1$s からバックアップを削除</string>
@@ -371,7 +371,7 @@
 		<item quantity="other">%2$d メッセージ中 %1$d (古い順、最後の %3$d が保持)</item>
 	</plurals>
 	<string name="terminal_empty">まだメッセージを受信して​​いません。ブローカーが接続され、サブスクライブされていることを確認します ([設定] の [ブローカー] を確認するか、その基本トピックが設定と一致していることを確認してください)。</string>
-	<string name="terminal_filter">トピックまたはペイロードによるフィルター</string>
+	<string name="terminal_filter">トピックまたはペイロードで絞り込み</string>
 	<string name="terminal_jump_newest">最新にジャンプ</string>
 	<string name="terminal_no_match">そのフィルタに一致するメッセージはありません</string>
 	<string name="terminal_title">ターミナル</string>

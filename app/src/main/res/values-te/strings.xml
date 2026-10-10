@@ -156,7 +156,7 @@
 	</plurals>
 	<string name="discover_target_group">సమూహానికి ప్యానెల్లను జోడించండి</string>
 	<string name="discover_title">సెన్సార్లను కనుగొనండి</string>
-	<string name="filter_active">చురుకుగా</string>
+	<string name="filter_active">సక్రియం</string>
 	<string name="filter_fab">డాష్‌బోర్డ్‌ను ఫిల్టర్ చేయండి</string>
 	<string name="filter_fab_active">ఫిల్టర్: %1$s మాత్రమే చూపుతోంది – మార్చడానికి నొక్కండి</string>
 	<string name="filter_high_moisture">ఆదర్శ పరిధి కంటే తేమ</string>
@@ -189,10 +189,10 @@
 	<string name="home_delete_group_named">%1$sని తొలగించండి</string>
 	<string name="home_delete_group_text">ఇది సమూహాన్ని మరియు దానిలోని ప్రతి ప్యానెల్‌ను తీసివేస్తుంది</string>
 	<string name="home_delete_group_title">సమూహాన్ని తొలగించాలా?</string>
-	<string name="home_duplicate">నకిలీ</string>
+	<string name="home_duplicate">నకిలీ చేయండి</string>
 	<string name="home_duplicate_broad_warning">ఈ క్లస్టర్ ప్యానెల్‌లు అన్నీ ఒక క్లీన్ డివైస్ టాపిక్‌ను షేర్ చేయవు (‘%1$s’ మాత్రమే సాధారణం) – ఒక నిజమైన పరికరం కాకుండా కొన్ని సరిపోలని ప్యానెల్‌లు ఉండవచ్చు. దిగువ అంశం భాగస్వామ్య భాగాన్ని మాత్రమే భర్తీ చేస్తుంది, కనుక ఇది మీరు ఆశించిన విధంగా వర్తించకపోవచ్చు. ముందుగా ఈ క్లస్టర్ ప్యానెల్‌లను ఒక్కొక్కటిగా తనిఖీ చేయడం విలువ</string>
-	<string name="home_duplicate_cluster">నకిలీ %1$s</string>
-	<string name="home_duplicate_title">నకిలీ ‘%1$s’</string>
+	<string name="home_duplicate_cluster">%1$s నకిలీ చేయండి</string>
+	<string name="home_duplicate_title">‘%1$s’ని నకిలీ చేయండి</string>
 	<string name="home_edit_group">సమూహాన్ని సవరించండి</string>
 	<string name="home_edit_value_title">‘%1$s’ని సవరించండి</string>
 	<string name="home_expand_all_groups">అన్ని సమూహాలను విస్తరించండి</string>
@@ -206,9 +206,9 @@
 	<string name="home_loading_detail">మీరు సేవ్ చేసిన కాన్ఫిగరేషన్‌ని ఇంకా చదువుతున్నారు</string>
 	<string name="home_low_battery_description" formatted="false">బ్యాటరీ 20% లేదా అంతకంటే తక్కువ</string>
 	<string name="home_moved">‘%1$s’ తరలించబడింది</string>
-	<string name="home_moved_into">‘%1$s’ని ’%2$s’కి తరలించారు</string>
-	<string name="home_moved_to">‘%1$s’ని ’%2$s’కి తరలించారు</string>
-	<string name="home_moved_within">‘%2$s’లోపు ’%1$s‘ తరలించబడింది</string>
+	<string name="home_moved_into">‘%1$s’ని ‘%2$s’కి తరలించారు</string>
+	<string name="home_moved_to">‘%1$s’ని ‘%2$s’కి తరలించారు</string>
+	<string name="home_moved_within">‘%2$s’లోపు ‘%1$s’ తరలించబడింది</string>
 	<string name="home_new_topic">కొత్త అంశం</string>
 	<string name="home_no_groups">ఇంకా సమూహాలు లేవు</string>
 	<string name="home_no_groups_detail">మీ మొదటి సమూహాన్ని సృష్టించడానికి + నొక్కండి, ఆపై దానికి ప్యానెల్‌లను జోడించండి</string>
@@ -218,8 +218,8 @@
 	<string name="home_old_topic">పాత టాపిక్</string>
 	<string name="home_rename_group">%1$s పేరు మార్చండి</string>
 	<string name="home_republished">బ్రోకర్‌కి ‘%1$s’ మళ్లీ ప్రచురించబడింది</string>
-	<string name="home_retopic">రెటోపిక్</string>
-	<string name="home_retopic_all">అన్ని క్లస్టర్‌లను రెటోపిక్ చేయండి</string>
+	<string name="home_retopic">అంశాన్ని మార్చండి</string>
+	<string name="home_retopic_all">అన్ని క్లస్టర్‌ల అంశాన్ని మార్చండి</string>
 	<string name="home_retopic_all_detail">ప్రస్తుతం ఒక పాత MQTT టాపిక్‌లో ఉన్న ఈ గుంపులోని ప్రతి క్లస్టర్‌ను ఒకేసారి కొత్తదానికి తరలిస్తుంది – ఉదా. జిగ్బీ నెట్‌వర్క్‌ను రెండవ వంతెనపైకి విభజించిన తర్వాత, తరలించిన ప్రతి పరికరానికి. వేరొక అంశంపై క్లస్టర్‌లు తాకబడలేదు</string>
 	<string name="home_retopic_all_text">ఈ గుంపులోని ప్రతి క్లస్టర్‌ను ‘పాత టాపిక్’కి సరిగ్గా సరిపోయే టాపిక్‌ను ‘కొత్త టాపిక్’కి తరలిస్తుంది – ఈ సమూహంలోని మిగిలిన క్లస్టర్‌లు తాకబడవు. ఇది స్వయంచాలకంగా రద్దు చేయబడదు</string>
 	<string name="home_retopic_all_title">‘%1$s’లో అన్ని క్లస్టర్‌లను రీటోపిక్ చేయాలా?</string>
@@ -389,7 +389,7 @@
 	<string name="terminal_jump_newest">సరికొత్తగా వెళ్లండి</string>
 	<string name="terminal_no_match">ఆ ఫిల్టర్‌కు ఏ సందేశాలు సరిపోలలేదు</string>
 	<string name="terminal_title">టెర్మినల్</string>
-	<string name="tile_presence_clear">క్లియర్</string>
+	<string name="tile_presence_clear">ఎవరూ లేరు</string>
 	<string name="tile_presence_detected">గుర్తించబడింది</string>
 	<string name="watering_channel">నీరు త్రాగుటకు లేక హెచ్చరికలు</string>
 	<string name="watering_channel_desc">తేమ సెన్సార్ పెరుగుతున్నప్పుడు దాని ఆదర్శ పరిధి మధ్యలోకి చేరుకున్నప్పుడు కంపిస్తుంది మరియు గంటలు (బిగ్గరగా, అలారం వాల్యూమ్ ద్వారా)</string>

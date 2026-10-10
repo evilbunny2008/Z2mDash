@@ -26,9 +26,9 @@
 	<string name="backup_encrypt_detail">قم بحماية الملف الذي تم تصديره بكلمة مرور تختارها</string>
 	<string name="backup_encrypted_text">هذه النسخة الاحتياطية مشفرة. أدخل كلمة المرور التي تم تشفيرها بها</string>
 	<string name="backup_encrypted_title">النسخ الاحتياطي المشفرة</string>
-	<string name="backup_export">يصدّر</string>
+	<string name="backup_export">تصدير</string>
 	<string name="backup_export_brokers_detail">احفظ فقط تفاصيل اتصال الوسيط الخاص بك كملف مضغوط</string>
-	<string name="backup_export_config">تكوين التصدير</string>
+	<string name="backup_export_config">تصدير التكوين</string>
 	<string name="backup_export_full_detail">قم بحفظ الوسطاء والمجموعات واللوحات الخاصة بك كملف مضغوط تملكه</string>
 	<string name="backup_exported">تم تصدير التكوين</string>
 	<string name="backup_import_config">تكوين الاستيراد</string>
@@ -62,7 +62,7 @@
 	<string name="broker_auto_accept_detail">قم بإضافة مجموعة/مجموعات/لوحات الجهاز الذي تمت مشاهدته حديثًا على الفور، بدلاً من المطالبة بقبول كل منها</string>
 	<string name="broker_auto_connect">الاتصال التلقائي</string>
 	<string name="broker_base_topic">الموضوع الأساسي</string>
-	<string name="broker_base_topic_help">يراقب التطبيق ‘&lt;base theme&gt;/#’ للأجهزة وتكوينات /app الخاصة بها، بدلاً من كل موضوع على الوسيط. أدخل قائمة مفصولة بفواصل (على سبيل المثال ‘zigbee2mqtt, zigbee2mqtt2’) لمشاهدة أكثر من مساحة اسم Zigbee2MQTT على نفس الوسيط – يحصل كل منها على تصريح الانضمام الخاص به، قم بالتبديل أدناه</string>
+	<string name="broker_base_topic_help">يراقب التطبيق ‘&lt;base topic&gt;/#’ للأجهزة وتكوينات /app الخاصة بها، بدلاً من كل موضوع على الوسيط. أدخل قائمة مفصولة بفواصل (على سبيل المثال ‘zigbee2mqtt, zigbee2mqtt2’) لمشاهدة أكثر من مساحة اسم Zigbee2MQTT على نفس الوسيط – يحصل كل منها على تصريح الانضمام الخاص به، قم بالتبديل أدناه</string>
 	<string name="broker_cert_selected">تم اختيار الشهادة ✓</string>
 	<string name="broker_clean_session">جلسة نظيفة</string>
 	<string name="broker_clean_session_detail">بدء جلسة جديدة على كل اتصال (لا يتم الاحتفاظ بالرسائل)</string>
@@ -73,7 +73,7 @@
 	<string name="broker_delete_title">حذف الوسيط؟</string>
 	<string name="broker_edit_title">تحرير الوسيط</string>
 	<string name="broker_hide">يخفي</string>
-	<string name="broker_host">يستضيف</string>
+	<string name="broker_host">المضيف</string>
 	<string name="broker_import_code">الاستيراد عبر الكود</string>
 	<string name="broker_keep_alive">الحفاظ على الفاصل الزمني على قيد الحياة</string>
 	<string name="broker_keep_alive_help">الفاصل الزمني بالثواني بين رسائل البقاء على قيد الحياة. الافتراضي: 60 ثانية. المدى: 5–120 ثانية</string>
@@ -94,14 +94,14 @@
 	<string name="brokers_discover">اكتشف المستشعرات على %1$s</string>
 	<string name="brokers_reconnect">أعد الاتصال بـ %1$s</string>
 	<string name="brokers_title">وسطاء</string>
-	<string name="common_add">يضيف</string>
-	<string name="common_back">خلف</string>
-	<string name="common_cancel">يلغي</string>
+	<string name="common_add">إضافة</string>
+	<string name="common_back">رجوع</string>
+	<string name="common_cancel">إلغاء</string>
 	<string name="common_close">يغلق</string>
 	<string name="common_collapse">ينهار</string>
 	<string name="common_collapse_all">طي الكل</string>
 	<string name="common_continue">يكمل</string>
-	<string name="common_delete">يمسح</string>
+	<string name="common_delete">حذف</string>
 	<string name="common_done">منتهي</string>
 	<string name="common_expand">يوسع</string>
 	<string name="common_expand_all">قم بتوسيع الكل</string>
@@ -176,7 +176,7 @@
 	</plurals>
 	<string name="discover_target_group">إضافة لوحات إلى المجموعة</string>
 	<string name="discover_title">اكتشف أجهزة الاستشعار</string>
-	<string name="filter_active">نشيط</string>
+	<string name="filter_active">نشط</string>
 	<string name="filter_fab">تصفية لوحة القيادة</string>
 	<string name="filter_fab_active">الفلتر: يظهر %1$s فقط – انقر للتغيير</string>
 	<string name="filter_high_moisture">الرطوبة فوق النطاق المثالي</string>
@@ -213,7 +213,7 @@
 	<string name="home_delete_group_named">احذف %1$s</string>
 	<string name="home_delete_group_text">يؤدي هذا إلى إزالة المجموعة وكل لوحة فيها</string>
 	<string name="home_delete_group_title">هل تريد حذف المجموعة؟</string>
-	<string name="home_duplicate">ينسخ</string>
+	<string name="home_duplicate">نسخ مكرر</string>
 	<string name="home_duplicate_broad_warning">لا تشترك لوحات هذه المجموعة جميعًا في موضوع جهاز واحد نظيف (فقط ‘%1$s’ مشترك) – من المحتمل أن يكون هناك عدد قليل من اللوحات غير المتطابقة بدلاً من جهاز حقيقي واحد. يستبدل الموضوع أدناه هذا الجزء المشترك فقط، لذا قد لا ينطبق بالطريقة التي تتوقعها. يستحق التحقق من لوحات هذه المجموعة بشكل فردي أولاً</string>
 	<string name="home_duplicate_cluster">تكرار %1$s</string>
 	<string name="home_duplicate_title">تكرار ‘%1$s’</string>
@@ -226,7 +226,7 @@
 	<string name="home_force_upload_text">يؤدي هذا إلى استبدال تكوين الجهاز المحتفظ به على الوسيط لكل مجموعة في هذه المجموعة بنسخة جديدة تم إنشاؤها من الإعدادات الحالية لهذا الهاتف. سيتم استبدال أي تكوين مختلف موجود حاليًا على الوسيط (على سبيل المثال من هاتف آخر)، ولن يتم دمجه. لا يمكن التراجع عن هذا تلقائيًا</string>
 	<string name="home_force_upload_title">هل تريد فرض التحميل ‘%1$s’؟</string>
 	<string name="home_group_fallback">مجموعة</string>
-	<string name="home_loading">تحميل</string>
+	<string name="home_loading">جارٍ التحميل…</string>
 	<string name="home_loading_detail">لا تزال تقرأ التكوين المحفوظ الخاص بك</string>
 	<string name="home_low_battery_description" formatted="false">البطارية بنسبة 20% أو أقل</string>
 	<string name="home_moved">تم نقل ‘%1$s’</string>
@@ -242,8 +242,8 @@
 	<string name="home_old_topic">موضوع قديم</string>
 	<string name="home_rename_group">أعد تسمية %1$s</string>
 	<string name="home_republished">إعادة نشر ‘%1$s’ إلى الوسيط</string>
-	<string name="home_retopic">ريتوبيك</string>
-	<string name="home_retopic_all">إعادة صياغة جميع المجموعات</string>
+	<string name="home_retopic">تغيير الموضوع</string>
+	<string name="home_retopic_all">تغيير موضوع جميع الكتل</string>
 	<string name="home_retopic_all_detail">ينقل كل مجموعة في هذه المجموعة حاليًا حول موضوع MQTT قديم إلى موضوع جديد، دفعة واحدة – على سبيل المثال. بعد تقسيم شبكة Zigbee على جسر ثانٍ لكل جهاز يتحرك. المجموعات حول موضوع مختلف لم تمس</string>
 	<string name="home_retopic_all_text">ينقل كل مجموعة في هذه المجموعة التي يتطابق موضوعها تمامًا مع ‘الموضوع القديم’ إلى ‘موضوع جديد’ – ولن يتم المساس ببقية مجموعات هذه المجموعة. لا يمكن التراجع عن هذا تلقائيًا</string>
 	<string name="home_retopic_all_title">هل تريد إعادة صياغة كل المجموعات في ‘%1$s’؟</string>
@@ -317,7 +317,7 @@
 	<string name="panel_ideal_topic_hint">على سبيل المثال zigbee2mqtt/SoilSensor_01/ideal – ينشر {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">حقل JSON (فارغ = الحمولة الأولية)</string>
 	<string name="panel_json_field_hint">على سبيل المثال درجة الحرارة أو الحالة. البطارية</string>
-	<string name="panel_label">ملصق</string>
+	<string name="panel_label">التسمية</string>
 	<string name="panel_max_field">اسم الحقل الأقصى</string>
 	<string name="panel_min_field">اسم الحقل الأدنى</string>
 	<string name="panel_min_max_help">مطلوب فقط إذا كان الموضوع لا يستخدم مفاتيح ‘min’/‘max’ العادية – على سبيل المثال. اضبطها على ‘moisture_min’/‘moisture_max’ لموضوع تكوين الجهاز المشترك</string>
@@ -336,8 +336,8 @@
 	<string name="panel_topic_hint">على سبيل المثال زيجبي 2mqtt/مستشعر التربة 1</string>
 	<string name="panel_type_button">زر</string>
 	<string name="panel_type_locked">لا يمكن تغيير نوع اللوحة بمجرد إنشائها – قم بحذفها وإعادة إضافتها بدلاً من ذلك</string>
-	<string name="panel_type_sensor">الاستشعار</string>
-	<string name="panel_type_toggle">تبديل</string>
+	<string name="panel_type_sensor">مستشعر</string>
+	<string name="panel_type_toggle">مفتاح تبديل</string>
 	<string name="panel_unit">الوحدة (اختياري)</string>
 	<string name="pending_device_text">نشر ‘%1$s’ (%2$s) تكوين لوحة المعلومات الخاصة به</string>
 	<string name="pending_ignore">يتجاهل</string>
@@ -359,7 +359,7 @@
 	<string name="settings_about">عن</string>
 	<string name="settings_about_tagline">%1$s – لا توجد سحابة، ولا حساب، ولا قفل</string>
 	<string name="settings_alerts_detail">تنبيهات الدخان والسقي والإشعارات الصوتية والاختبارية</string>
-	<string name="settings_background">عمل الخلفية</string>
+	<string name="settings_background">العمل في الخلفية</string>
 	<string name="settings_background_detail">حافظ على اتصالات الوسيط حية عند إغلاق التطبيق</string>
 	<string name="settings_backup">النسخ الاحتياطي والاستعادة</string>
 	<string name="settings_backup_detail">حفظ أو استعادة التكوين الخاص بك، كامل أو وسطاء فقط</string>
@@ -412,7 +412,7 @@
 		<item quantity="two">تمت إزالة %1$d من اللوحات</item>
 		<item quantity="zero">تمت إزالة %1$d من اللوحات</item>
 	</plurals>
-	<string name="settings_tile_width">عرض البلاط والكتلة</string>
+	<string name="settings_tile_width">عرض المربعات والكتل</string>
 	<string name="settings_tile_width_detail">مدى عرض المربعات (وبالتالي البطاقات العنقودية، التي يبلغ عرضها 3 مربعات) يمكن أن تنمو، حتى ملء الشاشة – حاليًا %1$ddp</string>
 	<string name="settings_undo">التراجع عن مدة الخبز المحمص</string>
 	<string name="settings_undo_detail">المدة التي تظل فيها المطالبة ‘تراجع’ قائمة بعد سحب مربع أو مجموعة أو مجموعة – حاليًا %1$ds</string>
@@ -445,7 +445,7 @@
 	<string name="terminal_jump_newest">انتقل إلى الأحدث</string>
 	<string name="terminal_no_match">لا توجد رسائل تتطابق مع هذا الفلتر</string>
 	<string name="terminal_title">صالة</string>
-	<string name="tile_presence_clear">واضح</string>
+	<string name="tile_presence_clear">لا أحد</string>
 	<string name="tile_presence_detected">مُكتَشَف</string>
 	<string name="watering_channel">تنبيهات الري</string>
 	<string name="watering_channel_desc">يهتز ويصدر صوتًا (بصوت عالٍ، عبر مستوى صوت المنبه) عندما يصل مستشعر الرطوبة إلى منتصف نطاقه المثالي أثناء الارتفاع</string>

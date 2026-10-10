@@ -73,7 +73,7 @@
 	<string name="broker_delete_title">Удалить брокера?</string>
 	<string name="broker_edit_title">Редактировать брокера</string>
 	<string name="broker_hide">Скрывать</string>
-	<string name="broker_host">Хозяин</string>
+	<string name="broker_host">Хост</string>
 	<string name="broker_import_code">Импорт через код</string>
 	<string name="broker_keep_alive">Интервал Keep Alive</string>
 	<string name="broker_keep_alive_help">Интервал времени в секундах между сообщениями поддержания активности. По умолчанию: 60 секунд. Диапазон: 5–120 секунд</string>
@@ -94,7 +94,7 @@
 	<string name="brokers_discover">Обнаружьте датчики на %1$s</string>
 	<string name="brokers_reconnect">Повторно подключиться к %1$s</string>
 	<string name="brokers_title">Брокеры</string>
-	<string name="common_add">Добавлять</string>
+	<string name="common_add">Добавить</string>
 	<string name="common_back">Назад</string>
 	<string name="common_cancel">Отмена</string>
 	<string name="common_close">Закрывать</string>
@@ -167,7 +167,7 @@
 	<string name="discover_target_group">Добавить панели в группу</string>
 	<string name="discover_title">Откройте для себя датчики</string>
 	<string name="filter_active">Активный</string>
-	<string name="filter_fab">Фильтровать панель мониторинга</string>
+	<string name="filter_fab">Фильтр панели</string>
 	<string name="filter_fab_active">Фильтр: показывает только %1$s – нажмите, чтобы изменить</string>
 	<string name="filter_high_moisture">Влажность выше идеального диапазона</string>
 	<string name="filter_low_battery" formatted="false">Батарея 20% или меньше</string>
@@ -204,7 +204,7 @@
 	<string name="home_duplicate">Дублировать</string>
 	<string name="home_duplicate_broad_warning">Не все панели этого кластера имеют общую тему ‘чистое устройство’ (общее только ‘%1$s’) — скорее всего, это несколько несовпадающих панелей, а не одно реальное устройство. В приведенной ниже теме заменяется только эта общая часть, поэтому она может применяться не так, как вы ожидаете. Стоит сначала проверить панели этого кластера по отдельности</string>
 	<string name="home_duplicate_cluster">Дублировать %1$s</string>
-	<string name="home_duplicate_title">Дубликат ‘%1$s’</string>
+	<string name="home_duplicate_title">Дублировать ‘%1$s’</string>
 	<string name="home_edit_group">Изменить группу</string>
 	<string name="home_edit_value_title">Изменить ‘%1$s’</string>
 	<string name="home_expand_all_groups">Развернуть все группы</string>
@@ -214,7 +214,7 @@
 	<string name="home_force_upload_text">При этом сохраненная конфигурация устройства в брокере для каждого кластера в этой группе будет перезаписана новой копией, созданной на основе текущих настроек этого телефона. Любая другая конфигурация, находящаяся в данный момент на брокере (например, с другого телефона), будет заменена, а не объединена. Это действие нельзя отменить автоматически</string>
 	<string name="home_force_upload_title">Принудительно загрузить ‘%1$s’?</string>
 	<string name="home_group_fallback">Группа</string>
-	<string name="home_loading">Загрузка</string>
+	<string name="home_loading">Загрузка…</string>
 	<string name="home_loading_detail">Все еще читаем сохраненную конфигурацию</string>
 	<string name="home_low_battery_description" formatted="false">Уровень заряда батареи составляет 20% или меньше</string>
 	<string name="home_moved">Перемещен ‘%1$s’</string>
@@ -230,8 +230,8 @@
 	<string name="home_old_topic">Старая тема</string>
 	<string name="home_rename_group">Переименовать %1$s</string>
 	<string name="home_republished">Повторно опубликован ‘%1$s’ брокеру</string>
-	<string name="home_retopic">Ретопик</string>
-	<string name="home_retopic_all">Ретопировать все кластеры</string>
+	<string name="home_retopic">Сменить тему</string>
+	<string name="home_retopic_all">Сменить тему всех кластеров</string>
 	<string name="home_retopic_all_detail">Перемещает каждый кластер в этой группе, находящийся в настоящее время в одной старой теме MQTT, на новую за один раз – например. после разделения сети Zigbee на второй мост для каждого перемещающегося устройства. Кластеры по другой теме остаются нетронутыми</string>
 	<string name="home_retopic_all_text">Перемещает каждый кластер в этой группе, тема которого точно соответствует ‘Старой теме’, в ‘Новую тему’ ​​— остальные кластеры этой группы остаются нетронутыми. Это действие нельзя отменить автоматически</string>
 	<string name="home_retopic_all_title">Перетемизировать все кластеры в ‘%1$s’?</string>
@@ -245,7 +245,7 @@
 	<string name="home_search_clusters">Поисковые кластеры</string>
 	<string name="home_stale_description">Данные старше часа</string>
 	<string name="home_undo">Отменить</string>
-	<string name="home_value">Ценить</string>
+	<string name="home_value">Значение</string>
 	<string name="home_weak_signal_description">Качество ссылки ниже %1$d</string>
 	<string name="import_failed_invalid">Не удалось импортировать: недопустимый файл конфигурации</string>
 	<string name="mqtt_backup_delete_description">Удалить резервную копию из %1$s</string>
@@ -301,7 +301,7 @@
 	<string name="panel_ideal_topic_hint">например zigbee2mqtt/SoilSensor_01/ideal – публикует {‘min’:x,‘max’:y}</string>
 	<string name="panel_json_field">Поле JSON (пусто = необработанные полезные данные)</string>
 	<string name="panel_json_field_hint">например температура или состояние.батарея</string>
-	<string name="panel_label">Этикетка</string>
+	<string name="panel_label">Метка</string>
 	<string name="panel_max_field">Максимальное имя поля</string>
 	<string name="panel_min_field">Минимальное имя поля</string>
 	<string name="panel_min_max_help">Требуется только в том случае, если в теме не используются простые клавиши ‘min’/‘max’ – например. установите для них значение ‘moisture_min’/‘moisture_max’ для раздела конфигурации общего устройства</string>
@@ -321,7 +321,7 @@
 	<string name="panel_type_button">Кнопка</string>
 	<string name="panel_type_locked">Тип панели нельзя изменить после создания — вместо этого удалите и добавьте заново</string>
 	<string name="panel_type_sensor">Датчик</string>
-	<string name="panel_type_toggle">Переключать</string>
+	<string name="panel_type_toggle">Переключатель</string>
 	<string name="panel_unit">Единица измерения (опционально)</string>
 	<string name="pending_device_text">‘%1$s’ (%2$s) опубликовал собственную конфигурацию информационной панели</string>
 	<string name="pending_ignore">игнорировать</string>
@@ -417,7 +417,7 @@
 	<string name="terminal_jump_newest">Перейти к новейшим</string>
 	<string name="terminal_no_match">Нет сообщений, соответствующих этому фильтру</string>
 	<string name="terminal_title">Терминал</string>
-	<string name="tile_presence_clear">Прозрачный</string>
+	<string name="tile_presence_clear">Никого</string>
 	<string name="tile_presence_detected">Обнаружено</string>
 	<string name="watering_channel">Оповещения о поливе</string>
 	<string name="watering_channel_desc">Вибрирует и издает звуковой сигнал (громко, через громкость сигнала тревоги), когда датчик влажности достигает середины идеального диапазона при подъеме</string>

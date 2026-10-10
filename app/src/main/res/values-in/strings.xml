@@ -28,7 +28,7 @@
 	<string name="backup_encrypted_title">Cadangan Terenkripsi</string>
 	<string name="backup_export">Ekspor</string>
 	<string name="backup_export_brokers_detail">Simpan hanya detail koneksi broker Anda sebagai file terkompresi</string>
-	<string name="backup_export_config">Konfigurasi Ekspor</string>
+	<string name="backup_export_config">Ekspor Konfigurasi</string>
 	<string name="backup_export_full_detail">Simpan broker, grup, dan panel Anda sebagai file terkompresi yang Anda miliki</string>
 	<string name="backup_exported">Konfigurasi diekspor</string>
 	<string name="backup_import_config">Konfigurasi Impor</string>
@@ -55,7 +55,7 @@
 	<string name="battery_notif_title">Baterai %1$s lemah</string>
 	<string name="battery_notif_title_percent">Baterai %1$s lemah (%2$d%%)</string>
 	<string name="battery_test_device">Perangkat Uji</string>
-	<string name="broker_add_title">Tambahkan Pialang</string>
+	<string name="broker_add_title">Tambahkan Broker</string>
 	<string name="broker_additional">Parameter Tambahan</string>
 	<string name="broker_auth">Otentikasi</string>
 	<string name="broker_auto_accept">Otomatis–Terima Perangkat yang Ditemukan</string>
@@ -67,13 +67,13 @@
 	<string name="broker_clean_session">Sesi Bersih</string>
 	<string name="broker_clean_session_detail">Mulai sesi baru pada setiap koneksi (pesan tidak disimpan)</string>
 	<string name="broker_client_id">ID Klien</string>
-	<string name="broker_default_name">Pialang MQTT saya</string>
-	<string name="broker_delete">Hapus pialang</string>
+	<string name="broker_default_name">Broker MQTT saya</string>
+	<string name="broker_delete">Hapus broker</string>
 	<string name="broker_delete_text">Ini menghapus ‘%1$s’ dan memutus sambungannya. Panel yang ditautkan ke sana akan berhenti diperbarui</string>
 	<string name="broker_delete_title">Hapus broker?</string>
-	<string name="broker_edit_title">Sunting Pialang</string>
+	<string name="broker_edit_title">Sunting Broker</string>
 	<string name="broker_hide">Bersembunyi</string>
-	<string name="broker_host">Tuan rumah</string>
+	<string name="broker_host">Host</string>
 	<string name="broker_import_code">Impor melalui kode</string>
 	<string name="broker_keep_alive">Pertahankan Interval Hidup</string>
 	<string name="broker_keep_alive_help">Interval waktu dalam detik antara pesan tetap hidup. Default: 60 detik. Rentang: 5–120 detik</string>
@@ -90,18 +90,18 @@
 	<string name="broker_timeout_help">Waktu tunggu maksimum untuk koneksi. Default: 30 detik. Rentang: 1–300 detik</string>
 	<string name="broker_username">Nama belakang</string>
 	<string name="broker_ws_path">Jalur WebSocket</string>
-	<string name="brokers_add">Tambahkan pialang</string>
+	<string name="brokers_add">Tambahkan broker</string>
 	<string name="brokers_discover">Temukan sensor di %1$s</string>
 	<string name="brokers_reconnect">Hubungkan kembali ke %1$s</string>
 	<string name="brokers_title">Broker</string>
-	<string name="common_add">Menambahkan</string>
+	<string name="common_add">Tambah</string>
 	<string name="common_back">Kembali</string>
-	<string name="common_cancel">Membatalkan</string>
+	<string name="common_cancel">Batal</string>
 	<string name="common_close">Menutup</string>
 	<string name="common_collapse">Runtuh</string>
 	<string name="common_collapse_all">Ciutkan semuanya</string>
 	<string name="common_continue">Melanjutkan</string>
-	<string name="common_delete">Menghapus</string>
+	<string name="common_delete">Hapus</string>
 	<string name="common_done">Selesai</string>
 	<string name="common_expand">Memperluas</string>
 	<string name="common_expand_all">Perluas semuanya</string>
@@ -196,7 +196,7 @@
 	<string name="home_force_upload_text">Tindakan ini akan menimpa konfigurasi perangkat yang disimpan pada broker untuk setiap cluster di grup ini dengan salinan baru yang dibuat dari pengaturan ponsel ini saat ini. Konfigurasi berbeda apa pun yang saat ini ada di broker (misalnya dari ponsel lain) akan diganti, bukan digabungkan. Hal ini tidak dapat dibatalkan secara otomatis</string>
 	<string name="home_force_upload_title">Unggah paksa ‘%1$s’?</string>
 	<string name="home_group_fallback">Kelompok</string>
-	<string name="home_loading">Memuat</string>
+	<string name="home_loading">Memuat…</string>
 	<string name="home_loading_detail">Masih membaca konfigurasi tersimpan Anda</string>
 	<string name="home_low_battery_description" formatted="false">Baterai 20% atau kurang</string>
 	<string name="home_moved">Memindahkan ‘%1$s’</string>
@@ -212,8 +212,8 @@
 	<string name="home_old_topic">Topik lama</string>
 	<string name="home_rename_group">Ganti nama %1$s</string>
 	<string name="home_republished">Diterbitkan ulang ‘%1$s’ ke broker</string>
-	<string name="home_retopic">topik ulang</string>
-	<string name="home_retopic_all">Retopik Semua Cluster</string>
+	<string name="home_retopic">Ubah topik</string>
+	<string name="home_retopic_all">Ubah Topik Semua Cluster</string>
 	<string name="home_retopic_all_detail">Memindahkan setiap cluster dalam grup ini yang saat ini berada pada satu topik MQTT lama ke topik MQTT baru, sekaligus – misalnya. setelah membagi jaringan Zigbee menjadi jembatan kedua, untuk setiap perangkat yang dipindahkan. Cluster pada topik berbeda tidak tersentuh</string>
 	<string name="home_retopic_all_text">Memindahkan setiap klaster dalam grup ini yang topiknya sama persis dengan ‘Topik lama’ ke ‘Topik baru’ – klaster grup lainnya tidak tersentuh. Hal ini tidak dapat dibatalkan secara otomatis</string>
 	<string name="home_retopic_all_title">Topik ulang semua cluster di ‘%1$s’?</string>
@@ -319,7 +319,7 @@
 	<string name="settings_about">Tentang</string>
 	<string name="settings_about_tagline">%1$s – tanpa cloud, tanpa akun, tanpa penguncian</string>
 	<string name="settings_alerts_detail">Peringatan asap dan air, suara, dan pemberitahuan pengujian</string>
-	<string name="settings_background">Latar Belakang Pekerjaan</string>
+	<string name="settings_background">Pekerjaan Latar Belakang</string>
 	<string name="settings_background_detail">Jaga koneksi broker tetap hidup saat aplikasi ditutup</string>
 	<string name="settings_backup">Cadangkan &amp; Pulihkan</string>
 	<string name="settings_backup_detail">Simpan atau pulihkan konfigurasi Anda, penuh atau broker saja</string>
@@ -330,7 +330,7 @@
 	</plurals>
 	<string name="settings_force_upload_all">Unggah Paksa Semua Grup</string>
 	<string name="settings_force_upload_all_confirm">Ini menimpa konfigurasi perangkat yang disimpan pada broker untuk setiap cluster di setiap grup dengan salinan baru yang dibuat dari pengaturan ponsel ini saat ini. Konfigurasi berbeda apa pun yang saat ini ada di broker (misalnya dari ponsel lain) akan diganti, bukan digabungkan. Hal ini tidak dapat dibatalkan secara otomatis</string>
-	<string name="settings_force_upload_all_confirm_title">Upload paksa semua grup?</string>
+	<string name="settings_force_upload_all_confirm_title">Unggah paksa semua grup?</string>
 	<string name="settings_force_upload_all_detail">Membangun kembali dan memublikasikan ulang setiap cluster di konfigurasi perangkat setiap grup dari pengaturan ponsel ini saat ini – gunakan ini jika masalah broker atau ponsel lain membuat lebih dari satu grup tidak sinkron</string>
 	<plurals name="settings_force_upload_all_done">
 		<item quantity="other">Memublikasikan ulang %1$d grup ke broker</item>
@@ -375,7 +375,7 @@
 	<string name="terminal_jump_newest">Lompat ke yang terbaru</string>
 	<string name="terminal_no_match">Tidak ada pesan yang cocok dengan filter tersebut</string>
 	<string name="terminal_title">Terminal</string>
-	<string name="tile_presence_clear">Jernih</string>
+	<string name="tile_presence_clear">Kosong</string>
 	<string name="tile_presence_detected">Terdeteksi</string>
 	<string name="watering_channel">Peringatan penyiraman</string>
 	<string name="watering_channel_desc">Bergetar dan berbunyi (dengan keras, melalui volume alarm) ketika sensor kelembaban mencapai pertengahan kisaran idealnya sambil naik</string>
@@ -383,7 +383,7 @@
 	<string name="watering_notif_text">Meningkat hingga pertengahan kisaran idealnya – ketuk untuk membuka %1$s</string>
 	<string name="watering_notif_title">%1$s mencapai target kelembapan</string>
 	<string name="watering_test_sensor">Sensor Uji</string>
-	<string name="welcome_add_broker">Tambahkan Pialang</string>
+	<string name="welcome_add_broker">Tambahkan Broker</string>
 	<string name="welcome_intro">Anda memerlukan setidaknya satu broker MQTT untuk memulai – tambahkan satu sekarang, atau pulihkan konfigurasi yang telah Anda backup sebelumnya</string>
 	<string name="welcome_restore">Pulihkan dari Cadangan</string>
 	<string name="welcome_title">Selamat datang</string>

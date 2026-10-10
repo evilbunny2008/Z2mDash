@@ -28,7 +28,7 @@
 	<string name="backup_encrypted_title">এনক্রিপ্ট করা ব্যাকআপ</string>
 	<string name="backup_export">রপ্তানি</string>
 	<string name="backup_export_brokers_detail">একটি সংকুচিত ফাইল হিসাবে শুধুমাত্র আপনার ব্রোকার সংযোগ বিশদ সংরক্ষণ করুন</string>
-	<string name="backup_export_config">রপ্তানি কনফিগারেশন</string>
+	<string name="backup_export_config">কনফিগারেশন রপ্তানি করুন</string>
 	<string name="backup_export_full_detail">আপনার মালিকানাধীন একটি সংকুচিত ফাইল হিসাবে আপনার দালাল, গ্রুপ এবং প্যানেল সংরক্ষণ করুন</string>
 	<string name="backup_exported">কনফিগারেশন এক্সপোর্ট করা হয়েছে</string>
 	<string name="backup_import_config">আমদানি কনফিগারেশন</string>
@@ -192,7 +192,7 @@
 	<string name="home_duplicate">ডুপ্লিকেট</string>
 	<string name="home_duplicate_broad_warning">এই ক্লাস্টারের প্যানেলগুলি সমস্ত একটি পরিষ্কার ডিভাইস বিষয় ভাগ করে না (শুধুমাত্র ‘%1$s’ সাধারণ) – সম্ভবত একটি বাস্তব ডিভাইসের পরিবর্তে কয়েকটি অমিল প্যানেল। নীচের বিষয়টি শুধুমাত্র সেই ভাগ করা অংশটিকে প্রতিস্থাপন করে, তাই এটি আপনার প্রত্যাশা অনুযায়ী প্রযোজ্য নাও হতে পারে। প্রথমে পৃথকভাবে এই ক্লাস্টারের প্যানেলগুলি পরীক্ষা করা মূল্যবান৷</string>
 	<string name="home_duplicate_cluster">ডুপ্লিকেট %1$s</string>
-	<string name="home_duplicate_title">‘%1$s’ সদৃশ</string>
+	<string name="home_duplicate_title">‘%1$s’ ডুপ্লিকেট করুন</string>
 	<string name="home_edit_group">গোষ্ঠী সম্পাদনা করুন</string>
 	<string name="home_edit_value_title">‘%1$s’ সম্পাদনা করুন</string>
 	<string name="home_expand_all_groups">সমস্ত গ্রুপ প্রসারিত করুন</string>
@@ -202,13 +202,13 @@
 	<string name="home_force_upload_text">এটি এই ফোনের বর্তমান সেটিংস থেকে তৈরি একটি নতুন অনুলিপি সহ এই গ্রুপের প্রতিটি ক্লাস্টারের জন্য ব্রোকারে রাখা ডিভাইস কনফিগারেশনকে ওভাররাইট করে। ব্রোকারে বর্তমানে যেকোন ভিন্ন কনফিগারেশন (যেমন অন্য ফোন থেকে) প্রতিস্থাপন করা হবে, মার্জ করা হবে না। এটি স্বয়ংক্রিয়ভাবে পূর্বাবস্থায় ফেরানো যাবে না</string>
 	<string name="home_force_upload_title">‘%1$s’ আপলোড করতে বাধ্য করবেন?</string>
 	<string name="home_group_fallback">গ্রুপ</string>
-	<string name="home_loading">লোড হচ্ছে</string>
+	<string name="home_loading">লোড হচ্ছে…</string>
 	<string name="home_loading_detail">এখনও আপনার সংরক্ষিত কনফিগারেশন পড়া</string>
 	<string name="home_low_battery_description" formatted="false">ব্যাটারি 20% বা তার কম</string>
 	<string name="home_moved">‘%1$s’ সরানো হয়েছে</string>
 	<string name="home_moved_into">‘%1$s’ কে ‘%2$s’ এ সরানো হয়েছে</string>
 	<string name="home_moved_to">‘%1$s’ থেকে ‘%2$s’ এ সরানো হয়েছে</string>
-	<string name="home_moved_within">‘%1$s’কে ’%2$s‘ এর মধ্যে সরানো হয়েছে</string>
+	<string name="home_moved_within">‘%1$s’কে ‘%2$s’ এর মধ্যে সরানো হয়েছে</string>
 	<string name="home_new_topic">নতুন বিষয়</string>
 	<string name="home_no_groups">এখনো কোনো দল নেই</string>
 	<string name="home_no_groups_detail">আপনার প্রথম গ্রুপ তৈরি করতে + আলতো চাপুন, তারপরে প্যানেল যোগ করুন</string>
@@ -218,8 +218,8 @@
 	<string name="home_old_topic">পুরানো বিষয়</string>
 	<string name="home_rename_group">%1$s পুনঃনামকরণ করুন</string>
 	<string name="home_republished">ব্রোকারের কাছে ‘%1$s’ পুনরায় প্রকাশ করা হয়েছে৷</string>
-	<string name="home_retopic">রিটোপিক</string>
-	<string name="home_retopic_all">Retopic সমস্ত ক্লাস্টার</string>
+	<string name="home_retopic">বিষয় পরিবর্তন</string>
+	<string name="home_retopic_all">সব ক্লাস্টারের বিষয় পরিবর্তন</string>
 	<string name="home_retopic_all_detail">এই গোষ্ঠীর প্রতিটি ক্লাস্টার বর্তমানে একটি পুরানো MQTT বিষয়ের উপর একটি নতুন একটিতে নিয়ে যায় – যেমন একটি জিগবি নেটওয়ার্ককে একটি দ্বিতীয় সেতুতে বিভক্ত করার পরে, সরানো প্রতিটি ডিভাইসের জন্য। একটি ভিন্ন বিষয়ে ক্লাস্টার অস্পৃশ্য</string>
 	<string name="home_retopic_all_text">এই গ্রুপের প্রতিটি ক্লাস্টার সরান যার বিষয়বস্তু ‘পুরাতন বিষয়’ এর সাথে হুবহু মিলে যায় ‘নতুন বিষয়’ এ – এই গ্রুপের বাকি ক্লাস্টারগুলি অস্পর্শিত। এটি স্বয়ংক্রিয়ভাবে পূর্বাবস্থায় ফেরানো যাবে না</string>
 	<string name="home_retopic_all_title">‘%1$s’ এ সমস্ত ক্লাস্টার রিটোপিক করবেন?</string>
@@ -360,7 +360,7 @@
 		<item quantity="one">%1$d প্যানেল সরানো হয়েছে</item>
 		<item quantity="other">%1$dটি প্যানেল সরানো হয়েছে৷</item>
 	</plurals>
-	<string name="settings_tile_width">টালি এবং ক্লাস্টার প্রস্থ</string>
+	<string name="settings_tile_width">টাইল ও ক্লাস্টারের প্রস্থ</string>
 	<string name="settings_tile_width_detail">কতটা চওড়া টাইলস (এবং ক্লাস্টার কার্ড, ৩টি টাইল চওড়া) স্ক্রীন ফিলিং পর্যন্ত বাড়তে পারে – বর্তমানে %1$ddp</string>
 	<string name="settings_undo">টোস্টের সময়কাল পূর্বাবস্থায় ফেরান</string>
 	<string name="settings_undo_detail">টাইল, ক্লাস্টার বা গোষ্ঠী টেনে আনার পরে ‘আনডু’ প্রম্পট কতক্ষণ থাকে – বর্তমানে %1$ds</string>
@@ -389,7 +389,7 @@
 	<string name="terminal_jump_newest">নতুন থেকে ঝাঁপ দাও</string>
 	<string name="terminal_no_match">কোন বার্তা এই ফিল্টার মেলে না</string>
 	<string name="terminal_title">টার্মিনাল</string>
-	<string name="tile_presence_clear">পরিষ্কার</string>
+	<string name="tile_presence_clear">শনাক্ত হয়নি</string>
 	<string name="tile_presence_detected">সনাক্ত করা হয়েছে</string>
 	<string name="watering_channel">জল দেওয়ার সতর্কতা</string>
 	<string name="watering_channel_desc">যখন আর্দ্রতা সেন্সর উপরে উঠার সময় তার আদর্শ পরিসরের মাঝখানে পৌঁছে তখন কম্পন এবং ঘামি (জোরে, অ্যালার্ম ভলিউমের মাধ্যমে)</string>

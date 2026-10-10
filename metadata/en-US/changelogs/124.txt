@@ -1,1 +1,2 @@
 * Added translations
+* Chinese now defaults to Simplified, with Traditional kept for Taiwan
