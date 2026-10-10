@@ -18,6 +18,22 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
 
+object NotificationPermission {
+    private const val POST_NOTIFICATIONS = "android.permission.POST_NOTIFICATIONS"
+
+    /**
+     * Returns the permission string if the device supports it (API 33+),
+     * otherwise returns null.
+     */
+    fun getPostNotificationsPermission(): String? {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            POST_NOTIFICATIONS
+        } else {
+            null
+        }
+    }
+}
+
 fun hasNotificationPermission(context: Context): Boolean =
     Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU ||
         ContextCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) ==
@@ -54,7 +70,12 @@ fun rememberNotificationPermissionState(): NotificationPermissionState {
     state = remember {
         NotificationPermissionState(
             granted = hasNotificationPermission(context),
-            requestPermission = { launcher.launch(Manifest.permission.POST_NOTIFICATIONS) },
+            //requestPermission = { launcher.launch(Manifest.permission.POST_NOTIFICATIONS) },
+            requestPermission = {
+                NotificationPermission.getPostNotificationsPermission()?.let {
+                    launcher.launch(it)
+                }
+            },
             openSettings = {
                 context.startActivity(
                     Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
