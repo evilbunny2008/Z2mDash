@@ -124,7 +124,7 @@
 		<item quantity="one">Agregá %1$d panel</item>
 		<item quantity="other">Agregá %1$d panel</item>
 	</plurals>
-	<string name="discover_all_applied">Tur aparato deskubrí a wòrdu aplikå – no tin nada mas pa konfigurá aki</string>
+	<string name="discover_all_applied">Tur aparato deskubrí a wòrdu aplika – no tin nada mas pa konfigurá aki</string>
 	<string name="discover_apply">Aplika konfigurashon di aparato</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Ta krea %1$d panel eksaktamente manera ta den lista na %2$s den grupo ‘%3$s’, saltando e kahitanan di marka aki bou</item>
