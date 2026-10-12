@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Raba ni kato kei na isoqoni</string>
 	<string name="settings_tile_width_detail">Na raba e rawa ni tubu kina na kato (kei na kaveti ni isoqoni, e 3 na kato na kena raba), me yacova ni vakasinaiti na sikirini – ena gauna oqo %1$ddp</string>
+	<string name="settings_lock_layout">Lokataka na Layout</string>
+	<string name="settings_lock_layout_detail">Tarova na kena toso na tile, cluster, kei na ilawalawa ena kena droka</string>
 	<string name="settings_undo">Balavu ni itukutuku Vakalesuya</string>
 	<string name="settings_undo_detail">Na balavu ni gauna e tiko kina na taro ‘Vakalesuya’ ni oti na dreti ni dua na kato, isoqoni se ilawalawa – ena gauna oqo %1$ds</string>
 	<string name="settings_undo_detail_off">Na balavu ni gauna e tiko kina na taro ‘Vakalesuya’ ni oti na dreti ni dua na kato, isoqoni se ilawalawa – e vakamatei ena gauna oqo</string>

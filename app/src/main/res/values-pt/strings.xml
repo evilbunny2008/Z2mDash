@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Largura do bloco e do cluster</string>
 	<string name="settings_tile_width_detail">Qual a largura dos blocos (e, portanto, as cartas de grupo, com 3 blocos de largura) podem crescer, até preencher a tela – atualmente %1$ddp</string>
+	<string name="settings_lock_layout">Bloquear layout</string>
+	<string name="settings_lock_layout_detail">Impede que blocos, clusters e grupos sejam movidos ao arrastar</string>
 	<string name="settings_undo">Desfazer duração do brinde</string>
 	<string name="settings_undo_detail">Quanto tempo o prompt ‘Desfazer’ permanece ativo após arrastar um bloco, cluster ou grupo – atualmente %1$ds</string>
 	<string name="settings_undo_detail_off">Quanto tempo o prompt ‘Desfazer’ permanece ativo após arrastar um bloco, cluster ou grupo – atualmente desativado</string>

@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ширина на плочките и клъстерите</string>
 	<string name="settings_tile_width_detail">Колко широки могат да станат плочките (а оттам и картите на клъстерите, широки 3 плочки), до запълване на екрана – в момента %1$ddp</string>
+	<string name="settings_lock_layout">Заключване на оформлението</string>
+	<string name="settings_lock_layout_detail">Спира преместването на плочки, клъстери и групи чрез плъзгане</string>
 	<string name="settings_undo">Продължителност на съобщението за отмяна</string>
 	<string name="settings_undo_detail">Колко дълго остава съобщението „Отмяна“ след плъзгане на плочка, клъстер или група – в момента %1$d с</string>
 	<string name="settings_undo_detail_off">Колко дълго остава съобщението „Отмяна“ след плъзгане на плочка, клъстер или група – в момента е изключено</string>

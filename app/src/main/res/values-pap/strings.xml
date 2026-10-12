@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Hanchura di tegel i kluster</string>
 	<string name="settings_tile_width_detail">Kon hanchu tegelnan (i pues kartanan di kluster, 3 tegel hanchu) por bira, te yena e pantaya – awor %1$ddp</string>
+	<string name="settings_lock_layout">Bloká Layout</string>
+	<string name="settings_lock_layout_detail">Impedí ku tegel, klùster i grupo ta wòrdu move dor di hala nan</string>
 	<string name="settings_undo">Durashon di mensahe Deshasí</string>
 	<string name="settings_undo_detail">Kuantu tempu e mensahe ‘Deshasí’ ta keda despues di hala un tegel, kluster òf grupo – awor %1$ds</string>
 	<string name="settings_undo_detail_off">Kuantu tempu e mensahe ‘Deshasí’ ta keda despues di hala un tegel, kluster òf grupo – awor pagá</string>

@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Flīžu un klasteru platums</string>
 	<string name="settings_tile_width_detail">Cik platas var kļūt flīzes (un līdz ar to klasteru kartītes, 3 flīzes platas), līdz pat visam ekrānam – pašlaik %1$ddp</string>
+	<string name="settings_lock_layout">Bloķēt izkārtojumu</string>
+	<string name="settings_lock_layout_detail">Neļauj pārvietot elementus, klasterus un grupas, tos velkot</string>
 	<string name="settings_undo">Atsaukšanas paziņojuma ilgums</string>
 	<string name="settings_undo_detail">Cik ilgi ‘Atsaukt’ uzvedne paliek redzama pēc flīzes, klastera vai grupas vilkšanas – pašlaik %1$ds</string>
 	<string name="settings_undo_detail_off">Cik ilgi ‘Atsaukt’ uzvedne paliek redzama pēc flīzes, klastera vai grupas vilkšanas – pašlaik izslēgts</string>

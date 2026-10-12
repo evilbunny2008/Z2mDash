@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Paanide ja klastrite laius</string>
 	<string name="settings_tile_width_detail">Kui laiaks võivad paanid (ja seega klastrikaardid, 3 paani laiad) kasvada, kuni kogu ekraanini – praegu %1$ddp</string>
+	<string name="settings_lock_layout">Lukusta paigutus</string>
+	<string name="settings_lock_layout_detail">Takistab paanide, klastrite ja rühmade lohistamisega teisaldamist</string>
 	<string name="settings_undo">Tagasivõtmise teate kestus</string>
 	<string name="settings_undo_detail">Kui kaua ‘Võta tagasi’ viip pärast paani, klastri või grupi lohistamist nähtavale jääb – praegu %1$ds</string>
 	<string name="settings_undo_detail_off">Kui kaua ‘Võta tagasi’ viip pärast paani, klastri või grupi lohistamist nähtavale jääb – praegu väljas</string>

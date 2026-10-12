@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ambane ubin lan kluster</string>
 	<string name="settings_tile_width_detail">Sepira ambane ubin (lan mulane kertu kluster, 3 ubin ambane) bisa tuwuh, nganti ngebaki layar – saiki %1$ddp</string>
+	<string name="settings_lock_layout">Kunci Tata Letak</string>
+	<string name="settings_lock_layout_detail">Nyegah kothak, kluster, lan grup dipindhah kanthi nyeret</string>
 	<string name="settings_undo">Suwene pesen Batalake</string>
 	<string name="settings_undo_detail">Sepira suwene pesen ‘Batalake’ tetep ana sawise nyeret ubin, kluster utawa grup – saiki %1$ds</string>
 	<string name="settings_undo_detail_off">Sepira suwene pesen ‘Batalake’ tetep ana sawise nyeret ubin, kluster utawa grup – saiki mati</string>

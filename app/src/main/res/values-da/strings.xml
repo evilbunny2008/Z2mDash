@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bredde på fliser og klynger</string>
 	<string name="settings_tile_width_detail">Hvor brede fliser (og dermed klyngekort, 3 fliser brede) må blive, op til hele skærmen – i øjeblikket %1$ddp</string>
+	<string name="settings_lock_layout">Lås layout</string>
+	<string name="settings_lock_layout_detail">Forhindr at fliser, klynger og grupper flyttes ved at trække</string>
 	<string name="settings_undo">Varighed for Fortryd–besked</string>
 	<string name="settings_undo_detail">Hvor længe ‘Fortryd’–beskeden vises efter at have trukket en flise, klynge eller gruppe – i øjeblikket %1$ds</string>
 	<string name="settings_undo_detail_off">Hvor længe ‘Fortryd’–beskeden vises efter at have trukket en flise, klynge eller gruppe – i øjeblikket slået fra</string>

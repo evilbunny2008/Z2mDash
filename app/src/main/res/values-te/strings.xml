@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">టైల్ &amp; క్లస్టర్ వెడల్పు</string>
 	<string name="settings_tile_width_detail">స్క్రీన్‌ని నింపే వరకు ఎంత వెడల్పు టైల్స్ (మరియు క్లస్టర్ కార్డ్‌లు, 3 టైల్స్ వెడల్పు) పెరుగుతాయి – ప్రస్తుతం %1$ddp</string>
+	<string name="settings_lock_layout">లేఅవుట్‌ను లాక్ చేయండి</string>
+	<string name="settings_lock_layout_detail">లాగడం ద్వారా టైల్‌లు, క్లస్టర్‌లు మరియు సమూహాలను తరలించడాన్ని నిరోధించండి</string>
 	<string name="settings_undo">టోస్ట్ వ్యవధిని రద్దు చేయండి</string>
 	<string name="settings_undo_detail">టైల్, క్లస్టర్ లేదా సమూహాన్ని లాగిన తర్వాత ‘అన్‌డు’ ప్రాంప్ట్ ఎంతసేపు ఉంటుంది – ప్రస్తుతం %1$ds</string>
 	<string name="settings_undo_detail_off">టైల్, క్లస్టర్ లేదా సమూహాన్ని లాగిన తర్వాత ‘అన్‌డు’ ప్రాంప్ట్ ఎంతసేపు ఉంటుంది – ప్రస్తుతం ఆఫ్‌లో ఉంది</string>

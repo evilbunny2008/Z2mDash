@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Tegel– &amp; clusterbreedte</string>
 	<string name="settings_tile_width_detail">Hoe breed tegels (en dus clusterkaarten, 3 tegels breed) mogen worden, tot het hele scherm – nu %1$ddp</string>
+	<string name="settings_lock_layout">Indeling vergrendelen</string>
+	<string name="settings_lock_layout_detail">Voorkomt dat tegels, clusters en groepen door slepen worden verplaatst</string>
 	<string name="settings_undo">Duur van ongedaan maken–melding</string>
 	<string name="settings_undo_detail">Hoe lang de melding ‘Ongedaan maken’ zichtbaar blijft na het slepen van een tegel, cluster of groep – nu %1$d s</string>
 	<string name="settings_undo_detail_off">Hoe lang de melding ‘Ongedaan maken’ zichtbaar blijft na het slepen van een tegel, cluster of groep – nu uit</string>

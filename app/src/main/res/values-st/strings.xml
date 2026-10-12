@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bophara ba dithaele le dipokello</string>
 	<string name="settings_tile_width_detail">Hore na dithaele (kahoo le dikarete tsa dipokello, tse bophara ba dithaele tse 3) di ka hola ho isa bophareng bo bokae, ho fihlela di tlatsa skrine – hona jwale %1$ddp</string>
+	<string name="settings_lock_layout">Notlela Moralo</string>
+	<string name="settings_lock_layout_detail">Thibela ho tsamaiswa ha dithaele, dihlopha tse nyane le dihlopha ka ho hula</string>
 	<string name="settings_undo">Nako ya molaetsa wa Etsolla</string>
 	<string name="settings_undo_detail">Hore na kopo ya ‘Etsolla’ e dula nako e kae kamora ho hula thaele, pokello kapa sehlopha – hona jwale %1$ds</string>
 	<string name="settings_undo_detail_off">Hore na kopo ya ‘Etsolla’ e dula nako e kae kamora ho hula thaele, pokello kapa sehlopha – hona jwale e timilwe</string>

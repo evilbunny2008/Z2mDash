@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Amplada de mosaics i clústers</string>
 	<string name="settings_tile_width_detail">Fins a quina amplada poden créixer els mosaics (i per tant les targetes de clúster, de 3 mosaics d’ample), fins a omplir la pantalla – actualment %1$ddp</string>
+	<string name="settings_lock_layout">Bloqueja la disposició</string>
+	<string name="settings_lock_layout_detail">Impedeix moure les rajoles, els clústers i els grups arrossegant</string>
 	<string name="settings_undo">Durada de l’avís Desfés</string>
 	<string name="settings_undo_detail">Quant de temps es manté l’avís ‘Desfés’ després d’arrossegar un mosaic, clúster o grup – actualment %1$ds</string>
 	<string name="settings_undo_detail_off">Quant de temps es manté l’avís ‘Desfés’ després d’arrossegar un mosaic, clúster o grup – actualment desactivat</string>

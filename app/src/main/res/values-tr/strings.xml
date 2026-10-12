@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Kutucuk ve Küme Genişliği</string>
 	<string name="settings_tile_width_detail">Ekranı dolduracak kadar geniş döşemeler (ve dolayısıyla 3 döşeme genişliğindeki küme kartları) ne kadar büyüyebilir – şu anda %1$ddp</string>
+	<string name="settings_lock_layout">Düzeni Kilitle</string>
+	<string name="settings_lock_layout_detail">Kutucukların, kümelerin ve grupların sürüklenerek taşınmasını engeller</string>
 	<string name="settings_undo">Tost Süresini Geri Al</string>
 	<string name="settings_undo_detail">Bir döşemeyi, kümeyi veya grubu sürükledikten sonra ‘Geri Al’ istemi ne kadar süreyle açık kalır – şu anda %1$ds</string>
 	<string name="settings_undo_detail_off">Bir döşemeyi, kümeyi veya grubu sürükledikten sonra ‘Geri Al’ isteminin ne kadar süre açık kalacağı (şu anda kapalı)</string>

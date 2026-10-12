@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ٹائل اور کلسٹر کی چوڑائی</string>
 	<string name="settings_tile_width_detail">ٹائلز (اور اس لیے 3 ٹائل چوڑے کلسٹر کارڈز) اسکرین بھرنے تک کتنے چوڑے ہو سکتے ہیں – فی الحال %1$ddp</string>
+	<string name="settings_lock_layout">لے آؤٹ لاک کریں</string>
+	<string name="settings_lock_layout_detail">گھسیٹ کر ٹائلز، کلسٹرز اور گروپس کو منتقل کرنے سے روکیں</string>
 	<string name="settings_undo">کالعدم پیغام کا دورانیہ</string>
 	<string name="settings_undo_detail">ٹائل، کلسٹر یا گروپ گھسیٹنے کے بعد ‘کالعدم کریں’ کا پیغام کتنی دیر رہتا ہے – فی الحال %1$d سیکنڈ</string>
 	<string name="settings_undo_detail_off">ٹائل، کلسٹر یا گروپ گھسیٹنے کے بعد ‘کالعدم کریں’ کا پیغام کتنی دیر رہتا ہے – فی الحال بند</string>

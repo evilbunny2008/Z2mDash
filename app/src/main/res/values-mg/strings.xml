@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Sakan’ny takelaka sy antokony</string>
 	<string name="settings_tile_width_detail">Hatraiza ny sakan’ny takelaka (ary noho izany ny karatry ny antokony, takelaka 3 ny sakany) azo itomboana, hatramin’ny hamenoany ny efijery – ankehitriny %1$ddp</string>
+	<string name="settings_lock_layout">Hidio ny Fandaminana</string>
+	<string name="settings_lock_layout_detail">Sakano ny famindrana ireo taila, vondrona kely ary vondrona amin’ny fisintonana</string>
 	<string name="settings_undo">Faharetan’ny hafatra Avereno</string>
 	<string name="settings_undo_detail">Haharetan’ny fanontaniana ‘Avereno’ aorian’ny fitarihana takelaka, antokony na vondrona – ankehitriny %1$ds</string>
 	<string name="settings_undo_detail_off">Haharetan’ny fanontaniana ‘Avereno’ aorian’ny fitarihana takelaka, antokony na vondrona – ankehitriny maty</string>

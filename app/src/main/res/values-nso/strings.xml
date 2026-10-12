@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bophara bja dithaele le dikgoboketšo</string>
 	<string name="settings_tile_width_detail">Ka fao dithaele (ka gona le dikarata tša dikgoboketšo, tše di nago le bophara bja dithaele tše 3) di ka golago ka gona, go fihla go tlatša sekirini – bjale %1$ddp</string>
+	<string name="settings_lock_layout">Notlela Peakanyo</string>
+	<string name="settings_lock_layout_detail">Thibela go šuthišwa ga dithaele, dihlopha tše nnyane le dihlopha ka go goga</string>
 	<string name="settings_undo">Botelele bja molaetša wa Dirolla</string>
 	<string name="settings_undo_detail">Ka fao kgopelo ya ‘Dirolla’ e dulago nako ye kae ka morago ga go goga thaele, kgoboketšo goba sehlopha – bjale %1$ds</string>
 	<string name="settings_undo_detail_off">Ka fao kgopelo ya ‘Dirolla’ e dulago nako ye kae ka morago ga go goga thaele, kgoboketšo goba sehlopha – bjale e timilwe</string>

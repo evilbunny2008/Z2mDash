@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Largura de mosaicos e clústeres</string>
 	<string name="settings_tile_width_detail">Canto poden medrar os mosaicos (e polo tanto as tarxetas de clúster, de 3 mosaicos de largo), ata encher a pantalla – actualmente %1$ddp</string>
+	<string name="settings_lock_layout">Bloquear deseño</string>
+	<string name="settings_lock_layout_detail">Impide mover mosaicos, clústeres e grupos arrastrándoos</string>
 	<string name="settings_undo">Duración do aviso Desfacer</string>
 	<string name="settings_undo_detail">Canto tempo permanece o aviso ‘Desfacer’ despois de arrastrar un mosaico, clúster ou grupo – actualmente %1$ds</string>
 	<string name="settings_undo_detail_off">Canto tempo permanece o aviso ‘Desfacer’ despois de arrastrar un mosaico, clúster ou grupo – actualmente desactivado</string>

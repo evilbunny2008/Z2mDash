@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Тақтайша және кластер ені</string>
 	<string name="settings_tile_width_detail">Тақтайшалар (демек, 3 тақтайша енді кластер карталары) экранды толтырғанға дейін қаншалықты кеңеюі мүмкін – қазір %1$ddp</string>
+	<string name="settings_lock_layout">Орналасуды құлыптау</string>
+	<string name="settings_lock_layout_detail">Плиткаларды, кластерлерді және топтарды сүйреп жылжытуға жол бермеу</string>
 	<string name="settings_undo">Қайтару хабарының ұзақтығы</string>
 	<string name="settings_undo_detail">Тақтайшаны, кластерді немесе топты сүйрегеннен кейін ‘Қайтару’ ұсынысы қанша уақыт көрсетіледі – қазір %1$ds</string>
 	<string name="settings_undo_detail_off">Тақтайшаны, кластерді немесе топты сүйрегеннен кейін ‘Қайтару’ ұсынысы қанша уақыт көрсетіледі – қазір өшірулі</string>

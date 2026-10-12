@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Largeur des tuiles et des clusters</string>
 	<string name="settings_tile_width_detail">Quelle largeur les tuiles (et donc les cartes de cluster, 3 tuiles de large) peuvent croître, jusqu’à remplir l’écran – actuellement %1$ddp</string>
+	<string name="settings_lock_layout">Verrouiller la disposition</string>
+	<string name="settings_lock_layout_detail">Empêche le déplacement des tuiles, clusters et groupes par glisser</string>
 	<string name="settings_undo">Annuler la durée du toast</string>
 	<string name="settings_undo_detail">Combien de temps l’invite ‘ Annuler ’ reste affichée après le déplacement d’une vignette, d’un cluster ou d’un groupe – actuellement %1$ds</string>
 	<string name="settings_undo_detail_off">Combien de temps l’invite ‘ Annuler ’ reste affichée après le déplacement d’une vignette, d’un cluster ou d’un groupe – actuellement désactivée</string>

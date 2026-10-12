@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Vhuphara ha dzithaili na zwikumbo</string>
 	<string name="settings_tile_width_detail">Uri dzithaili (nga zwenezwo na dzikarata dza zwikumbo, dzi re na vhuphara ha dzithaili dza 3) dzi nga hula u swika kha vhuphara vhungana, u swika dzi tshi ḓadza tshikirini – zwino %1$ddp</string>
+	<string name="settings_lock_layout">Lokhani Nzudzanyo</string>
+	<string name="settings_lock_layout_detail">Thivhelani u tshimbidzwa ha dithaele, zwigwada zwiṱuku na zwigwada nga u kokodza</string>
 	<string name="settings_undo">Vhulapfu ha mulaedza wa Humisela</string>
 	<string name="settings_undo_detail">Uri khumbelo ya ‘Humisela’ i dzula tshifhinga tshingana nga murahu ha u kokodza thaili, tshikumbo kana tshigwada – zwino %1$ds</string>
 	<string name="settings_undo_detail_off">Uri khumbelo ya ‘Humisela’ i dzula tshifhinga tshingana nga murahu ha u kokodza thaili, tshikumbo kana tshigwada – zwino yo dzimiwa</string>

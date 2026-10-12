@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Սալիկների և կլաստերների լայնություն</string>
 	<string name="settings_tile_width_detail">Որքան լայն կարող են դառնալ սալիկները (և հետևաբար կլաստերների քարտերը՝ 3 սալիկ լայնությամբ), մինչև էկրանը լրացնելը – այժմ %1$ddp</string>
+	<string name="settings_lock_layout">Կողպել դասավորությունը</string>
+	<string name="settings_lock_layout_detail">Արգելել սալիկների, կլաստերների և խմբերի տեղափոխումը քաշելով</string>
 	<string name="settings_undo">Հետարկման ծանուցման տևողություն</string>
 	<string name="settings_undo_detail">Որքան ժամանակ է մնում ‘Հետարկել’ հուշումը սալիկը, կլաստերը կամ խումբը քաշելուց հետո – այժմ %1$ds</string>
 	<string name="settings_undo_detail_off">Որքան ժամանակ է մնում ‘Հետարկել’ հուշումը սալիկը, կլաստերը կամ խումբը քաշելուց հետո – այժմ անջատված է</string>

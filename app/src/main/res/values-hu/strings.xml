@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Csempe– és klaszterszélesség</string>
 	<string name="settings_tile_width_detail">Milyen szélesre nőhetnek a csempék (és így a 3 csempe széles klaszterkártyák), egészen a képernyő kitöltéséig – jelenleg %1$ddp</string>
+	<string name="settings_lock_layout">Elrendezés zárolása</string>
+	<string name="settings_lock_layout_detail">Megakadályozza a csempék, klaszterek és csoportok húzással történő áthelyezését</string>
 	<string name="settings_undo">Visszavonási üzenet időtartama</string>
 	<string name="settings_undo_detail">Mennyi ideig látható a „Visszavonás” üzenet egy csempe, klaszter vagy csoport áthúzása után – jelenleg %1$d mp</string>
 	<string name="settings_undo_detail_off">Mennyi ideig látható a „Visszavonás” üzenet egy csempe, klaszter vagy csoport áthúzása után – jelenleg ki</string>

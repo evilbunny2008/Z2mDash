@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bredd på rutor &amp; kluster</string>
 	<string name="settings_tile_width_detail">Hur breda rutor (och därmed klusterkort, 3 rutor breda) kan bli, upp till att fylla skärmen – för närvarande %1$ddp</string>
+	<string name="settings_lock_layout">Lås layout</string>
+	<string name="settings_lock_layout_detail">Förhindrar att rutor, kluster och grupper flyttas genom att dra</string>
 	<string name="settings_undo">Visningstid för Ångra</string>
 	<string name="settings_undo_detail">Hur länge ”Ångra”–uppmaningen visas efter att du dragit en ruta, ett kluster eller en grupp – för närvarande %1$d s</string>
 	<string name="settings_undo_detail_off">Hur länge ”Ångra”–uppmaningen visas efter att du dragit en ruta, ett kluster eller en grupp – för närvarande av</string>

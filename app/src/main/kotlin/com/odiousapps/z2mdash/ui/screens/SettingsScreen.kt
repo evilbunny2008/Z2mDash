@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Sync
@@ -131,6 +132,17 @@ fun SettingsScreen(navController: NavController) {
             }
             item {
                 ListItem(
+                    headlineContent = { Text(stringResource(R.string.settings_lock_layout)) },
+                    supportingContent = { Text(stringResource(R.string.settings_lock_layout_detail)) },
+                    leadingContent = { Icon(Icons.Default.Lock, contentDescription = null) },
+                    trailingContent = { Switch(checked = config.layoutLocked, onCheckedChange = null) },
+                    modifier = Modifier.toggleableRow(config.layoutLocked) { enabled ->
+                        app.configRepository.update { it.copy(layoutLocked = enabled) }
+                    }
+                )
+            }
+            item {
+                ListItem(
                     headlineContent = { Text(stringResource(R.string.settings_undo)) },
                     supportingContent = {
                         Column(modifier = Modifier.fillMaxWidth()) {
@@ -146,8 +158,8 @@ fun SettingsScreen(navController: NavController) {
                                 onValueChange = { newValue ->
                                     app.configRepository.update { it.copy(undoToastSeconds = newValue.toInt()) }
                                 },
-                                valueRange = 0f..30f,
-                                steps = 29, // 1s increments, 0 (off) through 30
+                                valueRange = 0f..60f,
+                                steps = 59, // 1s increments, 0 (off) through 60
                                 modifier = Modifier.horizontalSliderDpadFocusNav()
                             )
                         }

@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">ความกว้างของไทล์และคลัสเตอร์</string>
 	<string name="settings_tile_width_detail">ไทล์ (และการ์ดคลัสเตอร์ที่กว้าง 3 ไทล์) ขยายได้กว้างแค่ไหน จนเต็มหน้าจอ – ปัจจุบัน %1$ddp</string>
+	<string name="settings_lock_layout">ล็อกเลย์เอาต์</string>
+	<string name="settings_lock_layout_detail">ป้องกันไม่ให้ย้ายไทล์ คลัสเตอร์ และกลุ่มด้วยการลาก</string>
 	<string name="settings_undo">ระยะเวลาแสดงข้อความเลิกทำ</string>
 	<string name="settings_undo_detail">ระยะเวลาที่ข้อความ ‘เลิกทำ’ แสดงค้างไว้หลังลากไทล์ คลัสเตอร์ หรือกลุ่ม – ปัจจุบัน %1$d วินาที</string>
 	<string name="settings_undo_detail_off">ระยะเวลาที่ข้อความ ‘เลิกทำ’ แสดงค้างไว้หลังลากไทล์ คลัสเตอร์ หรือกลุ่ม – ปัจจุบันปิดอยู่</string>

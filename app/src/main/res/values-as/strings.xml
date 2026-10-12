@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">টাইল আৰু ক্লাষ্টাৰৰ প্ৰস্থ</string>
 	<string name="settings_tile_width_detail">টাইলবোৰ (আৰু সেয়েহে 3 টাইল বহল ক্লাষ্টাৰ কাৰ্ডবোৰ) স্ক্ৰীন ভৰি নোপোৱালৈকে কিমান বহল হ’ব পাৰে – বৰ্তমান %1$ddp</string>
+	<string name="settings_lock_layout">লেআউট লক কৰক</string>
+	<string name="settings_lock_layout_detail">টাইল, ক্লাষ্টাৰ আৰু গোটসমূহ টানি স্থানান্তৰ কৰাটো বন্ধ কৰক</string>
 	<string name="settings_undo">আনডু বাৰ্তাৰ সময়সীমা</string>
 	<string name="settings_undo_detail">টাইল, ক্লাষ্টাৰ বা গোট টানি নিয়াৰ পিছত ‘আনডু কৰক’ বাৰ্তা কিমান সময় থাকে – বৰ্তমান %1$d ছেকেণ্ড</string>
 	<string name="settings_undo_detail_off">টাইল, ক্লাষ্টাৰ বা গোট টানি নিয়াৰ পিছত ‘আনডু কৰক’ বাৰ্তা কিমান সময় থাকে – বৰ্তমান অফ</string>

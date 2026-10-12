@@ -401,6 +401,8 @@
 	</plurals>
 	<string name="settings_tile_width">Leithead na dTíleanna agus na mBraislí</string>
 	<string name="settings_tile_width_detail">Cé chomh leathan is féidir le tíleanna (agus mar sin cártaí braisle, 3 thíl ar leithead) fás, suas go dtí an scáileán ar fad a líonadh – %1$ddp faoi láthair</string>
+	<string name="settings_lock_layout">Glasáil an Leagan Amach</string>
+	<string name="settings_lock_layout_detail">Cosc a chur ar thíleanna, braislí agus grúpaí a bhogadh trí tharraingt</string>
 	<string name="settings_undo">Fad Teachtaireacht Cuir ar Ais</string>
 	<string name="settings_undo_detail">Cá fhad a fhanann an leid ‘Cuir ar ais’ tar éis tíl, braisle nó grúpa a tharraingt – %1$ds faoi láthair</string>
 	<string name="settings_undo_detail_off">Cá fhad a fhanann an leid ‘Cuir ar ais’ tar éis tíl, braisle nó grúpa a tharraingt – as faoi láthair</string>

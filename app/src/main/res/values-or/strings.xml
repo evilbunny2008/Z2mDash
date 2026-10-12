@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ଟାଇଲ୍ ଓ କ୍ଲଷ୍ଟର ଓସାର</string>
 	<string name="settings_tile_width_detail">ଟାଇଲ୍ (ଏବଂ ତେଣୁ 3 ଟାଇଲ୍ ଓସାରର କ୍ଲଷ୍ଟର କାର୍ଡ) ସ୍କ୍ରିନ ଭରିବା ପର୍ଯ୍ୟନ୍ତ କେତେ ଓସାର ହୋଇପାରିବ – ବର୍ତ୍ତମାନ %1$ddp</string>
+	<string name="settings_lock_layout">ଲେଆଉଟ୍ ଲକ୍ କରନ୍ତୁ</string>
+	<string name="settings_lock_layout_detail">ଟାଣି ଟାଇଲ୍, କ୍ଲଷ୍ଟର ଏବଂ ଗୋଷ୍ଠୀଗୁଡ଼ିକୁ ଘୁଞ୍ଚାଇବା ବନ୍ଦ କରନ୍ତୁ</string>
 	<string name="settings_undo">ପୂର୍ବବତ୍ ସୂଚନାର ଅବଧି</string>
 	<string name="settings_undo_detail">ଟାଇଲ୍, କ୍ଲଷ୍ଟର କିମ୍ବା ଗ୍ରୁପ୍ ଟାଣିବା ପରେ ‘ପୂର୍ବବତ୍ କରନ୍ତୁ’ ସୂଚନା କେତେ ସମୟ ରହେ – ବର୍ତ୍ତମାନ %1$d ସେକେଣ୍ଡ</string>
 	<string name="settings_undo_detail_off">ଟାଇଲ୍, କ୍ଲଷ୍ଟର କିମ୍ବା ଗ୍ରୁପ୍ ଟାଣିବା ପରେ ‘ପୂର୍ବବତ୍ କରନ୍ତୁ’ ସୂଚନା କେତେ ସମୟ ରହେ – ବର୍ତ୍ତମାନ ବନ୍ଦ</string>

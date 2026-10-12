@@ -388,6 +388,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ширина плитки и кластера</string>
 	<string name="settings_tile_width_detail">Насколько широкие тайлы (и, следовательно, кластерные карты шириной в 3 тайла) могут увеличиваться до заполнения экрана — в настоящее время %1$ddp</string>
+	<string name="settings_lock_layout">Заблокировать макет</string>
+	<string name="settings_lock_layout_detail">Запрещает перемещать плитки, кластеры и группы перетаскиванием</string>
 	<string name="settings_undo">Отменить длительность всплывающего уведомления</string>
 	<string name="settings_undo_detail">Как долго отображается приглашение ‘Отменить’ после перетаскивания плитки, кластера или группы — в настоящее время %1$ds</string>
 	<string name="settings_undo_detail_off">Как долго отображается подсказка ‘Отменить’ после перетаскивания плитки, кластера или группы (в настоящее время отключена)</string>

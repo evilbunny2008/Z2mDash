@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ширина плочица и кластера</string>
 	<string name="settings_tile_width_detail">Колико широке плочице (а тиме и картице кластера, широке 3 плочице) могу да порасту, све до попуњавања екрана – тренутно %1$ddp</string>
+	<string name="settings_lock_layout">Закључај распоред</string>
+	<string name="settings_lock_layout_detail">Спречава померање плочица, кластера и група превлачењем</string>
 	<string name="settings_undo">Трајање обавештења Опозови</string>
 	<string name="settings_undo_detail">Колико дуго остаје упит ‘Опозови’ након превлачења плочице, кластера или групе – тренутно %1$ds</string>
 	<string name="settings_undo_detail_off">Колико дуго остаје упит ‘Опозови’ након превлачења плочице, кластера или групе – тренутно искључено</string>

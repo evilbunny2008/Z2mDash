@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Плитка жана кластердин туурасы</string>
 	<string name="settings_tile_width_detail">Плиткалар (демек, 3 плитка туурасындагы кластер карталары) экранды толтурганга чейин канчалык кеңейе алат – азыр %1$ddp</string>
+	<string name="settings_lock_layout">Жайгашууну кулпулоо</string>
+	<string name="settings_lock_layout_detail">Плиткаларды, кластерлерди жана топторду сүйрөп жылдырууга тыюу салуу</string>
 	<string name="settings_undo">Артка кайтаруу билдирүүсүнүн узактыгы</string>
 	<string name="settings_undo_detail">Плитканы, кластерди же топту сүйрөгөндөн кийин ‘Артка кайтаруу’ сунушу канча убакыт көрүнүп турат – азыр %1$ds</string>
 	<string name="settings_undo_detail_off">Плитканы, кластерди же топту сүйрөгөндөн кийин ‘Артка кайтаруу’ сунушу канча убакыт көрүнүп турат – азыр өчүк</string>

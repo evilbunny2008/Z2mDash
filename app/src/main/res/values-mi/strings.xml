@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Whānui taera me te kāhui</string>
 	<string name="settings_tile_width_detail">Te whānui e taea ai e ngā taera (ā, ko ngā kāri kāhui hoki, e 3 ngā taera te whānui) te tipu, tae noa ki te whakakī i te mata – ināianei %1$ddp</string>
+	<string name="settings_lock_layout">Rakaina te Tahora</string>
+	<string name="settings_lock_layout_detail">Ārai i te nekehanga o ngā tīra, ngā kāhui, me ngā rōpū mā te tō</string>
 	<string name="settings_undo">Te roa o te karere Wetekina</string>
 	<string name="settings_undo_detail">Te roa e noho ai te tohu ‘Wetekina’ i muri i te tō i tētahi taera, kāhui, rōpū rānei – ināianei %1$ds</string>
 	<string name="settings_undo_detail_off">Te roa e noho ai te tohu ‘Wetekina’ i muri i te tō i tētahi taera, kāhui, rōpū rānei – kua weto ināianei</string>

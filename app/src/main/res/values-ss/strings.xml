@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bubanti bemathayela netinhlanganisela</string>
 	<string name="settings_tile_width_detail">Kutsi emathayela (ngako nemakhadi etinhlanganisela, labanti ngemathayela la–3) angakhula abe banti kangakanani, kuze agcwalise sikrini – nyalo %1$ddp</string>
+	<string name="settings_lock_layout">Vala Luhlelo</string>
+	<string name="settings_lock_layout_detail">Vimba kususwa kwematayela, emacoco nemacembu ngekudvonsa</string>
 	<string name="settings_undo">Budze besati sekubuyisela emuva</string>
 	<string name="settings_undo_detail">Kutsi sicelo lesitsi ‘Buyisela emuva’ sihlala sikhatsi lesingakanani emuva kwekudvonsa lithayela, inhlanganisela nobe licembu – nyalo %1$ds</string>
 	<string name="settings_undo_detail_off">Kutsi sicelo lesitsi ‘Buyisela emuva’ sihlala sikhatsi lesingakanani emuva kwekudvonsa lithayela, inhlanganisela nobe licembu – nyalo kuvaliwe</string>

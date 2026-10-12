@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ޓައިލް &amp; ކްލަސްޓަރުގެ ފުޅާމިން</string>
 	<string name="settings_tile_width_detail">ސްކްރީން ފުރެންދެން ޓައިލްތައް (އަދި އެހެންކަމުން 3 ޓައިލްގެ ފުޅާމިނުގައިވާ ކްލަސްޓަރ ކާޑުތައް) ފުޅާވެވޭނެ މިންވަރު – މިހާރު %1$ddp</string>
+	<string name="settings_lock_layout">ލޭއައުޓް ލޮކްކުރުން</string>
+	<string name="settings_lock_layout_detail">ދަމައިގެން ޓައިލްތަކާއި ކްލަސްޓަރުތަކާއި ގްރޫޕްތައް ބަދަލުކުރުން ހުއްޓުވުން</string>
 	<string name="settings_undo">އަނބުރާ ބަދަލުކުރުމުގެ މެސެޖުގެ މުއްދަތު</string>
 	<string name="settings_undo_detail">ޓައިލެއް، ކްލަސްޓަރެއް ނުވަތަ ގްރޫޕެއް ދަމައިގެން ގެންދިއުމަށްފަހު “އަނބުރާ ބަދަލުކުރޭ” މެސެޖު ފެންނާނެ މުއްދަތު – މިހާރު %1$d ސިކުންތު</string>
 	<string name="settings_undo_detail_off">ޓައިލެއް، ކްލަސްޓަރެއް ނުވަތަ ގްރޫޕެއް ދަމައިގެން ގެންދިއުމަށްފަހު “އަނބުރާ ބަދަލުކުރޭ” މެސެޖު ފެންނާނެ މުއްދަތު – މިހާރު އޮފް</string>

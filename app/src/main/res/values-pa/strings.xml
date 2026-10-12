@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ਟਾਈਲ &amp; ਕਲੱਸਟਰ ਦੀ ਚੌੜਾਈ</string>
 	<string name="settings_tile_width_detail">ਟਾਈਲਾਂ (ਅਤੇ ਇਸ ਲਈ ਕਲੱਸਟਰ ਕਾਰਡ, 3 ਟਾਈਲਾਂ ਚੌੜੇ) ਕਿੰਨੀਆਂ ਚੌੜੀਆਂ ਹੋ ਸਕਦੀਆਂ ਹਨ, ਸਕ੍ਰੀਨ ਭਰਨ ਤੱਕ – ਇਸ ਵੇਲੇ %1$ddp</string>
+	<string name="settings_lock_layout">ਲੇਆਉਟ ਲੌਕ ਕਰੋ</string>
+	<string name="settings_lock_layout_detail">ਖਿੱਚ ਕੇ ਟਾਈਲਾਂ, ਕਲੱਸਟਰਾਂ ਅਤੇ ਸਮੂਹਾਂ ਨੂੰ ਹਿਲਾਉਣ ਤੋਂ ਰੋਕੋ</string>
 	<string name="settings_undo">ਅਨਡੂ ਟੋਸਟ ਦੀ ਮਿਆਦ</string>
 	<string name="settings_undo_detail">ਟਾਈਲ, ਕਲੱਸਟਰ, ਜਾਂ ਸਮੂਹ ਨੂੰ ਘਸੀਟਣ ਤੋਂ ਬਾਅਦ ‘ਅਨਡੂ’ ਪ੍ਰੋਂਪਟ ਕਿੰਨੀ ਦੇਰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ – ਇਸ ਵੇਲੇ %1$ds</string>
 	<string name="settings_undo_detail_off">ਟਾਈਲ, ਕਲੱਸਟਰ, ਜਾਂ ਸਮੂਹ ਨੂੰ ਘਸੀਟਣ ਤੋਂ ਬਾਅਦ ‘ਅਨਡੂ’ ਪ੍ਰੋਂਪਟ ਕਿੰਨੀ ਦੇਰ ਦਿਖਾਈ ਦਿੰਦਾ ਹੈ – ਇਸ ਵੇਲੇ ਬੰਦ</string>

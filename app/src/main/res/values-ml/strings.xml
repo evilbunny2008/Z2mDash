@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ടൈൽ, ക്ലസ്റ്റർ വീതി</string>
 	<string name="settings_tile_width_detail">ടൈലുകൾക്ക് (അതിനാൽ 3 ടൈൽ വീതിയുള്ള ക്ലസ്റ്റർ കാർഡുകൾക്കും) സ്ക്രീൻ നിറയുന്നത് വരെ എത്ര വീതി കൂടാം – നിലവിൽ %1$ddp</string>
+	<string name="settings_lock_layout">ലേഔട്ട് ലോക്ക് ചെയ്യുക</string>
+	<string name="settings_lock_layout_detail">വലിച്ചിട്ട് ടൈലുകൾ, ക്ലസ്റ്ററുകൾ, ഗ്രൂപ്പുകൾ എന്നിവ നീക്കുന്നത് തടയുക</string>
 	<string name="settings_undo">പഴയപടിയാക്കൽ അറിയിപ്പിന്റെ ദൈർഘ്യം</string>
 	<string name="settings_undo_detail">ഒരു ടൈൽ, ക്ലസ്റ്റർ അല്ലെങ്കിൽ ഗ്രൂപ്പ് വലിച്ചിട്ട ശേഷം ‘പഴയപടിയാക്കുക’ അറിയിപ്പ് എത്ര സമയം കാണിക്കും – നിലവിൽ %1$d സെക്കൻഡ്</string>
 	<string name="settings_undo_detail_off">ഒരു ടൈൽ, ക്ലസ്റ്റർ അല്ലെങ്കിൽ ഗ്രൂപ്പ് വലിച്ചിട്ട ശേഷം ‘പഴയപടിയാക്കുക’ അറിയിപ്പ് എത്ര സമയം കാണിക്കും – നിലവിൽ ഓഫാണ്</string>

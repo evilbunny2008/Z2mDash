@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Obosara Tile na Cluster</string>
 	<string name="settings_tile_width_detail">Otú tiles (ya mere kaadị cluster, nke obosara ya ruru tiles 3) nwere ike isi gbasaa, ruo mgbe ọ jupụtara ihuenyo – ugbu a %1$ddp</string>
+	<string name="settings_lock_layout">Kpọchie Nhazi</string>
+	<string name="settings_lock_layout_detail">Gbochie ịkwaga taịl, ụyọkọ na otu site n’ịdọrọ</string>
 	<string name="settings_undo">Ogologo Oge Ọkwa Megharịa</string>
 	<string name="settings_undo_detail">Ogologo oge ọkwa ‘Megharịa’ na-anọ mgbe ị dọkpụrụ tile, cluster, ma ọ bụ otu – ugbu a sekọnd %1$d</string>
 	<string name="settings_undo_detail_off">Ogologo oge ọkwa ‘Megharịa’ na-anọ mgbe ị dọkpụrụ tile, cluster, ma ọ bụ otu – ugbu a agbanyụrụ ya</string>

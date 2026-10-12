@@ -1,0 +1,2 @@
+* Undo prompt after dragging now defaults to 30 seconds, and can be set up to 60 seconds
+* New 'Lock Layout' setting (on by default) stops tiles, clusters, and groups from being moved by dragging

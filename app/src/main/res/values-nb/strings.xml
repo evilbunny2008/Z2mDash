@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bredde på fliser og klynger</string>
 	<string name="settings_tile_width_detail">Hvor brede fliser (og dermed klyngekort, 3 fliser brede) kan bli, helt opp til hele skjermen – for øyeblikket %1$ddp</string>
+	<string name="settings_lock_layout">Lås oppsett</string>
+	<string name="settings_lock_layout_detail">Hindrer at fliser, klynger og grupper flyttes ved å dra</string>
 	<string name="settings_undo">Varighet for Angre–melding</string>
 	<string name="settings_undo_detail">Hvor lenge ‘Angre’–meldingen vises etter at du har dratt en flis, klynge eller gruppe – for øyeblikket %1$ds</string>
 	<string name="settings_undo_detail_off">Hvor lenge ‘Angre’–meldingen vises etter at du har dratt en flis, klynge eller gruppe – for øyeblikket av</string>

@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Anchon tile yan klåster</string>
 	<string name="settings_tile_width_detail">Taimanu na ancho siña dumongkalo i tile siha (yan i katta klåster, 3 tile anchon–ñiha), asta ki ha bula i screen – på’go %1$ddp</string>
+	<string name="settings_lock_layout">Na’setadu i Layout</string>
+	<string name="settings_lock_layout_detail">Pune’i i tiles, clusters, yan grupu ni para u ma’na’suhan yanggen ma’halla</string>
 	<string name="settings_undo">Apmam i mensåhi Na’tåtte</string>
 	<string name="settings_undo_detail">Kuånto apmam i ‘Na’tåtte’ ha sasaga despues di ma hålla’ un tile, klåster pat grupu – på’go %1$ds</string>
 	<string name="settings_undo_detail_off">Kuånto apmam i ‘Na’tåtte’ ha sasaga despues di ma hålla’ un tile, klåster pat grupu – mapuno’ på’go</string>

@@ -414,6 +414,8 @@
 	</plurals>
 	<string name="settings_tile_width">Lled Teils a Chlystyrau</string>
 	<string name="settings_tile_width_detail">Pa mor llydan y gall teils (ac felly cardiau clwstwr, 3 theilsen o led) dyfu, hyd at lenwi’r sgrin – ar hyn o bryd %1$ddp</string>
+	<string name="settings_lock_layout">Cloi’r Cynllun</string>
+	<string name="settings_lock_layout_detail">Atal teils, clystyrau a grwpiau rhag cael eu symud drwy lusgo</string>
 	<string name="settings_undo">Hyd Neges Dadwneud</string>
 	<string name="settings_undo_detail">Am ba hyd y mae’r anogwr ‘Dadwneud’ yn aros ar ôl llusgo teilsen, clwstwr neu grŵp – ar hyn o bryd %1$ds</string>
 	<string name="settings_undo_detail_off">Am ba hyd y mae’r anogwr ‘Dadwneud’ yn aros ar ôl llusgo teilsen, clwstwr neu grŵp – wedi’i ddiffodd ar hyn o bryd</string>

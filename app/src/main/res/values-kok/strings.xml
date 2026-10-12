@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">टायल आनी क्लस्टर रुंदाय</string>
 	<string name="settings_tile_width_detail">टायल (आनी देखून 3 टायल रुंद आशिल्लीं क्लस्टर कार्डां) स्क्रीन भरमेमेरेन कितलीं रुंद जावं येतात – सद्या %1$ddp</string>
+	<string name="settings_lock_layout">लेआउट लॉक करात</string>
+	<string name="settings_lock_layout_detail">ओडून टायल, क्लस्टर आनी गट हालोवपाक आडावचें</string>
 	<string name="settings_undo">फाटीं घेवपाच्या सुचोवणेचो काळ</string>
 	<string name="settings_undo_detail">टायल, क्लस्टर वा गट ओडल्या उपरांत ‘फाटीं घेयात’ सुचोवणी कितलो वेळ उरता – सद्या %1$d सेकंद</string>
 	<string name="settings_undo_detail_off">टायल, क्लस्टर वा गट ओडल्या उपरांत ‘फाटीं घेयात’ सुचोवणी कितलो वेळ उरता – सद्या बंद</string>

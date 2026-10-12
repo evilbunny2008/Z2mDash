@@ -388,6 +388,8 @@
 	</plurals>
 	<string name="settings_tile_width">Šířka dlaždic a clusterů</string>
 	<string name="settings_tile_width_detail">Jak široké mohou dlaždice (a tedy i karty clusterů, široké 3 dlaždice) být, až po vyplnění obrazovky – nyní %1$ddp</string>
+	<string name="settings_lock_layout">Zamknout rozložení</string>
+	<string name="settings_lock_layout_detail">Zabrání přesouvání dlaždic, clusterů a skupin přetažením</string>
 	<string name="settings_undo">Doba zobrazení výzvy Zpět</string>
 	<string name="settings_undo_detail">Jak dlouho zůstane výzva „Zpět“ zobrazena po přetažení dlaždice, clusteru nebo skupiny – nyní %1$d s</string>
 	<string name="settings_undo_detail_off">Jak dlouho zůstane výzva „Zpět“ zobrazena po přetažení dlaždice, clusteru nebo skupiny – nyní vypnuto</string>

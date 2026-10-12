@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Chiều rộng ô &amp; cụm</string>
 	<string name="settings_tile_width_detail">Chiều rộng của các ô (và cả thẻ cụm, chiều rộng 3 ô) có thể phát triển đến mức lấp đầy màn hình – hiện tại là %1$ddp</string>
+	<string name="settings_lock_layout">Khóa bố cục</string>
+	<string name="settings_lock_layout_detail">Ngăn di chuyển ô, cụm và nhóm bằng cách kéo</string>
 	<string name="settings_undo">Hoàn tác thời lượng bánh mì nướng</string>
 	<string name="settings_undo_detail">Lời nhắc ‘Hoàn tác’ tồn tại trong bao lâu sau khi kéo ô, cụm hoặc nhóm – hiện tại là %1$ds</string>
 	<string name="settings_undo_detail_off">Lời nhắc ‘Hoàn tác’ tồn tại trong bao lâu sau khi kéo ô, cụm hoặc nhóm – hiện đang tắt</string>

@@ -388,6 +388,8 @@
 	</plurals>
 	<string name="settings_tile_width">Šírka dlaždíc a klastrov</string>
 	<string name="settings_tile_width_detail">Ako široké môžu dlaždice (a teda karty klastrov, široké 3 dlaždice) narásť, až po vyplnenie obrazovky – momentálne %1$ddp</string>
+	<string name="settings_lock_layout">Uzamknúť rozloženie</string>
+	<string name="settings_lock_layout_detail">Zabráni presúvaniu dlaždíc, klastrov a skupín presúvaním</string>
 	<string name="settings_undo">Trvanie výzvy Späť</string>
 	<string name="settings_undo_detail">Ako dlho zostane výzva ‘Späť’ zobrazená po presunutí dlaždice, klastra alebo skupiny – momentálne %1$ds</string>
 	<string name="settings_undo_detail_off">Ako dlho zostane výzva ‘Späť’ zobrazená po presunutí dlaždice, klastra alebo skupiny – momentálne vypnuté</string>

@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ancho de mosaicos y clústeres</string>
 	<string name="settings_tile_width_detail">Cuánto pueden crecer los mosaicos de ancho (y, por lo tanto, las tarjetas de clúster, de 3 mosaicos de ancho), hasta llenar la pantalla (actualmente %1$ddp)</string>
+	<string name="settings_lock_layout">Bloquear diseño</string>
+	<string name="settings_lock_layout_detail">Impide mover mosaicos, clústeres y grupos arrastrándolos</string>
 	<string name="settings_undo">Deshacer duración del brindis</string>
 	<string name="settings_undo_detail">Cuánto tiempo permanece activo el mensaje ‘Deshacer’ después de arrastrar un mosaico, clúster o grupo (actualmente %1$ds)</string>
 	<string name="settings_undo_detail_off">Cuánto tiempo permanece activo el mensaje ‘Deshacer’ después de arrastrar un mosaico, clúster o grupo (actualmente desactivado)</string>

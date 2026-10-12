@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Širina pločica i klastera</string>
 	<string name="settings_tile_width_detail">Koliko široke pločice (a time i kartice klastera, široke 3 pločice) mogu narasti, sve do ispunjavanja zaslona – trenutačno %1$ddp</string>
+	<string name="settings_lock_layout">Zaključaj raspored</string>
+	<string name="settings_lock_layout_detail">Spriječi premještanje pločica, klastera i grupa povlačenjem</string>
 	<string name="settings_undo">Trajanje obavijesti Poništi</string>
 	<string name="settings_undo_detail">Koliko dugo upit ‘Poništi’ ostaje prikazan nakon povlačenja pločice, klastera ili grupe – trenutačno %1$ds</string>
 	<string name="settings_undo_detail_off">Koliko dugo upit ‘Poništi’ ostaje prikazan nakon povlačenja pločice, klastera ili grupe – trenutačno isključeno</string>

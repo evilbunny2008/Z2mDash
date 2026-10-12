@@ -388,6 +388,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ширина плиток і кластерів</string>
 	<string name="settings_tile_width_detail">Наскільки широкими можуть ставати плитки (а отже й картки кластерів завширшки 3 плитки), аж до заповнення екрана – зараз %1$ddp</string>
+	<string name="settings_lock_layout">Заблокувати макет</string>
+	<string name="settings_lock_layout_detail">Забороняє переміщувати плитки, кластери й групи перетягуванням</string>
 	<string name="settings_undo">Тривалість підказки «Скасувати»</string>
 	<string name="settings_undo_detail">Як довго підказка «Скасувати» залишається після перетягування плитки, кластера чи групи – зараз %1$d с</string>
 	<string name="settings_undo_detail_off">Як довго підказка «Скасувати» залишається після перетягування плитки, кластера чи групи – зараз вимкнено</string>

@@ -366,6 +366,8 @@
 	</plurals>
 	<string name="settings_tile_width">Tile &amp; Cluster Width</string>
 	<string name="settings_tile_width_detail">How wide tiles (and so cluster cards, 3 tiles wide) can grow, up to filling the screen – currently %1$ddp</string>
+	<string name="settings_lock_layout">Lock Layout</string>
+	<string name="settings_lock_layout_detail">Stop tiles, clusters, and groups from being moved by dragging</string>
 	<string name="settings_undo">Undo Toast Duration</string>
 	<string name="settings_undo_detail">How long the ‘Undo’ prompt stays up after dragging a tile, cluster, or group – currently %1$ds</string>
 	<string name="settings_undo_detail_off">How long the ‘Undo’ prompt stays up after dragging a tile, cluster, or group – currently off</string>

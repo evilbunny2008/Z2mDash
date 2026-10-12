@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">टाइल आणि क्लस्टर रुंदी</string>
 	<string name="settings_tile_width_detail">किती रुंद टाइल्स (आणि त्यामुळे क्लस्टर कार्ड, ३ टाइल रुंदीचे) वाढू शकतात, स्क्रीन भरण्यापर्यंत – सध्या %1$ddp</string>
+	<string name="settings_lock_layout">लेआउट लॉक करा</string>
+	<string name="settings_lock_layout_detail">ओढून टाइल, क्लस्टर आणि गट हलवणे थांबवा</string>
 	<string name="settings_undo">पूर्ववत सूचनेचा कालावधी</string>
 	<string name="settings_undo_detail">एखादा टाइल, क्लस्टर किंवा गट ड्रॅग केल्यावर ‘पूर्ववत’ प्रॉम्प्ट किती वेळ दिसतो – सध्या %1$ds</string>
 	<string name="settings_undo_detail_off">एखादा टाइल, क्लस्टर किंवा गट ड्रॅग केल्यावर ‘पूर्ववत’ प्रॉम्प्ट किती वेळ दिसतो – सध्या नाही</string>

@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">টাইল ও ক্লাস্টারের প্রস্থ</string>
 	<string name="settings_tile_width_detail">কতটা চওড়া টাইলস (এবং ক্লাস্টার কার্ড, ৩টি টাইল চওড়া) স্ক্রীন ফিলিং পর্যন্ত বাড়তে পারে – বর্তমানে %1$ddp</string>
+	<string name="settings_lock_layout">লেআউট লক করুন</string>
+	<string name="settings_lock_layout_detail">টেনে এনে টাইল, ক্লাস্টার এবং গ্রুপ সরানো বন্ধ করুন</string>
 	<string name="settings_undo">টোস্টের সময়কাল পূর্বাবস্থায় ফেরান</string>
 	<string name="settings_undo_detail">টাইল, ক্লাস্টার বা গোষ্ঠী টেনে আনার পরে ‘আনডু’ প্রম্পট কতক্ষণ থাকে – বর্তমানে %1$ds</string>
 	<string name="settings_undo_detail_off">টাইল, ক্লাস্টার বা গোষ্ঠী টেনে আনার পরে ‘আনডু’ প্রম্পট কতক্ষণ থাকে – বর্তমানে বন্ধ আছে</string>

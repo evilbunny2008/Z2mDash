@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Fífẹ̀ Tile àti Cluster</string>
 	<string name="settings_tile_width_detail">Bí àwọn tile ṣe lè fẹ̀ tó (àti nítorí náà àwọn káàdì cluster, tí ó fẹ̀ tó tile 3), títí dé kíkún ojú ìbojú – lọ́wọ́lọ́wọ́ %1$ddp</string>
+	<string name="settings_lock_layout">Tì Ìfilélẹ̀ Pa</string>
+	<string name="settings_lock_layout_detail">Dènà gbígbé àwọn tile, ìṣùpọ̀, àti ẹgbẹ́ nípa fífà</string>
 	<string name="settings_undo">Àkókò Ìfihàn Ìyípadà</string>
 	<string name="settings_undo_detail">Bí ìbéèrè ‘Yí i padà’ ṣe máa pẹ́ tó lẹ́yìn tí o bá fa tile, cluster, tàbí ẹgbẹ́ – lọ́wọ́lọ́wọ́ ìṣẹ́jú-àáyá %1$d</string>
 	<string name="settings_undo_detail_off">Bí ìbéèrè ‘Yí i padà’ ṣe máa pẹ́ tó lẹ́yìn tí o bá fa tile, cluster, tàbí ẹgbẹ́ – lọ́wọ́lọ́wọ́ ó ti wà ní pípa</string>

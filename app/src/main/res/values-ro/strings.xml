@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Lățimea dalelor și clusterelor</string>
 	<string name="settings_tile_width_detail">Cât de late pot deveni dalele (și deci cardurile de cluster, late de 3 dale), până la umplerea ecranului – acum %1$ddp</string>
+	<string name="settings_lock_layout">Blochează aspectul</string>
+	<string name="settings_lock_layout_detail">Împiedică mutarea plăcilor, clusterelor și grupurilor prin tragere</string>
 	<string name="settings_undo">Durata mesajului Anulează</string>
 	<string name="settings_undo_detail">Cât timp rămâne vizibil mesajul „Anulează” după tragerea unei dale, a unui cluster sau a unui grup – acum %1$d s</string>
 	<string name="settings_undo_detail_off">Cât timp rămâne vizibil mesajul „Anulează” după tragerea unei dale, a unui cluster sau a unui grup – acum dezactivat</string>

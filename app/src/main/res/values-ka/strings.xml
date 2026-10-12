@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ფილისა &amp; კლასტერის სიგანე</string>
 	<string name="settings_tile_width_detail">რამდენად ფართო შეიძლება გახდეს ფილები (და შესაბამისად 3 ფილის სიგანის კლასტერის ბარათები), ეკრანის შევსებამდე – ამჟამად %1$ddp</string>
+	<string name="settings_lock_layout">განლაგების ჩაკეტვა</string>
+	<string name="settings_lock_layout_detail">ფილების, კლასტერებისა და ჯგუფების გადათრევით გადაადგილების აკრძალვა</string>
 	<string name="settings_undo">დაბრუნების შეტყობინების ხანგრძლივობა</string>
 	<string name="settings_undo_detail">რამდენ ხანს რჩება „დაბრუნების“ მოთხოვნა ფილის, კლასტერის ან ჯგუფის გადათრევის შემდეგ – ამჟამად %1$d წმ</string>
 	<string name="settings_undo_detail_off">რამდენ ხანს რჩება „დაბრუნების“ მოთხოვნა ფილის, კლასტერის ან ჯგუფის გადათრევის შემდეგ – ამჟამად გამორთულია</string>

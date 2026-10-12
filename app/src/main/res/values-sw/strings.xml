@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Upana wa Tile na Cluster</string>
 	<string name="settings_tile_width_detail">Jinsi tiles (na hivyo kadi za cluster, zenye upana wa tiles 3) zinavyoweza kupanuka, hadi kujaza skrini – kwa sasa %1$ddp</string>
+	<string name="settings_lock_layout">Funga Mpangilio</string>
+	<string name="settings_lock_layout_detail">Zuia vigae, vikundi vidogo na vikundi visisogezwe kwa kuburuta</string>
 	<string name="settings_undo">Muda wa Ujumbe wa Kutendua</string>
 	<string name="settings_undo_detail">Muda ambao ujumbe wa ‘Tendua’ hubaki baada ya kuburuta tile, cluster, au kikundi – kwa sasa sekunde %1$d</string>
 	<string name="settings_undo_detail_off">Muda ambao ujumbe wa ‘Tendua’ hubaki baada ya kuburuta tile, cluster, au kikundi – kwa sasa umezimwa</string>

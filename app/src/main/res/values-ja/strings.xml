@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">タイルとクラスターの幅</string>
 	<string name="settings_tile_width_detail">タイル (およびクラスター カード、つまり 3 タイル幅) の幅を画面いっぱいまで拡大できる範囲 – 現在 %1$ddp</string>
+	<string name="settings_lock_layout">レイアウトをロック</string>
+	<string name="settings_lock_layout_detail">ドラッグによるタイル、クラスター、グループの移動を無効にします</string>
 	<string name="settings_undo">トースト期間を元に戻す</string>
 	<string name="settings_undo_detail">タイル、クラスター、またはグループをドラッグした後に「元に戻す」プロンプトが表示される時間 – 現在 %1$ds</string>
 	<string name="settings_undo_detail_off">タイル、クラスター、またはグループをドラッグした後に「元に戻す」プロンプトが表示される時間 – 現在はオフになっています</string>

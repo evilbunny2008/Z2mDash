@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Lajè mozayik ak grap</string>
 	<string name="settings_tile_width_detail">Ki lajè mozayik yo (epi kidonk kat grap yo, 3 mozayik lajè) ka grandi, jiskaske yo ranpli ekran an – kounye a %1$ddp</string>
+	<string name="settings_lock_layout">Bloke Layout</string>
+	<string name="settings_lock_layout_detail">Anpeche mozayik, grap, ak gwoup yo deplase lè w trennen yo</string>
 	<string name="settings_undo">Dire mesaj Defèt</string>
 	<string name="settings_undo_detail">Konbyen tan mesaj ‘Defèt’ la rete apre ou fin trennen yon mozayik, grap oswa gwoup – kounye a %1$ds</string>
 	<string name="settings_undo_detail_off">Konbyen tan mesaj ‘Defèt’ la rete apre ou fin trennen yon mozayik, grap oswa gwoup – kounye a fèmen</string>

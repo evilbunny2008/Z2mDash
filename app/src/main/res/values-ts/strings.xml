@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Vuanami bya tithayili na minhlengeletano</string>
 	<string name="settings_tile_width_detail">Leswaku tithayili (hikwalaho na tikhadi ta minhlengeletano, leti anameke hi tithayili ta 3) ti nga kula ku fika kwihi hi vuanami, ku fikela ti tata xikirini – sweswi %1$ddp</string>
+	<string name="settings_lock_layout">Lokela Nhlangano</string>
+	<string name="settings_lock_layout_detail">Sivela ku rhurhisiwa ka swithayili, mintlawa leyitsongo na mintlawa hi ku koka</string>
 	<string name="settings_undo">Ku leha ka rungula ra Tlherisa</string>
 	<string name="settings_undo_detail">Leswaku xikombelo xa ‘Tlherisa’ xi tshama nkarhi wo fika kwihi endzhaku ko koka thayili, nhlengeletano kumbe ntlawa – sweswi %1$ds</string>
 	<string name="settings_undo_detail_off">Leswaku xikombelo xa ‘Tlherisa’ xi tshama nkarhi wo fika kwihi endzhaku ko koka thayili, nhlengeletano kumbe ntlawa – sweswi xi timiwile</string>

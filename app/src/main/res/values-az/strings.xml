@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Plitka və klaster eni</string>
 	<string name="settings_tile_width_detail">Plitkaların (və beləliklə 3 plitka enində olan klaster kartlarının) ekranı doldurana qədər nə qədər genişlənə biləcəyi – hazırda %1$ddp</string>
+	<string name="settings_lock_layout">Düzeni kilidlə</string>
+	<string name="settings_lock_layout_detail">Plitələrin, klasterlərin və qrupların sürüşdürülərək köçürülməsinin qarşısını alın</string>
 	<string name="settings_undo">Geri al bildirişinin müddəti</string>
 	<string name="settings_undo_detail">Plitka, klaster və ya qrupu sürüşdürdükdən sonra ‘Geri al’ təklifinin nə qədər qaldığı – hazırda %1$ds</string>
 	<string name="settings_undo_detail_off">Plitka, klaster və ya qrupu sürüşdürdükdən sonra ‘Geri al’ təklifinin nə qədər qaldığı – hazırda deaktiv</string>

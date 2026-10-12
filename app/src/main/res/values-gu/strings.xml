@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ટાઇલ અને ક્લસ્ટરની પહોળાઈ</string>
 	<string name="settings_tile_width_detail">ટાઇલ (અને તેથી 3 ટાઇલ પહોળા ક્લસ્ટર કાર્ડ) સ્ક્રીન ભરાય ત્યાં સુધી કેટલી પહોળી થઈ શકે – હાલમાં %1$ddp</string>
+	<string name="settings_lock_layout">લેઆઉટ લૉક કરો</string>
+	<string name="settings_lock_layout_detail">ખેંચીને ટાઇલ્સ, ક્લસ્ટર અને જૂથોને ખસેડવાનું અટકાવો</string>
 	<string name="settings_undo">પૂર્વવત્ સંદેશનો સમયગાળો</string>
 	<string name="settings_undo_detail">ટાઇલ, ક્લસ્ટર કે જૂથ ખેંચ્યા પછી ‘પૂર્વવત્ કરો’ સંદેશ કેટલો સમય રહે છે – હાલમાં %1$d સેકન્ડ</string>
 	<string name="settings_undo_detail_off">ટાઇલ, ક્લસ્ટર કે જૂથ ખેંચ્યા પછી ‘પૂર્વવત્ કરો’ સંદેશ કેટલો સમય રહે છે – હાલમાં બંધ</string>

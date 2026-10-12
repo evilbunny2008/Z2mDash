@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Lebar Ubin &amp; Cluster</string>
 	<string name="settings_tile_width_detail">Seberapa lebar ubin (dan juga kartu cluster, selebar 3 ubin) dapat bertambah, hingga memenuhi layar – saat ini %1$ddp</string>
+	<string name="settings_lock_layout">Kunci Tata Letak</string>
+	<string name="settings_lock_layout_detail">Mencegah ubin, klaster, dan grup dipindahkan dengan menyeret</string>
 	<string name="settings_undo">Batalkan Durasi Toast</string>
 	<string name="settings_undo_detail">Berapa lama perintah ‘Batalkan’ tetap muncul setelah menyeret ubin, cluster, atau grup – saat ini %1$ds</string>
 	<string name="settings_undo_detail_off">Berapa lama perintah ‘Undo’ tetap muncul setelah menyeret ubin, cluster, atau grup – saat ini nonaktif</string>

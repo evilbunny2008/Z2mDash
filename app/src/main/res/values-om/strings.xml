@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bal’ina taayilii fi kilaastaraa</string>
 	<string name="settings_tile_width_detail">Taayilonni (kanaanis kaardiiwwan kilaastaraa, taayilii 3 bal’atan) hammam bal’achuu akka danda’an, hanga iskiriinii guutuutti – amma %1$ddp</string>
+	<string name="settings_lock_layout">Qindaa’ina Cufi</string>
+	<string name="settings_lock_layout_detail">Taayilootaa, kilaastarootaa fi gareewwan harkisuun sochoosuu dhorki</string>
 	<string name="settings_undo">Turtii beeksisa Deebisi</string>
 	<string name="settings_undo_detail">Erga taayilii, kilaastara ykn garee harkifatanii booda gaaffiin ‘Deebisi’ hammam akka turu – amma %1$ds</string>
 	<string name="settings_undo_detail_off">Erga taayilii, kilaastara ykn garee harkifatanii booda gaaffiin ‘Deebisi’ hammam akka turu – amma cufaa dha</string>

@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Plitka we klaster ini</string>
 	<string name="settings_tile_width_detail">Plitkalar (we şonuň bilen 3 plitka inli klaster kartlary) ekrany dolduryança näçe giňelip biler – häzir %1$ddp</string>
+	<string name="settings_lock_layout">Ýerleşişi gulpla</string>
+	<string name="settings_lock_layout_detail">Plitkalaryň, klasterleriň we toparlaryň süýräp göçürilmeginiň öňüni al</string>
 	<string name="settings_undo">Yzyna al habarynyň dowamlylygy</string>
 	<string name="settings_undo_detail">Plitkany, klasteri ýa–da topary süýränden soň ‘Yzyna al’ teklibi näçe wagt durýar – häzir %1$ds</string>
 	<string name="settings_undo_detail_off">Plitkany, klasteri ýa–da topary süýränden soň ‘Yzyna al’ teklibi näçe wagt durýar – häzir öçük</string>

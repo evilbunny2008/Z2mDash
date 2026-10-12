@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Fālahi ʻo e puha mo e kalasitā</string>
 	<string name="settings_tile_width_detail">Ko e fālahi ʻe lava ke tupu ki ai ʻa e ngaahi puha (pea mo e ngaahi kaati kalasitā, ʻoku puha ʻe 3 hono fālahi), ʻo aʻu ki hono fakafonu ʻo e sikilini – he taimi ni %1$ddp</string>
+	<string name="settings_lock_layout">Loka ‘a e Fokotu‘utu‘u</string>
+	<string name="settings_lock_layout_detail">Ta‘ofi ‘a e hiki ‘o e ngaahi taile, kulupu iiki, mo e kulupu ‘aki hono toho</string>
 	<string name="settings_undo">Lōloa ʻo e pōpoaki Toe fakafoki</string>
 	<string name="settings_undo_detail">Ko e lōloa ʻo e nofo ʻa e fehuʻi ‘Toe fakafoki’ hili hono toho ha puha, kalasitā pe kulupu – he taimi ni %1$ds</string>
 	<string name="settings_undo_detail_off">Ko e lōloa ʻo e nofo ʻa e fehuʻi ‘Toe fakafoki’ hili hono toho ha puha, kalasitā pe kulupu – kuo ʻosi he taimi ni</string>

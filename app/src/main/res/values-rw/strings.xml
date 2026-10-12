@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ubugari bw’udusanduku n’amahuriro</string>
 	<string name="settings_tile_width_detail">Uko udusanduku (bityo n’amakarita y’amahuriro, afite ubugari bw’udusanduku 3) dushobora kwaguka, kugeza twuzuye ecran – ubu %1$ddp</string>
+	<string name="settings_lock_layout">Funga Imiterere</string>
+	<string name="settings_lock_layout_detail">Buza amakaro, amatsinda mato n’amatsinda kwimurwa no gukurura</string>
 	<string name="settings_undo">Igihe cy’ubutumwa bwa Subiza inyuma</string>
 	<string name="settings_undo_detail">Igihe ubutumwa bwa ‘Subiza inyuma’ bumara nyuma yo gukurura agasanduku, ihuriro cyangwa itsinda – ubu %1$ds</string>
 	<string name="settings_undo_detail_off">Igihe ubutumwa bwa ‘Subiza inyuma’ bumara nyuma yo gukurura agasanduku, ihuriro cyangwa itsinda – ubu birafunze</string>

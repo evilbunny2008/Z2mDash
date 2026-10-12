@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">M’lifupi mwa mabokosi ndi makalasitala</string>
 	<string name="settings_tile_width_detail">Kukula kwa m’lifupi komwe mabokosi (motero makadi a kalasitala, a m’lifupi mwa mabokosi 3) angafike, mpaka kudzaza sikirini – pano %1$ddp</string>
+	<string name="settings_lock_layout">Tsekani Kakonzedwe</string>
+	<string name="settings_lock_layout_detail">Letsani kusuntha matailosi, magulu ang’onoang’ono ndi magulu pokoka</string>
 	<string name="settings_undo">Nthawi ya uthenga wa Bwezerani</string>
 	<string name="settings_undo_detail">Nthawi yomwe uthenga wa ‘Bwezerani’ umakhalapo mutakoka bokosi, kalasitala kapena gulu – pano %1$ds</string>
 	<string name="settings_undo_detail_off">Nthawi yomwe uthenga wa ‘Bwezerani’ umakhalapo mutakoka bokosi, kalasitala kapena gulu – pano yazimitsidwa</string>

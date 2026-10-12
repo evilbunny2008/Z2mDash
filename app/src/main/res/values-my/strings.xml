@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Tile နှင့် Cluster အကျယ်</string>
 	<string name="settings_tile_width_detail">tile များ (ထို့ကြောင့် tile ၃ ခုစာ ကျယ်သော cluster ကတ်များ) မျက်နှာပြင်အပြည့်အထိ မည်မျှ ကျယ်နိုင်သည် – လက်ရှိ %1$ddp</string>
+	<string name="settings_lock_layout">အပြင်အဆင်ကို လော့ခ်ချရန်</string>
+	<string name="settings_lock_layout_detail">ဆွဲယူခြင်းဖြင့် အကွက်များ၊ အစုများနှင့် အုပ်စုများကို ရွှေ့ခြင်းကို တားဆီးပါ</string>
 	<string name="settings_undo">ပြန်ဖျက်ရန် Toast ကြာချိန်</string>
 	<string name="settings_undo_detail">tile၊ cluster သို့မဟုတ် အုပ်စုကို ဆွဲရွှေ့ပြီးနောက် ‘ပြန်ဖျက်ရန်’ အကြောင်းကြားချက် မည်မျှကြာ ပေါ်နေမည် – လက်ရှိ %1$d စက္ကန့်</string>
 	<string name="settings_undo_detail_off">tile၊ cluster သို့မဟုတ် အုပ်စုကို ဆွဲရွှေ့ပြီးနောက် ‘ပြန်ဖျက်ရန်’ အကြောင်းကြားချက် မည်မျှကြာ ပေါ်နေမည် – လက်ရှိ ပိတ်ထားသည်</string>

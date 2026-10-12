@@ -388,6 +388,8 @@
 	</plurals>
 	<string name="settings_tile_width">Plytelių ir klasterių plotis</string>
 	<string name="settings_tile_width_detail">Kiek gali išplatėti plytelės (taigi ir klasterių kortelės, 3 plytelių pločio), iki viso ekrano – šiuo metu %1$ddp</string>
+	<string name="settings_lock_layout">Užrakinti išdėstymą</string>
+	<string name="settings_lock_layout_detail">Neleidžia perkelti plytelių, klasterių ir grupių vilkimu</string>
 	<string name="settings_undo">Anuliavimo pranešimo trukmė</string>
 	<string name="settings_undo_detail">Kiek laiko rodomas raginimas ‘Anuliuoti’ nutempus plytelę, klasterį ar grupę – šiuo metu %1$ds</string>
 	<string name="settings_undo_detail_off">Kiek laiko rodomas raginimas ‘Anuliuoti’ nutempus plytelę, klasterį ar grupę – šiuo metu išjungta</string>

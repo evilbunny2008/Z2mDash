@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Πλάτος πλακιδίων &amp; clusters</string>
 	<string name="settings_tile_width_detail">Πόσο φαρδιά μπορούν να γίνουν τα πλακίδια (άρα και οι κάρτες cluster, πλάτους 3 πλακιδίων), μέχρι να γεμίσουν την οθόνη – τώρα %1$ddp</string>
+	<string name="settings_lock_layout">Κλείδωμα διάταξης</string>
+	<string name="settings_lock_layout_detail">Αποτρέπει τη μετακίνηση πλακιδίων, συμπλεγμάτων και ομάδων με σύρσιμο</string>
 	<string name="settings_undo">Διάρκεια μηνύματος αναίρεσης</string>
 	<string name="settings_undo_detail">Πόσο παραμένει ορατό το μήνυμα «Αναίρεση» μετά τη μεταφορά πλακιδίου, cluster ή ομάδας – τώρα %1$d δευτ.</string>
 	<string name="settings_undo_detail_off">Πόσο παραμένει ορατό το μήνυμα «Αναίρεση» μετά τη μεταφορά πλακιδίου, cluster ή ομάδας – τώρα ανενεργό</string>

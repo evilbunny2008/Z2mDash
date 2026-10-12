@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Gjerësia e pllakave dhe klasterëve</string>
 	<string name="settings_tile_width_detail">Sa të gjera mund të bëhen pllakat (e për rrjedhojë kartat e klasterëve, 3 pllaka të gjera), deri në mbushjen e ekranit – aktualisht %1$ddp</string>
+	<string name="settings_lock_layout">Kyç paraqitjen</string>
+	<string name="settings_lock_layout_detail">Parandalon zhvendosjen e pllakave, grupimeve dhe grupeve me tërheqje</string>
 	<string name="settings_undo">Kohëzgjatja e njoftimit Zhbëj</string>
 	<string name="settings_undo_detail">Sa kohë qëndron kërkesa ‘Zhbëj’ pasi tërhiqni një pllakë, klaster ose grup – aktualisht %1$ds</string>
 	<string name="settings_undo_detail_off">Sa kohë qëndron kërkesa ‘Zhbëj’ pasi tërhiqni një pllakë, klaster ose grup – aktualisht çaktivizuar</string>

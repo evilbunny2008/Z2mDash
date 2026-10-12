@@ -966,6 +966,10 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 .pointerInput(gestureDetectorGeneration) {
                     detectDragGesturesAfterLongPress(
                         onDragStart = { startLocalPos ->
+                            // Read live, not captured - this detector only relaunches when
+                            // gestureDetectorGeneration changes, not when the setting does. With
+                            // nothing marked as dragged, onDrag/onDragEnd are no-ops too.
+                            if (app.configRepository.config.value.layoutLocked) return@detectDragGesturesAfterLongPress
                             val coords = listCoordinates ?: return@detectDragGesturesAfterLongPress
                             val windowPos = coords.localToWindow(startLocalPos)
                             // Group headers are hit-tested first: the sticky header is drawn on top of

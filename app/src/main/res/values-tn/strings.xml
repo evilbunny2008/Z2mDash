@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bophara jwa dithaele le dikgobokanyo</string>
 	<string name="settings_tile_width_detail">Gore dithaele (ka jalo le dikarata tsa dikgobokanyo, tse di bophara jwa dithaele di le 3) di ka gola go fitlha kwa bopharong bo bokae, go fitlha di tlatsa sekirini – jaanong %1$ddp</string>
+	<string name="settings_lock_layout">Lotlela Thulaganyo</string>
+	<string name="settings_lock_layout_detail">Thibela go tsamaisiwa ga dithaele, ditlhopha tse dinnye le ditlhopha ka go goga</string>
 	<string name="settings_undo">Boleele jwa molaetsa wa Dirolola</string>
 	<string name="settings_undo_detail">Gore kopo ya ‘Dirolola’ e nna nako e kae morago ga go goga thaele, kgobokanyo kgotsa setlhopha – jaanong %1$ds</string>
 	<string name="settings_undo_detail_off">Gore kopo ya ‘Dirolola’ e nna nako e kae morago ga go goga thaele, kgobokanyo kgotsa setlhopha – jaanong e timilwe</string>

@@ -388,6 +388,8 @@
 	</plurals>
 	<string name="settings_tile_width">Szerokość kafelków i klastrów</string>
 	<string name="settings_tile_width_detail">Jak szerokie mogą być kafelki (a więc i karty klastrów, szerokie na 3 kafelki), aż do wypełnienia ekranu – obecnie %1$ddp</string>
+	<string name="settings_lock_layout">Zablokuj układ</string>
+	<string name="settings_lock_layout_detail">Uniemożliwia przenoszenie kafelków, klastrów i grup przez przeciąganie</string>
 	<string name="settings_undo">Czas wyświetlania komunikatu Cofnij</string>
 	<string name="settings_undo_detail">Jak długo komunikat „Cofnij” pozostaje widoczny po przeciągnięciu kafelka, klastra lub grupy – obecnie %1$d s</string>
 	<string name="settings_undo_detail_off">Jak długo komunikat „Cofnij” pozostaje widoczny po przeciągnięciu kafelka, klastra lub grupy – obecnie wyłączony</string>

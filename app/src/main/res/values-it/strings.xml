@@ -375,6 +375,8 @@
 	</plurals>
 	<string name="settings_tile_width">Larghezza riquadri e cluster</string>
 	<string name="settings_tile_width_detail">Quanto possono allargarsi i riquadri (e quindi le schede dei cluster, larghe 3 riquadri), fino a riempire lo schermo – attualmente %1$ddp</string>
+	<string name="settings_lock_layout">Blocca layout</string>
+	<string name="settings_lock_layout_detail">Impedisce di spostare riquadri, cluster e gruppi trascinandoli</string>
 	<string name="settings_undo">Durata del messaggio Annulla</string>
 	<string name="settings_undo_detail">Per quanto tempo resta visibile il messaggio ‘Annulla’ dopo aver trascinato un riquadro, un cluster o un gruppo – attualmente %1$ds</string>
 	<string name="settings_undo_detail_off">Per quanto tempo resta visibile il messaggio ‘Annulla’ dopo aver trascinato un riquadro, un cluster o un gruppo – attualmente disattivato</string>

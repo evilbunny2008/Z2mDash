@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">عرض کاشی و خوشه</string>
 	<string name="settings_tile_width_detail">میزان پهن شدن کاشی‌ها (و در نتیجه کارت‌های خوشه که ۳ کاشی عرض دارند)، تا پر شدن صفحه – در حال حاضر %1$ddp</string>
+	<string name="settings_lock_layout">قفل چیدمان</string>
+	<string name="settings_lock_layout_detail">جلوگیری از جابه‌جایی کاشی‌ها، خوشه‌ها و گروه‌ها با کشیدن</string>
 	<string name="settings_undo">مدت نمایش پیام واگرد</string>
 	<string name="settings_undo_detail">مدت باقی ماندن پیام «واگرد» پس از کشیدن یک کاشی، خوشه یا گروه – در حال حاضر %1$d ثانیه</string>
 	<string name="settings_undo_detail_off">مدت باقی ماندن پیام «واگرد» پس از کشیدن یک کاشی، خوشه یا گروه – در حال حاضر خاموش</string>

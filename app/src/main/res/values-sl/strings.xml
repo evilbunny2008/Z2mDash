@@ -388,6 +388,8 @@
 	</plurals>
 	<string name="settings_tile_width">Širina ploščic in grozdov</string>
 	<string name="settings_tile_width_detail">Kako široke lahko postanejo ploščice (in s tem kartice grozdov, široke 3 ploščice), vse do zapolnitve zaslona – trenutno %1$ddp</string>
+	<string name="settings_lock_layout">Zakleni postavitev</string>
+	<string name="settings_lock_layout_detail">Prepreči premikanje ploščic, gruč in skupin z vlečenjem</string>
 	<string name="settings_undo">Trajanje obvestila Razveljavi</string>
 	<string name="settings_undo_detail">Kako dolgo ostane poziv ‘Razveljavi’ po vlečenju ploščice, grozda ali skupine – trenutno %1$ds</string>
 	<string name="settings_undo_detail_off">Kako dolgo ostane poziv ‘Razveljavi’ po vlečenju ploščice, grozda ali skupine – trenutno izklopljeno</string>

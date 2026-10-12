@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ubuphara bamathayili namabuthelelo</string>
 	<string name="settings_tile_width_detail">Bona amathayili (ngalokho namakarada wamabuthelelo, aphara ngamathayili ama–3) angakhula abe maphara kangangani, bekube agcwalisa isikrini – nje %1$ddp</string>
+	<string name="settings_lock_layout">Khiya Ihlelo</string>
+	<string name="settings_lock_layout_detail">Vimba ukususwa kwamathayela, amaqoqo namaqembu ngokudosa</string>
 	<string name="settings_undo">Ubude besaziso sokubuyisela emuva</string>
 	<string name="settings_undo_detail">Bona isibawo esithi ‘Buyisela emuva’ sihlala isikhathi esingangani ngemva kokudosa ithayili, ibuthelelo namkha isiqhema – nje %1$ds</string>
 	<string name="settings_undo_detail_off">Bona isibawo esithi ‘Buyisela emuva’ sihlala isikhathi esingangani ngemva kokudosa ithayili, ibuthelelo namkha isiqhema – nje kuvaliwe</string>

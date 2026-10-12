@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ширина на плочки и кластери</string>
 	<string name="settings_tile_width_detail">Колку широки можат да станат плочките (а со тоа и картичките на кластерите, широки 3 плочки), сè до пополнување на екранот – моментално %1$ddp</string>
+	<string name="settings_lock_layout">Заклучи распоред</string>
+	<string name="settings_lock_layout_detail">Спречува преместување на плочки, кластери и групи со влечење</string>
 	<string name="settings_undo">Траење на пораката Врати</string>
 	<string name="settings_undo_detail">Колку долго останува пораката ‘Врати’ по влечење плочка, кластер или група – моментално %1$ds</string>
 	<string name="settings_undo_detail_off">Колку долго останува пораката ‘Врати’ по влечење плочка, кластер или група – моментално исклучено</string>

@@ -315,5 +315,9 @@ data class AppConfig(
     // How long the "Tile moved" / "Cluster moved" / "Group moved" undo snackbar stays on screen
     // after a drag-reorder, in seconds - long enough to catch an accidental drag without lingering
     // forever. 0 disables the undo snackbar entirely.
-    val undoToastSeconds: Int = 10
+    val undoToastSeconds: Int = 30,
+    // Locks the Home screen layout: when on, long-press-dragging a tile, cluster, or group does
+    // nothing, so an accidental drag can't rearrange the dashboard. On by default - unlock in
+    // Settings to rearrange.
+    val layoutLocked: Boolean = true
 )

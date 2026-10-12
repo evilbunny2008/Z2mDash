@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">圖塊與叢集寬度</string>
 	<string name="settings_tile_width_detail">圖塊（以及簇卡，3 個圖塊寬）可以增長多寬，直至填滿螢幕 – 目前為 %1$ddp</string>
+	<string name="settings_lock_layout">鎖定版面配置</string>
+	<string name="settings_lock_layout_detail">禁止透過拖曳來移動圖塊、叢集和群組</string>
 	<string name="settings_undo">撤銷 Toast 持續時間</string>
 	<string name="settings_undo_detail">拖曳圖塊、簇或群組後「撤銷」提示保持多久 – 目前為 %1$ds</string>
 	<string name="settings_undo_detail_off">拖曳圖塊、群組或群組後「撤銷」提示保持多久 – 目前處於關閉狀態</string>

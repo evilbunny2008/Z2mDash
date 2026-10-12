@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ububanzi bamathayela namaqoqo</string>
 	<string name="settings_tile_width_detail">Ukuthi amathayela (ngakho namakhadi amaqoqo, abanzi ngamathayela angu–3) angakhula abe banzi kangakanani, aze agcwalise isikrini – manje %1$ddp</string>
+	<string name="settings_lock_layout">Khiya Isakhiwo</string>
+	<string name="settings_lock_layout_detail">Vimbela amathayela, amaqoqo namaqembu ukuthi angahanjiswa ngokudonsa</string>
 	<string name="settings_undo">Ubude besaziso sokuhlehlisa</string>
 	<string name="settings_undo_detail">Ukuthi isicelo esithi ‘Hlehlisa’ sihlala isikhathi esingakanani ngemuva kokudonsa ithayela, iqoqo noma iqembu – manje %1$ds</string>
 	<string name="settings_undo_detail_off">Ukuthi isicelo esithi ‘Hlehlisa’ sihlala isikhathi esingakanani ngemuva kokudonsa ithayela, iqoqo noma iqembu – manje kuvaliwe</string>

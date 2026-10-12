@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">टाइल और क्लस्टर चौड़ाई</string>
 	<string name="settings_tile_width_detail">स्क्रीन भरने तक कितनी चौड़ी टाइलें (और इतने ही क्लस्टर कार्ड, 3 टाइलें चौड़ी) बढ़ सकती हैं – वर्तमान में %1$ddp</string>
+	<string name="settings_lock_layout">लेआउट लॉक करें</string>
+	<string name="settings_lock_layout_detail">खींचकर टाइल, क्लस्टर और समूहों को ले जाने से रोकें</string>
 	<string name="settings_undo">टोस्ट अवधि पूर्ववत करें</string>
 	<string name="settings_undo_detail">किसी टाइल, क्लस्टर या समूह को खींचने के बाद ‘पूर्ववत करें’ संकेत कितने समय तक रहता है – वर्तमान में %1$ds</string>
 	<string name="settings_undo_detail_off">किसी टाइल, क्लस्टर या समूह को खींचने के बाद ‘पूर्ववत करें’ संकेत कितने समय तक रहता है – वर्तमान में बंद है</string>

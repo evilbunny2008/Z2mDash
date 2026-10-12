@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">타일 및 클러스터 너비</string>
 	<string name="settings_tile_width_detail">타일(그리고 타일 3개 너비인 클러스터 카드)이 화면을 채울 때까지 얼마나 넓어질 수 있는지 설정합니다 – 현재 %1$ddp</string>
+	<string name="settings_lock_layout">레이아웃 잠금</string>
+	<string name="settings_lock_layout_detail">드래그로 타일, 클러스터, 그룹을 이동하지 못하게 합니다</string>
 	<string name="settings_undo">실행취소 알림 표시 시간</string>
 	<string name="settings_undo_detail">타일, 클러스터, 그룹을 드래그한 후 ‘실행취소’ 알림이 표시되는 시간 – 현재 %1$d초</string>
 	<string name="settings_undo_detail_off">타일, 클러스터, 그룹을 드래그한 후 ‘실행취소’ 알림이 표시되는 시간 – 현재 꺼짐</string>

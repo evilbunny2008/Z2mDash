@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">टाइल र क्लस्टरको चौडाइ</string>
 	<string name="settings_tile_width_detail">टाइलहरू (र त्यसैले 3 टाइल चौडा क्लस्टर कार्डहरू) स्क्रिन भरिएसम्म कति चौडा हुन सक्छन् – हाल %1$ddp</string>
+	<string name="settings_lock_layout">लेआउट लक गर्नुहोस्</string>
+	<string name="settings_lock_layout_detail">तानेर टाइल, क्लस्टर र समूहहरू सार्न रोक्नुहोस्</string>
 	<string name="settings_undo">पूर्ववत सूचनाको अवधि</string>
 	<string name="settings_undo_detail">टाइल, क्लस्टर वा समूह तानेपछि ‘पूर्ववत गर्नुहोस्’ सूचना कति समय रहन्छ – हाल %1$d सेकेन्ड</string>
 	<string name="settings_undo_detail_off">टाइल, क्लस्टर वा समूह तानेपछि ‘पूर्ववत गर्नुहोस्’ सूचना कति समय रहन्छ – हाल बन्द</string>

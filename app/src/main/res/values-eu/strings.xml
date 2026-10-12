@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Lauzen eta klusterren zabalera</string>
 	<string name="settings_tile_width_detail">Zenbat hazi daitezkeen lauzak (eta, beraz, kluster txartelak, 3 lauzako zabalerakoak), pantaila osoa bete arte – une honetan %1$ddp</string>
+	<string name="settings_lock_layout">Blokeatu diseinua</string>
+	<string name="settings_lock_layout_detail">Eragotzi lauzak, klusterrak eta taldeak arrastatuz mugitzea</string>
 	<string name="settings_undo">Desegin mezuaren iraupena</string>
 	<string name="settings_undo_detail">Zenbat denbora geratzen den ‘Desegin’ gonbita lauza, kluster edo talde bat arrastatu ondoren – une honetan %1$ds</string>
 	<string name="settings_undo_detail_off">Zenbat denbora geratzen den ‘Desegin’ gonbita lauza, kluster edo talde bat arrastatu ondoren – une honetan desaktibatuta</string>

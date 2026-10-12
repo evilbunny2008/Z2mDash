@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Kahaluag han tile ngan cluster</string>
 	<string name="settings_tile_width_detail">Kun ano kahaluag an mga tile (ngan salit an mga card han cluster, 3 nga tile an kahaluag) mahimo magdako, tubtob mapuno an screen – yana %1$ddp</string>
+	<string name="settings_lock_layout">I-lock an Layout</string>
+	<string name="settings_lock_layout_detail">Pugngi an pagbalhin han mga tile, cluster, ngan grupo pinaagi han pag-drag</string>
 	<string name="settings_undo">Kadugay han mensahe nga Bawia</string>
 	<string name="settings_undo_detail">Kun ano kadugay nagpapabilin an ‘Bawia’ nga mensahe katapos guyuron an tile, cluster o grupo – yana %1$ds</string>
 	<string name="settings_undo_detail_off">Kun ano kadugay nagpapabilin an ‘Bawia’ nga mensahe katapos guyuron an tile, cluster o grupo – yana patay</string>

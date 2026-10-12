@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Lautele o pusa ma fuifui</string>
 	<string name="settings_tile_width_detail">Le lautele e mafai ona tupu ai pusa (ma kata o fuifui, e 3 pusa le lautele), seʻia tumu le lau – nei %1$ddp</string>
+	<string name="settings_lock_layout">Loka le Faatulagaga</string>
+	<string name="settings_lock_layout_detail">Taofi le siitia o tile, vaega laiti, ma vaega e ala i le toso</string>
 	<string name="settings_undo">Umi o le feʻau Toe faʻafoʻi</string>
 	<string name="settings_undo_detail">Le umi e tumau ai le fesili ‘Toe faʻafoʻi’ pe a uma ona toso se pusa, fuifui po o se vaega – nei %1$ds</string>
 	<string name="settings_undo_detail_off">Le umi e tumau ai le fesili ‘Toe faʻafoʻi’ pe a uma ona toso se pusa, fuifui po o se vaega – ua tape nei</string>

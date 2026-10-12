@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Lapad ng Tile at Cluster</string>
 	<string name="settings_tile_width_detail">Gaano kalapad ang puwedeng ilaki ng mga tile (at ng mga cluster card, na 3 tile ang lapad), hanggang mapuno ang screen – kasalukuyang %1$ddp</string>
+	<string name="settings_lock_layout">I-lock ang Layout</string>
+	<string name="settings_lock_layout_detail">Pigilan ang paglipat ng mga tile, cluster, at grupo sa pamamagitan ng pag-drag</string>
 	<string name="settings_undo">Tagal ng Undo Toast</string>
 	<string name="settings_undo_detail">Gaano katagal nananatili ang ‘I-undo’ na prompt pagkatapos mag-drag ng tile, cluster, o grupo – kasalukuyang %1$ds</string>
 	<string name="settings_undo_detail_off">Gaano katagal nananatili ang ‘I-undo’ na prompt pagkatapos mag-drag ng tile, cluster, o grupo – kasalukuyang naka-off</string>

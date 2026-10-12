@@ -414,6 +414,8 @@
 	</plurals>
 	<string name="settings_tile_width">عرض المربعات والكتل</string>
 	<string name="settings_tile_width_detail">مدى عرض المربعات (وبالتالي البطاقات العنقودية، التي يبلغ عرضها 3 مربعات) يمكن أن تنمو، حتى ملء الشاشة – حاليًا %1$ddp</string>
+	<string name="settings_lock_layout">قفل التخطيط</string>
+	<string name="settings_lock_layout_detail">منع نقل البلاطات والمجموعات الفرعية والمجموعات عن طريق السحب</string>
 	<string name="settings_undo">التراجع عن مدة الخبز المحمص</string>
 	<string name="settings_undo_detail">المدة التي تظل فيها المطالبة ‘تراجع’ قائمة بعد سحب مربع أو مجموعة أو مجموعة – حاليًا %1$ds</string>
 	<string name="settings_undo_detail_off">المدة التي تظل فيها المطالبة ‘تراجع’ قائمة بعد سحب مربع أو مجموعة أو مجموعة – وهي متوقفة حاليًا</string>

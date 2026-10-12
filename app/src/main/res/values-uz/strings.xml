@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Plitka va klaster kengligi</string>
 	<string name="settings_tile_width_detail">Plitkalar (va shu tariqa 3 plitka kenglikdagi klaster kartalari) ekranni toʻldirguncha qanchalik kengayishi mumkin – hozir %1$ddp</string>
+	<string name="settings_lock_layout">Joylashuvni qulflash</string>
+	<string name="settings_lock_layout_detail">Plitkalar, klasterlar va guruhlarni sudrab ko‘chirishni taqiqlash</string>
 	<string name="settings_undo">Bekor qilish xabari davomiyligi</string>
 	<string name="settings_undo_detail">Plitka, klaster yoki guruhni sudragandan keyin ‘Bekor qilish’ taklifi qancha vaqt turadi – hozir %1$ds</string>
 	<string name="settings_undo_detail_off">Plitka, klaster yoki guruhni sudragandan keyin ‘Bekor qilish’ taklifi qancha vaqt turadi – hozir oʻchiq</string>

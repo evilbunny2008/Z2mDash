@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Kachel– und Clusterbreite</string>
 	<string name="settings_tile_width_detail">Wie breit Kacheln (und damit Clusterkarten, 3 Kacheln breit) werden können, bis sie den Bildschirm ausfüllen – derzeit %1$ddp</string>
+	<string name="settings_lock_layout">Layout sperren</string>
+	<string name="settings_lock_layout_detail">Verhindert, dass Kacheln, Cluster und Gruppen durch Ziehen verschoben werden</string>
 	<string name="settings_undo">Toastdauer rückgängig machen</string>
 	<string name="settings_undo_detail">Wie lange die Aufforderung ‘Rückgängig’ nach dem Ziehen einer Kachel, eines Clusters oder einer Gruppe angezeigt bleibt – derzeit %1$ds</string>
 	<string name="settings_undo_detail_off">Wie lange die Aufforderung ‘Rückgängig’ nach dem Ziehen einer Kachel, eines Clusters oder einer Gruppe aktiv bleibt – derzeit deaktiviert</string>

@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ububanzi beethayile neengqokelela</string>
 	<string name="settings_tile_width_detail">Ukuba iithayile (ngoko namakhadi eengqokelela, abanzi ngeethayile ezi–3) zinokukhula zibe banzi kangakanani, zide zigcwalise isikrini – ngoku %1$ddp</string>
+	<string name="settings_lock_layout">Tshixa Uyilo</string>
+	<string name="settings_lock_layout_detail">Thintela iithayile, amaqela amancinci namaqela ukuba ahanjiswe ngokutsala</string>
 	<string name="settings_undo">Ubude besaziso sokubuyisa</string>
 	<string name="settings_undo_detail">Ukuba isicelo esithi ‘Buyisa’ sihlala ixesha elingakanani emva kokutsala ithayile, ingqokelela okanye iqela – ngoku %1$ds</string>
 	<string name="settings_undo_detail_off">Ukuba isicelo esithi ‘Buyisa’ sihlala ixesha elingakanani emva kokutsala ithayile, ingqokelela okanye iqela – ngoku sicinyiwe</string>

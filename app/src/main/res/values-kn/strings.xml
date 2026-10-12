@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">ಟೈಲ್ ಮತ್ತು ಕ್ಲಸ್ಟರ್ ಅಗಲ</string>
 	<string name="settings_tile_width_detail">ಟೈಲ್‌ಗಳು (ಮತ್ತು ಆದ್ದರಿಂದ 3 ಟೈಲ್ ಅಗಲದ ಕ್ಲಸ್ಟರ್ ಕಾರ್ಡ್‌ಗಳು) ಪರದೆ ತುಂಬುವವರೆಗೆ ಎಷ್ಟು ಅಗಲವಾಗಬಹುದು – ಪ್ರಸ್ತುತ %1$ddp</string>
+	<string name="settings_lock_layout">ಲೇಔಟ್ ಲಾಕ್ ಮಾಡಿ</string>
+	<string name="settings_lock_layout_detail">ಎಳೆಯುವ ಮೂಲಕ ಟೈಲ್‌ಗಳು, ಕ್ಲಸ್ಟರ್‌ಗಳು ಮತ್ತು ಗುಂಪುಗಳನ್ನು ಸರಿಸುವುದನ್ನು ತಡೆಯಿರಿ</string>
 	<string name="settings_undo">ರದ್ದುಗೊಳಿಸು ಸೂಚನೆಯ ಅವಧಿ</string>
 	<string name="settings_undo_detail">ಟೈಲ್, ಕ್ಲಸ್ಟರ್ ಅಥವಾ ಗುಂಪನ್ನು ಎಳೆದ ನಂತರ ‘ರದ್ದುಗೊಳಿಸಿ’ ಸೂಚನೆ ಎಷ್ಟು ಹೊತ್ತು ಇರುತ್ತದೆ – ಪ್ರಸ್ತುತ %1$d ಸೆಕೆಂಡು</string>
 	<string name="settings_undo_detail_off">ಟೈಲ್, ಕ್ಲಸ್ಟರ್ ಅಥವಾ ಗುಂಪನ್ನು ಎಳೆದ ನಂತರ ‘ರದ್ದುಗೊಳಿಸಿ’ ಸೂಚನೆ ಎಷ್ಟು ಹೊತ್ತು ಇರುತ್ತದೆ – ಪ್ರಸ್ತುತ ಆಫ್ ಆಗಿದೆ</string>

@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Faɗin Tile da Cluster</string>
 	<string name="settings_tile_width_detail">Yadda faɗin tiles (don haka da katunan cluster, masu faɗin tiles 3) zai iya ƙaruwa, har zuwa cike allon – a yanzu %1$ddp</string>
+	<string name="settings_lock_layout">Kulle Tsari</string>
+	<string name="settings_lock_layout_detail">Hana motsa tayal, gungu, da ƙungiyoyi ta hanyar ja</string>
 	<string name="settings_undo">Tsawon lokacin Undo Toast</string>
 	<string name="settings_undo_detail">Tsawon lokacin da sanarwar ‘Undo’ take tsayawa bayan motsa tile, cluster, ko rukunin – a yanzu %1$ds</string>
 	<string name="settings_undo_detail_off">Tsawon lokacin da sanarwar ‘Undo’ take tsayawa bayan motsa tile, cluster, ko rukunin – a yanzu an kashe</string>

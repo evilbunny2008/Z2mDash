@@ -349,6 +349,8 @@
 	</plurals>
 	<string name="settings_tile_width">Bikpela bilong taiel na bung</string>
 	<string name="settings_tile_width_detail">Hamas bikpela ol taiel (olsem na ol kat bilong bung, 3 taiel bikpela) i ken kamap, inap long fulim skrin – nau %1$ddp</string>
+	<string name="settings_lock_layout">Lokim Lukluk</string>
+	<string name="settings_lock_layout_detail">Stopim ol tail, klasta, na grup long muv taim yu pulim</string>
 	<string name="settings_undo">Longpela bilong toksave bilong Tanim bek</string>
 	<string name="settings_undo_detail">Hamas taim toksave ‘Tanim bek’ i stap bihain long pulim wanpela taiel, bung o grup – nau %1$ds</string>
 	<string name="settings_undo_detail_off">Hamas taim toksave ‘Tanim bek’ i stap bihain long pulim wanpela taiel, bung o grup – nau i of</string>

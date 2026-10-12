@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Breet vu Kachelen a Clusteren</string>
 	<string name="settings_tile_width_detail">Wéi breet Kachelen (an domat Cluster–Kaarten, 3 Kachele breet) wuesse kënnen, bis de Bildschierm voll ass – de Moment %1$ddp</string>
+	<string name="settings_lock_layout">Layout spären</string>
+	<string name="settings_lock_layout_detail">Verhënnert, datt Kacheln, Clusteren a Gruppen duerch Zéie geréckelt ginn</string>
 	<string name="settings_undo">Dauer vun der Réckgängeg–Meldung</string>
 	<string name="settings_undo_detail">Wéi laang d’Meldung ‘Réckgängeg’ nom Zéie vun enger Kachel, engem Cluster oder enger Grupp bleift – de Moment %1$ds</string>
 	<string name="settings_undo_detail_off">Wéi laang d’Meldung ‘Réckgängeg’ nom Zéie vun enger Kachel, engem Cluster oder enger Grupp bleift – de Moment aus</string>

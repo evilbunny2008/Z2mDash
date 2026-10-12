@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">டைல் &amp; கிளஸ்டர் அகலம்</string>
 	<string name="settings_tile_width_detail">திரையை நிரப்பும் வரை, எவ்வளவு அகலமான டைல்கள் (அதனால் கிளஸ்டர் கார்டுகள், 3 டைல்கள் அகலம்) வளரலாம் – தற்போது %1$ddp</string>
+	<string name="settings_lock_layout">தளவமைப்பைப் பூட்டு</string>
+	<string name="settings_lock_layout_detail">இழுப்பதன் மூலம் டைல்கள், கிளஸ்டர்கள் மற்றும் குழுக்களை நகர்த்துவதைத் தடுக்கும்</string>
 	<string name="settings_undo">டோஸ்ட் கால அளவை செயல்தவிர்க்கவும்</string>
 	<string name="settings_undo_detail">டைல், கிளஸ்டர் அல்லது குழுவை இழுத்த பிறகு, ‘செயல்தவிர்’ ப்ராம்ட் எவ்வளவு நேரம் இருக்கும் – தற்போது %1$ds</string>
 	<string name="settings_undo_detail_off">டைல், கிளஸ்டர் அல்லது குழுவை இழுத்த பிறகு, ‘செயல்தவிர்’ ப்ராம்ட் எவ்வளவு நேரம் இருக்கும் – தற்போது முடக்கப்பட்டுள்ளது</string>

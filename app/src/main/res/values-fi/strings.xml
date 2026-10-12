@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ruutujen ja klustereiden leveys</string>
 	<string name="settings_tile_width_detail">Kuinka leveiksi ruudut (ja siten klusterikortit, 3 ruutua leveitä) voivat kasvaa, koko näytön levyiseksi asti – nyt %1$ddp</string>
+	<string name="settings_lock_layout">Lukitse asettelu</string>
+	<string name="settings_lock_layout_detail">Estää ruutujen, klustereiden ja ryhmien siirtämisen vetämällä</string>
 	<string name="settings_undo">Kumoa–ilmoituksen kesto</string>
 	<string name="settings_undo_detail">Kuinka kauan ‘Kumoa’–kehote näkyy ruudun, klusterin tai ryhmän vetämisen jälkeen – nyt %1$ds</string>
 	<string name="settings_undo_detail_off">Kuinka kauan ‘Kumoa’–kehote näkyy ruudun, klusterin tai ryhmän vetämisen jälkeen – nyt pois päältä</string>

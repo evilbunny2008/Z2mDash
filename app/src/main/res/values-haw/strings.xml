@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Laulā kile a puʻulu</string>
 	<string name="settings_tile_width_detail">Ka laulā e ulu ai nā kile (a no laila nā kāleka puʻulu, 3 kile ka laulā), a hiki i ka hoʻopiha ʻana i ka pale – i kēia manawa %1$ddp</string>
+	<string name="settings_lock_layout">Laka i ka Hoʻonohonoho</string>
+	<string name="settings_lock_layout_detail">Kāohi i ka neʻe ʻana o nā kile, nā hui liʻiliʻi, a me nā hui ma ke kauō ʻana</string>
 	<string name="settings_undo">Lōʻihi o ka memo Hoʻihoʻi</string>
 	<string name="settings_undo_detail">Ka lōʻihi e noho ai ka paipai ‘Hoʻihoʻi’ ma hope o ke kauo ʻana i kile, puʻulu a hui paha – i kēia manawa %1$ds</string>
 	<string name="settings_undo_detail_off">Ka lōʻihi e noho ai ka paipai ‘Hoʻihoʻi’ ma hope o ke kauo ʻana i kile, puʻulu a hui paha – pio i kēia manawa</string>

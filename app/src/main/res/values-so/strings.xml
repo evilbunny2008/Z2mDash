@@ -362,6 +362,8 @@
 	</plurals>
 	<string name="settings_tile_width">Ballaca sanduuqyada iyo kutlooyinka</string>
 	<string name="settings_tile_width_detail">Inta ay sanduuqyadu ballaaran karaan (sidaas darteedna kaararka kutlada, oo 3 sanduuq ballac ah), ilaa ay shaashadda buuxiyaan – hadda %1$ddp</string>
+	<string name="settings_lock_layout">Xir Qaabka</string>
+	<string name="settings_lock_layout_detail">Ka jooji in tiles, kooxo yaryar, iyo kooxo lagu dhaqaajiyo jiidis</string>
 	<string name="settings_undo">Muddada fariinta Ka noqo</string>
 	<string name="settings_undo_detail">Inta uu soo jeedinta ‘Ka noqo’ joogo kadib jiidista sanduuq, kutlad ama koox – hadda %1$ds</string>
 	<string name="settings_undo_detail_off">Inta uu soo jeedinta ‘Ka noqo’ joogo kadib jiidista sanduuq, kutlad ama koox – hadda waa dansan yahay</string>
