@@ -1,0 +1,1 @@
+* Opening a min/max threshold tile that was changed to a live reading (e.g. illuminance) and saving it now moves it to the sensor's own topic, without waiting for the sensor to report

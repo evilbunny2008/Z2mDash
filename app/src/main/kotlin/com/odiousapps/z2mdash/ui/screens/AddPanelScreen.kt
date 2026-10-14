@@ -201,19 +201,22 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             renamingOwnCluster -> existing.clusterId to null
                             else -> app.configRepository.clusterForName(groupId, clusterName)
                         }
+                        // On save rather than while typing the field, so a tile retyped before
+                        // this check existed is fixed just by opening and saving it.
+                        val retargetedTopic = if (panelType == "Sensor") liveReadingTopicFor(app, selectedBrokerId, topic, jsonPath) else null
                         val panel: Panel = when (panelType) {
                             "Sensor" -> Panel.Sensor(
                                 id = existing?.id ?: UUID.randomUUID().toString(),
                                 label = label.ifBlank { "Sensor" },
                                 brokerId = selectedBrokerId,
-                                topic = topic,
+                                topic = retargetedTopic ?: topic,
                                 jsonPath = jsonPath,
                                 unit = unit,
                                 icon = icon,
                                 idealRangeTopic = idealRangeTopic,
                                 idealMinPath = idealMinPath,
                                 idealMaxPath = idealMaxPath,
-                                editable = editableValue,
+                                editable = editableValue && retargetedTopic == null,
                                 clusterId = clusterId,
                                 displayOrder = displayOrderValue,
                                 decimals = decimalsText.toIntOrNull() ?: 0
@@ -416,22 +419,6 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 if (decimalsText == SensorDiscovery.suggestedDecimals(oldPath).toString()) {
                                     decimalsText = SensorDiscovery.suggestedDecimals(newPath).toString()
                                 }
-                                // A min/max threshold tile reads its cluster's "<topic>/app" config
-                                // topic, not the live sensor topic - retyping its field to a live
-                                // reading (e.g. "illuminance") left it on "/app", where that field
-                                // never appears, so it sat on "--" forever. Once the new field
-                                // resolves on the base sensor topic but not on "/app", move it
-                                // there, and it's no longer a user-set preference to edit.
-                                if (topic.endsWith("/app")) {
-                                    val baseTopic = topic.removeSuffix("/app")
-                                    val payloads = app.connectionManager.latestPayloads.value
-                                    val inApp = payloads["$selectedBrokerId|$topic"]?.let { JsonPath.extract(it, newPath) } != null
-                                    val inBase = payloads["$selectedBrokerId|$baseTopic"]?.let { JsonPath.extract(it, newPath) } != null
-                                    if (newPath.isNotBlank() && inBase && !inApp) {
-                                        topic = baseTopic
-                                        editableValue = false
-                                    }
-                                }
                             },
                             label = { Text(stringResource(R.string.panel_json_field)) },
                             placeholder = { Text(stringResource(R.string.panel_json_field_hint)) },
@@ -615,4 +602,19 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
             }
         )
     }
+}
+
+/**
+ * The live sensor topic a Sensor tile on [topic] should read [path] from instead, or null to leave
+ * it be. A min/max threshold tile reads its cluster's "<topic>/app" config topic, not the live
+ * sensor topic - retyping its field to a live reading (e.g. "illuminance") left it on "/app",
+ * where that field never appears, so it sat on "--" forever. Moved unless the field is actually
+ * on "/app" or is itself a "_min"/"_max" threshold. Doesn't wait for the sensor topic to have
+ * published: soil sensors in particular can go a long while between reports.
+ */
+private fun liveReadingTopicFor(app: Z2mDashApplication, brokerId: String, topic: String, path: String): String? {
+    if (!topic.endsWith("/app") || path.isBlank() || path.endsWith("_min") || path.endsWith("_max")) return null
+    val appPayload = app.connectionManager.latestPayloads.value["$brokerId|$topic"]
+    if (appPayload?.let { JsonPath.extract(it, path) } != null) return null
+    return topic.removeSuffix("/app")
 }
