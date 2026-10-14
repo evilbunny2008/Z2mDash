@@ -59,8 +59,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.graphics.lerp
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.addPathNodes
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -79,6 +81,20 @@ internal val AlertBlue = Color(0xFF1E88E5)
 // Distinct from red (stale), blue (low battery) and green (in range).
 internal val AlertYellow = Color(0xFFFDD835)
 private val AlertGreen = Color(0xFF43A047)
+
+// material-icons-extended has no seedling, which suits soil fertility better than its leaf/grass
+// glyphs - a stem with two leaves over a ground line, drawn on the same 24x24 grid as the rest.
+private val Seedling: ImageVector by lazy {
+    ImageVector.Builder(name = "Seedling", defaultWidth = 24.dp, defaultHeight = 24.dp, viewportWidth = 24f, viewportHeight = 24f)
+        .addPath(
+            pathData = addPathNodes(
+                "M11,21V13.5C7,13.5 3.5,11 3.5,5.5C8,5.5 11,8 11.6,11.6C12,7.5 15,4 20.5,4C20.5,9.5 17,12.2 13,12.2V21Z" +
+                    "M3,20H21V22H3Z"
+            ),
+            fill = SolidColor(Color.Black)
+        )
+        .build()
+}
 
 // Internal (not private) so pickers like AddPanelScreen's icon dropdown can render the same
 // glyph next to each TileIcon option instead of duplicating this mapping.
@@ -113,6 +129,7 @@ internal fun iconFor(tileIcon: TileIcon): ImageVector = when (tileIcon) {
     TileIcon.DOORBELL -> Icons.Default.Doorbell
     TileIcon.TAP -> Icons.Default.Water
     TileIcon.COUNTDOWN -> Icons.Default.Timer
+    TileIcon.SEEDLING -> Seedling
 }
 
 @Composable

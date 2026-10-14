@@ -1,0 +1,3 @@
+* Changing a min/max threshold tile's field to a live reading (e.g. illuminance) now moves it to the sensor's own topic, so it no longer shows "--"
+* Retargeting or deleting a min/max threshold tile, or clearing a tile's ideal range topic, now removes that threshold, so tiles stop being coloured against it
+* Soil fertility readings get a new seedling icon and µS/cm unit

@@ -97,7 +97,10 @@ fun pushPanelRemovalIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
     val updatedPayload = when (panel) {
         is Panel.Sensor -> {
             val index = SensorDiscovery.sensorFieldIndex(deviceConfig, orderedPanels, panel.id, panel.jsonPath) ?: return
-            SensorDiscovery.removeSensorFieldFromAppPayload(currentPayload, index, orderVersion)
+            SensorDiscovery.removeSensorFieldFromAppPayload(currentPayload, index, orderVersion)?.let { payload ->
+                val orphaned = orphanedThresholdKeys(device, orderedPanels, panel, null)
+                SensorDiscovery.removeKeysFromAppPayload(payload, orphaned) ?: payload
+            }
         }
         is Panel.Toggle, is Panel.Button -> {
             val commandTopic = commandTopicOf(panel) ?: return
@@ -111,6 +114,48 @@ fun pushPanelRemovalIfAutoConfigured(app: Z2mDashApplication, panel: Panel) {
     // place. A no-op if this was the device's last panel: the caller's own removePanel call
     // already drops the whole tracking entry (and clears the retained topic) in that case.
     app.configRepository.pruneAutoConfiguredDevicePanelId(device.brokerId, device.appConfigTopic, panel.id)
+}
+
+/**
+ * The "<base>_min"/"<base>_max" threshold keys in [device]'s "/app" payload that [old] (a Sensor
+ * being edited into [new], or deleted when [new] is null) was the last thing using, and so should
+ * be stripped from the payload - otherwise e.g. retyping a duplicated soil sensor's "moisture_min"
+ * tile to "illuminance" left moisture_min/max behind, still colouring the moisture tile against
+ * thresholds no tile shows any more. Only explicit edits/deletes get here, never a reconcile: a
+ * hand-written payload can legitimately declare thresholds with no tile of their own.
+ *
+ * A key [old] displayed is orphaned once no other tile displays it. A key [old] only used as its
+ * ideal range (the range topic just cleared) is orphaned once no other tile displays it or uses
+ * it as an ideal range either.
+ */
+private fun orphanedThresholdKeys(
+    device: AutoConfiguredDevice,
+    orderedPanels: List<Panel>,
+    old: Panel,
+    new: Panel.Sensor?
+): Set<String> {
+    if (old !is Panel.Sensor) return emptySet()
+    val appTopic = device.appConfigTopic
+    // By suffix rather than deviceConfig.rangePairs: once one half of a pair is stripped, the
+    // other no longer forms a pair, but still needs stripping when its own tile goes too.
+    fun isThreshold(key: String) = key.endsWith("_min") || key.endsWith("_max")
+    val others = orderedPanels.filterIsInstance<Panel.Sensor>().filter { it.id != old.id }
+    fun displayedElsewhere(key: String) = others.any { it.topic == appTopic && it.jsonPath == key }
+    fun idealElsewhere(key: String) = others.any {
+        it.idealRangeTopic == appTopic && (it.idealMinPath == key || it.idealMaxPath == key)
+    }
+
+    val orphaned = mutableSetOf<String>()
+    val stoppedDisplaying = old.topic == appTopic && (new == null || new.topic != old.topic || new.jsonPath != old.jsonPath)
+    if (stoppedDisplaying && isThreshold(old.jsonPath) && !displayedElsewhere(old.jsonPath)) {
+        orphaned += old.jsonPath
+    }
+    if (new != null && old.idealRangeTopic == appTopic && new.idealRangeTopic.isBlank()) {
+        listOf(old.idealMinPath, old.idealMaxPath)
+            .filter { isThreshold(it) && !displayedElsewhere(it) && !idealElsewhere(it) }
+            .forEach { orphaned += it }
+    }
+    return orphaned
 }
 
 /** An update map for [index] when [oldValue] and [newValue] differ, else empty - used by pushPanelDetailsIfAutoConfigured to only push fields that actually changed. */
@@ -169,7 +214,7 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
             ) {
                 return
             }
-            SensorDiscovery.updateDescriptionInAppPayload(
+            val described = SensorDiscovery.updateDescriptionInAppPayload(
                 currentPayload,
                 fieldJsonPathUpdates = jsonPathUpdate,
                 fieldUnitUpdates = unitUpdate,
@@ -179,7 +224,9 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
                 fieldIdealTopicUpdates = idealTopicUpdate,
                 fieldIdealMinPathUpdates = idealMinUpdate,
                 fieldIdealMaxPathUpdates = idealMaxUpdate
-            )
+            ) ?: currentPayload
+            val orphaned = orphanedThresholdKeys(device, orderedPanels, old, newPanel)
+            (SensorDiscovery.removeKeysFromAppPayload(described, orphaned) ?: described).takeIf { it != currentPayload }
         }
         is Panel.Toggle -> {
             val old = oldPanel as? Panel.Toggle ?: return

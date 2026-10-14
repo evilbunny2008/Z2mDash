@@ -293,6 +293,23 @@ object SensorDiscovery {
     }
 
     /**
+     * Rewrites a device's "/app" payload with the top-level [keys] removed - used to drop a
+     * "<base>_min"/"<base>_max" threshold once nothing shows it any more, since every tile whose
+     * ideal range points at it keeps colouring itself off a value the user can no longer see or
+     * edit. Returns null if the payload isn't a JSON object or holds none of [keys].
+     */
+    fun removeKeysFromAppPayload(currentPayload: String, keys: Set<String>): String? = try {
+        val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
+        if (obj == null || keys.none { it in obj }) {
+            null
+        } else {
+            Json.encodeToString(JsonElement.serializer(), JsonObject(obj.filterKeys { it !in keys }))
+        }
+    } catch (_: Exception) {
+        null
+    }
+
+    /**
      * Rewrites a device's "/app" payload with the control at [controlIndex] (into "controls")
      * removed, and "order_version" stamped - the controls counterpart to
      * removeSensorFieldFromAppPayload, for the same reason (a deleted Toggle/Button panel must
@@ -917,6 +934,7 @@ object SensorDiscovery {
     }
 
     fun suggestedIcon(key: String): TileIcon = when {
+        key.contains("fertility", ignoreCase = true) -> TileIcon.SEEDLING
         key.contains("moisture", ignoreCase = true) -> TileIcon.MOISTURE
         key.contains("humidity", ignoreCase = true) -> TileIcon.HUMIDITY
         key.contains("temperature", ignoreCase = true) -> TileIcon.TEMPERATURE
@@ -951,6 +969,7 @@ object SensorDiscovery {
         key.contains("moisture", ignoreCase = true) -> "%"
         key.contains("battery", ignoreCase = true) -> "%"
         key.contains("illuminance", ignoreCase = true) -> "lx"
+        key.contains("fertility", ignoreCase = true) -> "\u00b5S/cm"
         key.contains("co2", ignoreCase = true) -> "ppm"
         key.contains("voltage", ignoreCase = true) -> "V"
         key.contains("current", ignoreCase = true) -> "A"

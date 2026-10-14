@@ -49,7 +49,9 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
+import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
+import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.clusterName
@@ -399,7 +401,38 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                         Spacer(Modifier.height(16.dp))
                         OutlinedTextField(
                             value = jsonPath,
-                            onValueChange = { jsonPath = it },
+                            onValueChange = { newPath ->
+                                val oldPath = jsonPath
+                                jsonPath = newPath
+                                // Anything still at the old field's suggested default follows the
+                                // new field (e.g. a duplicated soil sensor's "moisture_min" tile
+                                // retyped to "illuminance" picks up "lx" and the light icon) -
+                                // something the user has customised is left alone.
+                                if (oldPath.isNotBlank() && label == SensorDiscovery.suggestedLabel(oldPath)) {
+                                    label = SensorDiscovery.suggestedLabel(newPath)
+                                }
+                                if (unit == SensorDiscovery.suggestedUnit(oldPath)) unit = SensorDiscovery.suggestedUnit(newPath)
+                                if (icon == SensorDiscovery.suggestedIcon(oldPath)) icon = SensorDiscovery.suggestedIcon(newPath)
+                                if (decimalsText == SensorDiscovery.suggestedDecimals(oldPath).toString()) {
+                                    decimalsText = SensorDiscovery.suggestedDecimals(newPath).toString()
+                                }
+                                // A min/max threshold tile reads its cluster's "<topic>/app" config
+                                // topic, not the live sensor topic - retyping its field to a live
+                                // reading (e.g. "illuminance") left it on "/app", where that field
+                                // never appears, so it sat on "--" forever. Once the new field
+                                // resolves on the base sensor topic but not on "/app", move it
+                                // there, and it's no longer a user-set preference to edit.
+                                if (topic.endsWith("/app")) {
+                                    val baseTopic = topic.removeSuffix("/app")
+                                    val payloads = app.connectionManager.latestPayloads.value
+                                    val inApp = payloads["$selectedBrokerId|$topic"]?.let { JsonPath.extract(it, newPath) } != null
+                                    val inBase = payloads["$selectedBrokerId|$baseTopic"]?.let { JsonPath.extract(it, newPath) } != null
+                                    if (newPath.isNotBlank() && inBase && !inApp) {
+                                        topic = baseTopic
+                                        editableValue = false
+                                    }
+                                }
+                            },
                             label = { Text(stringResource(R.string.panel_json_field)) },
                             placeholder = { Text(stringResource(R.string.panel_json_field_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(),
