@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Putim panel long %1$s</string>
 	<string name="home_add_tile_to">Putim taiel long %1$s</string>
 	<string name="home_another_group">narapela grup</string>
+	<string name="home_battery_type_cluster">Kain bateri bilong %1$s</string>
+	<string name="home_battery_type_nimh">NiMH bateri yu ken sasim gen</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH i gat liklik volt long alkaline o lithium, olsem na ol sensa i soim olsem em klostu pinis maski em i pul. Em i givim tok lukaut long 5% o daun moa, i no long 20%</string>
+	<string name="home_battery_type_title">Kain bateri bilong ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Ol panel bilong dispela bung i no save serim olgeta wanpela klinpela topik bilong masin, dispela nating ples nem tasol – ating ol i sampela panel i no stret wantaim, i no wanpela tru masin. Muvim i senisim dispela hap ol i serim tasol, olsem na ating em bai i no wok olsem yu tingim. Gutpela long lukim wan wan ol panel bilong dispela bung pastaim</string>
 	<string name="home_change_topic_cluster">Senisim topik bilong %1$s</string>
 	<string name="home_change_topic_text">I muvim olgeta panel long dispela bung i go long nupela MQTT topik – olsem bihain long brukim Zigbee netwok i go long namba tu bris, long ol masin i muv tru tasol. Ol narapela bung i stap olsem tasol</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">I lodim i stap…</string>
 	<string name="home_loading_detail">I ritim yet setap yu seivim</string>
 	<string name="home_low_battery_description" formatted="false">Bateri long 20% o daun moa</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateri long 5% o daun moa</string>
 	<string name="home_moved">I muvim ‘%1$s’</string>
 	<string name="home_moved_into">I muvim ‘%1$s’ i go insait long ‘%2$s’</string>
 	<string name="home_moved_to">I muvim ‘%1$s’ i go long ‘%2$s’</string>

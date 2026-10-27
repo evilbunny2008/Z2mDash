@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s qrupuna panel əlavə et</string>
 	<string name="home_add_tile_to">%1$s qrupuna plitka əlavə et</string>
 	<string name="home_another_group">başqa qrup</string>
+	<string name="home_battery_type_cluster">%1$s üçün batareya növü</string>
+	<string name="home_battery_type_nimh">Təkrar doldurulan NiMH batareyalar</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH qələvi və ya litiumdan aşağı gərginlikdə işləyir, ona görə sensorlar onu dolu olanda belə demək olar boş göstərir. 20% əvəzinə 5% və ya az olanda xəbərdar edir</string>
+	<string name="home_battery_type_title">‘%1$s’ üçün batareya növü</string>
 	<string name="home_change_topic_broad_warning">Bu klasterin panellərinin hamısı bir təmiz cihaz mövzusunu paylaşmır, yalnız həmin çılpaq ad sahəsi ortaqdır – bu, bir real cihaz deyil, bir neçə uyğun gəlməyən panel ola bilər. Köçürmə yalnız həmin ortaq hissəni əvəz edir, buna görə də gözlədiyiniz kimi tətbiq olunmaya bilər. Əvvəlcə bu klasterin panellərini bir–bir yoxlamağa dəyər</string>
 	<string name="home_change_topic_cluster">%1$s mövzusunu dəyiş</string>
 	<string name="home_change_topic_text">Bu klasterdəki bütün panelləri yeni MQTT mövzusuna köçürür – məs. Zigbee şəbəkəsini ikinci körpüyə böldükdən sonra, yalnız həqiqətən köçmüş cihazlar üçün. Digər klasterlərə toxunulmur</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Yüklənir…</string>
 	<string name="home_loading_detail">Saxlanmış konfiqurasiyanız hələ oxunur</string>
 	<string name="home_low_battery_description" formatted="false">Batareya 20% və ya az</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batareya 5% və ya az</string>
 	<string name="home_moved">‘%1$s’ köçürüldü</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’ içinə köçürüldü</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’ yerinə köçürüldü</string>

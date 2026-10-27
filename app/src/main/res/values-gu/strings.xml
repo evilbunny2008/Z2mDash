@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$sમાં પૅનલ ઉમેરો</string>
 	<string name="home_add_tile_to">%1$sમાં ટાઇલ ઉમેરો</string>
 	<string name="home_another_group">બીજું જૂથ</string>
+	<string name="home_battery_type_cluster">%1$sનો બૅટરી પ્રકાર</string>
+	<string name="home_battery_type_nimh">રિચાર્જેબલ NiMH બૅટરી</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH આલ્કલાઇન કે લિથિયમ કરતાં ઓછા વોલ્ટેજ પર ચાલે છે, તેથી ચાર્જ હોવા છતાં સેન્સર તેને લગભગ ખાલી બતાવે છે. 20%ને બદલે 5% કે ઓછી થાય ત્યારે ચેતવે છે</string>
+	<string name="home_battery_type_title">‘%1$s’નો બૅટરી પ્રકાર</string>
 	<string name="home_change_topic_broad_warning">આ ક્લસ્ટરની બધી પૅનલ એક જ સ્પષ્ટ ઉપકરણ ટૉપિક શેર કરતી નથી, ફક્ત તે સામાન્ય નેમસ્પેસ જ સમાન છે – સંભવતઃ આ એક વાસ્તવિક ઉપકરણને બદલે કેટલીક મેળ ન ખાતી પૅનલ છે. તેને ખસેડવાથી ફક્ત તે સમાન ભાગ બદલાય છે, તેથી તમે અપેક્ષા રાખો છો તે રીતે લાગુ ન પણ થાય. પહેલાં આ ક્લસ્ટરની પૅનલ એક-એક કરીને તપાસવી સારી</string>
 	<string name="home_change_topic_cluster">%1$sનો ટૉપિક બદલો</string>
 	<string name="home_change_topic_text">આ ક્લસ્ટરની દરેક પૅનલને નવા MQTT ટૉપિક પર ખસેડે છે – દા.ત. Zigbee નેટવર્કને બીજા બ્રિજ પર વિભાજિત કર્યા પછી, ફક્ત ખરેખર ખસેડાયેલા ઉપકરણો માટે. અન્ય ક્લસ્ટર યથાવત્ રહે છે</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">લોડ થઈ રહ્યું છે…</string>
 	<string name="home_loading_detail">તમારી સાચવેલી ગોઠવણી હજી વાંચી રહ્યાં છીએ</string>
 	<string name="home_low_battery_description" formatted="false">બૅટરી 20% કે ઓછી</string>
+	<string name="home_low_battery_nimh_description" formatted="false">બૅટરી 5% કે ઓછી</string>
 	<string name="home_moved">‘%1$s’ ખસેડ્યું</string>
 	<string name="home_moved_into">‘%1$s’ને ‘%2$s’ની અંદર ખસેડ્યું</string>
 	<string name="home_moved_to">‘%1$s’ને ‘%2$s’માં ખસેડ્યું</string>

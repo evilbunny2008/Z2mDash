@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Tāpiri papa ki %1$s</string>
 	<string name="home_add_tile_to">Tāpiri taera ki %1$s</string>
 	<string name="home_another_group">tētahi atu rōpū</string>
+	<string name="home_battery_type_cluster">Momo pūhiko mō %1$s</string>
+	<string name="home_battery_type_nimh">Ngā pūhiko NiMH ka taea te whakakī anō</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">He iti iho te ngaohiko o te NiMH i te alkaline, i te lithium rānei, nō reira ka whakaatu ngā pūoko he tata pau ahakoa kua whakakīia. Ka whakatūpato i te 5% iti iho rānei, kaua i te 20%</string>
+	<string name="home_battery_type_title">Momo pūhiko mō ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Kāore i te ōrite te kaupapa pūrere mā kotahi o ngā papa katoa o tēnei kāhui, ko taua mokowā ingoa tahanga anake – tērā pea he papa torutoru kāore e hāngai ana, kaua ko tētahi pūrere tūturu kotahi. Ka whakakapi te nuku i taua wāhanga ōrite anake, nō reira tērā pea kāore e pērā i tō i tūmanako ai. He pai te tirotiro takitahi i ngā papa o tēnei kāhui i te tuatahi</string>
 	<string name="home_change_topic_cluster">Huri i te kaupapa mō %1$s</string>
 	<string name="home_change_topic_text">Ka nuku i ngā papa katoa o tēnei kāhui ki tētahi kaupapa MQTT hou – hei tauira i muri i te wehenga o tētahi whatunga Zigbee ki tētahi piriti tuarua, mō ngā pūrere i tino nuku anake. Kāore e pāngia ētahi atu kāhui</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">E uta ana…</string>
 	<string name="home_loading_detail">E pānui tonu ana i tō whirihoranga kua tiakina</string>
 	<string name="home_low_battery_description" formatted="false">Pūhiko kei te 20% iti iho rānei</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Pūhiko kei te 5% iti iho rānei</string>
 	<string name="home_moved">Kua nuku a ‘%1$s’</string>
 	<string name="home_moved_into">Kua nuku a ‘%1$s’ ki roto i ‘%2$s’</string>
 	<string name="home_moved_to">Kua nuku a ‘%1$s’ ki ‘%2$s’</string>

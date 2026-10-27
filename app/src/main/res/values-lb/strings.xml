@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Panneau bei %1$s derbäisetzen</string>
 	<string name="home_add_tile_to">Kachel bei %1$s derbäisetzen</string>
 	<string name="home_another_group">eng aner Grupp</string>
+	<string name="home_battery_type_cluster">Batterietyp fir %1$s</string>
+	<string name="home_battery_type_nimh">Opluedbar NiMH–Akkuen</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH–Akkuen hunn eng méi niddreg Spannung wéi Alkali– oder Lithiumbatterien, dofir weisen d\'Sensoren se och gelueden als bal eidel. Warnt eréischt bei 5% oder manner amplaz bei 20%</string>
+	<string name="home_battery_type_title">Batterietyp fir ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">D’Panneaue vun dësem Cluster deelen net all ee propper Apparat–Thema, just dee bloussen Nummraum – wahrscheinlech e puer net passend Panneauen amplaz vun engem eenzegen echten Apparat. D’Verréckelen ersetzt just dee gemeinsamen Deel, et kann also sinn, datt et net esou ugewannt gëtt, wéi Dir et erwaart. Et lount sech, d’Panneaue vun dësem Cluster fir d’éischt eenzel ze kontrolléieren</string>
 	<string name="home_change_topic_cluster">Thema fir %1$s änneren</string>
 	<string name="home_change_topic_text">Verréckelt all Panneauen an dësem Cluster op en neit MQTT–Thema – z. B. nodeems en Zigbee–Netz op eng zweet Bréck opgedeelt gouf, just fir d’Apparater, déi wierklech geplënnert sinn. Aner Clustere bleiwen onberéiert</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Gëtt gelueden…</string>
 	<string name="home_loading_detail">Är gespäichert Konfiguratioun gëtt nach gelies</string>
 	<string name="home_low_battery_description" formatted="false">Batterie bei 20% oder manner</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batterie bei 5% oder manner</string>
 	<string name="home_moved">‘%1$s’ verréckelt</string>
 	<string name="home_moved_into">‘%1$s’ an ‘%2$s’ verréckelt</string>
 	<string name="home_moved_to">‘%1$s’ op ‘%2$s’ verréckelt</string>

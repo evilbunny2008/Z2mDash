@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Tambahkan panel ke %1$s</string>
 	<string name="home_add_tile_to">Tambahkan ubin ke %1$s</string>
 	<string name="home_another_group">kelompok lain</string>
+	<string name="home_battery_type_cluster">Jenis baterai untuk %1$s</string>
+	<string name="home_battery_type_nimh">Baterai isi ulang NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH bekerja pada tegangan lebih rendah daripada alkaline atau litium, sehingga sensor menampilkannya hampir habis meskipun terisi penuh. Memperingatkan pada 5% atau kurang, bukan 20%</string>
+	<string name="home_battery_type_title">Jenis baterai untuk ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Panel cluster ini tidak semuanya berbagi satu topik perangkat yang bersih, hanya namespace yang kosong – kemungkinan beberapa panel tidak cocok dan bukan satu perangkat sebenarnya. Memindahkannya hanya akan menggantikan bagian yang dibagikan, sehingga mungkin tidak berlaku seperti yang Anda harapkan. Sebaiknya periksa panel cluster ini satu per satu terlebih dahulu</string>
 	<string name="home_change_topic_cluster">Ganti topik untuk %1$s</string>
 	<string name="home_change_topic_text">Memindahkan setiap panel di cluster ini ke topik MQTT baru – misalnya. setelah membagi jaringan Zigbee menjadi jembatan kedua, hanya untuk perangkat yang benar–benar dipindahkan. Cluster lain tidak tersentuh</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Memuat…</string>
 	<string name="home_loading_detail">Masih membaca konfigurasi tersimpan Anda</string>
 	<string name="home_low_battery_description" formatted="false">Baterai 20% atau kurang</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterai 5% atau kurang</string>
 	<string name="home_moved">Memindahkan ‘%1$s’</string>
 	<string name="home_moved_into">Memindahkan ‘%1$s’ ke ‘%2$s’</string>
 	<string name="home_moved_to">Memindahkan ‘%1$s’ ke ‘%2$s’</string>

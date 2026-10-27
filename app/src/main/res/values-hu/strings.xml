@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Panel hozzáadása ide: %1$s</string>
 	<string name="home_add_tile_to">Csempe hozzáadása ide: %1$s</string>
 	<string name="home_another_group">egy másik csoport</string>
+	<string name="home_battery_type_cluster">Akkumulátortípus: %1$s</string>
+	<string name="home_battery_type_nimh">Tölthető NiMH akkumulátorok</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">A NiMH alacsonyabb feszültségen működik, mint az alkáli vagy lítium elemek, ezért az érzékelők feltöltve is majdnem lemerültnek mutatják. 20% helyett csak 5% vagy kevesebb esetén figyelmeztet</string>
+	<string name="home_battery_type_title">Akkumulátortípus: „%1$s”</string>
 	<string name="home_change_topic_broad_warning">A klaszter paneljei nem egyetlen tiszta eszköztémakörön osztoznak, csak azon a puszta névtéren – valószínűleg néhány össze nem illő panelről van szó, nem egyetlen valódi eszközről. Az áthelyezés csak ezt a közös részt cseréli le, így lehet, hogy nem a várt módon működik. Érdemes előbb egyenként ellenőrizni a klaszter paneljeit</string>
 	<string name="home_change_topic_cluster">Témakör módosítása: %1$s</string>
 	<string name="home_change_topic_text">A klaszter minden paneljét új MQTT témakörre helyezi át – pl. ha egy Zigbee hálózatot második hídra osztottál szét, csak a ténylegesen áthelyezett eszközök esetén. A többi klaszter érintetlen marad</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Betöltés…</string>
 	<string name="home_loading_detail">A mentett konfiguráció beolvasása még folyamatban</string>
 	<string name="home_low_battery_description" formatted="false">Akkumulátor 20% vagy kevesebb</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Akkumulátor 5% vagy kevesebb</string>
 	<string name="home_moved">„%1$s” áthelyezve</string>
 	<string name="home_moved_into">„%1$s” áthelyezve ide: „%2$s”</string>
 	<string name="home_moved_to">„%1$s” áthelyezve ide: „%2$s”</string>

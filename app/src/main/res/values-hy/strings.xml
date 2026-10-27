@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Ավելացնել վահանակ %1$s–ին</string>
 	<string name="home_add_tile_to">Ավելացնել սալիկ %1$s–ին</string>
 	<string name="home_another_group">մեկ այլ խումբ</string>
+	<string name="home_battery_type_cluster">%1$s–ի մարտկոցի տեսակը</string>
+	<string name="home_battery_type_nimh">Վերալիցքավորվող NiMH մարտկոցներ</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH–ն աշխատում է ավելի ցածր լարման վրա, քան ալկալային կամ լիթիումային մարտկոցները, ուստի սենսորները լիցքավորված ժամանակ էլ դրանք ցույց են տալիս գրեթե դատարկ։ Զգուշացնում է 5% կամ ավելի քիչ լինելու դեպքում՝ 20%–ի փոխարեն</string>
+	<string name="home_battery_type_title">‘%1$s’–ի մարտկոցի տեսակը</string>
 	<string name="home_change_topic_broad_warning">Այս կլաստերի վահանակները բոլորը չեն կիսում սարքի մեկ մաքուր թեմա, այլ միայն այդ մերկ անվանատարածքը – հավանաբար դրանք մի քանի անհամապատասխան վահանակներ են, այլ ոչ թե մեկ իրական սարք։ Տեղափոխումը փոխարինում է միայն այդ ընդհանուր մասը, ուստի այն կարող է չկիրառվել այնպես, ինչպես սպասում եք։ Արժե նախ առանձին–առանձին ստուգել այս կլաստերի վահանակները</string>
 	<string name="home_change_topic_cluster">Փոխել %1$s–ի թեման</string>
 	<string name="home_change_topic_text">Տեղափոխում է այս կլաստերի բոլոր վահանակները նոր MQTT թեմա – օր.՝ Zigbee ցանցը երկրորդ կամրջի վրա բաժանելուց հետո, միայն իսկապես տեղափոխված սարքերի համար։ Մյուս կլաստերները չեն փոփոխվում</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Բեռնվում է…</string>
 	<string name="home_loading_detail">Ձեր պահված կազմաձևը դեռ կարդացվում է</string>
 	<string name="home_low_battery_description" formatted="false">Մարտկոցը 20% կամ ավելի քիչ է</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Մարտկոցը 5% կամ ավելի քիչ է</string>
 	<string name="home_moved">‘%1$s’–ը տեղափոխվեց</string>
 	<string name="home_moved_into">‘%1$s’–ը տեղափոխվեց ‘%2$s’–ի մեջ</string>
 	<string name="home_moved_to">‘%1$s’–ը տեղափոխվեց ‘%2$s’</string>

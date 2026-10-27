@@ -175,6 +175,10 @@
 	<string name="home_add_panel_to">Pievienot paneli grupai %1$s</string>
 	<string name="home_add_tile_to">Pievienot flīzi grupai %1$s</string>
 	<string name="home_another_group">citu grupu</string>
+	<string name="home_battery_type_cluster">Klastera %1$s bateriju veids</string>
+	<string name="home_battery_type_nimh">Uzlādējamas NiMH baterijas</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH darbojas ar zemāku spriegumu nekā sārma vai litija baterijas, tāpēc sensori tās rāda kā gandrīz tukšas pat uzlādētas. Brīdina pie 5% vai mazāk, nevis pie 20%</string>
+	<string name="home_battery_type_title">Klastera ‘%1$s’ bateriju veids</string>
 	<string name="home_change_topic_broad_warning">Šī klastera paneļiem nav vienas kopīgas tīras ierīces tēmas, tikai tukša nosaukumtelpa – visticamāk, tie ir daži nesaskaņoti paneļi, nevis viena īsta ierīce. Pārvietošana aizstāj tikai šo kopīgo daļu, tāpēc tā var netikt piemērota tā, kā gaidāt. Ieteicams vispirms pārbaudīt šī klastera paneļus atsevišķi</string>
 	<string name="home_change_topic_cluster">Mainīt tēmu klasterim %1$s</string>
 	<string name="home_change_topic_text">Pārvieto visus šī klastera paneļus uz jaunu MQTT tēmu – piem., pēc Zigbee tīkla sadalīšanas uz otru tiltu, tikai tām ierīcēm, kas tiešām tika pārvietotas. Citi klasteri netiek skarti</string>
@@ -211,6 +215,7 @@
 	<string name="home_loading">Ielādē…</string>
 	<string name="home_loading_detail">Joprojām nolasa jūsu saglabāto konfigurāciju</string>
 	<string name="home_low_battery_description" formatted="false">Akumulators 20% vai mazāk</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Akumulators 5% vai mazāk</string>
 	<string name="home_moved">Pārvietots ‘%1$s’</string>
 	<string name="home_moved_into">‘%1$s’ pārvietots uz ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ pārvietots uz ‘%2$s’</string>

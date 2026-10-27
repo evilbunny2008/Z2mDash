@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s тобына панель қосу</string>
 	<string name="home_add_tile_to">%1$s тобына тақтайша қосу</string>
 	<string name="home_another_group">басқа топ</string>
+	<string name="home_battery_type_cluster">%1$s батарея түрі</string>
+	<string name="home_battery_type_nimh">Қайта зарядталатын NiMH батареялары</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH сілтілі немесе литий батареяларына қарағанда төменірек кернеуде жұмыс істейді, сондықтан датчиктер оны зарядталған кезде де дерлік бос деп көрсетеді. 20% орнына 5% немесе одан аз болғанда ескертеді</string>
+	<string name="home_battery_type_title">‘%1$s’ батарея түрі</string>
 	<string name="home_change_topic_broad_warning">Бұл кластердің панельдерінің бәріне ортақ бір таза құрылғы тақырыбы жоқ, тек жалаң атаулар кеңістігі ғана – бұл бір нақты құрылғы емес, бірнеше сәйкес келмейтін панель болуы мүмкін. Жылжыту тек сол ортақ бөлікті ауыстырады, сондықтан ол сіз күткендей қолданылмауы мүмкін. Алдымен бұл кластердің панельдерін жеке–жеке тексерген жөн</string>
 	<string name="home_change_topic_cluster">%1$s тақырыбын өзгерту</string>
 	<string name="home_change_topic_text">Бұл кластердегі барлық панельді жаңа MQTT тақырыбына жылжытады – мысалы, Zigbee желісін екінші көпірге бөлгеннен кейін, тек шынымен жылжыған құрылғылар үшін. Басқа кластерлер өзгертілмейді</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Жүктелуде…</string>
 	<string name="home_loading_detail">Сақталған конфигурацияңыз әлі оқылуда</string>
 	<string name="home_low_battery_description" formatted="false">Батарея 20% немесе одан аз</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Батарея 5% немесе одан аз</string>
 	<string name="home_moved">‘%1$s’ жылжытылды</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’ ішіне жылжытылды</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’ орнына жылжытылды</string>

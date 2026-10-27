@@ -1,0 +1,1 @@
+- Clusters running on rechargeable NiMH batteries can now be marked as such (tap the cluster's battery icon), so they only show as low battery at 5% instead of 20%. NiMH runs at a lower voltage, which most sensors misreport as nearly flat.

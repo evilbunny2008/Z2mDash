@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Shto panel në %1$s</string>
 	<string name="home_add_tile_to">Shto pllakë në %1$s</string>
 	<string name="home_another_group">një grup tjetër</string>
+	<string name="home_battery_type_cluster">Lloji i baterisë për %1$s</string>
+	<string name="home_battery_type_nimh">Bateri NiMH të rimbushshme</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH punojnë me tension më të ulët se ato alkaline ose me litium, prandaj sensorët i tregojnë pothuajse bosh edhe kur janë të mbushura. Paralajmëron në 5% ose më pak në vend të 20%</string>
+	<string name="home_battery_type_title">Lloji i baterisë për ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Panelet e këtij klasteri nuk ndajnë të gjitha një temë të pastër pajisjeje, por vetëm atë hapësirë emrash të zhveshur – ka të ngjarë të jenë disa panele që nuk përputhen dhe jo një pajisje e vërtetë. Zhvendosja zëvendëson vetëm atë pjesë të përbashkët, kështu që mund të mos zbatohet siç e prisni. Ia vlen të kontrolloni fillimisht panelet e këtij klasteri një nga një</string>
 	<string name="home_change_topic_cluster">Ndrysho temën për %1$s</string>
 	<string name="home_change_topic_text">Zhvendos të gjitha panelet në këtë klaster në një temë të re MQTT – p.sh. pas ndarjes së një rrjeti Zigbee në një urë të dytë, vetëm për pajisjet që u zhvendosën vërtet. Klasterët e tjerë mbeten të paprekur</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Po ngarkohet…</string>
 	<string name="home_loading_detail">Konfigurimi juaj i ruajtur ende po lexohet</string>
 	<string name="home_low_battery_description" formatted="false">Bateria në 20% ose më pak</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateria në 5% ose më pak</string>
 	<string name="home_moved">U zhvendos ‘%1$s’</string>
 	<string name="home_moved_into">‘%1$s’ u zhvendos brenda ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ u zhvendos te ‘%2$s’</string>

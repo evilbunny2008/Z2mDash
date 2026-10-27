@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Tinye panel na %1$s</string>
 	<string name="home_add_tile_to">Tinye tile na %1$s</string>
 	<string name="home_another_group">otu ọzọ</string>
+	<string name="home_battery_type_cluster">Ụdị batrị maka %1$s</string>
+	<string name="home_battery_type_nimh">Batrị NiMH a na–achaji</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH na–arụ ọrụ na voltaji dị ala karịa alkaline ma ọ bụ lithium, ya mere sensọ na–egosi ha dị ka ha fọrọ nke nta ka ha gwụ ọbụlagodi mgbe a chajịrị ha. Ọ na–adọ aka na ntị na 5% ma ọ bụ obere karịa kama 20%</string>
+	<string name="home_battery_type_title">Ụdị batrị maka ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Ọ bụghị panels niile nke cluster a nwere otu topic ngwaọrụ dị ọcha, naanị namespace ahụ ka ha nwekọrọ – o yikarịrị ka ọ bụ panels ole na ole na-adabaghị kama otu ezigbo ngwaọrụ. Ibugharị ya ga-edochi naanị akụkụ ahụ ha nwekọrọ, ya mere ọ nwere ike ọ gaghị arụ ọrụ dị ka ị tụrụ anya. Ọ ga-adị mma ibu ụzọ lelee panels nke cluster a otu otu</string>
 	<string name="home_change_topic_cluster">Gbanwee topic maka %1$s</string>
 	<string name="home_change_topic_text">Na-ebugharị panel ọ bụla dị na cluster a gaa na topic MQTT ọhụrụ – dịka mgbe e kewasịrị netwọk Zigbee gaa na bridge nke abụọ, naanị maka ngwaọrụ ndị kwagara n’ezie. A gaghị emetụ clusters ndị ọzọ aka</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Na-ebu…</string>
 	<string name="home_loading_detail">Ka na-agụ nhazi gị echekwara</string>
 	<string name="home_low_battery_description" formatted="false">Batrị dị na 20% ma ọ bụ obere karịa</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batrị dị na 5% ma ọ bụ obere karịa</string>
 	<string name="home_moved">Ebugharịala ‘%1$s’</string>
 	<string name="home_moved_into">Ebugharịala ‘%1$s’ n’ime ‘%2$s’</string>
 	<string name="home_moved_to">Ebugharịala ‘%1$s’ gaa ‘%2$s’</string>

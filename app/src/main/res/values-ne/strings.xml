@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s मा प्यानल थप्नुहोस्</string>
 	<string name="home_add_tile_to">%1$s मा टाइल थप्नुहोस्</string>
 	<string name="home_another_group">अर्को समूह</string>
+	<string name="home_battery_type_cluster">%1$s को ब्याट्री प्रकार</string>
+	<string name="home_battery_type_nimh">रिचार्ज गर्न मिल्ने NiMH ब्याट्री</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH अल्कलाइन वा लिथियमभन्दा कम भोल्टेजमा चल्छ, त्यसैले चार्ज भएपछि पनि सेन्सरले यसलाई लगभग सकिएको देखाउँछ। 20% को सट्टा 5% वा कम हुँदा चेतावनी दिन्छ</string>
+	<string name="home_battery_type_title">‘%1$s’ को ब्याट्री प्रकार</string>
 	<string name="home_change_topic_broad_warning">यस क्लस्टरका सबै प्यानलहरूले एउटै स्पष्ट उपकरण टपिक साझा गर्दैनन्, केवल त्यो नेमस्पेस मात्र साझा छ – यो एउटा वास्तविक उपकरणभन्दा केही नमिल्ने प्यानलहरू हुने सम्भावना बढी छ। यसलाई सार्दा साझा भाग मात्र बदलिन्छ, त्यसैले तपाईंले अपेक्षा गरे जस्तो लागू नहुन सक्छ। पहिले यस क्लस्टरका प्यानलहरू एक-एक गरी जाँच्नु राम्रो हुन्छ</string>
 	<string name="home_change_topic_cluster">%1$s को टपिक बदल्नुहोस्</string>
 	<string name="home_change_topic_text">यस क्लस्टरका सबै प्यानलहरूलाई नयाँ MQTT टपिकमा सार्छ – जस्तै Zigbee नेटवर्कलाई दोस्रो ब्रिजमा विभाजन गरेपछि, साँच्चै सरेका उपकरणहरूका लागि मात्र। अन्य क्लस्टरहरू जस्ताको तस्तै रहन्छन्</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">लोड हुँदैछ…</string>
 	<string name="home_loading_detail">तपाईंको सुरक्षित कन्फिगरेसन अझै पढ्दैछ</string>
 	<string name="home_low_battery_description" formatted="false">ब्याट्री 20% वा कम</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ब्याट्री 5% वा कम</string>
 	<string name="home_moved">‘%1$s’ सारियो</string>
 	<string name="home_moved_into">‘%1$s’ लाई ‘%2$s’ भित्र सारियो</string>
 	<string name="home_moved_to">‘%1$s’ लाई ‘%2$s’ मा सारियो</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Hoʻohui i papa i %1$s</string>
 	<string name="home_add_tile_to">Hoʻohui i kile i %1$s</string>
 	<string name="home_another_group">kekahi hui ʻē aʻe</string>
+	<string name="home_battery_type_cluster">Ke ʻano pākaukau no %1$s</string>
+	<string name="home_battery_type_nimh">Nā pākaukau NiMH hoʻouka hou ʻia</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Haʻahaʻa iho ka uila o NiMH ma mua o ka alkaline a i ʻole lithium, no laila hōʻike nā mea ʻike iā lākou ua kokoke pau ʻoiai ua piha. Hoʻolaha ma 5% a emi iho ma kahi o 20%</string>
+	<string name="home_battery_type_title">Ke ʻano pākaukau no ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">ʻAʻole kaʻana like nā papa a pau o kēia puʻulu i hoʻokahi kumuhana mea hana maʻemaʻe, ʻo ia wahi inoa ʻole wale nō – he mau papa kakaʻikahi paha i kūlike ʻole ma kahi o hoʻokahi mea hana maoli. Pani ka neʻe ʻana i ia ʻāpana like wale nō, no laila ʻaʻole paha e hana e like me kou manaʻo. He mea maikaʻi ke nānā mua i nā papa o kēia puʻulu pākahi</string>
 	<string name="home_change_topic_cluster">Hoʻololi i ke kumuhana no %1$s</string>
 	<string name="home_change_topic_text">Neʻe i nā papa a pau o kēia puʻulu i kahi kumuhana MQTT hou – e laʻa ma hope o ka māhele ʻana i kahi pūnaewele Zigbee ma kahi alahaka ʻelua, no nā mea hana i neʻe maoli wale nō. ʻAʻole hoʻopā ʻia nā puʻulu ʻē aʻe</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Ke hoʻouka nei…</string>
 	<string name="home_loading_detail">Ke heluhelu ʻia nei kāu hoʻonohonoho i mālama ʻia</string>
 	<string name="home_low_battery_description" formatted="false">Pākaukau ma 20% a emi iho paha</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Pākaukau ma 5% a emi iho paha</string>
 	<string name="home_moved">Ua neʻe ʻia ʻo ‘%1$s’</string>
 	<string name="home_moved_into">Ua neʻe ʻia ʻo ‘%1$s’ i loko o ‘%2$s’</string>
 	<string name="home_moved_to">Ua neʻe ʻia ʻo ‘%1$s’ i ‘%2$s’</string>

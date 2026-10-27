@@ -175,6 +175,10 @@
 	<string name="home_add_panel_to">Ajouter un panneau à %1$s</string>
 	<string name="home_add_tile_to">Ajouter une vignette à %1$s</string>
 	<string name="home_another_group">un autre groupe</string>
+	<string name="home_battery_type_cluster">Type de pile pour %1$s</string>
+	<string name="home_battery_type_nimh">Piles rechargeables NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Les NiMH fonctionnent à une tension plus basse que les alcalines ou au lithium, donc les capteurs les affichent presque vides même chargées. Alerte à 5% ou moins au lieu de 20%</string>
+	<string name="home_battery_type_title">Type de pile pour ‘ %1$s ’</string>
 	<string name="home_change_topic_broad_warning">Les panneaux de ce cluster ne partagent pas tous un seul sujet de périphérique propre, seulement cet espace de noms nu – probablement quelques panneaux incompatibles plutôt qu’un seul périphérique réel. Le déplacer remplace uniquement cette partie partagée, il se peut donc qu’il ne s’applique pas comme prévu. Cela vaut la peine de vérifier d’abord les panneaux de ce cluster individuellement</string>
 	<string name="home_change_topic_cluster">Changer de sujet pour %1$s</string>
 	<string name="home_change_topic_text">Déplace chaque panneau de ce cluster vers un nouveau sujet MQTT – par ex. après avoir divisé un réseau Zigbee sur un deuxième pont, uniquement pour les appareils réellement déplacés. Les autres clusters sont intacts</string>
@@ -211,6 +215,7 @@
 	<string name="home_loading">Chargement…</string>
 	<string name="home_loading_detail">Je lis toujours votre configuration enregistrée</string>
 	<string name="home_low_battery_description" formatted="false">Batterie à 20% ou moins</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batterie à 5% ou moins</string>
 	<string name="home_moved">‘%1$s’ déplacé</string>
 	<string name="home_moved_into">Déplacement de ‘%1$s’ vers ‘%2$s’</string>
 	<string name="home_moved_to">Déplacement de ‘ %1$s ’ vers ‘ %2$s ’</string>

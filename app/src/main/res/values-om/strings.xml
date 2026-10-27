@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s irratti paanaalii dabali</string>
 	<string name="home_add_tile_to">%1$s irratti taayilii dabali</string>
 	<string name="home_another_group">garee biraa</string>
+	<string name="home_battery_type_cluster">Gosa baatirii %1$s</string>
+	<string name="home_battery_type_nimh">Baatirii NiMH irra deebiin chaarjii ta\'an</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH voolteejii alkaline ykn lithium caalaa gadi aanaa ta\'een hojjeta, kanaaf yeroo chaarjii ta\'ellee sensaroonni akka dhumachuuf jiruutti agarsiisu. 20% irra 5% ykn isaa gadi yoo ta\'e akeekkachiisa</string>
+	<string name="home_battery_type_title">Gosa baatirii ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Paanaaleen kilaastara kanaa hundi mata duree meeshaa qulqulluu tokko hin qooddatan, maqaa–iddoo qullaa sana qofa – kun meeshaa dhugaa tokko osoo hin taane paanaalota walsimuu dhabe muraasa ta’uu danda’a. Sochoosuun qaama waliinii sana qofa bakka buusa, kanaaf akka ati eegdutti hojii irra oolu dhiisuu danda’a. Jalqaba paanaalota kilaastara kanaa tokko tokkoon ilaaluun gaarii dha</string>
 	<string name="home_change_topic_cluster">Mata duree %1$s jijjiiri</string>
 	<string name="home_change_topic_text">Paanaalota kilaastara kana keessa jiran hunda mata duree MQTT haaraatti socho’sa – fkn. erga networkii Zigbee riqicha lammaffaa irratti qoodanii booda, meeshaalee dhuguma socho’an qofaaf. Kilaastaroonni biroo hin tuqaman</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Fe’aa jira…</string>
 	<string name="home_loading_detail">Qindaa’inni kee olkaa’ame ammallee dubbifamaa jira</string>
 	<string name="home_low_battery_description" formatted="false">Baatirii 20% ykn isaa gadi</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baatirii 5% ykn isaa gadi</string>
 	<string name="home_moved">‘%1$s’ socho’eera</string>
 	<string name="home_moved_into">‘%1$s’ gara ‘%2$s’ keessaatti socho’eera</string>
 	<string name="home_moved_to">‘%1$s’ gara ‘%2$s’ tti socho’eera</string>

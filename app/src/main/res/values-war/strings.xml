@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Pagdugang hin panel ha %1$s</string>
 	<string name="home_add_tile_to">Pagdugang hin tile ha %1$s</string>
 	<string name="home_another_group">iba nga grupo</string>
+	<string name="home_battery_type_cluster">Klase han baterya para ha %1$s</string>
+	<string name="home_battery_type_nimh">Nacha–charge nga NiMH nga baterya</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Mas ubos an boltahe han NiMH kaysa alkaline o lithium, salit ipinapakita han mga sensor nga harani na mahurot bisan puno pa. Nagpapahamangno ha 5% o ubos pa imbes ha 20%</string>
+	<string name="home_battery_type_title">Klase han baterya para ha ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">An mga panel hini nga cluster diri nagbabahin hin usa la nga limpyo nga topic han device, ito la nga haw–ang nga namespace – posible nga pipira nga panel nga diri magkaangay imbes nga usa nga tinuod nga device. An pagbalhin nagsasaliwan la hito nga parte nga parehas, salit posible nga diri ini magamit sugad han imo ginlalaoman. Maupay nga susihon anay an tagsa nga panel hini nga cluster</string>
 	<string name="home_change_topic_cluster">Bag–uha an topic para ha %1$s</string>
 	<string name="home_change_topic_text">Ginbabalhin an ngatanan nga panel hini nga cluster ngadto ha bag–o nga MQTT topic – pananglitan katapos bahinon an Zigbee network ha ikaduha nga bridge, para la ha mga device nga tinuod nga nabalhin. Diri ginhihilabtan an iba nga mga cluster</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Nagkakarga…</string>
 	<string name="home_loading_detail">Ginbabasa pa an imo nakatipig nga configuration</string>
 	<string name="home_low_battery_description" formatted="false">Baterya ha 20% o ubos pa</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterya ha 5% o ubos pa</string>
 	<string name="home_moved">Ginbalhin an ‘%1$s’</string>
 	<string name="home_moved_into">Ginbalhin an ‘%1$s’ ngadto ha sulod han ‘%2$s’</string>
 	<string name="home_moved_to">Ginbalhin an ‘%1$s’ ngadto ha ‘%2$s’</string>

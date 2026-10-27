@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Thêm bảng điều khiển vào %1$s</string>
 	<string name="home_add_tile_to">Thêm ô vào %1$s</string>
 	<string name="home_another_group">một nhóm khác</string>
+	<string name="home_battery_type_cluster">Loại pin cho %1$s</string>
+	<string name="home_battery_type_nimh">Pin sạc NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Pin NiMH chạy ở điện áp thấp hơn pin kiềm hoặc lithium, nên cảm biến hiển thị gần cạn ngay cả khi đã sạc đầy. Chỉ cảnh báo ở mức 5% hoặc thấp hơn thay vì 20%</string>
+	<string name="home_battery_type_title">Loại pin cho ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Không phải tất cả các bảng của cụm này đều chia sẻ một chủ đề về thiết bị rõ ràng, chỉ có không gian tên trống đó – có thể là một vài bảng không khớp chứ không phải một thiết bị thực. Việc di chuyển nó chỉ thay thế phần được chia sẻ đó, vì vậy nó có thể không áp dụng theo cách bạn mong đợi. Trước tiên, đáng để kiểm tra từng bảng của cụm này</string>
 	<string name="home_change_topic_cluster">Thay đổi chủ đề cho %1$s</string>
 	<string name="home_change_topic_text">Di chuyển mọi bảng trong cụm này sang một chủ đề MQTT mới – ví dụ: sau khi chia mạng Zigbee thành cây cầu thứ hai, chỉ dành cho những thiết bị thực sự di chuyển. Các cụm khác không bị ảnh hưởng</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Đang tải…</string>
 	<string name="home_loading_detail">Vẫn đang đọc cấu hình đã lưu của bạn</string>
 	<string name="home_low_battery_description" formatted="false">Pin ở mức 20% hoặc ít hơn</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Pin ở mức 5% hoặc ít hơn</string>
 	<string name="home_moved">Đã di chuyển ‘%1$s’</string>
 	<string name="home_moved_into">Đã chuyển ‘%1$s’ vào ‘%2$s’</string>
 	<string name="home_moved_to">Đã chuyển ‘%1$s’ sang ‘%2$s’</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Lägg till panel i %1$s</string>
 	<string name="home_add_tile_to">Lägg till ruta i %1$s</string>
 	<string name="home_another_group">en annan grupp</string>
+	<string name="home_battery_type_cluster">Batterityp för %1$s</string>
+	<string name="home_battery_type_nimh">Laddningsbara NiMH–batterier</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH har lägre spänning än alkaliska eller litiumbatterier, så sensorer visar dem som nästan urladdade även när de är laddade. Varnar vid 5% eller mindre i stället för 20%</string>
+	<string name="home_battery_type_title">Batterityp för ”%1$s”</string>
 	<string name="home_change_topic_broad_warning">Det här klustrets paneler delar inte alla ett tydligt enhetsämne, bara det rena namnområdet – troligen några paneler som inte hör ihop snarare än en verklig enhet. Flytten ersätter bara den gemensamma delen, så den kanske inte fungerar som du förväntar dig. Det är värt att först kontrollera klustrets paneler en och en</string>
 	<string name="home_change_topic_cluster">Ändra ämne för %1$s</string>
 	<string name="home_change_topic_text">Flyttar varje panel i det här klustret till ett nytt MQTT–ämne – t.ex. efter att ett Zigbee–nätverk delats upp på en andra brygga, endast för de enheter som faktiskt flyttades. Andra kluster lämnas orörda</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Läser in…</string>
 	<string name="home_loading_detail">Läser fortfarande in din sparade konfiguration</string>
 	<string name="home_low_battery_description" formatted="false">Batteri på 20% eller mindre</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batteri på 5% eller mindre</string>
 	<string name="home_moved">Flyttade ”%1$s”</string>
 	<string name="home_moved_into">Flyttade ”%1$s” in i ”%2$s”</string>
 	<string name="home_moved_to">Flyttade ”%1$s” till ”%2$s”</string>

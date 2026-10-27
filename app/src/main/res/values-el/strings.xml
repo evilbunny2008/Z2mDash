@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Προσθήκη πάνελ στο %1$s</string>
 	<string name="home_add_tile_to">Προσθήκη πλακιδίου στο %1$s</string>
 	<string name="home_another_group">άλλη ομάδα</string>
+	<string name="home_battery_type_cluster">Τύπος μπαταρίας για %1$s</string>
+	<string name="home_battery_type_nimh">Επαναφορτιζόμενες μπαταρίες NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Οι NiMH λειτουργούν σε χαμηλότερη τάση από τις αλκαλικές ή λιθίου, οπότε οι αισθητήρες τις δείχνουν σχεδόν άδειες ακόμη και φορτισμένες. Ειδοποιεί στο 5% ή λιγότερο αντί για 20%</string>
+	<string name="home_battery_type_title">Τύπος μπαταρίας για «%1$s»</string>
 	<string name="home_change_topic_broad_warning">Τα πάνελ αυτού του cluster δεν μοιράζονται όλα ένα σαφές θέμα συσκευής, μόνο αυτόν τον γυμνό χώρο ονομάτων – πιθανώς λίγα αταίριαστα πάνελ αντί για μία πραγματική συσκευή. Η μετακίνηση αντικαθιστά μόνο αυτό το κοινό τμήμα, οπότε ίσως να μην εφαρμοστεί όπως περιμένετε. Αξίζει να ελέγξετε πρώτα τα πάνελ αυτού του cluster ένα–ένα</string>
 	<string name="home_change_topic_cluster">Αλλαγή θέματος για %1$s</string>
 	<string name="home_change_topic_text">Μετακινεί κάθε πάνελ αυτού του cluster σε νέο θέμα MQTT – π.χ. μετά τον διαχωρισμό ενός δικτύου Zigbee σε δεύτερη γέφυρα, μόνο για τις συσκευές που μετακινήθηκαν πραγματικά. Τα άλλα clusters μένουν ανέγγιχτα</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Φόρτωση…</string>
 	<string name="home_loading_detail">Γίνεται ακόμα ανάγνωση της αποθηκευμένης διαμόρφωσης</string>
 	<string name="home_low_battery_description" formatted="false">Μπαταρία στο 20% ή λιγότερο</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Μπαταρία στο 5% ή λιγότερο</string>
 	<string name="home_moved">Μετακινήθηκε το «%1$s»</string>
 	<string name="home_moved_into">Μετακινήθηκε το «%1$s» μέσα στο «%2$s»</string>
 	<string name="home_moved_to">Μετακινήθηκε το «%1$s» στο «%2$s»</string>

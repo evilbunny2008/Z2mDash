@@ -409,6 +409,15 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         })
     }
 
+    /** Sets which low-battery threshold cluster [clusterId] in [groupId] is judged against. */
+    fun setClusterBatteryType(groupId: String, clusterId: String, batteryType: BatteryType) = update { cfg ->
+        if (clusterId.isBlank()) return@update cfg
+        cfg.copy(groups = cfg.groups.map { g ->
+            if (g.id != groupId) return@map g
+            g.copy(clusters = g.clusters.map { if (it.id == clusterId) it.copy(batteryType = batteryType) else it })
+        })
+    }
+
     /**
      * Moves every panel of cluster [clusterId] from [fromGroupId] into [toGroupId] (its cluster
      * entry follows - see normalizeClusters). When [insertBeforeClusterKey] names an existing
@@ -740,6 +749,8 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         val groupsWithNewPanels = if (strippedGroups.any { it.id == targetGroupId }) {
             strippedGroups.map { g ->
                 if (g.id != targetGroupId) return@map g
+                // The payload is authoritative for everything it describes - name and
+                // batteryType alike (see SensorDiscovery.DeviceAppConfig.batteryType).
                 val renamed = g.clusters.map { newClustersById[it.id] ?: it }
                 val added = newClusters.filter { c -> renamed.none { it.id == c.id } }
                 g.copy(panels = g.panels + panelsToAdd, clusters = renamed + added)
@@ -966,9 +977,9 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
  * individual mutation has to remember to tidy cluster entries up itself.
  */
 internal fun normalizeClusters(cfg: AppConfig, previous: AppConfig? = null): AppConfig {
-    val knownNames = HashMap<String, String>()
-    previous?.groups?.forEach { g -> g.clusters.forEach { knownNames[it.id] = it.name } }
-    cfg.groups.forEach { g -> g.clusters.forEach { knownNames[it.id] = it.name } }
+    val knownClusters = HashMap<String, PanelCluster>()
+    previous?.groups?.forEach { g -> g.clusters.forEach { knownClusters[it.id] = it } }
+    cfg.groups.forEach { g -> g.clusters.forEach { knownClusters[it.id] = it } }
     var changed = false
     val groups = cfg.groups.map { g ->
         // LinkedHashMap, so clusters tying on displayOrder (both Int.MAX_VALUE, say) keep
@@ -979,7 +990,7 @@ internal fun normalizeClusters(cfg: AppConfig, previous: AppConfig? = null): App
         }
         val ownById = g.clusters.associateBy { it.id }
         val normalized = minOrderById.keys
-            .map { id -> ownById[id] ?: PanelCluster(id, knownNames[id].orEmpty()) }
+            .map { id -> ownById[id] ?: knownClusters[id] ?: PanelCluster(id, "") }
             .sortedBy { minOrderById.getValue(it.id) }
         if (normalized == g.clusters) g else {
             changed = true

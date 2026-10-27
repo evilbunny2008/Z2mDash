@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Ongeraho paneli kuri %1$s</string>
 	<string name="home_add_tile_to">Ongeraho agasanduku kuri %1$s</string>
 	<string name="home_another_group">irindi tsinda</string>
+	<string name="home_battery_type_cluster">Ubwoko bwa bateri bwa %1$s</string>
+	<string name="home_battery_type_nimh">Bateri za NiMH zongera gusharijwa</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ikora ku mbaraga z\'amashanyarazi ziri hasi ugereranyije na alkaline cyangwa lithium, bityo sensori ziyerekana nk\'iri hafi gushira n\'iyo yuzuye. Iburira kuri 5% cyangwa munsi aho kuba 20%</string>
+	<string name="home_battery_type_title">Ubwoko bwa bateri bwa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Paneli z’iri huriro ntizisangiye zose ingingo imwe isukuye y’igikoresho, ahubwo ni aho hantu h’amazina hambaye ubusa gusa – birashoboka ko ari paneli nkeya zidahuye aho kuba igikoresho kimwe nyacyo. Kwimura bisimbuza icyo gice gisangiwe gusa, bityo bishobora kudakora nk’uko ubyiteze. Ni byiza kubanza kugenzura paneli z’iri huriro imwe imwe</string>
 	<string name="home_change_topic_cluster">Hindura ingingo ya %1$s</string>
 	<string name="home_change_topic_text">Yimura paneli zose ziri muri iri huriro ikazijyana ku ngingo nshya ya MQTT – urugero nyuma yo kugabanya urusobe rwa Zigbee ku kiraro cya kabiri, ku bikoresho byimutse koko gusa. Andi mahuriro ntakorwaho</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Birimo gufunguka…</string>
 	<string name="home_loading_detail">Igenamiterere ryawe ryabitswe riracyasomwa</string>
 	<string name="home_low_battery_description" formatted="false">Bateri 20% cyangwa munsi yaho</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateri 5% cyangwa munsi yaho</string>
 	<string name="home_moved">‘%1$s’ yimuwe</string>
 	<string name="home_moved_into">‘%1$s’ yimuriwe muri ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ yimuriwe kuri ‘%2$s’</string>

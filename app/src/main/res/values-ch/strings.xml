@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Na’ye panel gi %1$s</string>
 	<string name="home_add_tile_to">Na’ye tile gi %1$s</string>
 	<string name="home_another_group">otro grupu</string>
+	<string name="home_battery_type_cluster">Klasen batterya para %1$s</string>
+	<string name="home_battery_type_nimh">NiMH na batterya ni siña ma–charge</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">I NiMH mas dikiki’ i voltage–ña ki i alkaline pat lithium, pues i sensor sina ha fa’nu’i taiguihi esta mapos maskee ma–charge. Ha abisa gi 5% pat mas dikiki’ en lugåt 20%</string>
+	<string name="home_battery_type_title">Klasen batterya para ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">I panel siha gi este na klåster ti mamoksåyon un gasgas na tema aparatu, ayu ha’ na espåsion na’ån ni båsiu – siña ha’ na didide’ na panel ni ti umaparehu envés di un magåhet na aparatu. I mamudå ha tulaika ayu ha’ na patte ni ma kompatte, enao na siña ha’ ti mafa’maolek taimanu un ekspekta. Maolek na un chek fine’nana kada panel gi este na klåster</string>
 	<string name="home_change_topic_cluster">Tulaika i tema para %1$s</string>
 	<string name="home_change_topic_text">Ha mudå todu i panel siha gi este na klåster para un nuebu na tema MQTT – ehemplo despues di ma dibidi un network Zigbee gi segundu na tåyuyot, para i aparatu siha ha’ ni magåhet mamudå. Ti ma pacha i otro klåster siha</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Mamaload…</string>
 	<string name="home_loading_detail">Matataitai ha’ i configuration–mu ni ma na’såfu</string>
 	<string name="home_low_battery_description" formatted="false">Batterya gi 20% pat mas dikiki’</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batterya gi 5% pat mas dikiki’</string>
 	<string name="home_moved">Ma mudå ‘%1$s’</string>
 	<string name="home_moved_into">Ma mudå ‘%1$s’ halom gi ‘%2$s’</string>
 	<string name="home_moved_to">Ma mudå ‘%1$s’ para ‘%2$s’</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Lisää paneeli ryhmään %1$s</string>
 	<string name="home_add_tile_to">Lisää ruutu ryhmään %1$s</string>
 	<string name="home_another_group">toinen ryhmä</string>
+	<string name="home_battery_type_cluster">Akkutyyppi: %1$s</string>
+	<string name="home_battery_type_nimh">Ladattavat NiMH–akut</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH toimii pienemmällä jännitteellä kuin alkali– tai litiumparistot, joten anturit näyttävät sen lähes tyhjänä ladattunakin. Varoittaa vasta 5% tai alle 20% sijaan</string>
+	<string name="home_battery_type_title">Akkutyyppi: ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Tämän klusterin paneeleilla ei ole yhteistä selkeää laiteaihetta, vain pelkkä nimiavaruus – todennäköisesti muutama yhteensopimaton paneeli eikä yksi todellinen laite. Siirto korvaa vain tämän yhteisen osan, joten se ei välttämättä toimi odottamallasi tavalla. Kannattaa tarkistaa tämän klusterin paneelit ensin yksitellen</string>
 	<string name="home_change_topic_cluster">Vaihda kohteen %1$s aihe</string>
 	<string name="home_change_topic_text">Siirtää kaikki tämän klusterin paneelit uuteen MQTT–aiheeseen – esim. kun Zigbee–verkko on jaettu toiselle sillalle, vain niille laitteille, jotka todella siirtyivät. Muihin klustereihin ei kosketa</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Ladataan…</string>
 	<string name="home_loading_detail">Tallennettuja määrityksiäsi luetaan vielä</string>
 	<string name="home_low_battery_description" formatted="false">Akku 20% tai vähemmän</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Akku 5% tai vähemmän</string>
 	<string name="home_moved">Siirretty ‘%1$s’</string>
 	<string name="home_moved_into">Siirretty ‘%1$s’ kohteeseen ‘%2$s’</string>
 	<string name="home_moved_to">Siirretty ‘%1$s’ kohteeseen ‘%2$s’</string>

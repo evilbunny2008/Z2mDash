@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Engeza iphanele ku–%1$s</string>
 	<string name="home_add_tile_to">Engeza ithayili ku–%1$s</string>
 	<string name="home_another_group">esinye isiqhema</string>
+	<string name="home_battery_type_cluster">Uhlobo lwebhetri lwe–%1$s</string>
+	<string name="home_battery_type_nimh">Amabhetri we–NiMH angafakwa amandla kabutjha</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">I–NiMH isebenza ngamandla aphasi kunama–alkaline namkha i–lithium, ngalokho amasensa ayitjengisa njengephelileko nayigcwele. Ixwayisa ku–5% namkha ngaphasi esikhundleni se–20%</string>
+	<string name="home_battery_type_title">Uhlobo lwebhetri lwe–‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Amaphanele webuthelelo leli akabelani woke ngesihloko sinye esihlwengileko sesisetjenziswa, kodwana yindawo leyo yamabizo engenalitho kwaphela – kungenzeka bona maphanele ambalwa angavumelaniko esikhundleni sesisetjenziswa sinye sangempela. Ukuhambisa kutjhentjha ingcenye leyo eyabelwanako kwaphela, ngalokho kungenzeka kungasebenzi ngendlela olindele ngayo. Kufanele uthome uhlole amaphanele webuthelelo leli ngalinye ngalinye</string>
 	<string name="home_change_topic_cluster">Tjhentjha isihloko se–%1$s</string>
 	<string name="home_change_topic_text">Ihambisa woke amaphanele webuthelelo leli iwayise esihlokweni esitjha se–MQTT – isib. ngemva kokuhlukanisa inethiwekhi ye–Zigbee ebhulorhweni lesibili, kwaphela eensetjenzisweni ezihambileko ngamambala. Amanye amabuthelelo akathintwa</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Iyalayitha…</string>
 	<string name="home_loading_detail">Ihlelo lakho elibulungiweko lisafundwa</string>
 	<string name="home_low_battery_description" formatted="false">Ibhetri ku–20% namkha ngaphasi</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Ibhetri ku–5% namkha ngaphasi</string>
 	<string name="home_moved">I–‘%1$s’ ihanjisiwe</string>
 	<string name="home_moved_into">I–‘%1$s’ ihanjiswe ngaphakathi kwe–‘%2$s’</string>
 	<string name="home_moved_to">I–‘%1$s’ ihanjiswe ku–‘%2$s’</string>

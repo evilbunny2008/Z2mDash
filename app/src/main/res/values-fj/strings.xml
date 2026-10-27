@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Vakuria e dua na papa ki na %1$s</string>
 	<string name="home_add_tile_to">Vakuria e dua na kato ki na %1$s</string>
 	<string name="home_another_group">dua tale na ilawalawa</string>
+	<string name="home_battery_type_cluster">Mataqali veteri ni %1$s</string>
+	<string name="home_battery_type_nimh">Veteri NiMH e rawa ni vakaukauwataki tale</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">E lailai na kaukauwa ni livaliva ni NiMH mai na alkaline se lithium, o koya e vakaraitaka kina na sensa ni sa voleka ni mate ke vakaukauwataki tale tiko. E vakasalataki ena 5% se lailai sobu, sega ni 20%</string>
+	<string name="home_battery_type_title">Mataqali veteri ni ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">E sega ni wasea vata kece na papa ni isoqoni oqo e dua ga na ulutaga savasava ni iyaya, ia na vanua ni yaca lala oya ga – e rawa ni so na papa e sega ni veiraurau ka sega ni dua na iyaya dina. Na toso e veisosomitaka ga na tiki e wasei oya, kena ibalebale e rawa ni sega ni cakacaka me vaka o namaka. E vinaka mo raica rawa yadua na papa ni isoqoni oqo</string>
 	<string name="home_change_topic_cluster">Veisautaka na ulutaga ni %1$s</string>
 	<string name="home_change_topic_text">E toso kece na papa ena isoqoni oqo ki na dua na ulutaga MQTT vou – me vaka ni oti na wasei ni dua na veisemati Zigbee ki na wavu karua, me baleta ga na iyaya e toso dina. E sega ni tarai na isoqoni tale eso</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">E vakacurumi tiko…</string>
 	<string name="home_loading_detail">E se wiliki tiko na nomu ivakarau e maroroi</string>
 	<string name="home_low_battery_description" formatted="false">Veteri e 20% se lailai sobu</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Veteri e 5% se lailai sobu</string>
 	<string name="home_moved">Sa toso na ‘%1$s’</string>
 	<string name="home_moved_into">Sa toso na ‘%1$s’ i loma ni ‘%2$s’</string>
 	<string name="home_moved_to">Sa toso na ‘%1$s’ ki na ‘%2$s’</string>

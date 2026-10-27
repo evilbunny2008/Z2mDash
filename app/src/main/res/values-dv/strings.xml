@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s އަށް ޕެނަލެއް އިތުރުކުރޭ</string>
 	<string name="home_add_tile_to">%1$s އަށް ޓައިލެއް އިތުރުކުރޭ</string>
 	<string name="home_another_group">އެހެން ގްރޫޕެއް</string>
+	<string name="home_battery_type_cluster">%1$s ގެ ބެޓަރީގެ ބާވަތް</string>
+	<string name="home_battery_type_nimh">ޗާޖުކުރެވޭ NiMH ބެޓަރީ</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ހިނގަނީ އަލްކަލައިން ނުވަތަ ލިތިއަމަށްވުރެ ދަށް ވޯލްޓޭޖެއްގައި، އެހެންވެ ޗާޖު ހުރި ނަމަވެސް ސެންސަރުތަކުން ދައްކަނީ ގާތްގަނޑަކަށް ހުސްވެފައިވާ ކަމަށް. 20% ގެ ބަދަލުގައި 5% ނުވަތަ ދަށްވުމުން އިންޒާރު ދޭނެ</string>
+	<string name="home_battery_type_title">“%1$s” ގެ ބެޓަރީގެ ބާވަތް</string>
 	<string name="home_change_topic_broad_warning">މި ކްލަސްޓަރުގެ ހުރިހާ ޕެނަލެއް ސާފު އެއް ޑިވައިސް ޓޮޕިކެއް ހިއްސާނުކުރޭ، ހަމައެކަނި އެ ހުސް ނޭމްސްޕޭސް – ގިނަ ވެގެން ހަގީގީ އެއް ޑިވައިސްއެއް ނޫން، ނުގުޅޭ ޕެނަލް ކިހާވަރެއް. ބަދަލުކުރުމުން ބަދަލުވާނީ ހަމައެކަނި އެ ހިއްސާކުރާ ބައި، އެހެންވީމާ ތިބާ އުންމީދުކުރާ ގޮތަށް ނުވެދާނެ. ފުރަތަމަ މި ކްލަސްޓަރުގެ ޕެނަލްތައް ވަކިވަކިން ޗެކްކުރުން ރަނގަޅު</string>
 	<string name="home_change_topic_cluster">%1$s ގެ ޓޮޕިކް ބަދަލުކުރޭ</string>
 	<string name="home_change_topic_text">މި ކްލަސްޓަރުގައިވާ ކޮންމެ ޕެނަލެއް އާ MQTT ޓޮޕިކަކަށް ބަދަލުކުރޭ – މިސާލަކަށް Zigbee ނެޓްވޯކެއް ދެވަނަ ބްރިޖަކަށް ބަހާލުމަށްފަހު، ހަގީގަތުގައި ބަދަލުވި ޑިވައިސްތަކަށް އެކަނި. އެހެން ކްލަސްޓަރުތަކަށް އަތެއް ނުލެވޭނެ</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">ލޯޑްވަމުން…</string>
 	<string name="home_loading_detail">ސޭވްކުރެވިފައިވާ ކޮންފިގަރޭޝަން އަދިވެސް ކިޔަމުން</string>
 	<string name="home_low_battery_description" formatted="false">ބެޓަރީ 20% ނުވަތަ އެއަށްވުރެ ދަށް</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ބެޓަރީ 5% ނުވަތަ އެއަށްވުރެ ދަށް</string>
 	<string name="home_moved">“%1$s” ބަދަލުކުރެވިއްޖެ</string>
 	<string name="home_moved_into">“%1$s” “%2$s” ގެ ތެރެއަށް ބަދަލުކުރެވިއްޖެ</string>
 	<string name="home_moved_to">“%1$s” “%2$s” އަށް ބަދަލުކުރެވިއްޖެ</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Engetela phanele eka %1$s</string>
 	<string name="home_add_tile_to">Engetela thayili eka %1$s</string>
 	<string name="home_another_group">ntlawa wun’wana</string>
+	<string name="home_battery_type_cluster">Muxaka wa bechiri wa %1$s</string>
+	<string name="home_battery_type_nimh">Tibechiri ta NiMH leti chajiwaka nakambe</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH yi tirha hi voltheji ya le hansi ku tlula alkaline kumbe lithium, hikwalaho tisensara ti yi kombisa onge yi kufumela ku hela hambi yi tele. Yi tsundzuxa eka 5% kumbe ehansi ematshan\'weni ya 20%</string>
+	<string name="home_battery_type_title">Muxaka wa bechiri wa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Tiphanele ta nhlengeletano leyi a ti avelani hinkwato nhlokomhaka yin’we leyi tengeke ya xitirhisiwa, ntsena ndhawu yoleyo ya mavito leyi nga riki na nchumu – kumbexana i tiphanele ti nga ri tingani leti nga twananiki ematshan’wini ya xitirhisiwa xin’we xa xiviri. Ku rhurha swi siva xiphemu xexo lexi avelaniwaka ntsena, hikwalaho swi nga ha tirhi hilaha u langutelaka hakona. Swi antswa ku sungula hi ku kambela tiphanele ta nhlengeletano leyi yin’we hi yin’we</string>
 	<string name="home_change_topic_cluster">Cinca nhlokomhaka ya %1$s</string>
 	<string name="home_change_topic_text">Yi rhurhisa tiphanele hinkwato ta nhlengeletano leyi yi ti yisa eka nhlokomhaka leyintshwa ya MQTT – xikombiso endzhaku ko avanyisa netiweke ya Zigbee eka buloho ra vumbirhi, ntsena eka switirhisiwa leswi rhurheke hakunene. Minhlengeletano yin’wana a yi khumbiwi</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Yi le ku layicheni…</string>
 	<string name="home_loading_detail">Nhlelo wa wena lowu hlayisiweke wa ha hlayiwa</string>
 	<string name="home_low_battery_description" formatted="false">Bechiri yi le ka 20% kumbe ehansi</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bechiri yi le ka 5% kumbe ehansi</string>
 	<string name="home_moved">‘%1$s’ yi rhurhisiwile</string>
 	<string name="home_moved_into">‘%1$s’ yi rhurhiseriwile endzeni ka ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ yi rhurhiseriwile eka ‘%2$s’</string>

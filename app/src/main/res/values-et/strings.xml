@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Lisa paneel gruppi %1$s</string>
 	<string name="home_add_tile_to">Lisa paan gruppi %1$s</string>
 	<string name="home_another_group">teine grupp</string>
+	<string name="home_battery_type_cluster">Klastri %1$s akutüüp</string>
+	<string name="home_battery_type_nimh">Laetavad NiMH–akud</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH töötab madalamal pingel kui leelis– või liitiumpatareid, seega näitavad andurid neid laetuna peaaegu tühjana. Hoiatab 5% või vähema korral 20% asemel</string>
+	<string name="home_battery_type_title">Klastri ‘%1$s’ akutüüp</string>
 	<string name="home_change_topic_broad_warning">Selle klastri paneelidel pole kõigil ühist puhast seadme teemat, vaid ainult see paljas nimeruum – tõenäoliselt mõned sobimatud paneelid, mitte üks päris seade. Teisaldamine asendab ainult selle ühise osa, nii et see ei pruugi toimida nii, nagu ootad. Tasub selle klastri paneelid enne ükshaaval üle vaadata</string>
 	<string name="home_change_topic_cluster">Muuda klastri %1$s teemat</string>
 	<string name="home_change_topic_text">Teisaldab kõik selle klastri paneelid uude MQTT–teemasse – nt pärast Zigbee võrgu jagamist teisele sillale, ainult nende seadmete jaoks, mis tegelikult liikusid. Teisi klastreid ei puudutata</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Laadimine…</string>
 	<string name="home_loading_detail">Salvestatud konfiguratsiooni loetakse veel</string>
 	<string name="home_low_battery_description" formatted="false">Aku 20% või vähem</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Aku 5% või vähem</string>
 	<string name="home_moved">‘%1$s’ teisaldati</string>
 	<string name="home_moved_into">‘%1$s’ teisaldati gruppi ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ teisaldati asukohta ‘%2$s’</string>

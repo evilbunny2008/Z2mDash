@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">将面板加到%1$s</string>
 	<string name="home_add_tile_to">将图块加到%1$s</string>
 	<string name="home_another_group">另一组</string>
+	<string name="home_battery_type_cluster">%1$s 的电池类型</string>
+	<string name="home_battery_type_nimh">可充电 NiMH 电池</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH 电池的电压低于碱性或锂电池，因此即使充满电，传感器也会显示电量几乎耗尽。电量为 5% 或更低时才发出警告，而非 20%</string>
+	<string name="home_battery_type_title">「%1$s」的电池类型</string>
 	<string name="home_change_topic_broad_warning">该集群的面板并不都共享一个干净的设备主题，仅共享一个裸命名空间 – 可能是一些不匹配的面板而不是一个真实的设备。移动它只会替换共享部分，因此它可能不会以您期望的方式应用。值得先单独检查该群集的面板。</string>
 	<string name="home_change_topic_cluster">改变 %1$s 的主题</string>
 	<string name="home_change_topic_text">将此集群中的每个面板移至新的 MQTT 主题 – 例如将 Zigbee 网络分割到第二个网桥后，仅用于实际移动的设备。其他集群未受影响。</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">加载中…</string>
 	<string name="home_loading_detail">仍在读取您已保存的配置。</string>
 	<string name="home_low_battery_description" formatted="false">电池电量为 20% 或更低</string>
+	<string name="home_low_battery_nimh_description" formatted="false">电池电量为 5% 或更低</string>
 	<string name="home_moved">已移动‘%1$s’</string>
 	<string name="home_moved_into">已将‘%1$s’移入‘%2$s’</string>
 	<string name="home_moved_to">已将‘%1$s’移至‘%2$s’</string>

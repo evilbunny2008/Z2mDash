@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Ongeza panel kwenye %1$s</string>
 	<string name="home_add_tile_to">Ongeza tile kwenye %1$s</string>
 	<string name="home_another_group">kikundi kingine</string>
+	<string name="home_battery_type_cluster">Aina ya betri ya %1$s</string>
+	<string name="home_battery_type_nimh">Betri za NiMH zinazochajiwa</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH hufanya kazi kwa volti ya chini kuliko alkaline au lithiamu, kwa hivyo vitambuzi huzionyesha kama zinakaribia kuisha hata zikiwa zimejaa. Huonya kwa 5% au chini badala ya 20%</string>
+	<string name="home_battery_type_title">Aina ya betri ya ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Panels zote za cluster hii hazishiriki topic moja safi ya kifaa, ni namespace hiyo tu – huenda ni panels chache zisizolingana badala ya kifaa kimoja halisi. Kuihamisha kunabadilisha sehemu hiyo inayoshirikiwa pekee, kwa hivyo huenda isitumike jinsi unavyotarajia. Inafaa kuangalia panels za cluster hii moja moja kwanza</string>
 	<string name="home_change_topic_cluster">Badilisha topic ya %1$s</string>
 	<string name="home_change_topic_text">Huhamisha kila panel katika cluster hii hadi topic mpya ya MQTT – k.m. baada ya kugawanya mtandao wa Zigbee kwenye bridge ya pili, kwa vifaa vilivyohamia kweli pekee. Clusters nyingine haziguswi</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Inapakia…</string>
 	<string name="home_loading_detail">Bado inasoma usanidi wako uliohifadhiwa</string>
 	<string name="home_low_battery_description" formatted="false">Betri iko 20% au chini zaidi</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Betri iko 5% au chini zaidi</string>
 	<string name="home_moved">‘%1$s’ imehamishwa</string>
 	<string name="home_moved_into">‘%1$s’ imehamishwa ndani ya ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ imehamishwa hadi ‘%2$s’</string>

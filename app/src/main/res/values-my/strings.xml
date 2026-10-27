@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">%1$s သို့ panel ထည့်ရန်</string>
 	<string name="home_add_tile_to">%1$s သို့ tile ထည့်ရန်</string>
 	<string name="home_another_group">အခြားအုပ်စု</string>
+	<string name="home_battery_type_cluster">%1$s အတွက် ဘက်ထရီ အမျိုးအစား</string>
+	<string name="home_battery_type_nimh">အားပြန်သွင်းနိုင်သော NiMH ဘက်ထရီများ</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH သည် alkaline သို့မဟုတ် lithium ထက် ဗို့အားနည်းသောကြောင့် အားပြည့်နေသော်လည်း အာရုံခံကိရိယာများက ကုန်လုနီးပါးဟု ပြသည်။ 20% အစား 5% သို့မဟုတ် ယင်းထက်နည်းမှ သတိပေးသည်</string>
+	<string name="home_battery_type_title">‘%1$s’ အတွက် ဘက်ထရီ အမျိုးအစား</string>
 	<string name="home_change_topic_broad_warning">ဤ cluster ၏ panel များအားလုံးသည် သန့်ရှင်းသော စက်ပစ္စည်း topic တစ်ခုတည်းကို မျှဝေမထားဘဲ namespace သက်သက်ကိုသာ မျှဝေထားသည် – စက်ပစ္စည်းအစစ်တစ်ခုထက် မကိုက်ညီသော panel အချို့ ဖြစ်နိုင်သည်။ ၎င်းကို ရွှေ့ခြင်းသည် မျှဝေထားသော အပိုင်းကိုသာ အစားထိုးသဖြင့် သင်မျှော်လင့်သည့်အတိုင်း ဖြစ်မလာနိုင်ပါ။ ဤ cluster ၏ panel များကို တစ်ခုချင်း ဦးစွာ စစ်ဆေးသင့်သည်</string>
 	<string name="home_change_topic_cluster">%1$s အတွက် topic ပြောင်းရန်</string>
 	<string name="home_change_topic_text">ဤ cluster ရှိ panel တိုင်းကို MQTT topic အသစ်သို့ ရွှေ့သည် – ဥပမာ Zigbee ကွန်ရက်ကို ဒုတိယ bridge သို့ ခွဲပြီးနောက် အမှန်တကယ် ရွှေ့ခဲ့သော စက်ပစ္စည်းများအတွက်သာ။ အခြား cluster များကို မထိပါ</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">ဖွင့်နေသည်…</string>
 	<string name="home_loading_detail">သင်သိမ်းထားသော ဖွဲ့စည်းပုံကို ဖတ်နေဆဲ</string>
 	<string name="home_low_battery_description" formatted="false">ဘက်ထရီ 20% သို့မဟုတ် ယင်းထက်နည်း</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ဘက်ထရီ 5% သို့မဟုတ် ယင်းထက်နည်း</string>
 	<string name="home_moved">‘%1$s’ ကို ရွှေ့ပြီးပါပြီ</string>
 	<string name="home_moved_into">‘%1$s’ ကို ‘%2$s’ ထဲသို့ ရွှေ့ပြီးပါပြီ</string>
 	<string name="home_moved_to">‘%1$s’ ကို ‘%2$s’ သို့ ရွှေ့ပြီးပါပြီ</string>

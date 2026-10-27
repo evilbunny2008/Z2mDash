@@ -180,6 +180,10 @@
 	<string name="home_add_panel_to">Pridať panel do %1$s</string>
 	<string name="home_add_tile_to">Pridať dlaždicu do %1$s</string>
 	<string name="home_another_group">inej skupiny</string>
+	<string name="home_battery_type_cluster">Typ batérie pre %1$s</string>
+	<string name="home_battery_type_nimh">Nabíjacie batérie NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH pracujú s nižším napätím ako alkalické alebo lítiové, takže ich senzory hlásia ako takmer vybité aj po nabití. Upozorní až pri 5% alebo menej namiesto 20%</string>
+	<string name="home_battery_type_title">Typ batérie pre ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Panely tohto klastra nemajú všetky jednu spoločnú čistú tému zariadenia, iba ten holý menný priestor – pravdepodobne ide o niekoľko nezhodných panelov, a nie o jedno skutočné zariadenie. Presunutie nahradí iba túto spoločnú časť, takže sa nemusí uplatniť tak, ako očakávate. Oplatí sa najprv skontrolovať panely tohto klastra jednotlivo</string>
 	<string name="home_change_topic_cluster">Zmeniť tému pre %1$s</string>
 	<string name="home_change_topic_text">Presunie všetky panely v tomto klastri na novú tému MQTT – napr. po rozdelení siete Zigbee na druhý most, iba pre zariadenia, ktoré sa naozaj presunuli. Ostatné klastre zostanú nedotknuté</string>
@@ -217,6 +221,7 @@
 	<string name="home_loading">Načítava sa…</string>
 	<string name="home_loading_detail">Stále sa načítava vaša uložená konfigurácia</string>
 	<string name="home_low_battery_description" formatted="false">Batéria na 20% alebo menej</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batéria na 5% alebo menej</string>
 	<string name="home_moved">Presunuté ‘%1$s’</string>
 	<string name="home_moved_into">Presunuté ‘%1$s’ do ‘%2$s’</string>
 	<string name="home_moved_to">Presunuté ‘%1$s’ na ‘%2$s’</string>

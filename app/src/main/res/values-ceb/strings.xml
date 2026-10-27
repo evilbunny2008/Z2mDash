@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Pagdugang og panel sa %1$s</string>
 	<string name="home_add_tile_to">Pagdugang og tile sa %1$s</string>
 	<string name="home_another_group">laing grupo</string>
+	<string name="home_battery_type_cluster">Klase sa baterya alang sa %1$s</string>
+	<string name="home_battery_type_nimh">Ma–charge nga NiMH nga baterya</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Mas ubos ang boltahe sa NiMH kaysa alkaline o lithium, mao nga ipakita sa mga sensor nga hapit na mahurot bisan puno pa. Mopasidaan sa 5% o mas ubos imbes sa 20%</string>
+	<string name="home_battery_type_title">Klase sa baterya alang sa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Ang mga panel niini nga cluster wala mag–ambit og usa ra ka limpyo nga topic sa device, kana ra nga hubo nga namespace – lagmit pipila ka panel nga dili magkatugma imbes nga usa ka tinuod nga device. Ang pagbalhin nag–ilis lang anang parte nga parehas, busa mahimong dili kini magamit sama sa imong gipaabot. Maayo nga susihon una ang matag panel niini nga cluster</string>
 	<string name="home_change_topic_cluster">Usba ang topic alang sa %1$s</string>
 	<string name="home_change_topic_text">Gibalhin ang tanang panel niini nga cluster ngadto sa bag–ong MQTT topic – pananglitan human bahinon ang Zigbee network sa ikaduhang bridge, alang lang sa mga device nga tinuod nga nabalhin. Dili hilabtan ang ubang mga cluster</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Nagkarga…</string>
 	<string name="home_loading_detail">Gibasa pa ang imong natipig nga configuration</string>
 	<string name="home_low_battery_description" formatted="false">Baterya sa 20% o mas ubos pa</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterya sa 5% o mas ubos pa</string>
 	<string name="home_moved">Gibalhin ang ‘%1$s’</string>
 	<string name="home_moved_into">Gibalhin ang ‘%1$s’ ngadto sa sulod sa ‘%2$s’</string>
 	<string name="home_moved_to">Gibalhin ang ‘%1$s’ ngadto sa ‘%2$s’</string>

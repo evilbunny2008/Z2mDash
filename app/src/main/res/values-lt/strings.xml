@@ -180,6 +180,10 @@
 	<string name="home_add_panel_to">Pridėti skydelį į %1$s</string>
 	<string name="home_add_tile_to">Pridėti plytelę į %1$s</string>
 	<string name="home_another_group">kitą grupę</string>
+	<string name="home_battery_type_cluster">%1$s baterijos tipas</string>
+	<string name="home_battery_type_nimh">Įkraunamos NiMH baterijos</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH veikia žemesne įtampa nei šarminės ar ličio baterijos, todėl jutikliai jas rodo beveik išsikrovusias net įkrautas. Įspėja ties 5% ar mažiau, o ne ties 20%</string>
+	<string name="home_battery_type_title">‘%1$s’ baterijos tipas</string>
 	<string name="home_change_topic_broad_warning">Šio klasterio skydeliai neturi vienos bendros aiškios įrenginio temos, tik pliką vardų sritį – tikriausiai tai keli nesuderinti skydeliai, o ne vienas tikras įrenginys. Perkėlimas pakeičia tik tą bendrą dalį, todėl gali būti pritaikytas ne taip, kaip tikitės. Verta pirmiausia patikrinti šio klasterio skydelius po vieną</string>
 	<string name="home_change_topic_cluster">Keisti %1$s temą</string>
 	<string name="home_change_topic_text">Perkelia visus šio klasterio skydelius į naują MQTT temą – pvz., padalijus Zigbee tinklą į antrą tiltą, tik tiems įrenginiams, kurie iš tikrųjų buvo perkelti. Kiti klasteriai nepaliečiami</string>
@@ -217,6 +221,7 @@
 	<string name="home_loading">Įkeliama…</string>
 	<string name="home_loading_detail">Vis dar skaitoma jūsų išsaugota konfigūracija</string>
 	<string name="home_low_battery_description" formatted="false">Baterija 20% ar mažiau</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterija 5% ar mažiau</string>
 	<string name="home_moved">Perkelta ‘%1$s’</string>
 	<string name="home_moved_into">‘%1$s’ perkelta į ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ perkelta į ‘%2$s’</string>

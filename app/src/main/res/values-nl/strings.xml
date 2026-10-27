@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Paneel toevoegen aan %1$s</string>
 	<string name="home_add_tile_to">Tegel toevoegen aan %1$s</string>
 	<string name="home_another_group">een andere groep</string>
+	<string name="home_battery_type_cluster">Batterijtype voor %1$s</string>
+	<string name="home_battery_type_nimh">Oplaadbare NiMH–batterijen</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH werkt op een lagere spanning dan alkaline of lithium, dus sensoren tonen ze als bijna leeg, zelfs als ze vol zijn. Waarschuwt pas bij 5% of minder in plaats van 20%</string>
+	<string name="home_battery_type_title">Batterijtype voor ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">De panelen van dit cluster delen niet allemaal één duidelijk apparaattopic, alleen die kale namespace – waarschijnlijk een paar niet–passende panelen in plaats van één echt apparaat. Verplaatsen vervangt alleen dat gedeelde deel, dus het werkt mogelijk niet zoals je verwacht. Controleer de panelen van dit cluster eerst afzonderlijk</string>
 	<string name="home_change_topic_cluster">Topic wijzigen voor %1$s</string>
 	<string name="home_change_topic_text">Verplaatst elk paneel in dit cluster naar een nieuw MQTT–topic – bijv. na het opsplitsen van een Zigbee–netwerk over een tweede bridge, alleen voor de apparaten die echt verhuisd zijn. Andere clusters blijven onaangeroerd</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Laden…</string>
 	<string name="home_loading_detail">Je opgeslagen configuratie wordt nog gelezen</string>
 	<string name="home_low_battery_description" formatted="false">Batterij op 20% of minder</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batterij op 5% of minder</string>
 	<string name="home_moved">‘%1$s’ verplaatst</string>
 	<string name="home_moved_into">‘%1$s’ verplaatst naar ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ verplaatst naar ‘%2$s’</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s тобуна панель кошуу</string>
 	<string name="home_add_tile_to">%1$s тобуна плитка кошуу</string>
 	<string name="home_another_group">башка топ</string>
+	<string name="home_battery_type_cluster">%1$s батарея түрү</string>
+	<string name="home_battery_type_nimh">Кайра заряддалуучу NiMH батареялары</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH щелочтуу же литий батареяларга караганда төмөнүрөөк чыңалууда иштейт, ошондуктан сенсорлор аны заряддалып турса да дээрлик бош деп көрсөтөт. 20% ордуна 5% же андан аз болгондо эскертет</string>
+	<string name="home_battery_type_title">‘%1$s’ батарея түрү</string>
 	<string name="home_change_topic_broad_warning">Бул кластердин панелдеринин баарына ортоктош бир таза түзмөк темасы жок, жалаң аталыштар мейкиндиги гана – бул бир чыныгы түзмөк эмес, бир нече дал келбеген панель болушу мүмкүн. Жылдыруу ошол ортоктош бөлүктү гана алмаштырат, ошондуктан ал сиз күткөндөй колдонулбашы мүмкүн. Адегенде бул кластердин панелдерин өз–өзүнчө текшерип чыккан жакшы</string>
 	<string name="home_change_topic_cluster">%1$s темасын өзгөртүү</string>
 	<string name="home_change_topic_text">Бул кластердеги бардык панелдерди жаңы MQTT темасына жылдырат – мисалы, Zigbee тармагын экинчи көпүрөгө бөлгөндөн кийин, чындап жылган түзмөктөр үчүн гана. Башка кластерлер өзгөртүлбөйт</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Жүктөлүүдө…</string>
 	<string name="home_loading_detail">Сакталган конфигурацияңыз дагы эле окулууда</string>
 	<string name="home_low_battery_description" formatted="false">Батарея 20% же андан аз</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Батарея 5% же андан аз</string>
 	<string name="home_moved">‘%1$s’ жылдырылды</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’ ичине жылдырылды</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’ ордуна жылдырылды</string>

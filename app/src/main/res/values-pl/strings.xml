@@ -180,6 +180,10 @@
 	<string name="home_add_panel_to">Dodaj panel do %1$s</string>
 	<string name="home_add_tile_to">Dodaj kafelek do %1$s</string>
 	<string name="home_another_group">inna grupa</string>
+	<string name="home_battery_type_cluster">Typ baterii dla %1$s</string>
+	<string name="home_battery_type_nimh">Akumulatory NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH działają przy niższym napięciu niż baterie alkaliczne lub litowe, więc czujniki pokazują je jako prawie rozładowane nawet po naładowaniu. Ostrzega przy 5% lub mniej zamiast 20%</string>
+	<string name="home_battery_type_title">Typ baterii dla „%1$s”</string>
 	<string name="home_change_topic_broad_warning">Panele tego klastra nie mają jednego wspólnego tematu urządzenia, łączy je tylko ogólna przestrzeń nazw – prawdopodobnie to kilka niepasujących paneli, a nie jedno prawdziwe urządzenie. Przeniesienie zastąpi tylko tę wspólną część, więc może nie zadziałać zgodnie z oczekiwaniami. Warto najpierw sprawdzić panele tego klastra pojedynczo</string>
 	<string name="home_change_topic_cluster">Zmień temat dla %1$s</string>
 	<string name="home_change_topic_text">Przenosi każdy panel tego klastra do nowego tematu MQTT – np. po podzieleniu sieci Zigbee na drugi most, tylko dla urządzeń, które faktycznie zostały przeniesione. Pozostałe klastry pozostają nietknięte</string>
@@ -217,6 +221,7 @@
 	<string name="home_loading">Wczytywanie…</string>
 	<string name="home_loading_detail">Nadal odczytywanie zapisanej konfiguracji</string>
 	<string name="home_low_battery_description" formatted="false">Bateria 20% lub mniej</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateria 5% lub mniej</string>
 	<string name="home_moved">Przeniesiono „%1$s”</string>
 	<string name="home_moved_into">Przeniesiono „%1$s” do „%2$s”</string>
 	<string name="home_moved_to">Przeniesiono „%1$s” na „%2$s”</string>

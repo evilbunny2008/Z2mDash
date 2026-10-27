@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Engeza iphaneli ku–%1$s</string>
 	<string name="home_add_tile_to">Engeza ithayela ku–%1$s</string>
 	<string name="home_another_group">elinye iqembu</string>
+	<string name="home_battery_type_cluster">Uhlobo lwebhethri lwe–%1$s</string>
+	<string name="home_battery_type_nimh">Amabhethri e–NiMH ashajwa kabusha</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">I–NiMH isebenza ngamandla kagesi aphansi kune–alkaline noma i–lithium, ngakho amasensa ayibonisa sengathi isizophela noma igcwele. Ixwayisa ku–5% noma ngaphansi esikhundleni se–20%</string>
+	<string name="home_battery_type_title">Uhlobo lwebhethri lwe–‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Amaphaneli aleli qoqo awabelani wonke ngesihloko esisodwa esihlanzekile sedivayisi, kodwa yileso sikhala samagama esingenalutho kuphela – kungenzeka angamaphaneli ambalwa angahambisani kunokuba kube idivayisi eyodwa yangempela. Ukuhambisa kushintsha leyo ngxenye eyabelwanayo kuphela, ngakho kungenzeka kungasebenzi ngendlela olindele ngayo. Kufanele uqale uhlole amaphaneli aleli qoqo ngalinye ngalinye</string>
 	<string name="home_change_topic_cluster">Shintsha isihloko se–%1$s</string>
 	<string name="home_change_topic_text">Ihambisa wonke amaphaneli akuleli qoqo iwayise esihlokweni esisha se–MQTT – isib. ngemuva kokuhlukanisa inethiwekhi ye–Zigbee ebhulohweni lesibili, kuphela kumadivayisi ahambile ngempela. Amanye amaqoqo awathintwa</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Iyalayisha…</string>
 	<string name="home_loading_detail">Ukulungiselelwa kwakho okulondoloziwe kusafundwa</string>
 	<string name="home_low_battery_description" formatted="false">Ibhethri ku–20% noma ngaphansi</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Ibhethri ku–5% noma ngaphansi</string>
 	<string name="home_moved">I–‘%1$s’ ihanjisiwe</string>
 	<string name="home_moved_into">I–‘%1$s’ ihanjiswe ngaphakathi kwe–‘%2$s’</string>
 	<string name="home_moved_to">I–‘%1$s’ ihanjiswe ku–‘%2$s’</string>

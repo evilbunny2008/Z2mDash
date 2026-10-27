@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s’a panel ekle</string>
 	<string name="home_add_tile_to">%1$s’a parça ekle</string>
 	<string name="home_another_group">başka bir grup</string>
+	<string name="home_battery_type_cluster">%1$s için pil türü</string>
+	<string name="home_battery_type_nimh">Şarj edilebilir NiMH piller</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH piller alkalin veya lityumdan daha düşük voltajda çalışır, bu yüzden sensörler onları dolu olsalar bile neredeyse bitmiş gösterir. %20 yerine %5 veya daha az olduğunda uyarır</string>
+	<string name="home_battery_type_title">‘%1$s’ için pil türü</string>
 	<string name="home_change_topic_broad_warning">Bu kümenin panellerinin tümü tek bir temiz cihaz konusunu paylaşmıyor, yalnızca bu çıplak ad alanını paylaşıyor; muhtemelen tek bir gerçek cihaz yerine birkaç uyumsuz panel var. Taşımak yalnızca paylaşılan kısmın yerini alır, dolayısıyla beklediğiniz şekilde uygulanmayabilir. Öncelikle bu kümenin panellerini tek tek kontrol etmeye değer</string>
 	<string name="home_change_topic_cluster">%1$s için konuyu değiştir</string>
 	<string name="home_change_topic_text">Bu kümedeki her paneli yeni bir MQTT konusuna taşır; ör. Zigbee ağını yalnızca gerçekten taşınan cihazlar için ikinci bir köprüye böldükten sonra. Diğer kümelere dokunulmadı</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Yükleniyor</string>
 	<string name="home_loading_detail">Kayıtlı konfigürasyonunuz hâlâ okunuyor</string>
 	<string name="home_low_battery_description" formatted="false">Pil %20 veya daha az</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Pil %5 veya daha az</string>
 	<string name="home_moved">‘%1$s’ taşındı</string>
 	<string name="home_moved_into">‘%1$s’, ‘%2$s’e taşındı</string>
 	<string name="home_moved_to">‘%1$s’, ‘%2$s’e taşındı</string>

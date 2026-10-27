@@ -12,12 +12,15 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.odiousapps.z2mdash.R
+import com.odiousapps.z2mdash.data.BatteryType
 import com.odiousapps.z2mdash.data.ConfigRepository
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.clusterNameOf
+import com.odiousapps.z2mdash.data.clusterOf
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 
 /**
@@ -25,7 +28,7 @@ import kotlinx.coroutines.launch
  * deliberately unscoped to any configured panel, the same as SmokeAlertManager, so a device's
  * battery is monitored the moment it starts reporting one, with nothing to add on the dashboard
  * for it. Posts a notification once a reading drops into the low range (above 0, at or below
- * [LOW_BATTERY_THRESHOLD]) - 0 itself is *always* excluded, never treated as low no matter how it
+ * [LOW_BATTERY_THRESHOLD], or [NIMH_LOW_BATTERY_THRESHOLD] for a cluster set to NiMH) - 0 itself is *always* excluded, never treated as low no matter how it
  * got there: some Zigbee devices are mains/USB powered but still report a hardcoded battery of 0
  * in their firmware, which would otherwise permanently misread as "critically low". Re-notifies
  * (updating, not stacking, the same notification) as the reading keeps moving while still in the
@@ -60,9 +63,10 @@ class LowBatteryAlertManager(
 
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
-            connectionManager.latestPayloads.collect { payloads ->
-                checkBatteryLevels(payloads)
-            }
+            // Config too, not just payloads, so changing a cluster's battery type re-judges its
+            // current reading straight away rather than on that device's next message.
+            combine(connectionManager.latestPayloads, configRepository.config) { payloads, _ -> payloads }
+                .collect { payloads -> checkBatteryLevels(payloads) }
         }
     }
 
@@ -76,7 +80,7 @@ class LowBatteryAlertManager(
         payloads.forEach { (compositeKey, payload) ->
             val battery = JsonPath.extract(payload, "battery")?.toDoubleOrNull()
             // Explicit null check kept so battery smart-casts to non-null below.
-            val isLow = battery != null && isLowBattery(battery)
+            val isLow = battery != null && isLowBattery(battery, batteryTypeFor(compositeKey))
 
             // First observation of this topic this app run - resync silently (see class doc)
             // rather than risk reading an already-known-low battery as a fresh drop just because
@@ -128,14 +132,8 @@ class LowBatteryAlertManager(
      * only ever widens which panel gets matched, never narrows it.
      */
     private fun deviceNameFor(compositeKey: String): String {
-        val brokerId = compositeKey.substringBefore('|')
         val topic = compositeKey.substringAfter('|')
-        val topicBase = topic.removeSuffix("/app")
-        val panelsOnThisBroker = configRepository.config.value.groups.asSequence()
-            .flatMap { it.panels }
-            .filter { it.brokerId == brokerId }
-        val matchingPanel = panelsOnThisBroker.firstOrNull { topicFor(it) == topic }
-            ?: panelsOnThisBroker.firstOrNull { topicFor(it)?.removeSuffix("/app") == topicBase }
+        val matchingPanel = panelFor(compositeKey)
         val clusterName = matchingPanel?.let { configRepository.config.value.clusterNameOf(it) }
         val resolved = clusterName?.takeIf { it.isNotBlank() }
             ?: matchingPanel?.label?.takeIf { it.isNotBlank() }
@@ -144,6 +142,23 @@ class LowBatteryAlertManager(
             "clusterName=$clusterName label=${matchingPanel?.label} resolved=$resolved")
         return resolved
     }
+
+    /** The dashboard panel [compositeKey]'s device belongs to - see deviceNameFor's doc on the matching. */
+    private fun panelFor(compositeKey: String): Panel? {
+        val brokerId = compositeKey.substringBefore('|')
+        val topic = compositeKey.substringAfter('|')
+        val topicBase = topic.removeSuffix("/app")
+        val panelsOnThisBroker = configRepository.config.value.groups.asSequence()
+            .flatMap { it.panels }
+            .filter { it.brokerId == brokerId }
+        return panelsOnThisBroker.firstOrNull { topicFor(it) == topic }
+            ?: panelsOnThisBroker.firstOrNull { topicFor(it)?.removeSuffix("/app") == topicBase }
+    }
+
+    /** Battery type of the cluster deviceNameFor would name - STANDARD if it's not on the dashboard. */
+    private fun batteryTypeFor(compositeKey: String): BatteryType =
+        panelFor(compositeKey)?.let { configRepository.config.value.clusterOf(it) }?.batteryType
+            ?: BatteryType.STANDARD
 
     private fun topicFor(panel: Panel): String? = when (panel) {
         is Panel.Sensor -> panel.topic
@@ -217,6 +232,7 @@ class LowBatteryAlertManager(
         private const val CHANNEL_ID = "low_battery_alert"
         private const val TEST_ALERT_KEY = "test|Z2mDash low battery test"
         private const val LOW_BATTERY_THRESHOLD = 20.0
+        private const val NIMH_LOW_BATTERY_THRESHOLD = 5.0
         private const val LOW_BATTERY_STEP = 5.0
 
         /**
@@ -224,7 +240,12 @@ class LowBatteryAlertManager(
          * FAB and cluster outline, so what's flagged on screen always matches what notifies.
          * 0 is never low (see this class's own doc: mains-powered devices report a fixed 0).
          */
-        fun isLowBattery(battery: Double?): Boolean =
-            battery != null && battery > 0.0 && battery <= LOW_BATTERY_THRESHOLD
+        fun isLowBattery(battery: Double?, batteryType: BatteryType = BatteryType.STANDARD): Boolean {
+            val threshold = when (batteryType) {
+                BatteryType.STANDARD -> LOW_BATTERY_THRESHOLD
+                BatteryType.NIMH -> NIMH_LOW_BATTERY_THRESHOLD
+            }
+            return battery != null && battery > 0.0 && battery <= threshold
+        }
     }
 }

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s இல் பேனலைச் சேர்க்கவும்</string>
 	<string name="home_add_tile_to">%1$s இல் டைலைச் சேர்க்கவும்</string>
 	<string name="home_another_group">மற்றொரு குழு</string>
+	<string name="home_battery_type_cluster">%1$s க்கான பேட்டரி வகை</string>
+	<string name="home_battery_type_nimh">மின்னேற்றக்கூடிய NiMH பேட்டரிகள்</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH அல்கலைன் அல்லது லித்தியத்தை விடக் குறைந்த மின்னழுத்தத்தில் இயங்குவதால், சார்ஜ் இருந்தாலும் சென்சார்கள் அதை கிட்டத்தட்ட தீர்ந்ததாகக் காட்டும். 20%க்குப் பதிலாக 5% அல்லது குறைவாகும்போது எச்சரிக்கும்</string>
+	<string name="home_battery_type_title">‘%1$s’க்கான பேட்டரி வகை</string>
 	<string name="home_change_topic_broad_warning">இந்தக் கிளஸ்டரின் பேனல்கள் அனைத்தும் ஒரு சுத்தமான சாதனத் தலைப்பைப் பகிர்ந்து கொள்ளாது, வெறும் பெயர்வெளி மட்டுமே – ஒரு உண்மையான சாதனத்தை விட சில பொருந்தாத பேனல்கள் இருக்கலாம். அதை நகர்த்துவது அந்த பகிரப்பட்ட பகுதியை மட்டுமே மாற்றுகிறது, எனவே நீங்கள் எதிர்பார்க்கும் விதத்தில் இது பொருந்தாது. முதலில் இந்தக் கிளஸ்டரின் பேனல்களை தனித்தனியாகச் சரிபார்க்க வேண்டும்</string>
 	<string name="home_change_topic_cluster">%1$sக்கான தலைப்பை மாற்றவும்</string>
 	<string name="home_change_topic_text">இந்த கிளஸ்டரில் உள்ள ஒவ்வொரு பேனலையும் புதிய MQTT தலைப்பில் நகர்த்துகிறது – எ.கா. ஜிக்பீ நெட்வொர்க்கை இரண்டாவது பாலத்தில் பிரித்த பிறகு, உண்மையில் நகர்த்தப்பட்ட சாதனங்களுக்கு. மற்ற கொத்துகள் தீண்டப்படாதவை</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">ஏற்றுகிறது</string>
 	<string name="home_loading_detail">நீங்கள் சேமித்த உள்ளமைவை இன்னும் படிக்கிறேன்</string>
 	<string name="home_low_battery_description" formatted="false">20% அல்லது அதற்கும் குறைவான பேட்டரி</string>
+	<string name="home_low_battery_nimh_description" formatted="false">5% அல்லது அதற்கும் குறைவான பேட்டரி</string>
 	<string name="home_moved">‘%1$s’ நகர்த்தப்பட்டது</string>
 	<string name="home_moved_into">‘%1$s’ ஆனது ‘%2$s’ ஆக நகர்த்தப்பட்டது</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’க்கு நகர்த்தப்பட்டது</string>

@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">%1$s にパネルを追加</string>
 	<string name="home_add_tile_to">%1$s にタイルを追加</string>
 	<string name="home_another_group">別のグループ</string>
+	<string name="home_battery_type_cluster">%1$s の電池の種類</string>
+	<string name="home_battery_type_nimh">充電式 NiMH 電池</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH はアルカリやリチウムより電圧が低いため、充電済みでもセンサーにはほぼ空と表示されます。20% ではなく 5% 以下で警告します</string>
+	<string name="home_battery_type_title">「%1$s」の電池の種類</string>
 	<string name="home_change_topic_broad_warning">このクラスターのパネルはすべて、1 つのクリーンなデバイス トピックを共有しているわけではなく、その裸の名前空間だけを共有しています。おそらく、1 つの実際のデバイスではなく、いくつかの不一致のパネルです。移動すると、その共有部分のみが置き換えられるため、期待どおりに適用されない可能性があります。最初にこのクラスターのパネルを個別に確認する価値があります</string>
 	<string name="home_change_topic_cluster">%1$s のトピックを変更します</string>
 	<string name="home_change_topic_text">このクラスター内のすべてのパネルを新しい MQTT トピックに移動します。 Zigbee ネットワークを 2 番目のブリッジに分割した後、実際に移動したデバイスのみが対象となります。他のクラスターはそのままです</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">読み込み中…</string>
 	<string name="home_loading_detail">保存された設定をまだ読み取っています</string>
 	<string name="home_low_battery_description" formatted="false">バッテリー残量が 20% 以下</string>
+	<string name="home_low_battery_nimh_description" formatted="false">バッテリー残量が 5% 以下</string>
 	<string name="home_moved">「%1$s」を移動しました</string>
 	<string name="home_moved_into">「%1$s」を「%2$s」に移動しました</string>
 	<string name="home_moved_to">「%1$s」を「%2$s」に移動しました</string>

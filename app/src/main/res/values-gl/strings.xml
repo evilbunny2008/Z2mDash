@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Engadir panel a %1$s</string>
 	<string name="home_add_tile_to">Engadir mosaico a %1$s</string>
 	<string name="home_another_group">outro grupo</string>
+	<string name="home_battery_type_cluster">Tipo de batería de %1$s</string>
+	<string name="home_battery_type_nimh">Pilas recargables NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">As NiMH funcionan a menor voltaxe ca as alcalinas ou de litio, así que os sensores amósanas case baleiras mesmo cargadas. Avisa ao 5% ou menos en vez do 20%</string>
+	<string name="home_battery_type_title">Tipo de batería de ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Os paneis deste clúster non comparten todos un único tema de dispositivo limpo, só ese espazo de nomes simple – probablemente sexan uns cantos paneis que non encaixan en lugar dun único dispositivo real. Movelo substitúe só esa parte común, polo que pode que non se aplique como esperas. Paga a pena revisar primeiro os paneis deste clúster un por un</string>
 	<string name="home_change_topic_cluster">Cambiar o tema de %1$s</string>
 	<string name="home_change_topic_text">Move todos os paneis deste clúster a un tema MQTT novo – p. ex. despois de dividir unha rede Zigbee nunha segunda ponte, só para os dispositivos que realmente se moveron. Os outros clústeres non se tocan</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Cargando…</string>
 	<string name="home_loading_detail">Aínda se está a ler a túa configuración gardada</string>
 	<string name="home_low_battery_description" formatted="false">Batería ao 20% ou menos</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batería ao 5% ou menos</string>
 	<string name="home_moved">Moveuse ‘%1$s’</string>
 	<string name="home_moved_into">Moveuse ‘%1$s’ a ‘%2$s’</string>
 	<string name="home_moved_to">Moveuse ‘%1$s’ cara a ‘%2$s’</string>

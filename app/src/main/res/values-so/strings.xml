@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Ku dar guddi %1$s</string>
 	<string name="home_add_tile_to">Ku dar sanduuq %1$s</string>
 	<string name="home_another_group">koox kale</string>
+	<string name="home_battery_type_cluster">Nooca baytariga %1$s</string>
+	<string name="home_battery_type_nimh">Baytariyada NiMH ee dib loo shubi karo</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH waxay ku shaqeysaa koronto ka hooseysa alkaline ama lithium, sidaa darteed dareemayaashu waxay u muujiyaan inay ku dhow yihiin dhammaad xitaa marka ay buuxaan. Waxay digtaa 5% ama ka yar halkii 20%</string>
+	<string name="home_battery_type_title">Nooca baytariga ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Guddiyada kutladan dhammaantood ma wadaagaan hal mawduuc qalab oo nadiif ah, kaliya meel–magacaas qaawan – waxay u badan tahay inay yihiin dhowr guddi oo aan is waafaqsanayn halkii ay ka ahaan lahaayeen hal qalab oo dhab ah. U wareejintu waxay beddeshaa kaliya qaybtaas guud, sidaa darteed waxaa laga yaabaa inaysan u shaqayn sidaad filayso. Waxaa habboon in marka hore guddiyada kutladan midba mid loo hubiyo</string>
 	<string name="home_change_topic_cluster">Beddel mawduuca %1$s</string>
 	<string name="home_change_topic_text">Wuxuu u wareejiyaa dhammaan guddiyada kutladan mawduuc MQTT oo cusub – tusaale kadib marka shabakad Zigbee loo qaybiyo buundo labaad, kaliya qalabka runtii guuray. Kutlooyinka kale lama taabto</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Waa la rarayaa…</string>
 	<string name="home_loading_detail">Weli waa la akhrinayaa habayntaada la kaydiyey</string>
 	<string name="home_low_battery_description" formatted="false">Baytari 20% ama ka yar</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baytari 5% ama ka yar</string>
 	<string name="home_moved">‘%1$s’ waa la wareejiyey</string>
 	<string name="home_moved_into">‘%1$s’ waxaa loo wareejiyey ‘%2$s’ dhexdeeda</string>
 	<string name="home_moved_to">‘%1$s’ waxaa loo wareejiyey ‘%2$s’</string>

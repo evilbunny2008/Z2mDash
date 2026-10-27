@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Faʻaopoopo se laupapa i %1$s</string>
 	<string name="home_add_tile_to">Faʻaopoopo se pusa i %1$s</string>
 	<string name="home_another_group">se isi vaega</string>
+	<string name="home_battery_type_cluster">Ituaiga maa mo %1$s</string>
+	<string name="home_battery_type_nimh">Maa NiMH e mafai ona toe faatumu</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">E maualalo le eletise o le NiMH nai lo le alkaline po o le lithium, o lea e faaali ai e masini e toetoe a uma e tusa lava pe tumu. E lapataʻi i le 5% pe itiiti ifo nai lo le 20%</string>
+	<string name="home_battery_type_title">Ituaiga maa mo ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">E le tufatufaina uma e laupapa o lenei fuifui se autu mama e tasi o le masini, na o lena nofoaga igoa e leai se mea – atonu o ni nai laupapa e le ogatusa nai lo se masini moni e tasi. O le siitia e na o le vaega tutusa lena e suia, o lea atonu e le aoga e pei ona e faʻamoemoe. E lelei le siaki muamua taʻitasi laupapa o lenei fuifui</string>
 	<string name="home_change_topic_cluster">Sui le autu mo %1$s</string>
 	<string name="home_change_topic_text">E siitia uma laupapa o lenei fuifui i se autu MQTT fou – faʻataʻitaʻiga pe a uma ona vaevae se fesoʻotaʻiga Zigbee i se alalaupapa lona lua, mo na o masini na siitia moni. E le paʻia isi fuifui</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">O loʻo uta…</string>
 	<string name="home_loading_detail">O loʻo faitau pea lau faʻatulagaga ua sefe</string>
 	<string name="home_low_battery_description" formatted="false">Maa i le 20% pe itiiti ifo</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Maa i le 5% pe itiiti ifo</string>
 	<string name="home_moved">Ua siitia ‘%1$s’</string>
 	<string name="home_moved_into">Ua siitia ‘%1$s’ i totonu o ‘%2$s’</string>
 	<string name="home_moved_to">Ua siitia ‘%1$s’ i ‘%2$s’</string>

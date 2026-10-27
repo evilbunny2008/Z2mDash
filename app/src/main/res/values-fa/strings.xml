@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">افزودن پنل به %1$s</string>
 	<string name="home_add_tile_to">افزودن کاشی به %1$s</string>
 	<string name="home_another_group">گروهی دیگر</string>
+	<string name="home_battery_type_cluster">نوع باتری %1$s</string>
+	<string name="home_battery_type_nimh">باتری‌های قابل شارژ NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH با ولتاژی کمتر از قلیایی یا لیتیومی کار می‌کند، برای همین حسگرها آن را حتی وقتی شارژ است تقریباً خالی نشان می‌دهند. به جای ۲۰٪ در ۵٪ یا کمتر هشدار می‌دهد</string>
+	<string name="home_battery_type_title">نوع باتری «%1$s»</string>
 	<string name="home_change_topic_broad_warning">پنل‌های این خوشه همگی یک تاپیک دستگاه مشخص ندارند و فقط همان namespace کلی مشترک است – احتمالاً چند پنل ناهمخوان است، نه یک دستگاه واقعی. جابه‌جا کردن آن فقط همان بخش مشترک را جایگزین می‌کند، بنابراین ممکن است آن‌طور که انتظار دارید اعمال نشود. بهتر است ابتدا پنل‌های این خوشه را یکی‌یکی بررسی کنید</string>
 	<string name="home_change_topic_cluster">تغییر تاپیک %1$s</string>
 	<string name="home_change_topic_text">همهٔ پنل‌های این خوشه را به یک تاپیک MQTT جدید منتقل می‌کند – مثلاً پس از تقسیم یک شبکهٔ Zigbee به یک پل دوم، فقط برای دستگاه‌هایی که واقعاً منتقل شده‌اند. خوشه‌های دیگر دست‌نخورده می‌مانند</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">در حال بارگیری…</string>
 	<string name="home_loading_detail">هنوز در حال خواندن پیکربندی ذخیره‌شدهٔ شما</string>
 	<string name="home_low_battery_description" formatted="false">باتری ۲۰٪ یا کمتر</string>
+	<string name="home_low_battery_nimh_description" formatted="false">باتری ۵٪ یا کمتر</string>
 	<string name="home_moved">«%1$s» منتقل شد</string>
 	<string name="home_moved_into">«%1$s» به درون «%2$s» منتقل شد</string>
 	<string name="home_moved_to">«%1$s» به «%2$s» منتقل شد</string>

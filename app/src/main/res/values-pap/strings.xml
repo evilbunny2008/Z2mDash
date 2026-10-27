@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Agregá panel na %1$s</string>
 	<string name="home_add_tile_to">Agregá tegel na %1$s</string>
 	<string name="home_another_group">otro grupo</string>
+	<string name="home_battery_type_cluster">Tipo di bateria pa %1$s</string>
+	<string name="home_battery_type_nimh">Bateria NiMH ku por karga di nobo</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ta traha na un voltahe mas abou ku alkalino òf litio, p\'esei e sensornan ta mustra nan kasi bashí asta ora nan ta kargá. Ta avisa na 5% òf ménos en bes di 20%</string>
+	<string name="home_battery_type_title">Tipo di bateria pa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">E panelnan di e kluster aki no ta kompartí tur un solo tópiko limpi di aparato, djis e espasio di nòmber simpel ei – probablemente algun panel ku no ta kuadra en bes di un aparato real. Move ta remplasá djis e parti komun ei, pues kisas e no ta aplika manera bo ta spera. Ta bal la pena kontrolá e panelnan di e kluster aki un pa un promé</string>
 	<string name="home_change_topic_cluster">Kambia tópiko pa %1$s</string>
 	<string name="home_change_topic_text">Ta move tur panel den e kluster aki pa un tópiko MQTT nobo – pa ehèmpel despues di parti un red Zigbee riba un di dos brùg, djis pa e aparatonan ku a move di bèrdat. Otro klusternan no ta wòrdu toká</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Ta kargando…</string>
 	<string name="home_loading_detail">Ainda ta lesando bo konfigurashon wardá</string>
 	<string name="home_low_battery_description" formatted="false">Bateria na 20% òf ménos</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateria na 5% òf ménos</string>
 	<string name="home_moved">A move ‘%1$s’</string>
 	<string name="home_moved_into">A move ‘%1$s’ aden di ‘%2$s’</string>
 	<string name="home_moved_to">A move ‘%1$s’ pa ‘%2$s’</string>

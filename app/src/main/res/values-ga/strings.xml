@@ -185,6 +185,10 @@
 	<string name="home_add_panel_to">Cuir painéal le %1$s</string>
 	<string name="home_add_tile_to">Cuir tíl le %1$s</string>
 	<string name="home_another_group">grúpa eile</string>
+	<string name="home_battery_type_cluster">Cineál ceallra do %1$s</string>
+	<string name="home_battery_type_nimh">Ceallraí NiMH in–athluchtaithe</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Bíonn voltas níos ísle ag NiMH ná ag ceallraí alcaileacha nó litiam, mar sin taispeánann braiteoirí iad beagnach folamh fiú nuair atá siad luchtaithe. Tugann rabhadh ag 5% nó níos lú in ionad 20%</string>
+	<string name="home_battery_type_title">Cineál ceallra do ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Ní roinneann painéil na braisle seo go léir ábhar gléis glan amháin, ach an t–ainmspás lom sin amháin – is dócha gur roinnt painéal nach dtagann le chéile atá iontu seachas gléas fíor amháin. Ní ionadaíonn an t–aistriú ach an chuid choiteann sin, mar sin b’fhéidir nach gcuirfear i bhfeidhm é mar a bhíonn súil agat. B’fhiú painéil na braisle seo a sheiceáil ceann ar cheann ar dtús</string>
 	<string name="home_change_topic_cluster">Athraigh ábhar %1$s</string>
 	<string name="home_change_topic_text">Aistríonn sé gach painéal sa bhraisle seo chuig ábhar MQTT nua – m.sh. tar éis líonra Zigbee a roinnt ar dhara droichead, do na gléasanna a aistríodh i ndáiríre amháin. Ní dhéantar teagmháil le braislí eile</string>
@@ -223,6 +227,7 @@
 	<string name="home_loading">Ag lódáil…</string>
 	<string name="home_loading_detail">Fós ag léamh do chumraíocht shábháilte</string>
 	<string name="home_low_battery_description" formatted="false">Ceallra ag 20% nó níos lú</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Ceallra ag 5% nó níos lú</string>
 	<string name="home_moved">Aistríodh ‘%1$s’</string>
 	<string name="home_moved_into">Aistríodh ‘%1$s’ isteach i ‘%2$s’</string>
 	<string name="home_moved_to">Aistríodh ‘%1$s’ go ‘%2$s’</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Magdagdag ng panel sa %1$s</string>
 	<string name="home_add_tile_to">Magdagdag ng tile sa %1$s</string>
 	<string name="home_another_group">ibang grupo</string>
+	<string name="home_battery_type_cluster">Uri ng baterya para sa %1$s</string>
+	<string name="home_battery_type_nimh">Rechargeable na NiMH na baterya</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Mas mababa ang boltahe ng NiMH kaysa alkaline o lithium, kaya ipinapakita ito ng mga sensor na halos ubos na kahit puno pa. Nagbababala sa 5% o mas mababa sa halip na 20%</string>
+	<string name="home_battery_type_title">Uri ng baterya para sa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Hindi lahat ng panel ng cluster na ito ay may iisang malinis na device topic, tanging ang namespace lamang – malamang ilang hindi tugmang panel ito sa halip na iisang tunay na device. Ang paglipat nito ay papalitan lamang ang bahaging iyon, kaya maaaring hindi ito mailapat gaya ng inaasahan mo. Mainam na suriin muna isa-isa ang mga panel ng cluster na ito</string>
 	<string name="home_change_topic_cluster">Palitan ang topic ng %1$s</string>
 	<string name="home_change_topic_text">Ililipat ang bawat panel sa cluster na ito sa bagong MQTT topic – hal. pagkatapos hatiin ang isang Zigbee network sa pangalawang bridge, para lamang sa mga device na talagang lumipat. Hindi gagalawin ang ibang cluster</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Naglo-load…</string>
 	<string name="home_loading_detail">Binabasa pa ang iyong naka-save na configuration</string>
 	<string name="home_low_battery_description" formatted="false">Baterya sa 20% o mas mababa</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterya sa 5% o mas mababa</string>
 	<string name="home_moved">Inilipat ang ‘%1$s’</string>
 	<string name="home_moved_into">Inilipat ang ‘%1$s’ sa loob ng ‘%2$s’</string>
 	<string name="home_moved_to">Inilipat ang ‘%1$s’ sa ‘%2$s’</string>

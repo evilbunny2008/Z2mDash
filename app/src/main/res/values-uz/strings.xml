@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s ga panel qoʻshish</string>
 	<string name="home_add_tile_to">%1$s ga plitka qoʻshish</string>
 	<string name="home_another_group">boshqa guruh</string>
+	<string name="home_battery_type_cluster">%1$s uchun batareya turi</string>
+	<string name="home_battery_type_nimh">Qayta zaryadlanadigan NiMH batareyalar</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ishqoriy yoki litiy batareyalardan pastroq kuchlanishda ishlaydi, shuning uchun sensorlar uni zaryadlangan boʻlsa ham deyarli tugagan deb koʻrsatadi. 20% oʻrniga 5% yoki kamroq boʻlganda ogohlantiradi</string>
+	<string name="home_battery_type_title">‘%1$s’ uchun batareya turi</string>
 	<string name="home_change_topic_broad_warning">Bu klaster panellarining hammasi bitta toza qurilma mavzusiga ega emas, faqat oʻsha yalangʻoch nomlar fazosi umumiy – bu bitta haqiqiy qurilma emas, balki bir nechta mos kelmaydigan panellar boʻlishi mumkin. Koʻchirish faqat oʻsha umumiy qismni almashtiradi, shuning uchun u siz kutgandek qoʻllanmasligi mumkin. Avval bu klaster panellarini birma–bir tekshirib chiqish maʼqul</string>
 	<string name="home_change_topic_cluster">%1$s mavzusini oʻzgartirish</string>
 	<string name="home_change_topic_text">Bu klasterdagi barcha panellarni yangi MQTT mavzusiga koʻchiradi – masalan, Zigbee tarmogʻini ikkinchi koʻprikka ajratgandan soʻng, faqat haqiqatan koʻchgan qurilmalar uchun. Boshqa klasterlarga tegilmaydi</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Yuklanmoqda…</string>
 	<string name="home_loading_detail">Saqlangan konfiguratsiyangiz hali oʻqilmoqda</string>
 	<string name="home_low_battery_description" formatted="false">Batareya 20% yoki kamroq</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batareya 5% yoki kamroq</string>
 	<string name="home_moved">‘%1$s’ koʻchirildi</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’ ichiga koʻchirildi</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’ ga koʻchirildi</string>

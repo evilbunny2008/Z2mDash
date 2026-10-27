@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Tambah panel menyang %1$s</string>
 	<string name="home_add_tile_to">Tambah ubin menyang %1$s</string>
 	<string name="home_another_group">grup liyane</string>
+	<string name="home_battery_type_cluster">Jinis baterai kanggo %1$s</string>
+	<string name="home_battery_type_nimh">Baterai NiMH sing bisa diisi ulang</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH mlaku ing voltase luwih endhek tinimbang alkaline utawa litium, mula sensor nuduhake meh entek sanajan wis kebak. Ngelingake ing 5% utawa luwih sithik, dudu 20%</string>
+	<string name="home_battery_type_title">Jinis baterai kanggo ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Panel ing kluster iki ora padha nduwe siji topik piranti sing resik, mung ruang jeneng kosong kasebut – mbokmenawa sawetara panel sing ora cocog tinimbang siji piranti temenan. Mindhah mung ngganti bagean sing padha kasebut, dadi bisa wae ora ditrapake kaya sing kok kira. Becik dipriksa siji siji panel ing kluster iki dhisik</string>
 	<string name="home_change_topic_cluster">Ganti topik kanggo %1$s</string>
 	<string name="home_change_topic_text">Mindhah kabeh panel ing kluster iki menyang topik MQTT anyar – contone sawise mbagi jaringan Zigbee menyang bridge kapindho, mung kanggo piranti sing pancen pindhah. Kluster liyane ora diowahi</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Lagi ngamot…</string>
 	<string name="home_loading_detail">Isih maca konfigurasimu sing disimpen</string>
 	<string name="home_low_battery_description" formatted="false">Baterai ing 20% utawa luwih sithik</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterai ing 5% utawa luwih sithik</string>
 	<string name="home_moved">‘%1$s’ dipindhah</string>
 	<string name="home_moved_into">‘%1$s’ dipindhah menyang njero ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ dipindhah menyang ‘%2$s’</string>

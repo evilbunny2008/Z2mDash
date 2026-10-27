@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Eketsa phanele ho %1$s</string>
 	<string name="home_add_tile_to">Eketsa thaele ho %1$s</string>
 	<string name="home_another_group">sehlopha se seng</string>
+	<string name="home_battery_type_cluster">Mofuta wa betri wa %1$s</string>
+	<string name="home_battery_type_nimh">Dibetri tsa NiMH tse tjhajwang hape</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH e sebetsa ka motlakase o tlase ho feta alkaline kapa lithium, kahoo disensara di e bontsha e le haufi le ho fela leha e tletse. E lemosa ho 5% kapa ka tlase ho ena le 20%</string>
+	<string name="home_battery_type_title">Mofuta wa betri wa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Diphanele tsa pokello ena ha di arolelane kaofela sehlooho se le seng se hlwekileng sa sesebediswa, feela sebaka seo sa mabitso se se nang letho – mohlomong ke diphanele tse mmalwa tse sa tsamaellaneng ho ena le sesebediswa se le seng sa nnete. Ho tsamaisa ho nkela karolo eo e arolelanwang feela sebaka, kahoo e kanna ya se sebetse ka tsela eo o e lebeletseng. Ho molemo ho hlahloba diphanele tsa pokello ena e nngwe ka e nngwe pele</string>
 	<string name="home_change_topic_cluster">Fetola sehlooho sa %1$s</string>
 	<string name="home_change_topic_text">E tsamaisa diphanele tsohle tsa pokello ena ho ya sehloohong se setjha sa MQTT – mohlala kamora ho arola marangrang a Zigbee borokhong ba bobedi, feela bakeng sa disebediswa tse tsamaileng ka nnete. Dipokello tse ding ha di amehe</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">E a jarolla…</string>
 	<string name="home_loading_detail">Tlhophiso ya hao e bolokilweng e sa ntse e balwa</string>
 	<string name="home_low_battery_description" formatted="false">Betri e ho 20% kapa ka tlase</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Betri e ho 5% kapa ka tlase</string>
 	<string name="home_moved">‘%1$s’ e tsamaisitswe</string>
 	<string name="home_moved_into">‘%1$s’ e tsamaiseditswe ka hare ho ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ e tsamaiseditswe ho ‘%2$s’</string>

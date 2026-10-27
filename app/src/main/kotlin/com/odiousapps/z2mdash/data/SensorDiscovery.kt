@@ -108,7 +108,12 @@ object SensorDiscovery {
         // drag-reorder). Lets DeviceAutoConfigManager tell a genuinely newer order apart from a
         // stale retained redelivery when reconciling. Missing means "no order authority" -
         // the locally-applied order is left alone.
-        val orderVersion: Long? = null
+        val orderVersion: Long? = null,
+        // Optional "battery_type" - "nimh" for a device running on rechargeable NiMH cells, else
+        // (missing, or anything else) STANDARD. Device-level since the battery belongs to the
+        // physical device; applied to every cluster this payload's panels land in, so phones
+        // sharing the broker agree on where that cluster's low-battery line sits.
+        val batteryType: BatteryType = BatteryType.STANDARD
     )
 
     /** One toggle-style control declared in a device's "/app" payload's "controls" array. */
@@ -378,7 +383,9 @@ object SensorDiscovery {
         controlClusterIdUpdates: Map<Int, String> = emptyMap(),
         newDeviceName: String? = null,
         newGroup: String? = null,
-        newGroupId: String? = null
+        newGroupId: String? = null,
+        // STANDARD removes "battery_type" rather than writing it - missing already means STANDARD.
+        newBatteryType: BatteryType? = null
     ): String? = try {
         val obj = Json.parseToJsonElement(currentPayload) as? JsonObject
         if (obj == null) {
@@ -447,6 +454,11 @@ object SensorDiscovery {
             newDeviceName?.let { mutableFields["name"] = JsonPrimitive(it) }
             newGroup?.let { mutableFields["group"] = JsonPrimitive(it) }
             newGroupId?.let { mutableFields["group_id"] = JsonPrimitive(it) }
+            when (newBatteryType) {
+                null -> Unit
+                BatteryType.STANDARD -> mutableFields.remove("battery_type")
+                BatteryType.NIMH -> mutableFields["battery_type"] = JsonPrimitive(newBatteryType.name.lowercase())
+            }
 
             Json.encodeToString(JsonElement.serializer(), JsonObject(mutableFields))
         }
@@ -570,6 +582,9 @@ object SensorDiscovery {
             val panelClusterIds = stringArray("panel_cluster_ids")
             val panelIds = stringArray("panel_ids")
             val orderVersion = (obj["order_version"] as? JsonPrimitive)?.longOrNull
+            val batteryType = (obj["battery_type"] as? JsonPrimitive)?.contentOrNull
+                ?.let { value -> BatteryType.entries.find { it.name.equals(value, ignoreCase = true) } }
+                ?: BatteryType.STANDARD
             val numericKeys = obj.entries
                 .filter { (_, v) -> (v as? JsonPrimitive)?.doubleOrNull != null }
                 .map { it.key }
@@ -601,7 +616,8 @@ object SensorDiscovery {
                 panelIdealMinPaths = panelIdealMinPaths,
                 panelIdealMaxPaths = panelIdealMaxPaths,
                 controls = controls,
-                orderVersion = orderVersion
+                orderVersion = orderVersion,
+                batteryType = batteryType
             )
         }
     } catch (_: Exception) {
@@ -840,7 +856,7 @@ object SensorDiscovery {
 
         return BuiltDevice(
             panels = sensorPanels + controlPanels,
-            clusters = clusterNamesById.map { (id, name) -> PanelCluster(id, name) },
+            clusters = clusterNamesById.map { (id, name) -> PanelCluster(id, name, deviceConfig.batteryType) },
             payloadPanelIds = payloadPanelIds
         )
     }
@@ -1062,7 +1078,8 @@ object SensorDiscovery {
         // current callers (publishAppTopicForClusterIfMissing, forceRepublishGroupAppTopics)
         // always have one to give; see the group_order doc further down for why omitting it is a
         // real bug, not just a missing nicety.
-        groupOrder: Int? = null
+        groupOrder: Int? = null,
+        batteryType: BatteryType = BatteryType.STANDARD
     ): String {
         val ordered = panels.sortedBy { it.displayOrder }
         val sensors = ordered.filterIsInstance<Panel.Sensor>()
@@ -1073,6 +1090,7 @@ object SensorDiscovery {
             if (clusterId.isNotBlank()) put("cluster_id", clusterId)
             put("group", groupName)
             put("group_id", groupId)
+            if (batteryType != BatteryType.STANDARD) put("battery_type", batteryType.name.lowercase())
             // group_order/panel_order/controls[].order are stamped from the panels' CURRENT local
             // displayOrder, not left unset - composedDisplayOrder (what every reader, including
             // this app's own reconcile of its own echo, derives a panel's displayOrder from)

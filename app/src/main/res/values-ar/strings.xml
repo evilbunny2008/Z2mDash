@@ -190,6 +190,10 @@
 	<string name="home_add_panel_to">إضافة لوحة إلى %1$s</string>
 	<string name="home_add_tile_to">أضف بلاطة إلى %1$s</string>
 	<string name="home_another_group">مجموعة أخرى</string>
+	<string name="home_battery_type_cluster">نوع البطارية لـ %1$s</string>
+	<string name="home_battery_type_nimh">بطاريات NiMH قابلة لإعادة الشحن</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">تعمل NiMH بجهد أقل من القلوية أو الليثيوم، لذا تعرضها المستشعرات كأنها شبه فارغة حتى وهي مشحونة. ينبّه عند 5% أو أقل بدلًا من 20%</string>
+	<string name="home_battery_type_title">نوع البطارية لـ ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">لا تشترك لوحات هذه المجموعة جميعًا في موضوع جهاز واحد نظيف، بل مساحة الاسم العارية فقط – من المحتمل أن تكون هناك لوحات قليلة غير متطابقة بدلاً من جهاز حقيقي واحد. يؤدي نقله إلى استبدال ذلك الجزء المشترك فقط، لذا قد لا ينطبق بالطريقة التي تتوقعها. يستحق التحقق من لوحات هذه المجموعة بشكل فردي أولاً</string>
 	<string name="home_change_topic_cluster">تغيير الموضوع لـ %1$s</string>
 	<string name="home_change_topic_text">ينقل كل لوحة في هذه المجموعة إلى موضوع MQTT جديد – على سبيل المثال. بعد تقسيم شبكة Zigbee على جسر ثانٍ، فقط للأجهزة التي تحركت بالفعل. المجموعات الأخرى لم تمس</string>
@@ -229,6 +233,7 @@
 	<string name="home_loading">جارٍ التحميل…</string>
 	<string name="home_loading_detail">لا تزال تقرأ التكوين المحفوظ الخاص بك</string>
 	<string name="home_low_battery_description" formatted="false">البطارية بنسبة 20% أو أقل</string>
+	<string name="home_low_battery_nimh_description" formatted="false">البطارية بنسبة 5% أو أقل</string>
 	<string name="home_moved">تم نقل ‘%1$s’</string>
 	<string name="home_moved_into">تم نقل ‘%1$s’ إلى ‘%2$s’</string>
 	<string name="home_moved_to">تم نقل ‘%1$s’ إلى ‘%2$s’</string>

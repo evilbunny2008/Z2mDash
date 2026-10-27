@@ -175,6 +175,10 @@
 	<string name="home_add_panel_to">Adicionar painel a %1$s</string>
 	<string name="home_add_tile_to">Adicionar bloco a %1$s</string>
 	<string name="home_another_group">outro grupo</string>
+	<string name="home_battery_type_cluster">Tipo de bateria de %1$s</string>
+	<string name="home_battery_type_nimh">Pilhas recarregáveis NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">As NiMH funcionam com tensão menor que as alcalinas ou de lítio, então os sensores as mostram quase descarregadas mesmo carregadas. Avisa em 5% ou menos em vez de 20%</string>
+	<string name="home_battery_type_title">Tipo de bateria de ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Nem todos os painéis deste cluster compartilham um tópico de dispositivo limpo, apenas aquele namespace vazio – provavelmente alguns painéis incompatíveis em vez de um dispositivo real. Movê–lo substitui apenas a parte compartilhada, portanto, pode não se aplicar da maneira esperada. Vale a pena verificar primeiro os painéis deste cluster individualmente</string>
 	<string name="home_change_topic_cluster">Alterar tópico para %1$s</string>
 	<string name="home_change_topic_text">Move todos os painéis deste cluster para um novo tópico MQTT – por exemplo. depois de dividir uma rede Zigbee em uma segunda ponte, apenas para os dispositivos que realmente se moveram. Outros clusters permanecem intocados</string>
@@ -211,6 +215,7 @@
 	<string name="home_loading">Carregando…</string>
 	<string name="home_loading_detail">Ainda lendo sua configuração salva</string>
 	<string name="home_low_battery_description" formatted="false">Bateria em 20% ou menos</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateria em 5% ou menos</string>
 	<string name="home_moved">‘%1$s’ movido</string>
 	<string name="home_moved_into">‘%1$s’ movido para ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ movido para ‘%2$s’</string>

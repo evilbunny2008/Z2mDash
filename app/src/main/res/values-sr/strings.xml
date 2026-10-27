@@ -175,6 +175,10 @@
 	<string name="home_add_panel_to">Додај панел у %1$s</string>
 	<string name="home_add_tile_to">Додај плочицу у %1$s</string>
 	<string name="home_another_group">другу групу</string>
+	<string name="home_battery_type_cluster">Врста батерије за %1$s</string>
+	<string name="home_battery_type_nimh">Пуњиве NiMH батерије</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH раде на нижем напону од алкалних или литијумских, па их сензори приказују као скоро празне чак и када су пуне. Упозорава на 5% или мање уместо на 20%</string>
+	<string name="home_battery_type_title">Врста батерије за ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Панели овог кластера не деле сви једну чисту тему уређаја, већ само тај голи именски простор – вероватно је реч о неколико неусклађених панела, а не о једном правом уређају. Премештање замењује само тај заједнички део, па се можда неће применити како очекујете. Вреди прво појединачно проверити панеле овог кластера</string>
 	<string name="home_change_topic_cluster">Промени тему за %1$s</string>
 	<string name="home_change_topic_text">Премешта све панеле у овом кластеру на нову MQTT тему – нпр. након поделе Zigbee мреже на други мост, само за уређаје који су се заиста преместили. Остали кластери остају нетакнути</string>
@@ -211,6 +215,7 @@
 	<string name="home_loading">Учитава се…</string>
 	<string name="home_loading_detail">Ваша сачувана конфигурација се још увек чита</string>
 	<string name="home_low_battery_description" formatted="false">Батерија на 20% или мање</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Батерија на 5% или мање</string>
 	<string name="home_moved">Премештено ‘%1$s’</string>
 	<string name="home_moved_into">‘%1$s’ премештено у ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ премештено на ‘%2$s’</string>

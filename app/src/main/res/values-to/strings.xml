@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Tānaki ha pēnolo ki %1$s</string>
 	<string name="home_add_tile_to">Tānaki ha puha ki %1$s</string>
 	<string name="home_another_group">kulupu kehe</string>
+	<string name="home_battery_type_cluster">Faʻahinga maka ki %1$s</string>
+	<string name="home_battery_type_nimh">Ngaahi maka NiMH ʻoku lava ʻo toe fakafonu</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">ʻOku siʻi ange e uaati ʻo e NiMH ʻi he alkaline pe lithium, ko ia ʻoku fakahaaʻi ai ʻe he ngaahi sensa ʻoku meimei ʻosi neongo ʻoku fonu. ʻOku fakatokanga ʻi he 5% pe siʻi hifo ʻo ʻikai ko e 20%</string>
+	<string name="home_battery_type_title">Faʻahinga maka ki ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">ʻOku ʻikai vahevahe kotoa ʻe he ngaahi pēnolo ʻo e kalasitā ko ʻeni ha kaveinga naunau maʻa ʻe taha, ka ko e feituʻu hingoa telefua pē ko ia – mahalo ko ha ngaahi pēnolo siʻi ʻoku ʻikai felāveʻi ʻo ʻikai ko ha naunau moʻoni ʻe taha. ʻOku fetongi pē ʻe he hiki ʻa e konga fevahevaheʻaki ko ia, ko ia ʻe ala ʻikai ngāue ʻo hangē ko hoʻo ʻamanaki. ʻOku lelei ke ke vakaiʻi ʻuluaki taki taha ʻa e ngaahi pēnolo ʻo e kalasitā ko ʻeni</string>
 	<string name="home_change_topic_cluster">Liliu ʻa e kaveinga ki %1$s</string>
 	<string name="home_change_topic_text">ʻOku ne hiki ʻa e ngaahi pēnolo kotoa ʻi he kalasitā ko ʻeni ki ha kaveinga MQTT foʻou – hangē ko ʻeni hili hono vahevahe ha netiueka Zigbee ki ha halafakavaha hono ua, ki he ngaahi naunau pē naʻe hiki moʻoni. ʻOku ʻikai ala ki he ngaahi kalasitā kehe</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">ʻOku fakahū…</string>
 	<string name="home_loading_detail">ʻOku kei lau hoʻo fokotuʻutuʻu kuo tauhi</string>
 	<string name="home_low_battery_description" formatted="false">Maka ʻi he 20% pe siʻi hifo</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Maka ʻi he 5% pe siʻi hifo</string>
 	<string name="home_moved">Kuo hiki ʻa ‘%1$s’</string>
 	<string name="home_moved_into">Kuo hiki ʻa ‘%1$s’ ki loto ʻi ‘%2$s’</string>
 	<string name="home_moved_to">Kuo hiki ʻa ‘%1$s’ ki ‘%2$s’</string>

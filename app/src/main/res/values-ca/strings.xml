@@ -175,6 +175,10 @@
 	<string name="home_add_panel_to">Afegeix un panell a %1$s</string>
 	<string name="home_add_tile_to">Afegeix un mosaic a %1$s</string>
 	<string name="home_another_group">un altre grup</string>
+	<string name="home_battery_type_cluster">Tipus de bateria de %1$s</string>
+	<string name="home_battery_type_nimh">Bateries recarregables NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Les NiMH funcionen a un voltatge més baix que les alcalines o de liti, de manera que els sensors les mostren gairebé buides fins i tot carregades. Avisa al 5% o menys en lloc del 20%</string>
+	<string name="home_battery_type_title">Tipus de bateria de ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Els panells d’aquest clúster no comparteixen tots un únic tema de dispositiu net, només aquest espai de noms simple – probablement són uns quants panells que no encaixen en lloc d’un únic dispositiu real. Moure’l substitueix només aquesta part comuna, de manera que potser no s’aplicarà com esperes. Val la pena revisar primer els panells d’aquest clúster un per un</string>
 	<string name="home_change_topic_cluster">Canvia el tema de %1$s</string>
 	<string name="home_change_topic_text">Mou tots els panells d’aquest clúster a un tema MQTT nou – p. ex. després de dividir una xarxa Zigbee en un segon pont, només per als dispositius que realment s’han mogut. Els altres clústers no es toquen</string>
@@ -211,6 +215,7 @@
 	<string name="home_loading">S’està carregant…</string>
 	<string name="home_loading_detail">Encara s’està llegint la configuració desada</string>
 	<string name="home_low_battery_description" formatted="false">Bateria al 20% o menys</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateria al 5% o menys</string>
 	<string name="home_moved">S’ha mogut ‘%1$s’</string>
 	<string name="home_moved_into">S’ha mogut ‘%1$s’ dins de ‘%2$s’</string>
 	<string name="home_moved_to">S’ha mogut ‘%1$s’ a ‘%2$s’</string>

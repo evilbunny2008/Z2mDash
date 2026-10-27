@@ -137,8 +137,20 @@ sealed class Panel {
 @Serializable
 data class PanelCluster(
     val id: String,
-    val name: String
+    val name: String,
+    // Shared via the "/app" payload's device-level "battery_type" for auto-configured clusters
+    // (see SensorDiscovery.DeviceAppConfig.batteryType); local only for manually-added ones.
+    val batteryType: BatteryType = BatteryType.STANDARD
 )
+
+/**
+ * What a cluster's device runs on, deciding where LowBatteryAlertManager.isLowBattery draws the
+ * line. Zigbee firmware maps battery voltage to a percentage assuming alkaline cells; NiMH sits
+ * flat around 1.2V for most of its life, which that mapping reads as ~20% even when nearly full,
+ * then falls off sharply right at the end - so it only gets flagged much lower down.
+ */
+@Serializable
+enum class BatteryType { STANDARD, NIMH }
 
 @Serializable
 data class PanelGroup(
@@ -157,10 +169,18 @@ fun PanelGroup.clusterName(clusterId: String): String =
     if (clusterId.isBlank()) "" else clusters.find { it.id == clusterId }?.name.orEmpty()
 
 /** Display name of the cluster [panel] belongs to, searched across every group - "" if standalone. */
-fun AppConfig.clusterNameOf(panel: Panel): String {
-    if (panel.clusterId.isBlank()) return ""
-    return groups.firstNotNullOfOrNull { g -> g.clusters.find { it.id == panel.clusterId } }?.name.orEmpty()
+fun AppConfig.clusterNameOf(panel: Panel): String = clusterOf(panel)?.name.orEmpty()
+
+/** The cluster [panel] belongs to, searched across every group - null if standalone. */
+fun AppConfig.clusterOf(panel: Panel): PanelCluster? {
+    if (panel.clusterId.isBlank()) return null
+    return groups.firstNotNullOfOrNull { g -> g.clusters.find { it.id == panel.clusterId } }
 }
+
+/** Battery type of [clusterId] within this group - STANDARD for a standalone panel / unknown id. */
+fun PanelGroup.batteryTypeOf(clusterId: String): BatteryType =
+    if (clusterId.isBlank()) BatteryType.STANDARD
+    else clusters.find { it.id == clusterId }?.batteryType ?: BatteryType.STANDARD
 
 /**
  * The key a group's dashboard layout buckets this panel under: its clusterId, or a per-panel

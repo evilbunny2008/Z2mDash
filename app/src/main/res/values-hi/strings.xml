@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s में पैनल जोड़ें</string>
 	<string name="home_add_tile_to">%1$s में टाइल जोड़ें</string>
 	<string name="home_another_group">दूसरा समूह</string>
+	<string name="home_battery_type_cluster">%1$s के लिए बैटरी प्रकार</string>
+	<string name="home_battery_type_nimh">रिचार्जेबल NiMH बैटरियाँ</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH अल्कलाइन या लिथियम से कम वोल्टेज पर चलती है, इसलिए चार्ज होने पर भी सेंसर इसे लगभग खाली दिखाते हैं। 20% के बजाय 5% या उससे कम होने पर चेतावनी देता है</string>
+	<string name="home_battery_type_title">‘%1$s’ के लिए बैटरी प्रकार</string>
 	<string name="home_change_topic_broad_warning">इस क्लस्टर के सभी पैनल एक साफ़ dवाइस विषय को साझा नहीं करते हैं, केवल वह खाली नामस्थान – संभवतः एक वास्तविक dवाइस के बजाय कुछ बेमेल पैनल। इसे हिलाने से केवल वह साझा भाग ही प्रतिस्थापित होता है, इसलिए हो सकता है कि यह आपकी अपेक्षा के अनुरूप लागू न हो। पहले इस क्लस्टर के पैनल को व्यक्तिगत रूप से जांचना उचित है</string>
 	<string name="home_change_topic_cluster">%1$s के लिए विषय बदलें</string>
 	<string name="home_change_topic_text">इस क्लस्टर के प्रत्येक पैनल को एक नए MQTT विषय पर ले जाता है – उदा. ज़िग्बी नेटवर्क को दूसरे ब्रिज पर विभाजित करने के बाद, केवल उन उपकरणों के लिए जो वास्तव में चले गए थे। अन्य समूह अछूते हैं</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">लोड हो रहा है…</string>
 	<string name="home_loading_detail">अभी भी आपका सहेजा गया कॉन्फ़िगरेशन पढ़ रहा है</string>
 	<string name="home_low_battery_description" formatted="false">बैटरी 20% या उससे कम</string>
+	<string name="home_low_battery_nimh_description" formatted="false">बैटरी 5% या उससे कम</string>
 	<string name="home_moved">‘%1$s’ ले जाया गया</string>
 	<string name="home_moved_into">‘%1$s’ को ‘%2$s’ में ले जाया गया</string>
 	<string name="home_moved_to">‘%1$s’ को ‘%2$s’ में ले जाया गया</string>

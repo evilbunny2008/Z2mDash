@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s এ প্যানেল যোগ করুন</string>
 	<string name="home_add_tile_to">%1$s এ টাইল যোগ করুন</string>
 	<string name="home_another_group">অন্য গ্রুপ</string>
+	<string name="home_battery_type_cluster">%1$s এর ব্যাটারির ধরন</string>
+	<string name="home_battery_type_nimh">রিচার্জেবল NiMH ব্যাটারি</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH অ্যালকালাইন বা লিথিয়ামের চেয়ে কম ভোল্টেজে চলে, তাই চার্জ থাকলেও সেন্সর প্রায় খালি দেখায়। 20% এর বদলে 5% বা তার কম হলে সতর্ক করে</string>
+	<string name="home_battery_type_title">‘%1$s’ এর ব্যাটারির ধরন</string>
 	<string name="home_change_topic_broad_warning">এই ক্লাস্টারের প্যানেলগুলি সমস্ত একটি পরিষ্কার ডিভাইসের বিষয় ভাগ করে না, শুধুমাত্র সেই খালি নামস্থান – সম্ভবত একটি বাস্তব ডিভাইসের পরিবর্তে কয়েকটি অমিল প্যানেল। এটি সরানো শুধুমাত্র সেই ভাগ করা অংশটিকে প্রতিস্থাপন করে, তাই এটি আপনার প্রত্যাশা অনুযায়ী প্রয়োগ নাও হতে পারে। প্রথমে পৃথকভাবে এই ক্লাস্টারের প্যানেলগুলি পরীক্ষা করা মূল্যবান৷</string>
 	<string name="home_change_topic_cluster">%1$s এর জন্য বিষয় পরিবর্তন করুন</string>
 	<string name="home_change_topic_text">এই ক্লাস্টারের প্রতিটি প্যানেলকে একটি নতুন MQTT বিষয়ে নিয়ে যায় – যেমন একটি জিগবি নেটওয়ার্ককে একটি দ্বিতীয় সেতুতে বিভক্ত করার পরে, শুধুমাত্র সেই ডিভাইসগুলির জন্য যা আসলে সরানো হয়েছে৷ অন্যান্য ক্লাস্টার অস্পৃশ্য</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">লোড হচ্ছে…</string>
 	<string name="home_loading_detail">এখনও আপনার সংরক্ষিত কনফিগারেশন পড়া</string>
 	<string name="home_low_battery_description" formatted="false">ব্যাটারি 20% বা তার কম</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ব্যাটারি 5% বা তার কম</string>
 	<string name="home_moved">‘%1$s’ সরানো হয়েছে</string>
 	<string name="home_moved_into">‘%1$s’ কে ‘%2$s’ এ সরানো হয়েছে</string>
 	<string name="home_moved_to">‘%1$s’ থেকে ‘%2$s’ এ সরানো হয়েছে</string>

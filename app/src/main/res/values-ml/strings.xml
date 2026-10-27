@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s-ലേക്ക് പാനൽ ചേർക്കുക</string>
 	<string name="home_add_tile_to">%1$s-ലേക്ക് ടൈൽ ചേർക്കുക</string>
 	<string name="home_another_group">മറ്റൊരു ഗ്രൂപ്പ്</string>
+	<string name="home_battery_type_cluster">%1$s-ന്റെ ബാറ്ററി തരം</string>
+	<string name="home_battery_type_nimh">റീചാർജ് ചെയ്യാവുന്ന NiMH ബാറ്ററികൾ</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ആൽക്കലൈൻ അല്ലെങ്കിൽ ലിഥിയത്തേക്കാൾ കുറഞ്ഞ വോൾട്ടേജിലാണ് പ്രവർത്തിക്കുന്നത്, അതിനാൽ ചാർജ് ഉള്ളപ്പോഴും സെൻസറുകൾ അത് ഏതാണ്ട് തീർന്നതായി കാണിക്കും. 20%-ന് പകരം 5% അല്ലെങ്കിൽ കുറവാകുമ്പോൾ മുന്നറിയിപ്പ് നൽകുന്നു</string>
+	<string name="home_battery_type_title">‘%1$s’-ന്റെ ബാറ്ററി തരം</string>
 	<string name="home_change_topic_broad_warning">ഈ ക്ലസ്റ്ററിലെ എല്ലാ പാനലുകളും ഒരൊറ്റ വ്യക്തമായ ഉപകരണ ടോപ്പിക് പങ്കിടുന്നില്ല, ആ നെയിംസ്പേസ് മാത്രമാണ് പൊതുവായത് – ഇത് ഒരു യഥാർത്ഥ ഉപകരണത്തേക്കാൾ പൊരുത്തപ്പെടാത്ത കുറച്ച് പാനലുകളാകാനാണ് സാധ്യത. ഇത് നീക്കുന്നത് പങ്കിട്ട ഭാഗം മാത്രം മാറ്റിസ്ഥാപിക്കുന്നു, അതിനാൽ നിങ്ങൾ പ്രതീക്ഷിക്കുന്നത് പോലെ പ്രയോഗിക്കപ്പെടണമെന്നില്ല. ആദ്യം ഈ ക്ലസ്റ്ററിലെ പാനലുകൾ ഓരോന്നായി പരിശോധിക്കുന്നതാണ് നല്ലത്</string>
 	<string name="home_change_topic_cluster">%1$s-ന്റെ ടോപ്പിക് മാറ്റുക</string>
 	<string name="home_change_topic_text">ഈ ക്ലസ്റ്ററിലെ എല്ലാ പാനലുകളും ഒരു പുതിയ MQTT ടോപ്പിക്കിലേക്ക് നീക്കുന്നു – ഉദാ. ഒരു Zigbee നെറ്റ്‌വർക്ക് രണ്ടാമതൊരു ബ്രിഡ്ജിലേക്ക് വിഭജിച്ച ശേഷം, ശരിക്കും മാറിയ ഉപകരണങ്ങൾക്ക് മാത്രം. മറ്റ് ക്ലസ്റ്ററുകൾ മാറ്റമില്ലാതെ തുടരും</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">ലോഡ് ചെയ്യുന്നു…</string>
 	<string name="home_loading_detail">നിങ്ങൾ സംരക്ഷിച്ച കോൺഫിഗറേഷൻ ഇപ്പോഴും വായിക്കുന്നു</string>
 	<string name="home_low_battery_description" formatted="false">ബാറ്ററി 20% അല്ലെങ്കിൽ കുറവ്</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ബാറ്ററി 5% അല്ലെങ്കിൽ കുറവ്</string>
 	<string name="home_moved">‘%1$s’ നീക്കി</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’-ന്റെ ഉള്ളിലേക്ക് നീക്കി</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’-ലേക്ക് നീക്കി</string>

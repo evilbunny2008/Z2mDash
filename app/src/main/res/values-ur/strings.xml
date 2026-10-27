@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s میں پینل شامل کریں</string>
 	<string name="home_add_tile_to">%1$s میں ٹائل شامل کریں</string>
 	<string name="home_another_group">دوسرا گروپ</string>
+	<string name="home_battery_type_cluster">%1$s کے لیے بیٹری کی قسم</string>
+	<string name="home_battery_type_nimh">ری چارج ہونے والی NiMH بیٹریاں</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH الکلائن یا لیتھیم سے کم وولٹیج پر چلتی ہے، اس لیے چارج ہونے پر بھی سینسر اسے تقریباً ختم دکھاتے ہیں۔ 20% کے بجائے 5% یا کم ہونے پر خبردار کرتا ہے</string>
+	<string name="home_battery_type_title">‘%1$s’ کے لیے بیٹری کی قسم</string>
 	<string name="home_change_topic_broad_warning">اس کلسٹر کے تمام پینلز ایک واضح آلہ ٹاپک شیئر نہیں کرتے، صرف وہ عام نیم اسپیس مشترک ہے – غالباً یہ ایک حقیقی آلے کے بجائے چند غیر مطابق پینلز ہیں۔ اسے منتقل کرنے سے صرف مشترکہ حصہ تبدیل ہوتا ہے، اس لیے ممکن ہے یہ آپ کی توقع کے مطابق لاگو نہ ہو۔ بہتر ہے پہلے اس کلسٹر کے پینلز ایک ایک کر کے چیک کر لیں</string>
 	<string name="home_change_topic_cluster">%1$s کا ٹاپک تبدیل کریں</string>
 	<string name="home_change_topic_text">اس کلسٹر کے ہر پینل کو نئے MQTT ٹاپک پر منتقل کرتا ہے – مثلاً Zigbee نیٹ ورک کو دوسرے برج پر تقسیم کرنے کے بعد، صرف ان آلات کے لیے جو واقعی منتقل ہوئے۔ دیگر کلسٹرز جوں کے توں رہتے ہیں</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">لوڈ ہو رہا ہے…</string>
 	<string name="home_loading_detail">آپ کی محفوظ شدہ کنفیگریشن ابھی پڑھی جا رہی ہے</string>
 	<string name="home_low_battery_description" formatted="false">بیٹری 20% یا کم</string>
+	<string name="home_low_battery_nimh_description" formatted="false">بیٹری 5% یا کم</string>
 	<string name="home_moved">‘%1$s’ منتقل ہو گیا</string>
 	<string name="home_moved_into">‘%1$s’ کو ‘%2$s’ کے اندر منتقل کیا گیا</string>
 	<string name="home_moved_to">‘%1$s’ کو ‘%2$s’ میں منتقل کیا گیا</string>

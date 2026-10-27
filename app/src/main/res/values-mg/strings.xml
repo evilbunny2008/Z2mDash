@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Ampio tontonana ao amin’ny %1$s</string>
 	<string name="home_add_tile_to">Ampio takelaka ao amin’ny %1$s</string>
 	<string name="home_another_group">vondrona hafa</string>
+	<string name="home_battery_type_cluster">Karazana bateria ho an\'ny %1$s</string>
+	<string name="home_battery_type_nimh">Bateria NiMH azo averina ampiana herinaratra</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Ambany kokoa noho ny alkaline na lithium ny tanjaky ny NiMH, ka asehon\'ny sensor ho efa ho lany izy na dia feno aza. Mampitandrina amin\'ny 5% na latsaka fa tsy 20%</string>
+	<string name="home_battery_type_title">Karazana bateria ho an\'ny ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Tsy mizara lohahevitra fitaovana madio iray avokoa ny tontonan’ity antokony ity, fa ilay toerana anarana tsotra ihany – azo inoana fa tontonana vitsivitsy tsy mifanaraka ireo fa tsy fitaovana tena izy iray. Ilay ampahany iraisana ihany no soloin’ny famindrana, ka mety tsy hiasa araka ny andrasanao. Tsara ny manamarina tsirairay aloha ny tontonan’ity antokony ity</string>
 	<string name="home_change_topic_cluster">Ovay ny lohahevitry ny %1$s</string>
 	<string name="home_change_topic_text">Afindra any amin’ny lohahevitra MQTT vaovao ny tontonana rehetra ao amin’ity antokony ity – oh. aorian’ny fizarana tambajotra Zigbee ho amin’ny tetezana faharoa, ho an’ireo fitaovana tena nifindra ihany. Tsy kitihina ny antokony hafa</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Mampiditra…</string>
 	<string name="home_loading_detail">Mbola vakiana ny fikirakiranao voatahiry</string>
 	<string name="home_low_battery_description" formatted="false">Bateria 20% na latsaka</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateria 5% na latsaka</string>
 	<string name="home_moved">Nafindra ny ‘%1$s’</string>
 	<string name="home_moved_into">Nafindra tao anatin’ny ‘%2$s’ ny ‘%1$s’</string>
 	<string name="home_moved_to">Nafindra tany amin’ny ‘%2$s’ ny ‘%1$s’</string>

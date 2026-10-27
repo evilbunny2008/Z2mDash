@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Gehitu panela hona: %1$s</string>
 	<string name="home_add_tile_to">Gehitu lauza hona: %1$s</string>
 	<string name="home_another_group">beste talde bat</string>
+	<string name="home_battery_type_cluster">%1$s–(r)en bateria mota</string>
+	<string name="home_battery_type_nimh">NiMH bateria kargagarriak</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH bateriek alkalinoek edo litiozkoek baino tentsio txikiagoa dute, beraz sentsoreek ia hutsik daudela erakusten dute kargatuta egonda ere. % 5 edo gutxiagorekin abisatzen du, % 20 beharrean</string>
+	<string name="home_battery_type_title">‘%1$s’–(r)en bateria mota</string>
 	<string name="home_change_topic_broad_warning">Kluster honetako panelek ez dute gailu gai garbi bakar bat partekatzen, izen–espazio soil hori bakarrik – seguruenik bat ez datozen panel batzuk dira, ez benetako gailu bakar bat. Mugitzeak zati komun hori bakarrik ordezten du, beraz agian ez da espero duzun moduan aplikatuko. Merezi du lehenik kluster honetako panelak banan–banan egiaztatzea</string>
 	<string name="home_change_topic_cluster">Aldatu %1$s(r)en gaia</string>
 	<string name="home_change_topic_text">Kluster honetako panel guztiak MQTT gai berri batera mugitzen ditu – adib. Zigbee sare bat bigarren zubi batean banatu ondoren, benetan mugitu diren gailuentzat soilik. Beste klusterrak ez dira ukitzen</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Kargatzen…</string>
 	<string name="home_loading_detail">Gordetako konfigurazioa irakurtzen ari da oraindik</string>
 	<string name="home_low_battery_description" formatted="false">Bateria % 20 edo gutxiago</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bateria % 5 edo gutxiago</string>
 	<string name="home_moved">‘%1$s’ mugitu da</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’ barrura mugitu da</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’ tokira mugitu da</string>

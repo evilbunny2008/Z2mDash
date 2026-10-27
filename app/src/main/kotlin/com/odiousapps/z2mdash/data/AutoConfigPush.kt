@@ -314,6 +314,28 @@ fun pushPanelClusterOverrideIfAutoConfigured(
 }
 
 /**
+ * Pushes a cluster's battery type into the "battery_type" of every auto-configured device owning
+ * one of [clusterPanelIds] - every device in the cluster, not just the battery-powered one, since
+ * each of their payloads is applied to the cluster on reconcile (see DeviceAppConfig.batteryType)
+ * and one left saying STANDARD would flip it back. No-op for manually-added panels.
+ */
+fun pushClusterBatteryTypeForAutoConfiguredDevices(
+    app: Z2mDashApplication,
+    clusterPanelIds: List<String>,
+    batteryType: BatteryType
+) {
+    app.configRepository.config.value.autoConfiguredDevices
+        .filter { device -> clusterPanelIds.any { it in device.createdPanelIds } }
+        .forEach { device ->
+            val currentPayload = currentPayloadFor(app, device) ?: return@forEach
+            val updatedPayload = SensorDiscovery.updateDescriptionInAppPayload(
+                currentPayload, newBatteryType = batteryType
+            ) ?: return@forEach
+            if (updatedPayload != currentPayload) publishAndMarkApplied(app, device, updatedPayload)
+        }
+}
+
+/**
  * Pushes a cluster rename into every auto-configured device that owns one of [renamedPanelIds]
  * (all now sharing [newClusterName] locally). For a field/control that had its own explicit
  * cluster override, that override is renamed; for one that was only using the device's own
@@ -498,7 +520,8 @@ fun publishAppTopicForClusterIfMissing(
     val groupOrder = orderedClusterKeys.indexOf(clusterId).takeIf { it >= 0 }?.plus(1)
 
     val payload = SensorDiscovery.buildAppConfigPayload(
-        panels, group.clusterName(clusterId), clusterId, group.name, group.id, appTopic, seedValuesByPanelId, groupOrder
+        panels, group.clusterName(clusterId), clusterId, group.name, group.id, appTopic, seedValuesByPanelId, groupOrder,
+        group.batteryTypeOf(clusterId)
     )
     // Registered *before* publishing, not after - the MQTT echo of this exact publish can arrive
     // back (via connectionManager.latestPayloads, on a background dispatcher) before the very
@@ -651,7 +674,8 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
         if (seedValuesByPanelId.size < appTopicEmbeddedFields.size) return@forEach
 
         val payload = SensorDiscovery.buildAppConfigPayload(
-            panels, clusterName, clusterId, group.name, group.id, appTopic, seedValuesByPanelId, groupOrder
+            panels, clusterName, clusterId, group.name, group.id, appTopic, seedValuesByPanelId, groupOrder,
+            group.batteryTypeOf(clusterId)
         )
         // Registered before publishing - see publishAppTopicForClusterIfMissing's own comment on
         // why the order matters (this phone's own echo can otherwise race ahead of its own

@@ -180,6 +180,10 @@
 	<string name="home_add_panel_to">Додати панель до %1$s</string>
 	<string name="home_add_tile_to">Додати плитку до %1$s</string>
 	<string name="home_another_group">інша група</string>
+	<string name="home_battery_type_cluster">Тип батареї для %1$s</string>
+	<string name="home_battery_type_nimh">Акумулятори NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH працюють за нижчої напруги, ніж лужні чи літієві батареї, тому датчики показують їх майже розрядженими навіть після заряджання. Попереджає при 5% або менше замість 20%</string>
+	<string name="home_battery_type_title">Тип батареї для «%1$s»</string>
 	<string name="home_change_topic_broad_warning">Панелі цього кластера не мають одного спільного топіка пристрою, лише загальний простір імен – імовірно, це кілька невідповідних панелей, а не один справжній пристрій. Переміщення замінить лише спільну частину, тому результат може бути не таким, як ви очікуєте. Варто спершу перевірити панелі цього кластера окремо</string>
 	<string name="home_change_topic_cluster">Змінити топік для %1$s</string>
 	<string name="home_change_topic_text">Переміщує кожну панель цього кластера в новий топік MQTT – напр. після розділення мережі Zigbee на другий міст, лише для пристроїв, які справді перемістилися. Інші кластери залишаються без змін</string>
@@ -217,6 +221,7 @@
 	<string name="home_loading">Завантаження…</string>
 	<string name="home_loading_detail">Читання збереженої конфігурації</string>
 	<string name="home_low_battery_description" formatted="false">Заряд 20% або менше</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Заряд 5% або менше</string>
 	<string name="home_moved">«%1$s» переміщено</string>
 	<string name="home_moved_into">«%1$s» переміщено в «%2$s»</string>
 	<string name="home_moved_to">«%1$s» переміщено до «%2$s»</string>

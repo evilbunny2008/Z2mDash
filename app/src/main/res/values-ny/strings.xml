@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Onjezani panelo ku %1$s</string>
 	<string name="home_add_tile_to">Onjezani bokosi ku %1$s</string>
 	<string name="home_another_group">gulu lina</string>
+	<string name="home_battery_type_cluster">Mtundu wa batire wa %1$s</string>
+	<string name="home_battery_type_nimh">Mabatire a NiMH otchajanso</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH imagwira ntchito pa mphamvu yochepa kuposa alkaline kapena lithium, choncho masensa amaisonyeza ngati yatsala pang\'ono kutha ngakhale itadzaza. Imachenjeza pa 5% kapena pansi m\'malo mwa 20%</string>
+	<string name="home_battery_type_title">Mtundu wa batire wa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Mapanelo a kalasitala iyi sagawana onse mutu umodzi woyera wa chipangizo, koma malo a mayina amenewo okha – mwina ndi mapanelo ochepa osagwirizana m’malo mwa chipangizo chimodzi chenicheni. Kusuntha kumasintha gawo logawanidwa limenelo lokha, choncho mwina sizingagwire ntchito monga mukuyembekezera. Ndibwino kuyamba kuyang’ana mapanelo a kalasitala iyi limodzi ndi limodzi</string>
 	<string name="home_change_topic_cluster">Sinthani mutu wa %1$s</string>
 	<string name="home_change_topic_text">Imasuntha mapanelo onse a mu kalasitala iyi kupita ku mutu watsopano wa MQTT – mwachitsanzo mutagawa netiweki ya Zigbee pa mlatho wachiwiri, kwa zipangizo zomwe zasunthadi zokha. Makalasitala ena sakhudzidwa</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Ikutsegula…</string>
 	<string name="home_loading_detail">Makonzedwe anu osungidwa akuwerengedwabe</string>
 	<string name="home_low_battery_description" formatted="false">Batire pa 20% kapena pansi</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batire pa 5% kapena pansi</string>
 	<string name="home_moved">‘%1$s’ yasunthidwa</string>
 	<string name="home_moved_into">‘%1$s’ yasunthidwa kulowa mu ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ yasunthidwa ku ‘%2$s’</string>

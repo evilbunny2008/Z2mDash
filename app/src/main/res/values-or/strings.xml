@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$sରେ ପ୍ୟାନେଲ ଯୋଡନ୍ତୁ</string>
 	<string name="home_add_tile_to">%1$sରେ ଟାଇଲ୍ ଯୋଡନ୍ତୁ</string>
 	<string name="home_another_group">ଅନ୍ୟ ଗ୍ରୁପ୍</string>
+	<string name="home_battery_type_cluster">%1$s ପାଇଁ ବ୍ୟାଟେରୀ ପ୍ରକାର</string>
+	<string name="home_battery_type_nimh">ରିଚାର୍ଜେବଲ NiMH ବ୍ୟାଟେରୀ</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ଆଲ୍କାଲାଇନ୍ କିମ୍ବା ଲିଥିୟମ୍ ଠାରୁ କମ୍ ଭୋଲ୍ଟେଜରେ ଚାଲେ, ତେଣୁ ଚାର୍ଜ ଥିଲେ ମଧ୍ୟ ସେନ୍ସର ଏହାକୁ ପ୍ରାୟ ଖାଲି ଦେଖାଏ। 20% ବଦଳରେ 5% କିମ୍ବା କମ୍ ହେଲେ ସତର୍କ କରେ</string>
+	<string name="home_battery_type_title">‘%1$s’ ପାଇଁ ବ୍ୟାଟେରୀ ପ୍ରକାର</string>
 	<string name="home_change_topic_broad_warning">ଏହି କ୍ଲଷ୍ଟରର ସମସ୍ତ ପ୍ୟାନେଲ ଗୋଟିଏ ସ୍ପଷ୍ଟ ଡିଭାଇସ୍ ଟପିକ୍ ସେୟାର କରନ୍ତି ନାହିଁ, କେବଳ ସେହି ସାଧାରଣ ନେମସ୍ପେସ୍ ସମାନ – ସମ୍ଭବତଃ ଏହା ଏକ ପ୍ରକୃତ ଡିଭାଇସ୍ ବଦଳରେ କିଛି ମେଳ ନ ଖାଉଥିବା ପ୍ୟାନେଲ। ଏହାକୁ ଘୁଞ୍ଚାଇଲେ କେବଳ ସେହି ସମାନ ଅଂଶ ବଦଳେ, ତେଣୁ ଆପଣ ଆଶା କରୁଥିବା ପରି ଲାଗୁ ନ ହୋଇପାରେ। ପ୍ରଥମେ ଏହି କ୍ଲଷ୍ଟରର ପ୍ୟାନେଲଗୁଡିକୁ ଗୋଟି ଗୋଟି କରି ଯାଞ୍ଚ କରିବା ଭଲ</string>
 	<string name="home_change_topic_cluster">%1$s ପାଇଁ ଟପିକ୍ ବଦଳାନ୍ତୁ</string>
 	<string name="home_change_topic_text">ଏହି କ୍ଲଷ୍ଟରର ପ୍ରତ୍ୟେକ ପ୍ୟାନେଲକୁ ନୂଆ MQTT ଟପିକ୍‌କୁ ଘୁଞ୍ଚାଏ – ଯଥା Zigbee ନେଟୱର୍କକୁ ଦ୍ୱିତୀୟ ବ୍ରିଜ୍‌କୁ ବିଭାଜନ କରିବା ପରେ, କେବଳ ପ୍ରକୃତରେ ଘୁଞ୍ଚିଥିବା ଡିଭାଇସ୍ ପାଇଁ। ଅନ୍ୟ କ୍ଲଷ୍ଟର ଅପରିବର୍ତ୍ତିତ ରହେ</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">ଲୋଡ୍ ହେଉଛି…</string>
 	<string name="home_loading_detail">ଆପଣଙ୍କ ସେଭ୍ ହୋଇଥିବା କନଫିଗରେସନ୍ ଏବେ ବି ପଢୁଛି</string>
 	<string name="home_low_battery_description" formatted="false">ବ୍ୟାଟେରୀ 20% କିମ୍ବା କମ୍</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ବ୍ୟାଟେରୀ 5% କିମ୍ବା କମ୍</string>
 	<string name="home_moved">‘%1$s’ ଘୁଞ୍ଚାଗଲା</string>
 	<string name="home_moved_into">‘%1$s’କୁ ‘%2$s’ ଭିତରକୁ ଘୁଞ୍ଚାଗଲା</string>
 	<string name="home_moved_to">‘%1$s’କୁ ‘%2$s’କୁ ଘୁଞ୍ଚାଗଲା</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$sত পেনেল যোগ কৰক</string>
 	<string name="home_add_tile_to">%1$sত টাইল যোগ কৰক</string>
 	<string name="home_another_group">আন এটা গোট</string>
+	<string name="home_battery_type_cluster">%1$sৰ বেটাৰীৰ প্ৰকাৰ</string>
+	<string name="home_battery_type_nimh">ৰিচাৰ্জেবল NiMH বেটাৰী</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH এলকেলাইন বা লিথিয়ামতকৈ কম ভ\'ল্টেজত চলে, সেয়ে চাৰ্জ থাকিলেও ছেন্সৰে প্ৰায় শেষ বুলি দেখুৱায়। 20%ৰ সলনি 5% বা কম হ\'লেহে সতৰ্ক কৰে</string>
+	<string name="home_battery_type_title">‘%1$s’ৰ বেটাৰীৰ প্ৰকাৰ</string>
 	<string name="home_change_topic_broad_warning">এই ক্লাষ্টাৰৰ সকলো পেনেলে এটা স্পষ্ট ডিভাইচ টপিক শ্বেয়াৰ নকৰে, কেৱল সেই সাধাৰণ নেমস্পেচটোহে একে – সম্ভৱতঃ এইবোৰ এটা প্ৰকৃত ডিভাইচৰ সলনি কেইটামান অমিল পেনেল। ইয়াক স্থানান্তৰ কৰিলে কেৱল সেই একে অংশটোহে সলনি হয়, গতিকে আপুনি আশা কৰা ধৰণে প্ৰয়োগ নহ’বও পাৰে। প্ৰথমে এই ক্লাষ্টাৰৰ পেনেলবোৰ এটা এটাকৈ পৰীক্ষা কৰাটো ভাল</string>
 	<string name="home_change_topic_cluster">%1$sৰ টপিক সলনি কৰক</string>
 	<string name="home_change_topic_text">এই ক্লাষ্টাৰৰ প্ৰতিটো পেনেল নতুন MQTT টপিকলৈ স্থানান্তৰ কৰে – যেনে Zigbee নেটৱৰ্কক দ্বিতীয় ব্ৰিজলৈ বিভাজন কৰাৰ পিছত, কেৱল সঁচাকৈয়ে স্থানান্তৰিত ডিভাইচৰ বাবে। অন্য ক্লাষ্টাৰসমূহ অপৰিৱৰ্তিত থাকে</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">ল’ড হৈ আছে…</string>
 	<string name="home_loading_detail">আপোনাৰ ছেভ কৰা কনফিগাৰেচন এতিয়াও পঢ়ি আছে</string>
 	<string name="home_low_battery_description" formatted="false">বেটাৰী 20% বা কম</string>
+	<string name="home_low_battery_nimh_description" formatted="false">বেটাৰী 5% বা কম</string>
 	<string name="home_moved">‘%1$s’ স্থানান্তৰ কৰা হ’ল</string>
 	<string name="home_moved_into">‘%1$s’ক ‘%2$s’ৰ ভিতৰলৈ স্থানান্তৰ কৰা হ’ল</string>
 	<string name="home_moved_to">‘%1$s’ক ‘%2$s’লৈ স্থানান্তৰ কৰা হ’ল</string>

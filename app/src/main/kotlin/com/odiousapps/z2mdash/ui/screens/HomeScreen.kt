@@ -32,6 +32,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
+import androidx.compose.material.icons.filled.BatteryChargingFull
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
@@ -120,6 +121,7 @@ import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.AppConfig
 import com.odiousapps.z2mdash.data.AutoConfiguredDevice
+import com.odiousapps.z2mdash.data.BatteryType
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.PanelGroup
@@ -128,11 +130,13 @@ import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
+import com.odiousapps.z2mdash.data.batteryTypeOf
 import com.odiousapps.z2mdash.data.clusterKey
 import com.odiousapps.z2mdash.data.clusterName
 import com.odiousapps.z2mdash.data.forceRepublishGroupAppTopics
 import com.odiousapps.z2mdash.data.orderedPanelsOf
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
+import com.odiousapps.z2mdash.data.pushClusterBatteryTypeForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
@@ -256,6 +260,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var duplicateTopicText by remember { mutableStateOf("") }
     var duplicateClusterNameText by remember { mutableStateOf("") }
     var pendingClusterRetopic by remember { mutableStateOf<PendingClusterRetopic?>(null) }
+    var pendingClusterBatteryType by remember { mutableStateOf<PendingClusterBatteryType?>(null) }
     var retopicNewTopicText by remember { mutableStateOf("") }
     var pendingValueEdit by remember { mutableStateOf<Panel.Sensor?>(null) }
     var valueEditText by remember { mutableStateOf("") }
@@ -1528,7 +1533,9 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                             orderedClusters.filter { bucket ->
                                 when (filter) {
                                     DashboardFilter.STALE -> isClusterStale(bucket, payloads, timestamps, nowMillis)
-                                    DashboardFilter.LOW_BATTERY -> isClusterLowBattery(bucket, payloads)
+                                    DashboardFilter.LOW_BATTERY -> isClusterLowBattery(
+                                        bucket, payloads, group.batteryTypeOf(bucket.first().clusterId)
+                                    )
                                     DashboardFilter.WEAK_SIGNAL -> isClusterWeakSignal(bucket, payloads)
                                     DashboardFilter.LOW_MOISTURE -> isClusterLowMoisture(bucket, payloads)
                                     DashboardFilter.HIGH_MOISTURE -> isClusterHighMoisture(bucket, payloads)
@@ -1642,6 +1649,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                     name = name,
                                                     panels = panelsInCluster,
                                                     groupId = group.id,
+                                                    batteryType = group.batteryTypeOf(clusterId),
                                                     payloadsState = payloadsState,
                                                     timestampsState = timestampsState,
                                                     nowMillisState = nowMillisState,
@@ -1691,6 +1699,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                                             currentTopicPrefix = prefix
                                                         )
                                                         retopicNewTopicText = prefix
+                                                    },
+                                                    onBatteryType = {
+                                                        pendingClusterBatteryType = PendingClusterBatteryType(
+                                                            groupId = group.id,
+                                                            clusterId = clusterId,
+                                                            clusterName = name
+                                                        )
                                                     },
                                                     isDraggingCluster = draggedClusterKey == compoundKey,
                                                     isClusterDropTarget = (draggedClusterKey != null &&
@@ -2126,6 +2141,35 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         )
     }
 
+    pendingClusterBatteryType?.let { pending ->
+        // Read live from config rather than captured in pending, so the switch reflects each
+        // toggle immediately - it applies as it's flipped, there's nothing to confirm.
+        val batteryType = config.groups.find { it.id == pending.groupId }
+            ?.batteryTypeOf(pending.clusterId) ?: BatteryType.STANDARD
+        val isNimh = batteryType == BatteryType.NIMH
+        AlertDialog(
+            onDismissRequest = { pendingClusterBatteryType = null },
+            title = { Text(stringResource(R.string.home_battery_type_title, pending.clusterName)) },
+            text = {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.home_battery_type_nimh)) },
+                    supportingContent = { Text(stringResource(R.string.home_battery_type_nimh_detail)) },
+                    trailingContent = { Switch(checked = isNimh, onCheckedChange = null) },
+                    modifier = Modifier.toggleableRow(isNimh) { nimh ->
+                        val newType = if (nimh) BatteryType.NIMH else BatteryType.STANDARD
+                        app.configRepository.setClusterBatteryType(pending.groupId, pending.clusterId, newType)
+                        val clusterPanelIds = config.groups.find { it.id == pending.groupId }
+                            ?.panels?.filter { it.clusterId == pending.clusterId }?.map { it.id }.orEmpty()
+                        pushClusterBatteryTypeForAutoConfiguredDevices(app, clusterPanelIds, newType)
+                    }
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { pendingClusterBatteryType = null }) { Text(stringResource(R.string.common_done)) }
+            }
+        )
+    }
+
     pendingValueEdit?.let { panel ->
         AlertDialog(
             onDismissRequest = { pendingValueEdit = null },
@@ -2179,6 +2223,13 @@ private data class PendingClusterDuplicate(
     // Captured once when the dialog opens - the substring duplicateTopicText's edits replace at
     // confirm time. Kept separate from duplicateTopicText itself, which the user goes on to edit.
     val originalTopicPrefix: String
+)
+
+private data class PendingClusterBatteryType(
+    val groupId: String,
+    val clusterId: String,
+    // Display only (the dialog title).
+    val clusterName: String
 )
 
 private data class PendingClusterRetopic(
@@ -2349,12 +2400,20 @@ private fun deviceTopicKeysFor(panel: Panel): List<String> {
     return listOf(topic, topic.removeSuffix("/app")).distinct().map { "${panel.brokerId}|$it" }
 }
 
-/** Whether any device behind [panels] reports a battery level LowBatteryAlertManager counts as low. */
-private fun isClusterLowBattery(panels: List<Panel>, payloads: Map<String, String>): Boolean =
+/**
+ * Whether any device behind [panels] reports a battery level LowBatteryAlertManager counts as low
+ * for a cluster running on [batteryType].
+ */
+private fun isClusterLowBattery(
+    panels: List<Panel>,
+    payloads: Map<String, String>,
+    batteryType: BatteryType
+): Boolean =
     panels.any { panel ->
         deviceTopicKeysFor(panel).any { key ->
             LowBatteryAlertManager.isLowBattery(
-                payloads[key]?.let { JsonPath.extract(it, "battery") }?.toDoubleOrNull()
+                payloads[key]?.let { JsonPath.extract(it, "battery") }?.toDoubleOrNull(),
+                batteryType
             )
         }
     }
@@ -2472,6 +2531,7 @@ private fun ClusterCard(
     name: String,
     panels: List<Panel>,
     groupId: String,
+    batteryType: BatteryType,
     payloadsState: State<Map<String, String>>,
     timestampsState: State<Map<String, Long>>,
     nowMillisState: State<Long>,
@@ -2483,6 +2543,7 @@ private fun ClusterCard(
     onDelete: () -> Unit,
     onDuplicate: () -> Unit,
     onRetopic: () -> Unit,
+    onBatteryType: () -> Unit,
     onEditSensorValue: (Panel.Sensor) -> Unit,
     // Cross-cluster and panel drag state all live one level up (the group section sees every
     // cluster at once, and a dragged panel can end up merged into any of them) and is threaded
@@ -2547,8 +2608,8 @@ private fun ClusterCard(
     }
     val (ageText, isStale) = ageState.value
     // Keyed/derived the same way as ageState, so it only recomposes when the result flips.
-    val lowBatteryState = remember(panels) {
-        derivedStateOf { isClusterLowBattery(panels, payloadsState.value) }
+    val lowBatteryState = remember(panels, batteryType) {
+        derivedStateOf { isClusterLowBattery(panels, payloadsState.value, batteryType) }
     }
     val weakSignalState = remember(panels) {
         derivedStateOf { isClusterWeakSignal(panels, payloadsState.value) }
@@ -2694,14 +2755,30 @@ private fun ClusterCard(
                         )
                     }
                 }
-                if (showLowBattery) {
+                // Doubles as the way into the battery type setting - only shown once there's
+                // something to act on (a low reading, or already set to NiMH so it can be switched
+                // back), rather than adding yet another always-present button to every caption.
+                if (showLowBattery || batteryType == BatteryType.NIMH) {
                     Spacer(Modifier.width(4.dp))
-                    Icon(
-                        Icons.Default.BatteryAlert,
-                        contentDescription = stringResource(R.string.home_low_battery_description),
-                        tint = AlertBlue,
-                        modifier = Modifier.size(20.dp)
-                    )
+                    IconButton(onClick = onBatteryType, modifier = Modifier.size(28.dp)) {
+                        if (showLowBattery) {
+                            Icon(
+                                Icons.Default.BatteryAlert,
+                                contentDescription = stringResource(
+                                    if (batteryType == BatteryType.NIMH) R.string.home_low_battery_nimh_description
+                                    else R.string.home_low_battery_description
+                                ),
+                                tint = AlertBlue,
+                                modifier = Modifier.size(20.dp)
+                            )
+                        } else {
+                            Icon(
+                                Icons.Default.BatteryChargingFull,
+                                contentDescription = stringResource(R.string.home_battery_type_cluster, name),
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
+                    }
                 }
                 if (showWeakSignal) {
                     Spacer(Modifier.width(4.dp))

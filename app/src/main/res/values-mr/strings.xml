@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">पॅनेल %1$s मध्ये जोडा</string>
 	<string name="home_add_tile_to">टाइल %1$s मध्ये जोडा</string>
 	<string name="home_another_group">दुसरा गट</string>
+	<string name="home_battery_type_cluster">%1$s साठी बॅटरी प्रकार</string>
+	<string name="home_battery_type_nimh">रिचार्ज करता येणाऱ्या NiMH बॅटऱ्या</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH अल्कलाइन किंवा लिथियमपेक्षा कमी व्होल्टेजवर चालते, त्यामुळे चार्ज असतानाही सेन्सर ती जवळजवळ संपलेली दाखवतात. 20% ऐवजी 5% किंवा त्याखाली गेल्यावर इशारा देते</string>
+	<string name="home_battery_type_title">‘%1$s’ साठी बॅटरी प्रकार</string>
 	<string name="home_change_topic_broad_warning">या क्लस्टरचे पॅनेल सर्व एकाच स्वच्छ डिव्हाइस विषयाला सामायिक करत नाहीत, फक्त तो आधारभूत नेमस्पेस आहे – हे कदाचित वास्तविक उपकरणाऐवजी काही जुळणारे पॅनेल असू शकते. याला हलवल्याने केवळ ती सामायिक भाग बदलेल, त्यामुळे तुम्हाला तसा अपेक्षित परिणाम दिसू शकत नाही. आधी हे क्लस्टरचे पॅनेल वैयक्तिकरित्या तपासणे योग्य आहे</string>
 	<string name="home_change_topic_cluster">विषयासाठी %1$s बदला</string>
 	<string name="home_change_topic_text">हे या गटातील प्रत्येक पॅनेल एका नवीन MQTT विषयावर हलवते – उदा. जेव्हा एक Zigbee नेटवर्क दुसऱ्या ब्रिजवर विभाजित केले जाते, तेव्हा केवळ खरोखरच हललेल्या डिव्हाइससाठी. इतर क्लस्टर स्पर्श केले जात नाहीत.</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">लोड करत आहे…</string>
 	<string name="home_loading_detail">तुमचे जतन केलेले कॉन्फिगरेशन वाचत आहोत</string>
 	<string name="home_low_battery_description" formatted="false">बॅटरी 20% किंवा त्याखाली</string>
+	<string name="home_low_battery_nimh_description" formatted="false">बॅटरी 5% किंवा त्याखाली</string>
 	<string name="home_moved">%1$s हलवले</string>
 	<string name="home_moved_into">‘%1$s’ हा ‘%2$s’ मध्ये हलवला गेला</string>
 	<string name="home_moved_to">‘%1$s’ हा ‘%2$s’ वर हलवला गेला</string>

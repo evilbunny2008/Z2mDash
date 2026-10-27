@@ -180,6 +180,10 @@
 	<string name="home_add_panel_to">Dodaj ploščo v %1$s</string>
 	<string name="home_add_tile_to">Dodaj ploščico v %1$s</string>
 	<string name="home_another_group">drugo skupino</string>
+	<string name="home_battery_type_cluster">Vrsta baterije za %1$s</string>
+	<string name="home_battery_type_nimh">Polnilne baterije NiMH</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH delujejo pri nižji napetosti kot alkalne ali litijeve, zato jih senzorji prikažejo kot skoraj prazne, tudi ko so napolnjene. Opozori pri 5% ali manj namesto pri 20%</string>
+	<string name="home_battery_type_title">Vrsta baterije za ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Plošče tega grozda nimajo vse ene čiste teme naprave, ampak samo ta goli imenski prostor – verjetno gre za nekaj neusklajenih plošč in ne za eno pravo napravo. Premik zamenja samo ta skupni del, zato morda ne bo uporabljen tako, kot pričakujete. Plošče tega grozda je vredno najprej preveriti posamično</string>
 	<string name="home_change_topic_cluster">Spremeni temo za %1$s</string>
 	<string name="home_change_topic_text">Premakne vse plošče v tem grozdu na novo temo MQTT – npr. po razdelitvi omrežja Zigbee na drug most, samo za naprave, ki so se res premaknile. Drugi grozdi ostanejo nedotaknjeni</string>
@@ -217,6 +221,7 @@
 	<string name="home_loading">Nalaganje…</string>
 	<string name="home_loading_detail">Shranjena konfiguracija se še bere</string>
 	<string name="home_low_battery_description" formatted="false">Baterija na 20% ali manj</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterija na 5% ali manj</string>
 	<string name="home_moved">Premaknjeno ‘%1$s’</string>
 	<string name="home_moved_into">‘%1$s’ premaknjeno v ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ premaknjeno na ‘%2$s’</string>

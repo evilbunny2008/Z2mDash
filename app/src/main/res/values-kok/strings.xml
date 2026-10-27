@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s क पॅनल जोडात</string>
 	<string name="home_add_tile_to">%1$s क टायल जोडात</string>
 	<string name="home_another_group">दुसरो गट</string>
+	<string name="home_battery_type_cluster">%1$s चो बॅटरी प्रकार</string>
+	<string name="home_battery_type_nimh">रिचार्ज जावपी NiMH बॅटरी</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH अल्कलायन वा लिथियमापरस उण्या व्होल्टेजार चलता, देखून चार्ज आसतनाय सेन्सर ती सुमार रिकामी दाखयतात. 20% बदला 5% वा उणी जाल्यार शिटकावणी दिता</string>
+	<string name="home_battery_type_title">‘%1$s’ चो बॅटरी प्रकार</string>
 	<string name="home_change_topic_broad_warning">ह्या क्लस्टराचे सगळे पॅनल एकूच स्पश्ट उपकरण टॉपिक वांटून घेनात, फकत तो नेमस्पेसूच सामान्य आसा – एका खऱ्या उपकरणा परस हे कांय जुळनाशिल्ले पॅनल आसपाची शक्यताय चड. हो हालयल्यार फकत तो वांटून घेतिल्लो भागूच बदलता, देखून तुमी अपेक्षा केल्ल्या प्रमाण लागू जावंक ना. पयलीं ह्या क्लस्टराचे पॅनल एक एक करून तपासप बरें</string>
 	<string name="home_change_topic_cluster">%1$s चो टॉपिक बदलात</string>
 	<string name="home_change_topic_text">ह्या क्लस्टरांतलो दर एक पॅनल नव्या MQTT टॉपिकाचेर हालयता – देखीक Zigbee नेटवर्क दुसऱ्या ब्रिजाचेर वांटल्या उपरांत, फकत खरेंच हाललेल्या उपकरणांखातीर. हेर क्लस्टर तशेच उरतात</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">लोड जाता…</string>
 	<string name="home_loading_detail">तुमची सांबाळिल्ली संरचना अजून वाचता</string>
 	<string name="home_low_battery_description" formatted="false">बॅटरी 20% वा उणी</string>
+	<string name="home_low_battery_nimh_description" formatted="false">बॅटरी 5% वा उणी</string>
 	<string name="home_moved">‘%1$s’ हालयलें</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’ भितर हालयलें</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’ कडेन हालयलें</string>

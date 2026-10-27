@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Panel zu %1$s hinzufügen</string>
 	<string name="home_add_tile_to">Kachel zu %1$s hinzufügen</string>
 	<string name="home_another_group">eine andere Gruppe</string>
+	<string name="home_battery_type_cluster">Batterietyp für %1$s</string>
+	<string name="home_battery_type_nimh">Wiederaufladbare NiMH–Akkus</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH–Akkus haben eine niedrigere Spannung als Alkali– oder Lithiumbatterien, daher melden Sensoren sie selbst geladen als fast leer. Warnt erst bei 5 % oder weniger statt bei 20 %</string>
+	<string name="home_battery_type_title">Batterietyp für ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Die Panels dieses Clusters haben nicht alle ein sauberes Gerätethema gemeinsam, sondern nur diesen bloßen Namensraum – wahrscheinlich eher ein paar nicht übereinstimmende Panels als ein echtes Gerät. Durch das Verschieben wird nur der gemeinsam genutzte Teil ersetzt, sodass er möglicherweise nicht wie erwartet angewendet wird. Es lohnt sich, zunächst die Panels dieses Clusters einzeln zu prüfen</string>
 	<string name="home_change_topic_cluster">Thema für %1$s ändern</string>
 	<string name="home_change_topic_text">Verschiebt jedes Panel in diesem Cluster auf ein neues MQTT–Thema – z.B. nach der Aufteilung eines Zigbee–Netzwerks auf eine zweite Bridge, nur für die Geräte, die sich tatsächlich bewegt haben. Andere Cluster bleiben unberührt</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Wird geladen…</string>
 	<string name="home_loading_detail">Ich lese immer noch Ihre gespeicherte Konfiguration</string>
 	<string name="home_low_battery_description" formatted="false">Batterie bei 20 % oder weniger</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batterie bei 5 % oder weniger</string>
 	<string name="home_moved">‘%1$s’ verschoben</string>
 	<string name="home_moved_into">‘%1$s’ nach ‘%2$s’ verschoben</string>
 	<string name="home_moved_to">‘%1$s’ nach ‘%2$s’ verschoben</string>

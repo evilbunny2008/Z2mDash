@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Engedza phanele kha %1$s</string>
 	<string name="home_add_tile_to">Engedza thaili kha %1$s</string>
 	<string name="home_another_group">tshiṅwe tshigwada</string>
+	<string name="home_battery_type_cluster">Lushaka lwa bethiri lwa %1$s</string>
+	<string name="home_battery_type_nimh">Dzibethiri dza NiMH dzine dza tshajiwa hafhu</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH i shuma nga voliti ya fhasi u fhira alkaline kana lithium, ngauralo dzisensa dzi i sumbedza i tshi nga i tsini na u fhela naho yo ḓala. I sevhidza kha 5% kana fhasi nṱhani ha 20%</string>
+	<string name="home_battery_type_title">Lushaka lwa bethiri lwa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Dziphanele dza tshikumbo itshi a dzi kovhekani dzoṱhe thero nthihi yo kunaho ya tshishumiswa, fhedzi tshikhala itsho tsha madzina tshi si na tshithu – zwi nga vha dziphanele dzi si gathi dzi sa ṱanganiho nṱhani ha tshishumiswa tshithihi tsha ngoho. U pfulusa zwi shandukisa tshipiḓa itsho tshi kovhekanwaho fhedzi, ngauralo zwi nga si shume nga nḓila ine na i lavhelela. Zwi khwine u thoma nga u ṱola dziphanele dza tshikumbo itshi nthihi nga nthihi</string>
 	<string name="home_change_topic_cluster">Shandukisa thero ya %1$s</string>
 	<string name="home_change_topic_text">I pfulusa dziphanele dzoṱhe dza tshikumbo itshi i dzi isa kha thero ntswa ya MQTT – tsumbo nga murahu ha u khethekanya netiweke ya Zigbee kha buroho ḽa vhuvhili, fhedzi kha zwishumiswa zwo pfulutshelaho vhukuma. Zwiṅwe zwikumbo a zwi kwamiwi</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">I khou hwala…</string>
 	<string name="home_loading_detail">Vhudzudzanyi haṋu ho vhulungwaho vhu kha ḓi vhalwa</string>
 	<string name="home_low_battery_description" formatted="false">Bethiri i kha 20% kana fhasi</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bethiri i kha 5% kana fhasi</string>
 	<string name="home_moved">‘%1$s’ yo pfuluswa</string>
 	<string name="home_moved_into">‘%1$s’ yo pfuluselwa ngomu ha ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ yo pfuluselwa kha ‘%2$s’</string>

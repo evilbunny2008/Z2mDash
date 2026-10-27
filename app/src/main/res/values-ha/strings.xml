@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Ƙara panel zuwa %1$s</string>
 	<string name="home_add_tile_to">Ƙara tile zuwa %1$s</string>
 	<string name="home_another_group">wani rukunin</string>
+	<string name="home_battery_type_cluster">Nau\'in batir na %1$s</string>
+	<string name="home_battery_type_nimh">Batirin NiMH masu caji</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH na aiki da ƙaramin ƙarfin lantarki fiye da alkaline ko lithium, don haka na\'urori suna nuna su kamar sun kusa ƙarewa ko da suna cike. Yana gargaɗi a 5% ko ƙasa maimakon 20%</string>
+	<string name="home_battery_type_title">Nau\'in batir na ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Panels na wannan cluster ba su daidaita kowane da bayanan na’ura guda ɗaya, kawai bayanan asali ne – tamkar wasu panels ba su daidaita ba maimakon na’ura guda ɗaya. Mayar da shi zai mayar da wancan ɓangaren kawai, don haka yana iya ba da sakamako da ba za ka tsammani ba. Ya kamata ka tantance panels na wannan cluster ɗaya bayan ɗaya da farko</string>
 	<string name="home_change_topic_cluster">Canza batun %1$s</string>
 	<string name="home_change_topic_text">Yana mayar da kowane panel a cikin wannan cluster zuwa sabon batun MQTT – misali bayan raba tsarin Zigbee zuwa bridge na biyu, don na’urori da suka motsa ne kawai. Sauran clusters ba za a taɓa su ba</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Ana lodawa…</string>
 	<string name="home_loading_detail">Ana ci gaba da karanta tsarin da ka adana</string>
 	<string name="home_low_battery_description">Batir a 20% ko ƙasa</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batir a 5% ko ƙasa</string>
 	<string name="home_moved">An motsa ‘%1$s’</string>
 	<string name="home_moved_into">An motsa ‘%1$s’ zuwa cikin ‘%2$s’</string>
 	<string name="home_moved_to">An motsa ‘%1$s’ zuwa ‘%2$s’</string>

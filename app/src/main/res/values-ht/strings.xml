@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Ajoute panno nan %1$s</string>
 	<string name="home_add_tile_to">Ajoute mozayik nan %1$s</string>
 	<string name="home_another_group">yon lòt gwoup</string>
+	<string name="home_battery_type_cluster">Kalite batri pou %1$s</string>
+	<string name="home_battery_type_nimh">Batri NiMH ki ka rechaje</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH mache ak yon vòltaj pi ba pase alkalin oswa lityòm, kidonk detektè yo montre yo prèske vid menm lè yo chaje. Li avèti nan 5% oswa mwens olye de 20%</string>
+	<string name="home_battery_type_title">Kalite batri pou ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Panno grap sa a pa pataje yon sèl sijè aparèy pwòp, se sèlman espas non toutouni sa a – pwobableman kèk panno ki pa matche olye yon sèl vrè aparèy. Deplase l ranplase sèlman pati komen sa a, kidonk li ka pa aplike jan ou espere. Li vo lapèn tcheke panno grap sa a youn apre lòt anvan</string>
 	<string name="home_change_topic_cluster">Chanje sijè pou %1$s</string>
 	<string name="home_change_topic_text">Deplase tout panno nan grap sa a sou yon nouvo sijè MQTT – pa egzanp apre ou fin divize yon rezo Zigbee sou yon dezyèm pon, sèlman pou aparèy ki te vrèman deplase. Lòt grap yo pa chanje</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Ap chaje…</string>
 	<string name="home_loading_detail">Toujou ap li konfigirasyon ou te sove a</string>
 	<string name="home_low_battery_description" formatted="false">Batri nan 20% oswa mwens</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batri nan 5% oswa mwens</string>
 	<string name="home_moved">Deplase ‘%1$s’</string>
 	<string name="home_moved_into">Deplase ‘%1$s’ anndan ‘%2$s’</string>
 	<string name="home_moved_to">Deplase ‘%1$s’ nan ‘%2$s’</string>

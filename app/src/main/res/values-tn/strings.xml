@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Oketsa phanele mo %1$s</string>
 	<string name="home_add_tile_to">Oketsa thaele mo %1$s</string>
 	<string name="home_another_group">setlhopha se sengwe</string>
+	<string name="home_battery_type_cluster">Mofuta wa beteri wa %1$s</string>
+	<string name="home_battery_type_nimh">Dibeteri tsa NiMH tse di tshajwang gape</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH e dira ka motlakase o o kwa tlase go feta alkaline kgotsa lithium, ka jalo disensara di e bontsha e le gaufi le go fela le fa e tletse. E tlhagisa ka 5% kgotsa kwa tlase go na le 20%</string>
+	<string name="home_battery_type_title">Mofuta wa beteri wa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Diphanele tsa kgobokanyo eno ga di abalane tsotlhe setlhogo se le sengwe se se phepa sa sedirisiwa, fela lefelo leo la maina le le se nang sepe – gongwe ke diphanele di se kae tse di sa tsamaisaneng go na le sedirisiwa se le sengwe sa nnete. Go tsamaisa go emisetsa karolo eo e e abelanwang fela, ka jalo e ka nna ya se dire ka tsela e o e solofetseng. Go botoka go tlhatlhoba diphanele tsa kgobokanyo eno nngwe ka nngwe pele</string>
 	<string name="home_change_topic_cluster">Fetola setlhogo sa %1$s</string>
 	<string name="home_change_topic_text">E tsamaisa diphanele tsotlhe tsa kgobokanyo eno go ya kwa setlhogong se sesha sa MQTT – sekai morago ga go kgaoganya neteweke ya Zigbee mo borogong jwa bobedi, fela mo didirisiweng tse di fudugileng ka nnete. Dikgobokanyo tse dingwe ga di amiwe</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">E a laisa…</string>
 	<string name="home_loading_detail">Thulaganyo ya gago e e bolokilweng e sa ntse e balwa</string>
 	<string name="home_low_battery_description" formatted="false">Beteri e mo 20% kgotsa kwa tlase</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Beteri e mo 5% kgotsa kwa tlase</string>
 	<string name="home_moved">‘%1$s’ e tsamaisitswe</string>
 	<string name="home_moved_into">‘%1$s’ e tsamaiseditswe mo teng ga ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ e tsamaiseditswe kwa ‘%2$s’</string>

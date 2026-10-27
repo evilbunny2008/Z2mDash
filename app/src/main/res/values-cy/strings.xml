@@ -190,6 +190,10 @@
 	<string name="home_add_panel_to">Ychwanegu panel at %1$s</string>
 	<string name="home_add_tile_to">Ychwanegu teilsen at %1$s</string>
 	<string name="home_another_group">grŵp arall</string>
+	<string name="home_battery_type_cluster">Math o fatri ar gyfer %1$s</string>
+	<string name="home_battery_type_nimh">Batris NiMH y gellir eu hailwefru</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">Mae NiMH yn rhedeg ar foltedd is nag alcalin neu lithiwm, felly mae synwyryddion yn eu dangos bron yn wag hyd yn oed pan fyddant yn llawn. Yn rhybuddio ar 5% neu lai yn lle 20%</string>
+	<string name="home_battery_type_title">Math o fatri ar gyfer ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Nid yw paneli’r clwstwr hwn i gyd yn rhannu un pwnc dyfais glân, dim ond y gofod enw moel hwnnw – mae’n debyg mai ychydig o baneli anghydnaws ydyn nhw yn hytrach nag un ddyfais go iawn. Mae symud yn disodli’r rhan gyffredin honno yn unig, felly efallai na fydd yn gweithio fel y disgwyliwch. Mae’n werth gwirio paneli’r clwstwr hwn fesul un yn gyntaf</string>
 	<string name="home_change_topic_cluster">Newid pwnc %1$s</string>
 	<string name="home_change_topic_text">Yn symud pob panel yn y clwstwr hwn i bwnc MQTT newydd – e.e. ar ôl rhannu rhwydwaith Zigbee ar draws ail bont, ar gyfer y dyfeisiau a symudodd go iawn yn unig. Nid yw clystyrau eraill yn cael eu cyffwrdd</string>
@@ -229,6 +233,7 @@
 	<string name="home_loading">Yn llwytho…</string>
 	<string name="home_loading_detail">Yn dal i ddarllen eich ffurfweddiad wedi’i gadw</string>
 	<string name="home_low_battery_description" formatted="false">Batri ar 20% neu lai</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batri ar 5% neu lai</string>
 	<string name="home_moved">Wedi symud ‘%1$s’</string>
 	<string name="home_moved_into">Wedi symud ‘%1$s’ i ‘%2$s’</string>
 	<string name="home_moved_to">Wedi symud ‘%1$s’ i ‘%2$s’</string>

@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s ಗೆ ಪ್ಯಾನೆಲ್ ಸೇರಿಸಿ</string>
 	<string name="home_add_tile_to">%1$s ಗೆ ಟೈಲ್ ಸೇರಿಸಿ</string>
 	<string name="home_another_group">ಇನ್ನೊಂದು ಗುಂಪು</string>
+	<string name="home_battery_type_cluster">%1$s ಗಾಗಿ ಬ್ಯಾಟರಿ ಪ್ರಕಾರ</string>
+	<string name="home_battery_type_nimh">ರೀಚಾರ್ಜ್ ಮಾಡಬಹುದಾದ NiMH ಬ್ಯಾಟರಿಗಳು</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ಆಲ್ಕಲೈನ್ ಅಥವಾ ಲಿಥಿಯಂಗಿಂತ ಕಡಿಮೆ ವೋಲ್ಟೇಜ್‌ನಲ್ಲಿ ಚಲಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ಚಾರ್ಜ್ ಆಗಿದ್ದರೂ ಸೆನ್ಸರ್‌ಗಳು ಅದನ್ನು ಬಹುತೇಕ ಖಾಲಿ ಎಂದು ತೋರಿಸುತ್ತವೆ. 20% ಬದಲಿಗೆ 5% ಅಥವಾ ಕಡಿಮೆಯಾದಾಗ ಎಚ್ಚರಿಸುತ್ತದೆ</string>
+	<string name="home_battery_type_title">‘%1$s’ ಗಾಗಿ ಬ್ಯಾಟರಿ ಪ್ರಕಾರ</string>
 	<string name="home_change_topic_broad_warning">ಈ ಕ್ಲಸ್ಟರ್‌ನ ಎಲ್ಲಾ ಪ್ಯಾನೆಲ್‌ಗಳು ಒಂದೇ ಸ್ಪಷ್ಟ ಸಾಧನ ಟಾಪಿಕ್ ಅನ್ನು ಹಂಚಿಕೊಂಡಿಲ್ಲ, ಕೇವಲ ಆ ನೇಮ್‌ಸ್ಪೇಸ್ ಅನ್ನು ಮಾತ್ರ – ಇದು ಒಂದು ನಿಜವಾದ ಸಾಧನಕ್ಕಿಂತ ಹೆಚ್ಚಾಗಿ ಹೊಂದಿಕೆಯಾಗದ ಕೆಲವು ಪ್ಯಾನೆಲ್‌ಗಳಾಗಿರಬಹುದು. ಇದನ್ನು ಸರಿಸುವುದು ಹಂಚಿಕೊಂಡ ಭಾಗವನ್ನು ಮಾತ್ರ ಬದಲಾಯಿಸುತ್ತದೆ, ಆದ್ದರಿಂದ ನೀವು ನಿರೀಕ್ಷಿಸಿದಂತೆ ಅನ್ವಯವಾಗದಿರಬಹುದು. ಮೊದಲು ಈ ಕ್ಲಸ್ಟರ್‌ನ ಪ್ಯಾನೆಲ್‌ಗಳನ್ನು ಒಂದೊಂದಾಗಿ ಪರಿಶೀಲಿಸುವುದು ಉತ್ತಮ</string>
 	<string name="home_change_topic_cluster">%1$s ಗಾಗಿ ಟಾಪಿಕ್ ಬದಲಾಯಿಸಿ</string>
 	<string name="home_change_topic_text">ಈ ಕ್ಲಸ್ಟರ್‌ನ ಪ್ರತಿಯೊಂದು ಪ್ಯಾನೆಲ್ ಅನ್ನು ಹೊಸ MQTT ಟಾಪಿಕ್‌ಗೆ ಸರಿಸುತ್ತದೆ – ಉದಾ. Zigbee ನೆಟ್‌ವರ್ಕ್ ಅನ್ನು ಎರಡನೇ ಬ್ರಿಡ್ಜ್‌ಗೆ ವಿಭಜಿಸಿದ ನಂತರ, ನಿಜವಾಗಿಯೂ ಸ್ಥಳಾಂತರಗೊಂಡ ಸಾಧನಗಳಿಗೆ ಮಾತ್ರ. ಇತರ ಕ್ಲಸ್ಟರ್‌ಗಳನ್ನು ಮುಟ್ಟುವುದಿಲ್ಲ</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">ಲೋಡ್ ಆಗುತ್ತಿದೆ…</string>
 	<string name="home_loading_detail">ನಿಮ್ಮ ಉಳಿಸಿದ ಕಾನ್ಫಿಗರೇಶನ್ ಇನ್ನೂ ಓದಲಾಗುತ್ತಿದೆ</string>
 	<string name="home_low_battery_description" formatted="false">ಬ್ಯಾಟರಿ 20% ಅಥವಾ ಕಡಿಮೆ</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ಬ್ಯಾಟರಿ 5% ಅಥವಾ ಕಡಿಮೆ</string>
 	<string name="home_moved">‘%1$s’ ಸರಿಸಲಾಗಿದೆ</string>
 	<string name="home_moved_into">‘%1$s’ ಅನ್ನು ‘%2$s’ ಒಳಗೆ ಸರಿಸಲಾಗಿದೆ</string>
 	<string name="home_moved_to">‘%1$s’ ಅನ್ನು ‘%2$s’ ಗೆ ಸರಿಸಲಾಗಿದೆ</string>

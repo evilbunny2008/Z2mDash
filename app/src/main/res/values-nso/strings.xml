@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">Oketša phanele go %1$s</string>
 	<string name="home_add_tile_to">Oketša thaele go %1$s</string>
 	<string name="home_another_group">sehlopha se sengwe</string>
+	<string name="home_battery_type_cluster">Mohuta wa petri wa %1$s</string>
+	<string name="home_battery_type_nimh">Dipetri tša NiMH tšeo di tlatšwago gape</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH e šoma ka bolthetšhe bja fase go feta alkaline goba lithium, ka gona disensara di e bontšha e le kgauswi le go fela le ge e tletše. E lemoša go 5% goba ka fase go e na le 20%</string>
+	<string name="home_battery_type_title">Mohuta wa petri wa ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Diphanele tša kgoboketšo ye ga di abelane ka moka hlogo ye tee ye e hlwekilego ya sedirišwa, fela sebaka seo sa maina se se se nago selo – mohlomongwe ke diphanele tše mmalwa tše di sa sepelelanego go e na le sedirišwa se tee sa nnete. Go šuthiša go tšeela legato karolo yeo ye e abelanwago fela, ka gona e ka no se šome ka mokgwa wo o letetšego ka gona. Go kaone go hlahloba pele diphanele tša kgoboketšo ye e tee ka e tee</string>
 	<string name="home_change_topic_cluster">Fetola hlogo ya %1$s</string>
 	<string name="home_change_topic_text">E šuthiša diphanele ka moka tša kgoboketšo ye go ya hlogong ye mpsha ya MQTT – mohlala ka morago ga go arola neteweke ya Zigbee godimo ga leporogo la bobedi, fela go didirišwa tše di šuthilego ka nnete. Dikgoboketšo tše dingwe ga di kgongwe</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">E a laiša…</string>
 	<string name="home_loading_detail">Peakanyo ya gago ye e bolokilwego e sa balwa</string>
 	<string name="home_low_battery_description" formatted="false">Petri e go 20% goba ka fase</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Petri e go 5% goba ka fase</string>
 	<string name="home_moved">‘%1$s’ e šuthišitšwe</string>
 	<string name="home_moved_into">‘%1$s’ e šuthišeditšwe ka gare ga ‘%2$s’</string>
 	<string name="home_moved_to">‘%1$s’ e šuthišeditšwe go ‘%2$s’</string>

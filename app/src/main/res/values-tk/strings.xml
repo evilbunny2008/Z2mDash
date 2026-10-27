@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s–a panel goş</string>
 	<string name="home_add_tile_to">%1$s–a plitka goş</string>
 	<string name="home_another_group">başga topar</string>
+	<string name="home_battery_type_cluster">%1$s üçin batareýa görnüşi</string>
+	<string name="home_battery_type_nimh">Gaýtadan zarýadlanýan NiMH batareýalary</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH aşgarly ýa–da litiý batareýalardan pes naprýaženiýede işleýär, şonuň üçin datçikler ony zarýadly wagty hem diýen ýaly boş görkezýär. 20% däl–de, 5% ýa–da az bolanda duýduryş berýär</string>
+	<string name="home_battery_type_title">‘%1$s’ üçin batareýa görnüşi</string>
 	<string name="home_change_topic_broad_warning">Bu klasteriň panelleriniň hemmesi bir arassa enjam temasyny paýlaşmaýar, diňe şol ýalaňaç at giňişligi umumy – bu bir hakyky enjam däl–de, birnäçe gabat gelmeýän panel bolmagy ähtimal. Göçürmek diňe şol umumy bölegi çalyşýar, şonuň üçin ol siziň garaşyşyňyz ýaly ulanylmazlygy mümkin. Ilki bu klasteriň panellerini birin–birin barlamak maslahat berilýär</string>
 	<string name="home_change_topic_cluster">%1$s temasyny üýtget</string>
 	<string name="home_change_topic_text">Bu klasterdäki ähli panelleri täze MQTT temasyna göçürýär – meselem, Zigbee ulgamyny ikinji köpre bölenden soň, diňe hakykatdan göçen enjamlar üçin. Beýleki klasterlere degilmeýär</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">Ýüklenýär…</string>
 	<string name="home_loading_detail">Ýatda saklanan konfigurasiýaňyz entek okalýar</string>
 	<string name="home_low_battery_description" formatted="false">Batareýa 20% ýa–da az</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Batareýa 5% ýa–da az</string>
 	<string name="home_moved">‘%1$s’ göçürildi</string>
 	<string name="home_moved_into">‘%1$s’ ‘%2$s’ içine göçürildi</string>
 	<string name="home_moved_to">‘%1$s’ ‘%2$s’ ýerine göçürildi</string>

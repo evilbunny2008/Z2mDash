@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">პანელის დამატება: %1$s</string>
 	<string name="home_add_tile_to">ფილის დამატება: %1$s</string>
 	<string name="home_another_group">სხვა ჯგუფი</string>
+	<string name="home_battery_type_cluster">ბატარეის ტიპი: %1$s</string>
+	<string name="home_battery_type_nimh">დატენვადი NiMH ბატარეები</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH მუშაობს უფრო დაბალ ძაბვაზე, ვიდრე ტუტე ან ლითიუმის ბატარეები, ამიტომ სენსორები დამუხტულსაც თითქმის დაცლილად აჩვენებენ. აფრთხილებს 5%–ზე ან ნაკლებზე 20%–ის ნაცვლად</string>
+	<string name="home_battery_type_title">ბატარეის ტიპი: „%1$s“</string>
 	<string name="home_change_topic_broad_warning">ამ კლასტერის პანელებს საერთო მკაფიო მოწყობილობის თემა არ აქვთ, მხოლოდ ეს შიშველი სახელთა სივრცე – სავარაუდოდ ეს რამდენიმე შეუსაბამო პანელია და არა ერთი რეალური მოწყობილობა. გადატანა მხოლოდ ამ საერთო ნაწილს ჩაანაცვლებს, ამიტომ შესაძლოა მოსალოდნელად არ იმუშაოს. ჯობს ჯერ ამ კლასტერის პანელები ცალ–ცალკე შეამოწმოთ</string>
 	<string name="home_change_topic_cluster">თემის შეცვლა: %1$s</string>
 	<string name="home_change_topic_text">ამ კლასტერის ყველა პანელს ახალ MQTT თემაზე გადაიტანს – მაგ. Zigbee ქსელის მეორე ხიდზე გაყოფის შემდეგ, მხოლოდ იმ მოწყობილობებისთვის, რომლებიც რეალურად გადავიდა. სხვა კლასტერები ხელუხლებელი რჩება</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">იტვირთება…</string>
 	<string name="home_loading_detail">შენახული კონფიგურაცია ჯერ კიდევ იკითხება</string>
 	<string name="home_low_battery_description" formatted="false">ბატარეა 20% ან ნაკლები</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ბატარეა 5% ან ნაკლები</string>
 	<string name="home_moved">„%1$s“ გადატანილია</string>
 	<string name="home_moved_into">„%1$s“ გადატანილია „%2$s“-ში</string>
 	<string name="home_moved_to">„%1$s“ გადატანილია „%2$s“-ზე</string>

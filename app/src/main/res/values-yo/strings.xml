@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">Ṣàfikún panel sí %1$s</string>
 	<string name="home_add_tile_to">Ṣàfikún tile sí %1$s</string>
 	<string name="home_another_group">ẹgbẹ́ mìíràn</string>
+	<string name="home_battery_type_cluster">Irú bátìrì fún %1$s</string>
+	<string name="home_battery_type_nimh">Bátìrì NiMH tí a lè gba agbára sí lẹ́ẹ̀kansi</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ń ṣiṣẹ́ ní fóltéèjì tó kéré ju alkaline tàbí lithium lọ, nítorí náà àwọn sensọ̀ máa ń fi hàn pé ó ti fẹ́rẹ̀ẹ́ tán bí ó tilẹ̀ kún. Ó máa ń kìlọ̀ ní 5% tàbí kéré sí i dípò 20%</string>
+	<string name="home_battery_type_title">Irú bátìrì fún ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">Kì í ṣe gbogbo panel cluster yìí ló ní topic ẹ̀rọ kan tí ó mọ́, namespace lásán nìkan ni wọ́n jọ ní – ó ṣeé ṣe kí ó jẹ́ àwọn panel díẹ̀ tí kò bára mu dípò ẹ̀rọ gidi kan. Gbígbé e yóò rọ́pò apá tí wọ́n jọ ní nìkan, nítorí náà ó lè má ṣiṣẹ́ bí o ṣe retí. Ó dára kí o kọ́kọ́ ṣàyẹ̀wò àwọn panel cluster yìí lọ́kọ̀ọ̀kan</string>
 	<string name="home_change_topic_cluster">Yí topic padà fún %1$s</string>
 	<string name="home_change_topic_text">Ó ń gbé gbogbo panel nínú cluster yìí lọ sí topic MQTT tuntun – fún àpẹẹrẹ lẹ́yìn pípín nẹ́tíwọ́ọ̀kì Zigbee sí bridge kejì, fún àwọn ẹ̀rọ tí ó ṣí lọ nìkan. A kò ní fọwọ́ kan àwọn cluster mìíràn</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">Ń ṣàgbékalẹ̀…</string>
 	<string name="home_loading_detail">Ṣì ń ka ètò tí o fi pamọ́</string>
 	<string name="home_low_battery_description" formatted="false">Bátìrì wà ní 20% tàbí kéré sí i</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Bátìrì wà ní 5% tàbí kéré sí i</string>
 	<string name="home_moved">A ti gbé ‘%1$s’</string>
 	<string name="home_moved_into">A ti gbé ‘%1$s’ sínú ‘%2$s’</string>
 	<string name="home_moved_to">A ti gbé ‘%1$s’ lọ sí ‘%2$s’</string>

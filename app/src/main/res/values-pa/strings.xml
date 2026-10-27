@@ -170,6 +170,10 @@
 	<string name="home_add_panel_to">%1$s ਵਿੱਚ ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="home_add_tile_to">%1$s ਵਿੱਚ ਟਾਈਲ ਸ਼ਾਮਲ ਕਰੋ</string>
 	<string name="home_another_group">ਕੋਈ ਹੋਰ ਸਮੂਹ</string>
+	<string name="home_battery_type_cluster">%1$s ਲਈ ਬੈਟਰੀ ਦੀ ਕਿਸਮ</string>
+	<string name="home_battery_type_nimh">ਰੀਚਾਰਜਯੋਗ NiMH ਬੈਟਰੀਆਂ</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ਅਲਕਲਾਈਨ ਜਾਂ ਲਿਥੀਅਮ ਨਾਲੋਂ ਘੱਟ ਵੋਲਟੇਜ ’ਤੇ ਚੱਲਦੀ ਹੈ, ਇਸ ਲਈ ਚਾਰਜ ਹੋਣ ’ਤੇ ਵੀ ਸੈਂਸਰ ਇਸਨੂੰ ਲਗਭਗ ਖ਼ਾਲੀ ਦਿਖਾਉਂਦੇ ਹਨ। 20% ਦੀ ਬਜਾਏ 5% ਜਾਂ ਘੱਟ ’ਤੇ ਚੇਤਾਵਨੀ ਦਿੰਦਾ ਹੈ</string>
+	<string name="home_battery_type_title">‘%1$s’ ਲਈ ਬੈਟਰੀ ਦੀ ਕਿਸਮ</string>
 	<string name="home_change_topic_broad_warning">ਇਸ ਕਲੱਸਟਰ ਦੇ ਸਾਰੇ ਪੈਨਲ ਇੱਕ ਸਾਫ਼ ਡਿਵਾਈਸ ਵਿਸ਼ਾ ਸਾਂਝਾ ਨਹੀਂ ਕਰਦੇ, ਸਿਰਫ਼ ਉਹ ਖਾਲੀ ਨੇਮਸਪੇਸ – ਸ਼ਾਇਦ ਇੱਕ ਅਸਲ ਡਿਵਾਈਸ ਦੀ ਬਜਾਏ ਕੁਝ ਬੇਮੇਲ ਪੈਨਲ। ਇਸਨੂੰ ਲਿਜਾਣ ਨਾਲ ਸਿਰਫ਼ ਉਹ ਸਾਂਝਾ ਹਿੱਸਾ ਬਦਲਦਾ ਹੈ, ਇਸ ਲਈ ਇਹ ਉਸ ਤਰ੍ਹਾਂ ਲਾਗੂ ਨਹੀਂ ਹੋ ਸਕਦਾ ਜਿਵੇਂ ਤੁਸੀਂ ਉਮੀਦ ਕਰਦੇ ਹੋ। ਪਹਿਲਾਂ ਇਸ ਕਲੱਸਟਰ ਦੇ ਪੈਨਲਾਂ ਦੀ ਵੱਖਰੇ ਤੌਰ ’ਤੇ ਜਾਂਚ ਕਰਨਾ ਚੰਗਾ ਹੈ</string>
 	<string name="home_change_topic_cluster">%1$s ਲਈ ਵਿਸ਼ਾ ਬਦਲੋ</string>
 	<string name="home_change_topic_text">ਇਸ ਕਲੱਸਟਰ ਦੇ ਹਰ ਪੈਨਲ ਨੂੰ ਇੱਕ ਨਵੇਂ MQTT ਵਿਸ਼ੇ ’ਤੇ ਲਿਜਾਂਦਾ ਹੈ – ਜਿਵੇਂ ਕਿ Zigbee ਨੈੱਟਵਰਕ ਨੂੰ ਦੂਜੇ ਬ੍ਰਿਜ ’ਤੇ ਵੰਡਣ ਤੋਂ ਬਾਅਦ, ਸਿਰਫ਼ ਉਹਨਾਂ ਡਿਵਾਈਸਾਂ ਲਈ ਜੋ ਅਸਲ ਵਿੱਚ ਹਿੱਲੀਆਂ। ਹੋਰ ਕਲੱਸਟਰ ਅਛੂਤੇ ਰਹਿੰਦੇ ਹਨ</string>
@@ -205,6 +209,7 @@
 	<string name="home_loading">ਲੋਡ ਹੋ ਰਿਹਾ ਹੈ…</string>
 	<string name="home_loading_detail">ਅਜੇ ਵੀ ਤੁਹਾਡੀ ਸੁਰੱਖਿਅਤ ਕੀਤੀ ਸੰਰਚਨਾ ਪੜ੍ਹ ਰਿਹਾ ਹੈ</string>
 	<string name="home_low_battery_description" formatted="false">ਬੈਟਰੀ 20% ਜਾਂ ਘੱਟ ’ਤੇ</string>
+	<string name="home_low_battery_nimh_description" formatted="false">ਬੈਟਰੀ 5% ਜਾਂ ਘੱਟ ’ਤੇ</string>
 	<string name="home_moved">‘%1$s’ ਲਿਜਾਇਆ ਗਿਆ</string>
 	<string name="home_moved_into">‘%1$s’ ਨੂੰ ‘%2$s’ ਵਿੱਚ ਲਿਜਾਇਆ ਗਿਆ</string>
 	<string name="home_moved_to">‘%1$s’ ਨੂੰ ‘%2$s’ ਵਿੱਚ ਲਿਜਾਇਆ ਗਿਆ</string>

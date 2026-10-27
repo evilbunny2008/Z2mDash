@@ -165,6 +165,10 @@
 	<string name="home_add_panel_to">เพิ่มพาเนลไปยัง %1$s</string>
 	<string name="home_add_tile_to">เพิ่มไทล์ไปยัง %1$s</string>
 	<string name="home_another_group">กลุ่มอื่น</string>
+	<string name="home_battery_type_cluster">ประเภทแบตเตอรี่ของ %1$s</string>
+	<string name="home_battery_type_nimh">แบตเตอรี่ NiMH แบบชาร์จได้</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH ทำงานที่แรงดันต่ำกว่าอัลคาไลน์หรือลิเธียม เซนเซอร์จึงแสดงว่าเกือบหมดแม้ชาร์จเต็มแล้ว จะเตือนเมื่อเหลือ 5% หรือต่ำกว่าแทน 20%</string>
+	<string name="home_battery_type_title">ประเภทแบตเตอรี่ของ ‘%1$s’</string>
 	<string name="home_change_topic_broad_warning">พาเนลของคลัสเตอร์นี้ไม่ได้ใช้หัวข้ออุปกรณ์เดียวกันที่ชัดเจน มีเพียง namespace นั้นร่วมกัน – น่าจะเป็นพาเนลที่ไม่ตรงกันหลายรายการมากกว่าอุปกรณ์จริงเครื่องเดียว การย้ายจะแทนที่เฉพาะส่วนที่ใช้ร่วมกันนั้น จึงอาจไม่เป็นไปตามที่คุณคาดไว้ ควรตรวจสอบพาเนลของคลัสเตอร์นี้ทีละรายการก่อน</string>
 	<string name="home_change_topic_cluster">เปลี่ยนหัวข้อของ %1$s</string>
 	<string name="home_change_topic_text">ย้ายทุกพาเนลในคลัสเตอร์นี้ไปยังหัวข้อ MQTT ใหม่ – เช่น หลังจากแยกเครือข่าย Zigbee ไปยังบริดจ์ที่สอง สำหรับเฉพาะอุปกรณ์ที่ย้ายไปจริง คลัสเตอร์อื่นจะไม่ถูกแตะต้อง</string>
@@ -199,6 +203,7 @@
 	<string name="home_loading">กำลังโหลด…</string>
 	<string name="home_loading_detail">ยังคงอ่านการกำหนดค่าที่บันทึกไว้ของคุณ</string>
 	<string name="home_low_battery_description" formatted="false">แบตเตอรี่ 20% หรือต่ำกว่า</string>
+	<string name="home_low_battery_nimh_description" formatted="false">แบตเตอรี่ 5% หรือต่ำกว่า</string>
 	<string name="home_moved">ย้าย ‘%1$s’ แล้ว</string>
 	<string name="home_moved_into">ย้าย ‘%1$s’ เข้าไปใน ‘%2$s’ แล้ว</string>
 	<string name="home_moved_to">ย้าย ‘%1$s’ ไปยัง ‘%2$s’ แล้ว</string>

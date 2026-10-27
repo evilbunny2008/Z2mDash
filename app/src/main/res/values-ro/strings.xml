@@ -175,6 +175,10 @@
 	<string name="home_add_panel_to">Adaugă panou în %1$s</string>
 	<string name="home_add_tile_to">Adaugă dală în %1$s</string>
 	<string name="home_another_group">alt grup</string>
+	<string name="home_battery_type_cluster">Tipul bateriei pentru %1$s</string>
+	<string name="home_battery_type_nimh">Acumulatori NiMH reîncărcabili</string>
+	<string name="home_battery_type_nimh_detail" formatted="false">NiMH funcționează la o tensiune mai mică decât bateriile alcaline sau cu litiu, așa că senzorii le arată aproape descărcate chiar și încărcate. Avertizează la 5% sau mai puțin în loc de 20%</string>
+	<string name="home_battery_type_title">Tipul bateriei pentru „%1$s”</string>
 	<string name="home_change_topic_broad_warning">Panourile acestui cluster nu au toate un singur topic de dispozitiv clar, ci doar acel spațiu de nume general – probabil câteva panouri nepotrivite, nu un singur dispozitiv real. Mutarea înlocuiește doar acea parte comună, deci s–ar putea să nu funcționeze cum te aștepți. Merită să verifici mai întâi panourile acestui cluster individual</string>
 	<string name="home_change_topic_cluster">Schimbă topicul pentru %1$s</string>
 	<string name="home_change_topic_text">Mută fiecare panou din acest cluster pe un nou topic MQTT – de ex. după împărțirea unei rețele Zigbee pe o a doua punte, doar pentru dispozitivele care s–au mutat efectiv. Celelalte clustere rămân neatinse</string>
@@ -211,6 +215,7 @@
 	<string name="home_loading">Se încarcă…</string>
 	<string name="home_loading_detail">Se citește încă configurația salvată</string>
 	<string name="home_low_battery_description" formatted="false">Baterie la 20% sau mai puțin</string>
+	<string name="home_low_battery_nimh_description" formatted="false">Baterie la 5% sau mai puțin</string>
 	<string name="home_moved">„%1$s” a fost mutat</string>
 	<string name="home_moved_into">„%1$s” a fost mutat în „%2$s”</string>
 	<string name="home_moved_to">„%1$s” a fost mutat la „%2$s”</string>
