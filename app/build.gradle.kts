@@ -269,13 +269,13 @@ dependencies {
     // above) since Compose Foundation 1.7.0.
     implementation("androidx.tv:tv-material:1.1.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.11.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
 
     // MQTT client. Actively maintained, MQTT 3.1.1 + 5.0, robust TCP/SSL/WS/WSS
     // transports with real automatic-reconnect handling - this is what replaces
     // Paho's flaky websocket keepalive.
-    implementation("com.hivemq:hivemq-mqtt-client:1.4.0")
+    implementation("com.hivemq:hivemq-mqtt-client:1.4.1")
     implementation("io.netty:netty-common:4.1.133.Final")
     implementation("io.netty:netty-handler:4.1.133.Final")
     implementation("io.netty:netty-codec:4.1.133.Final")
