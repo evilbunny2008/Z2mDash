@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
  * deliberately unscoped to any configured panel, the same as SmokeAlertManager, so a device's
  * battery is monitored the moment it starts reporting one, with nothing to add on the dashboard
  * for it. Posts a notification once a reading drops into the low range (above 0, at or below
- * [LOW_BATTERY_THRESHOLD], or [NIMH_LOW_BATTERY_THRESHOLD] for a cluster set to NiMH) - 0 itself is *always* excluded, never treated as low no matter how it
+ * [LOW_BATTERY_THRESHOLD], or strictly below [NIMH_LOW_BATTERY_THRESHOLD] for a cluster set to NiMH) - 0 itself is *always* excluded, never treated as low no matter how it
  * got there: some Zigbee devices are mains/USB powered but still report a hardcoded battery of 0
  * in their firmware, which would otherwise permanently misread as "critically low". Re-notifies
  * (updating, not stacking, the same notification) as the reading keeps moving while still in the
@@ -241,11 +241,11 @@ class LowBatteryAlertManager(
          * 0 is never low (see this class's own doc: mains-powered devices report a fixed 0).
          */
         fun isLowBattery(battery: Double?, batteryType: BatteryType = BatteryType.STANDARD): Boolean {
-            val threshold = when (batteryType) {
-                BatteryType.STANDARD -> LOW_BATTERY_THRESHOLD
-                BatteryType.NIMH -> NIMH_LOW_BATTERY_THRESHOLD
+            if (battery == null || battery <= 0.0) return false
+            return when (batteryType) {
+                BatteryType.STANDARD -> battery <= LOW_BATTERY_THRESHOLD
+                BatteryType.NIMH -> battery < NIMH_LOW_BATTERY_THRESHOLD
             }
-            return battery != null && battery > 0.0 && battery <= threshold
         }
     }
 }

@@ -1,0 +1,1 @@
+- NiMH batteries are now flagged as low only below 5%, rather than at 5% or less.
