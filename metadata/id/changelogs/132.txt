@@ -1,0 +1,1 @@
+- Pengaturan baterai NiMH pada kluster kini dibagikan ke ponsel lain pada broker yang sama, melalui konfigurasi "/app" perangkat ("battery_type": "nimh").

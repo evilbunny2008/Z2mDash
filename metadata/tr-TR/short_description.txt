@@ -1,0 +1,1 @@
+Doğrudan kendi MQTT aracınızla konuşan bir Zigbee2MQTT kontrol paneli

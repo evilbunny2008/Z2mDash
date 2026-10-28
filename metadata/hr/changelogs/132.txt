@@ -1,0 +1,1 @@
+- Postavka NiMH baterije za klaster sada se dijeli s drugim telefonima na istom brokeru, putem "/app" konfiguracije uređaja ("battery_type": "nimh").

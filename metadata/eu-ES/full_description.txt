@@ -1,0 +1,32 @@
+Z2M Dash Zigbee2MQTTrako Android panel doako eta kode irekikoa da. Zure MQTT brokerrarekin zuzenean hitz egiten du, beraz, ez dago hodeiko konturik behar eta ez zaude inongo hornitzaileri lotuta. Konfigurazio osoa fitxategi bakar batean gorde daiteke, edo telefonoen artean partekatu brokerraren beraren bidez.
+
+Panela
+• Kluster taldeak; kluster bakoitzak gailu baten lauzak ditu: sentsoreen irakurketak, piztu/itzali etengailuak eta sakatze bakarreko botoiak (pertsiana baten STOP botoia, adibidez).
+• Zure unitate eta hamartarrekin konfigura daitezkeen sentsore lauzak, eta irakurketa baxuegia edo altuegia denean lauza koloreztatzen duen aukerako tarte ideala.
+• Etengailuek gailuaren benetako egoera erakusten dute, ez soilik bidalitako azken agindua.
+• Presentzia eta okupazio sentsoreak "Detektatuta" edo "Libre" gisa agertzen dira.
+• Arrastatu eta jaregin taldeak, klusterrak eta lauzak berrantolatzeko, desegiteko aukerarekin. "Blokeatu diseinua" aukerak (lehenespenez aktibatuta) nahi gabeko mugimenduak saihesten ditu.
+• Klusterrek ertz bat hartzen dute gailu batek ordubete baino gehiago daramanean berri eman gabe (gorria), bateria baxua duenean (urdina) edo Zigbee seinale ahula duenean (horia). NiMH bateria kargagarriak dituzten klusterrak %5ean bakarrik jotzen dira baxutzat.
+• Iragazki menu batek bateria baxua edo seinale ahula duten gailuak bakarrik erakusten ditu, edo beren tarte idealaren azpitik edo gainetik dauden hezetasun sentsoreak.
+• Telefonoetan eta Android TVn dabil.
+
+Konfigurazioa eta sinkronizazioa
+• Gailuek beren lauzak deskriba ditzakete gordetako (retained) "/app" konfigurazio mezu batean, broker bereko telefono guztiek diseinu bera erakuts dezaten eta telefono batean egindako aldaketak besteetara irits daitezen.
+• "Aurkitu sentsoreak" aukerak broker bat eskaneatzen du irakurketen bila eta "/app" konfiguraziorik ez duten gailuentzako lauzak sortzen ditu.
+• "Baimendu elkartzea" barrak Zigbee gailu berriei edozein bideratzaileren bidez elkartzen uzten die, atzerako kontaketarekin.
+• Hainbat broker TCP, SSL, WS edo WSS bidez, auto-sinatutako ziurtagiriak barne.
+• Aukerako atzeko planoko konexio batek irakurketak eta alertak eguneratuta mantentzen ditu aplikazioa itxita dagoenean ere.
+
+Alertak
+• Ke alertak kea detektatzen duen edozein gailutatik, aukerako alarma soinu ozen batekin.
+• Ureztatze alertak, txirrin eta bibrazioarekin, hezetasun sentsore bat bere tarte idealaren erditik gora igotzen denean.
+• Bateria baxuko alertak, bateriaren ehunekoarekin.
+
+Babeskopiak eta arazketa
+• Esportatu konfigurazio osoa, edo brokerrak bakarrik, fitxategi konprimatu gisa. Babeskopiak lehenespenez enkriptatzen dira (AES-256-GCM).
+• Leheneratu dena, edo batu brokerrak bakarrik.
+• Edo argitaratu eta leheneratu babeskopia bat gordetako MQTT mezu baten bidez, fitxategirik mugitu gabe.
+• Zuzeneko "Terminala" iragazgarri batek MQTT mezu guztiak erakusten ditu, edukiak eta gaiak egiaztatzeko.
+
+Aukerako lineako zerbitzua
+"Gehitu brokerra" pantailako "Inportatu kode bidez" botoiak sync.odiousapps.com erabiltzen du, garatzaileak kudeatzen duen kredentzial errele bat. Gune horretan saioa hasi eta gordetako kredentzial bat aukeratzen duzu, eta brokerraren ostalari izena, erabiltzaile izena eta pasahitza zerbitzari horren bidez itzultzen dira aplikaziora. Ez da ezer bidaltzen botoia sakatu eta jarraitzea onartzen ez baduzu, eta brokerrak beti sar daitezke eskuz edo fitxategi batetik inportatu. Errelearen iturburu kodea software librea da (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+- Cài đặt pin NiMH của một cụm giờ được chia sẻ với các điện thoại khác trên cùng broker, qua cấu hình "/app" của thiết bị ("battery_type": "nimh").

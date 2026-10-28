@@ -1,0 +1,1 @@
+直接连接你自己的 MQTT 代理的 Zigbee2MQTT 仪表板

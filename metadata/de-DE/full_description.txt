@@ -1,0 +1,32 @@
+Z2M Dash ist ein kostenloses Open-Source-Dashboard für Zigbee2MQTT auf Android. Es spricht direkt mit deinem eigenen MQTT-Broker, du brauchst also kein Cloud-Konto und bist an keinen Anbieter gebunden. Deine gesamte Einrichtung lässt sich in einer einzigen Datei sichern oder über den Broker selbst zwischen Handys teilen.
+
+Dashboard
+• Gruppen von Clustern, wobei jeder Cluster die Kacheln eines Geräts enthält: Sensorwerte, Ein/Aus-Schalter und Taster für einen einzelnen Druck (etwa STOP für eine Jalousie).
+• Sensorkacheln mit eigenen Einheiten und Nachkommastellen sowie einem optionalen Idealbereich, der die Kachel einfärbt, wenn ein Wert zu niedrig oder zu hoch ist.
+• Schalter zeigen den tatsächlichen Zustand des Geräts, nicht nur den zuletzt gesendeten Befehl.
+• Anwesenheits- und Belegungssensoren werden als "Erkannt" oder "Frei" angezeigt.
+• Gruppen, Cluster und Kacheln per Drag & Drop umsortieren, mit Rückgängig. "Layout sperren" (standardmäßig an) verhindert versehentliches Verschieben.
+• Cluster werden umrandet, wenn ein Gerät seit über einer Stunde nichts gemeldet hat (rot), der Akku schwach ist (blau) oder das Zigbee-Signal schwach ist (gelb). Cluster mit wiederaufladbaren NiMH-Akkus gelten erst bei 5 % als schwach.
+• Ein Filtermenü zeigt nur Geräte mit schwachem Akku oder schwachem Signal oder Feuchtigkeitssensoren unter bzw. über ihrem Idealbereich.
+• Läuft auf Handys und Android TV.
+
+Einrichtung und Synchronisierung
+• Geräte können ihre eigenen Kacheln in einer gespeicherten (retained) "/app"-Konfigurationsnachricht beschreiben, sodass jedes Handy am selben Broker dasselbe Layout zeigt und Änderungen auf einem Handy bei den anderen ankommen.
+• "Sensoren entdecken" durchsucht einen Broker nach Messwerten und legt Kacheln für Geräte ohne "/app"-Konfiguration an.
+• Eine "Beitritt zulassen"-Leiste lässt neue Zigbee-Geräte über einen beliebigen Router beitreten, mit Countdown.
+• Mehrere Broker über TCP, SSL, WS oder WSS, auch mit selbstsignierten Zertifikaten.
+• Eine optionale Hintergrundverbindung hält Werte und Warnungen aktuell, während die App geschlossen ist.
+
+Warnungen
+• Rauchwarnungen von jedem Gerät, das Rauch meldet, mit optionalem lautem Alarmton.
+• Gießwarnungen mit Glockenton und Vibration, wenn ein Feuchtigkeitssensor über die Mitte seines Idealbereichs steigt.
+• Warnungen bei schwachem Akku mit Prozentangabe.
+
+Sicherung und Fehlersuche
+• Exportiere die gesamte Konfiguration oder nur die Broker als komprimierte Datei. Sicherungen sind standardmäßig verschlüsselt (AES-256-GCM).
+• Stelle alles wieder her oder füge nur die Broker hinzu.
+• Oder veröffentliche und stelle eine Sicherung über eine gespeicherte MQTT-Nachricht wieder her, ganz ohne Datei.
+• Ein live filterbares "Terminal" zeigt jede MQTT-Nachricht, um Payloads und Topics zu prüfen.
+
+Optionaler Onlinedienst
+Die Schaltfläche "Import per Code" auf dem Bildschirm "Broker hinzufügen" nutzt sync.odiousapps.com, ein vom Entwickler betriebenes Relais für Zugangsdaten. Du meldest dich auf dieser Seite an und wählst gespeicherte Zugangsdaten aus, und Hostname, Benutzername und Passwort des Brokers werden über diesen Server an die App zurückgegeben. Es wird nichts gesendet, solange du nicht auf die Schaltfläche tippst und dem Fortfahren zustimmst, und Broker lassen sich jederzeit von Hand eingeben oder aus einer Datei importieren. Der Quellcode des Relais ist freie Software (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

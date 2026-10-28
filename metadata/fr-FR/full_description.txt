@@ -1,0 +1,32 @@
+Z2M Dash est un tableau de bord Android gratuit et open source pour Zigbee2MQTT. Il dialogue directement avec votre propre broker MQTT : aucun compte cloud, aucune dépendance à un fournisseur. Toute votre configuration peut être enregistrée dans un seul fichier, ou partagée entre téléphones via le broker lui-même.
+
+Tableau de bord
+• Des groupes de clusters, chaque cluster regroupant les tuiles d'un appareil : relevés de capteurs, interrupteurs marche/arrêt et boutons à appui unique (comme le STOP d'un volet).
+• Des tuiles de capteur avec vos propres unités et décimales, et une plage idéale facultative qui colore la tuile quand un relevé est trop bas ou trop haut.
+• Les interrupteurs affichent l'état réel de l'appareil, pas seulement la dernière commande envoyée.
+• Les capteurs de présence et d'occupation s'affichent en "Détecté" ou "Libre".
+• Glisser-déposer pour réorganiser groupes, clusters et tuiles, avec annulation. "Verrouiller la disposition" (activé par défaut) empêche les déplacements accidentels.
+• Les clusters sont encadrés quand un appareil n'a rien signalé depuis plus d'une heure (rouge), a une batterie faible (bleu) ou un signal Zigbee faible (jaune). Les clusters sur piles rechargeables NiMH ne sont considérés comme faibles qu'à 5 %.
+• Un menu de filtres n'affiche que les appareils à batterie faible ou à signal faible, ou les capteurs d'humidité en dessous ou au-dessus de leur plage idéale.
+• Fonctionne sur téléphones et Android TV.
+
+Configuration et synchronisation
+• Les appareils peuvent décrire leurs propres tuiles dans un message de configuration "/app" retenu : tous les téléphones connectés au même broker affichent la même disposition, et les modifications faites sur l'un parviennent aux autres.
+• "Découvrir les capteurs" analyse un broker à la recherche de relevés et crée des tuiles pour les appareils sans configuration "/app".
+• Une barre "Autoriser l'adhésion" permet à de nouveaux appareils Zigbee de rejoindre le réseau via n'importe quel routeur, avec compte à rebours.
+• Plusieurs brokers en TCP, SSL, WS ou WSS, certificats auto-signés compris.
+• Une connexion facultative en arrière-plan garde relevés et alertes à jour quand l'application est fermée.
+
+Alertes
+• Alertes de fumée depuis tout appareil qui signale de la fumée, avec une sirène forte facultative.
+• Alertes d'arrosage, avec carillon et vibration, quand un capteur d'humidité remonte au-delà du milieu de sa plage idéale.
+• Alertes de batterie faible indiquant le pourcentage de batterie.
+
+Sauvegarde et débogage
+• Exportez toute la configuration, ou seulement les brokers, dans un fichier compressé. Les sauvegardes sont chiffrées par défaut (AES-256-GCM).
+• Restaurez tout, ou fusionnez seulement les brokers.
+• Ou publiez et restaurez une sauvegarde via un message MQTT retenu, sans fichier à déplacer.
+• Un "Terminal" en direct et filtrable affiche chaque message MQTT, pour vérifier contenus et topics.
+
+Service en ligne facultatif
+Le bouton "Importer via le code" de l'écran "Ajouter un broker" utilise sync.odiousapps.com, un relais d'identifiants géré par le développeur. Vous vous connectez à ce site et choisissez un identifiant enregistré, puis le nom d'hôte, le nom d'utilisateur et le mot de passe du broker sont renvoyés à l'application via ce serveur. Rien n'est envoyé tant que vous n'appuyez pas sur le bouton et n'acceptez pas de continuer, et les brokers peuvent toujours être saisis à la main ou importés depuis un fichier. Le code source du relais est un logiciel libre (Unlicense) : https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,32 @@
+Z2M Dash ni dashibodi ya Android ya bure na ya chanzo huria kwa Zigbee2MQTT. Inawasiliana moja kwa moja na broker yako mwenyewe ya MQTT, kwa hivyo hakuna akaunti ya wingu inayohitajika na hufungwi kwa mtoa huduma yeyote. Mipangilio yako yote inaweza kuhifadhiwa katika faili moja, au kushirikiwa kati ya simu kupitia broker yenyewe.
+
+Dashibodi
+• Vikundi vya makundi, kila kundi likiwa na vigae vya kifaa kimoja: usomaji wa vitambuzi, swichi za kuwasha/kuzima na vitufe vya kubonyeza mara moja (kama STOP ya pazia).
+• Vigae vya vitambuzi vyenye vipimo na nafasi za desimali unazochagua, pamoja na kiwango bora cha hiari kinachopaka kigae rangi usomaji ukiwa chini sana au juu sana.
+• Swichi zinaonyesha hali halisi ya kifaa, si amri ya mwisho iliyotumwa pekee.
+• Vitambuzi vya uwepo na ukaaji vinaonyeshwa kama "Imegunduliwa" au "Hakuna mtu".
+• Buruta na uachilie ili kupanga upya vikundi, makundi na vigae, pamoja na kutendua. "Funga Mpangilio" (umewashwa kwa chaguo-msingi) huzuia kusogeza kwa bahati mbaya.
+• Makundi huwekewa mpaka kifaa kisipotuma taarifa kwa zaidi ya saa moja (nyekundu), betri ikiwa chini (bluu) au mawimbi ya Zigbee yakiwa dhaifu (njano). Makundi yanayotumia betri za NiMH zinazochajiwa huhesabiwa kuwa chini ifikapo 5% pekee.
+• Menyu ya vichujio huonyesha tu vifaa vyenye betri ya chini au mawimbi dhaifu, au vitambuzi vya unyevu vilivyo chini au juu ya kiwango chake bora.
+• Inafanya kazi kwenye simu na Android TV.
+
+Usanidi na usawazishaji
+• Vifaa vinaweza kueleza vigae vyake katika ujumbe wa usanidi wa "/app" uliohifadhiwa (retained), ili kila simu kwenye broker moja ionyeshe mpangilio uleule, na mabadiliko kwenye simu moja yafike kwa nyingine.
+• "Gundua Vitambuzi" huchanganua broker kutafuta usomaji na kuunda vigae kwa vifaa visivyo na usanidi wa "/app".
+• Upau wa "Ruhusu Kujiunga" huruhusu vifaa vipya vya Zigbee kujiunga kupitia kipanga njia chochote, pamoja na kuhesabu kurudi nyuma.
+• Broker nyingi kupitia TCP, SSL, WS au WSS, ikiwa ni pamoja na vyeti vilivyojisaini vyenyewe.
+• Muunganisho wa hiari wa chinichini huweka usomaji na arifa kuwa za sasa programu ikiwa imefungwa.
+
+Arifa
+• Arifa za moshi kutoka kwa kifaa chochote kinachoripoti moshi, pamoja na sauti kubwa ya kengele ya hiari.
+• Arifa za kumwagilia, kwa kengele ndogo na mtetemo, kitambuzi cha unyevu kinapopanda kupita katikati ya kiwango chake bora.
+• Arifa za betri ya chini zinazoonyesha asilimia ya betri.
+
+Hifadhi rudufu na utatuzi
+• Hamisha usanidi wote, au broker pekee, kama faili iliyobanwa. Hifadhi rudufu husimbwa kwa chaguo-msingi (AES-256-GCM).
+• Rejesha kila kitu, au unganisha broker pekee.
+• Au chapisha na urejeshe hifadhi rudufu kupitia ujumbe wa MQTT uliohifadhiwa, bila kuhamisha faili.
+• "Terminal" ya moja kwa moja inayoweza kuchujwa huonyesha kila ujumbe wa MQTT, ili kukagua maudhui na mada.
+
+Huduma ya mtandaoni ya hiari
+Kitufe cha "Leta kwa msimbo" kwenye skrini ya "Ongeza Broker" hutumia sync.odiousapps.com, huduma ya kupitisha vitambulisho inayoendeshwa na msanidi programu. Unaingia kwenye tovuti hiyo na kuchagua kitambulisho kilichohifadhiwa, na jina la seva pangishi, jina la mtumiaji na nenosiri la broker hurudishwa kwenye programu kupitia seva hiyo. Hakuna kinachotumwa usipogusa kitufe na kukubali kuendelea, na broker zinaweza kuwekwa kwa mkono au kuletwa kutoka kwenye faili wakati wowote. Msimbo chanzo wa huduma hiyo ni programu huria (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

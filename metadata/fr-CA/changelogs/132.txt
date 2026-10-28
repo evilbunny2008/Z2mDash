@@ -1,0 +1,1 @@
+- Le réglage de pile NiMH d'une grappe est maintenant partagé avec les autres téléphones du même broker, par la configuration "/app" de l'appareil ("battery_type": "nimh").

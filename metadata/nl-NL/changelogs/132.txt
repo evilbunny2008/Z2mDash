@@ -1,0 +1,1 @@
+- De NiMH-batterij-instelling van een cluster wordt nu gedeeld met andere telefoons op dezelfde broker, via de "/app"-configuratie van het apparaat ("battery_type": "nimh").

@@ -1,0 +1,1 @@
+- Bir kümenin NiMH pil ayarı artık cihazın "/app" yapılandırması ("battery_type": "nimh") üzerinden aynı araçtaki diğer telefonlarla paylaşılıyor.

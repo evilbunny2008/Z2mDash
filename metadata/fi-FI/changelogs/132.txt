@@ -1,0 +1,1 @@
+- Klusterin NiMH-akkuasetus jaetaan nyt muiden saman välittäjän puhelimien kanssa laitteen "/app"-asetusten kautta ("battery_type": "nimh").

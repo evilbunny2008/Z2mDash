@@ -1,0 +1,32 @@
+Z2M Dash er ókeypis Android-stjórnborð með opnum kóða fyrir Zigbee2MQTT. Það talar beint við þinn eigin MQTT-miðlara, svo enginn skýjaaðgangur er nauðsynlegur og þú ert ekki bundin(n) neinum þjónustuaðila. Allar stillingarnar þínar má vista í einni skrá, eða deila á milli síma í gegnum miðlarann sjálfan.
+
+Stjórnborð
+• Hópar af klösum, þar sem hver klasi geymir reiti fyrir eitt tæki: skynjaragildi, kveikja/slökkva-rofa og einsmellshnappa (eins og STOP á gluggatjaldi).
+• Skynjarareitir með þínum eigin einingum og aukastöfum, og valfrjálst kjörsvið sem litar reitinn þegar gildi er of lágt eða of hátt.
+• Rofar sýna raunverulega stöðu tækisins, ekki bara síðustu skipun sem var send.
+• Viðveru- og nýtingarskynjarar birtast sem "Detected" eða "Clear".
+• Dragðu og slepptu til að endurraða hópum, klösum og reitum, með afturköllun. "Lock Layout" (sjálfgefið á) kemur í veg fyrir óviljandi tilfærslur.
+• Klasar fá útlínu þegar tæki hefur ekki sent frá sér í meira en klukkustund (rauð), er með lága rafhlöðu (blá) eða veikt Zigbee-merki (gul). Klasar á endurhlaðanlegum NiMH-rafhlöðum teljast aðeins lágir við 5%.
+• Síuvalmynd sýnir aðeins tæki með lága rafhlöðu eða veikt merki, eða rakaskynjara undir eða yfir kjörsviði sínu.
+• Virkar í símum og Android TV.
+
+Uppsetning og samstilling
+• Tæki geta lýst eigin reitum í varðveittum (retained) "/app"-stillingaskilaboðum, svo allir símar á sama miðlara sýna sama útlit og breytingar á einum síma berast hinum.
+• "Discover Sensors" skannar miðlara eftir gildum og býr til reiti fyrir tæki sem hafa ekki "/app"-stillingar.
+• "Permit Join"-stika leyfir nýjum Zigbee-tækjum að tengjast í gegnum hvaða beini sem er, með niðurtalningu.
+• Margir miðlarar yfir TCP, SSL, WS eða WSS, að meðtöldum sjálfundirrituðum skilríkjum.
+• Valfrjáls bakgrunnstenging heldur gildum og viðvörunum lifandi á meðan forritið er lokað.
+
+Viðvaranir
+• Reykviðvaranir frá hvaða tæki sem tilkynnir reyk, með valfrjálsu háværu viðvörunarhljóði.
+• Vökvunarviðvaranir, með bjölluhljóði og titringi, þegar rakaskynjari fer upp fyrir miðju kjörsviðs síns.
+• Viðvaranir um lága rafhlöðu sem sýna hleðsluprósentu.
+
+Afritun og villuleit
+• Fluttu út allar stillingar, eða bara miðlarana, sem þjappaða skrá. Afrit eru sjálfgefið dulkóðuð (AES-256-GCM).
+• Endurheimtu allt, eða sameinaðu bara miðlarana.
+• Eða birtu og endurheimtu afrit í gegnum varðveitt MQTT-skilaboð, án þess að færa skrá.
+• Lifandi "Terminal" með síum sýnir öll MQTT-skilaboð, til að skoða innihald og efnisþætti.
+
+Valfrjáls netþjónusta
+Hnappurinn "Import via code" á "Add Broker"-skjánum notar sync.odiousapps.com, auðkennisgengi sem forritarinn rekur. Þú skráir þig inn á þá síðu og velur vistuð auðkenni, og hýsilheiti, notandanafn og lykilorð miðlarans berast aftur í forritið í gegnum þann þjón. Ekkert er sent nema þú ýtir á hnappinn og samþykkir að halda áfram, og alltaf má slá miðlara inn handvirkt eða flytja þá inn úr skrá. Frumkóði gengisins er frjáls hugbúnaður (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

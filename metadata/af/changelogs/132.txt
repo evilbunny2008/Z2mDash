@@ -1,0 +1,1 @@
+- 'n Tros se NiMH-batteryinstelling word nou met ander fone op dieselfde makelaar gedeel, via die toestel se "/app"-konfigurasie ("battery_type": "nimh").

@@ -1,0 +1,32 @@
+Z2M Dash to darmowy panel na Androida o otwartym kodzie źródłowym dla Zigbee2MQTT. Łączy się bezpośrednio z Twoim własnym brokerem MQTT, więc nie potrzebujesz konta w chmurze i nie jesteś przywiązany do żadnego dostawcy. Całą konfigurację można zapisać w jednym pliku lub udostępniać między telefonami przez sam broker.
+
+Panel
+• Grupy klastrów, w których każdy klaster zawiera kafelki jednego urządzenia: odczyty czujników, przełączniki wł./wył. i przyciski jednego naciśnięcia (np. STOP rolety).
+• Kafelki czujników z własnymi jednostkami i liczbą miejsc po przecinku oraz opcjonalnym zakresem idealnym, który koloruje kafelek, gdy odczyt jest za niski lub za wysoki.
+• Przełączniki pokazują rzeczywisty stan urządzenia, a nie tylko ostatnio wysłane polecenie.
+• Czujniki obecności i zajętości pokazują "Wykryto" lub "Brak obecności".
+• Przeciągaj i upuszczaj, aby zmieniać kolejność grup, klastrów i kafelków, z możliwością cofnięcia. "Zablokuj układ" (domyślnie włączone) zapobiega przypadkowym przesunięciom.
+• Klaster otrzymuje obramowanie, gdy urządzenie nie zgłaszało się od ponad godziny (czerwone), ma słabą baterię (niebieskie) lub słaby sygnał Zigbee (żółte). Klastry z akumulatorami NiMH uznawane są za rozładowane dopiero przy 5%.
+• Menu filtrów pokazuje tylko urządzenia ze słabą baterią lub słabym sygnałem albo czujniki wilgotności poniżej lub powyżej ich zakresu idealnego.
+• Działa na telefonach i Android TV.
+
+Konfiguracja i synchronizacja
+• Urządzenia mogą opisywać własne kafelki w zachowanej (retained) wiadomości konfiguracyjnej "/app", dzięki czemu każdy telefon na tym samym brokerze pokazuje ten sam układ, a zmiany na jednym telefonie trafiają do pozostałych.
+• "Wykryj czujniki" skanuje broker w poszukiwaniu odczytów i tworzy kafelki dla urządzeń bez konfiguracji "/app".
+• Pasek "Zezwól na dołączanie" pozwala nowym urządzeniom Zigbee dołączyć przez dowolny router, z odliczaniem.
+• Wiele brokerów przez TCP, SSL, WS lub WSS, także z certyfikatami samopodpisanymi.
+• Opcjonalne połączenie w tle utrzymuje aktualne odczyty i alerty, gdy aplikacja jest zamknięta.
+
+Alerty
+• Alerty dymu z każdego urządzenia, które zgłasza dym, z opcjonalnym głośnym dźwiękiem alarmu.
+• Alerty podlewania z dzwonkiem i wibracją, gdy czujnik wilgotności wzrośnie powyżej środka swojego zakresu idealnego.
+• Alerty słabej baterii z procentem naładowania.
+
+Kopia zapasowa i debugowanie
+• Eksportuj całą konfigurację lub tylko brokery jako skompresowany plik. Kopie zapasowe są domyślnie szyfrowane (AES-256-GCM).
+• Przywróć wszystko lub scal tylko brokery.
+• Albo opublikuj i przywróć kopię zapasową przez zachowaną wiadomość MQTT, bez przenoszenia pliku.
+• Podgląd na żywo "Terminal" z filtrowaniem pokazuje każdą wiadomość MQTT, by sprawdzić treść i tematy.
+
+Opcjonalna usługa online
+Przycisk "Importuj za pomocą kodu" na ekranie "Dodaj brokera" korzysta z sync.odiousapps.com – przekaźnika danych logowania prowadzonego przez dewelopera. Logujesz się na tej stronie i wybierasz zapisane dane, a nazwa hosta, nazwa użytkownika i hasło brokera wracają do aplikacji przez ten serwer. Nic nie jest wysyłane, dopóki nie dotkniesz przycisku i nie zgodzisz się kontynuować, a brokery zawsze można wpisać ręcznie lub zaimportować z pliku. Kod źródłowy przekaźnika to wolne oprogramowanie (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

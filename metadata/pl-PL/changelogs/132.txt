@@ -1,0 +1,1 @@
+- Ustawienie akumulatora NiMH dla klastra jest teraz udostępniane innym telefonom na tym samym brokerze przez konfigurację "/app" urządzenia ("battery_type": "nimh").

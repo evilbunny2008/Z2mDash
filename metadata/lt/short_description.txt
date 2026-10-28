@@ -1,0 +1,1 @@
+Zigbee2MQTT skydelis, tiesiogiai bendraujantis su jūsų MQTT brokeriu

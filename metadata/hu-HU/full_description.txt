@@ -1,0 +1,32 @@
+A Z2M Dash egy ingyenes, nyílt forráskódú Android irányítópult a Zigbee2MQTT-hez. Közvetlenül a saját MQTT brókereddel kommunikál, így nincs szükség felhőfiókra, és nem kötődsz egyetlen szolgáltatóhoz sem. A teljes beállításod elmenthető egyetlen fájlba, vagy megosztható a telefonok között magán a brókeren keresztül.
+
+Irányítópult
+• Klasztercsoportok, ahol minden klaszter egy eszköz csempéit tartalmazza: érzékelők értékeit, be/ki kapcsolókat és egyszeri nyomásra működő gombokat (például egy redőny STOP gombját).
+• Érzékelőcsempék saját mértékegységgel és tizedesjegyekkel, valamint egy opcionális ideális tartománnyal, amely kiszínezi a csempét, ha az érték túl alacsony vagy túl magas.
+• A kapcsolók az eszköz valódi állapotát mutatják, nem csak az utoljára elküldött parancsot.
+• A jelenlét- és foglaltságérzékelők "Észlelve" vagy "Üres" állapotban jelennek meg.
+• Húzással átrendezheted a csoportokat, klasztereket és csempéket, visszavonási lehetőséggel. Az "Elrendezés zárolása" (alapból bekapcsolva) megakadályozza a véletlen áthelyezést.
+• A klaszter keretet kap, ha egy eszköz több mint egy órája nem jelentkezett (piros), lemerülőben van az akkuja (kék) vagy gyenge a Zigbee-jele (sárga). A tölthető NiMH akkus klaszterek csak 5%-nál számítanak lemerülőnek.
+• Egy szűrőmenü csak a gyenge akkumulátorú vagy gyenge jelű eszközöket, illetve az ideális tartományuk alatt vagy felett lévő nedvességérzékelőket mutatja.
+• Telefonon és Android TV-n is működik.
+
+Beállítás és szinkronizálás
+• Az eszközök egy megőrzött (retained) "/app" konfigurációs üzenetben leírhatják saját csempéiket, így az ugyanazon brókerhez csatlakozó összes telefon ugyanazt az elrendezést mutatja, és az egyik telefonon tett módosítások eljutnak a többihez.
+• Az "Érzékelők felfedezése" értékeket keres a brókeren, és csempéket készít azokhoz az eszközökhöz, amelyeknek nincs "/app" konfigurációja.
+• A "Csatlakozás engedélyezése" sáv lehetővé teszi, hogy új Zigbee-eszközök bármely routeren keresztül csatlakozzanak, visszaszámlálással.
+• Több bróker TCP, SSL, WS vagy WSS kapcsolaton, önaláírt tanúsítványokkal is.
+• Egy opcionális háttérkapcsolat akkor is frissen tartja az értékeket és a riasztásokat, amikor az alkalmazás zárva van.
+
+Riasztások
+• Füstriasztás bármely eszköztől, amely füstöt jelez, opcionális hangos riasztóhanggal.
+• Öntözési figyelmeztetés csengőhanggal és rezgéssel, amikor egy nedvességérzékelő értéke az ideális tartomány közepe fölé emelkedik.
+• Alacsony akkumulátor riasztás az akkumulátor százalékával.
+
+Biztonsági mentés és hibakeresés
+• Exportáld a teljes konfigurációt, vagy csak a brókereket, tömörített fájlként. A biztonsági mentések alapból titkosítottak (AES-256-GCM).
+• Állíts vissza mindent, vagy csak a brókereket olvaszd be.
+• Vagy tegyél közzé és állíts vissza egy mentést megőrzött MQTT üzeneten keresztül, fájlmozgatás nélkül.
+• Egy élő, szűrhető "Terminál" minden MQTT üzenetet mutat a tartalmak és témák ellenőrzéséhez.
+
+Opcionális online szolgáltatás
+A "Bróker hozzáadása" képernyő "Importálás kóddal" gombja a sync.odiousapps.com oldalt használja, amely egy, a fejlesztő által üzemeltetett hitelesítőadat-közvetítő. Bejelentkezel az oldalra, és kiválasztasz egy mentett hitelesítő adatot, a bróker gépneve, felhasználóneve és jelszava pedig ezen a szerveren keresztül visszakerül az alkalmazásba. Semmi sem kerül elküldésre, amíg meg nem koppintod a gombot és bele nem egyezel a folytatásba, a brókerek pedig mindig megadhatók kézzel vagy importálhatók fájlból. A közvetítő forráskódja szabad szoftver (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+- Mpangilio wa betri ya NiMH wa kundi sasa unashirikiwa na simu nyingine kwenye broker ileile, kupitia usanidi wa "/app" wa kifaa ("battery_type": "nimh").

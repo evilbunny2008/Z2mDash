@@ -1,0 +1,32 @@
+Z2M Dash è in panel Android gratuit e cun code avert per Zigbee2MQTT. El discurra directamain cun tes agen broker MQTT, uschia na dovras ti nagin conto en il cloud e n'es lià a nagin purschider. Tut tia configuraziun po vegnir memorisada en ina suletta datoteca u cundividida tranter telefonins via il broker sez.
+
+Panel
+• Gruppas da clusters, nua che mintga cluster cuntegna las plattas d'in apparat: valurs da sensurs, interruptuers en/ora e buttuns per in squitsch (sco il STOP d'ina tenda).
+• Plattas da sensur cun tias atgnas unitads e decimalas, ed in interval ideal facultativ che colurescha la platta, sch'ina valur è memia bassa u memia auta.
+• Ils interruptuers mussan il stadi effectiv da l'apparat, betg mo l'ultim cumond tramess.
+• Sensurs da preschientscha e d'occupaziun vegnan mussads sco "Detected" u "Clear".
+• Tira e laschà dar giu per reordinar gruppas, clusters e plattas, cun la pussaivladad da revocar. "Lock Layout" (activà sco standard) impedescha spustaments nunvulids.
+• Ils clusters survegnan in rom, sch'in apparat n'ha betg rapportà dapli ch'in'ura (cotschen), ha ina battaria debla (blau) u in signal Zigbee flaivel (mellen). Clusters cun battarias recargiablas NiMH valan pir a 5% sco debels.
+• In menu da filters mussa mo apparats cun battaria debla u signal flaivel, u sensurs d'umiditad sut u sur lur interval ideal.
+• Funcziuna sin telefonins ed Android TV.
+
+Configuraziun e sincronisaziun
+• Ils apparats pon descriver lur atgnas plattas en in messadi da configuraziun "/app" mantegnì (retained), uschia mussan tut ils telefonins sin il medem broker la medema disposiziun, e midadas sin in telefonin arrivan tar ils auters.
+• "Discover Sensors" scannescha in broker per valurs e crea plattas per apparats senza configuraziun "/app".
+• Ina trav "Permit Join" lascha s'associar novs apparats Zigbee via in router qualunque, cun dumbrar enavos.
+• Plirs brokers via TCP, SSL, WS u WSS, inclusiv certificats auto-suttascrits.
+• Ina colliaziun facultativa en il fund tegna actualas las valurs e las avertiments, cura che l'app è serrada.
+
+Avertiments
+• Avertiments da fem da mintga apparat che rapporta fem, cun in tun d'alarm ferm facultativ.
+• Avertiments d'avar, cun scalin e vibraziun, cura ch'in sensur d'umiditad crescha sur il mez da ses interval ideal.
+• Avertiments da battaria debla che mussan il procent da la battaria.
+
+Copia da segirezza e debugging
+• Exporta l'entira configuraziun, u mo ils brokers, sco datoteca cumprimida. Las copias da segirezza èn criptadas sco standard (AES-256-GCM).
+• Restaurescha tut, u unescha mo ils brokers.
+• U publitgescha e restaurescha ina copia via in messadi MQTT mantegnì, senza stuair spustar ina datoteca.
+• In "Terminal" live e filtrabel mussa mintga messadi MQTT, per controllar cuntegns e temas.
+
+Servetsch online facultativ
+Il buttun "Import via code" sin il visur "Add Broker" utilisescha sync.odiousapps.com, in relais da datas d'access manà dal sviluppader. Ti t'annunzias sin quella pagina e tschernas datas d'access memorisadas, e num dal host, num d'utilisader e pled-clav dal broker vegnan returnads a l'app via quel server. Nagut na vegn tramess, uschè ditg che ti na tutgas betg il buttun e n'acceptas betg da cuntinuar, e brokers pon adina vegnir endatads a maun u importads d'ina datoteca. Il code da funtauna dal relais è software liber (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+Zigbee2MQTT juhtpaneel, mis suhtleb otse teie enda MQTT maakleriga

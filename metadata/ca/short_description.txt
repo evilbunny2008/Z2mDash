@@ -1,0 +1,1 @@
+Un tauler de Zigbee2MQTT que es connecta directament al vostre broker MQTT

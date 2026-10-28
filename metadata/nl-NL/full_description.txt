@@ -1,0 +1,32 @@
+Z2M Dash is een gratis, open-source Android-dashboard voor Zigbee2MQTT. Het praat rechtstreeks met je eigen MQTT-broker, dus je hebt geen cloudaccount nodig en zit niet vast aan een leverancier. Je hele configuratie kan in één bestand worden bewaard, of via de broker zelf tussen telefoons worden gedeeld.
+
+Dashboard
+• Groepen van clusters, waarbij elk cluster de tegels voor één apparaat bevat: sensorwaarden, aan/uit-schakelaars en knoppen voor één druk (zoals STOP voor een rolluik).
+• Sensortegels met je eigen eenheden en decimalen, en een optioneel ideaal bereik dat de tegel kleurt wanneer een waarde te laag of te hoog is.
+• Schakelaars tonen de werkelijke toestand van het apparaat, niet alleen het laatst verzonden commando.
+• Aanwezigheids- en bezettingssensoren worden getoond als "Gedetecteerd" of "Vrij".
+• Versleep groepen, clusters en tegels om ze opnieuw te ordenen, met ongedaan maken. "Indeling vergrendelen" (standaard aan) voorkomt per ongeluk verplaatsen.
+• Clusters krijgen een rand wanneer een apparaat al meer dan een uur niets heeft gemeld (rood), een lege batterij heeft (blauw) of een zwak Zigbee-signaal heeft (geel). Clusters op oplaadbare NiMH-batterijen tellen pas bij 5% als bijna leeg.
+• Een filtermenu toont alleen apparaten met een bijna lege batterij of zwak signaal, of vochtsensoren onder of boven hun ideale bereik.
+• Werkt op telefoons en Android TV.
+
+Instellen en synchroniseren
+• Apparaten kunnen hun eigen tegels beschrijven in een bewaard (retained) "/app"-configuratiebericht, zodat elke telefoon op dezelfde broker dezelfde indeling toont en wijzigingen op één telefoon bij de andere aankomen.
+• "Sensoren ontdekken" scant een broker op waarden en maakt tegels voor apparaten zonder "/app"-configuratie.
+• Een balk "Koppelen toestaan" laat nieuwe Zigbee-apparaten via elke router koppelen, met aftelling.
+• Meerdere brokers via TCP, SSL, WS of WSS, ook met zelfondertekende certificaten.
+• Een optionele achtergrondverbinding houdt waarden en meldingen actueel terwijl de app gesloten is.
+
+Meldingen
+• Rookmeldingen van elk apparaat dat rook meldt, met een optioneel luid alarmgeluid.
+• Water-geefmeldingen met een belletje en trilling wanneer een vochtsensor boven het midden van zijn ideale bereik uitkomt.
+• Meldingen bij een bijna lege batterij met het batterijpercentage.
+
+Back-up en foutopsporing
+• Exporteer de hele configuratie, of alleen de brokers, als een gecomprimeerd bestand. Back-ups zijn standaard versleuteld (AES-256-GCM).
+• Herstel alles, of voeg alleen de brokers samen.
+• Of publiceer en herstel een back-up via een bewaard MQTT-bericht, zonder een bestand te verplaatsen.
+• Een live, filterbare "Terminal" toont elk MQTT-bericht, om payloads en topics te controleren.
+
+Optionele onlinedienst
+De knop "Importeren via code" op het scherm "Broker toevoegen" gebruikt sync.odiousapps.com, een doorgeefdienst voor inloggegevens die door de ontwikkelaar wordt beheerd. Je logt in op die site en kiest opgeslagen inloggegevens, waarna de hostnaam, gebruikersnaam en het wachtwoord van de broker via die server naar de app worden teruggestuurd. Er wordt niets verzonden tenzij je op de knop tikt en akkoord gaat met doorgaan, en brokers kunnen altijd handmatig worden ingevoerd of uit een bestand worden geïmporteerd. De broncode van de doorgeefdienst is vrije software (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

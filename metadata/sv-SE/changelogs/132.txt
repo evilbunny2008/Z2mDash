@@ -1,0 +1,1 @@
+- Ett klusters NiMH-batteriinställning delas nu med andra telefoner på samma broker, via enhetens "/app"-konfiguration ("battery_type": "nimh").

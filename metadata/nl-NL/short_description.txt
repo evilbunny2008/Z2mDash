@@ -1,0 +1,1 @@
+Een Zigbee2MQTT-dashboard dat rechtstreeks met je eigen MQTT-broker praat

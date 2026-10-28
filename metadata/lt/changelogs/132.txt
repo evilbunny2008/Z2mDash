@@ -1,0 +1,1 @@
+- Klasterio NiMH baterijos nustatymas dabar bendrinamas su kitais to paties brokerio telefonais per įrenginio "/app" konfigūraciją ("battery_type": "nimh").

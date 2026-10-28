@@ -1,0 +1,1 @@
+- Isilungiselelo sebhethri le-NiMH seqoqo manje sabelwana ngaso namanye amafoni akubhulokha efanayo, ngokulungiselela kwe-"/app" kwedivayisi ("battery_type": "nimh").

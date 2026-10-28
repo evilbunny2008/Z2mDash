@@ -1,0 +1,32 @@
+I-Z2M Dash iyideshibhodi ye-Android yamahhala nevulekile ye-Zigbee2MQTT. Ixhumana ngqo nebhulokha yakho ye-MQTT, ngakho akudingeki i-akhawunti yefu futhi awuboshelwa kunoma yimuphi umhlinzeki. Konke ukusetha kwakho kungalondolozwa efayeleni elilodwa, noma kwabelwane ngakho phakathi kwamafoni ngebhulokha uqobo.
+
+Ideshibhodi
+• Amaqembu amaqoqo, iqoqo ngalinye liqukethe amathayela edivayisi eyodwa: ukufundwa kwezinzwa, amaswishi okuvula/ukuvala nezinkinobho zokucindezela kanye (njenge-STOP yekhetheni).
+• Amathayela ezinzwa anamayunithi nezindawo zedesimali ozikhethelayo, kanye nobubanzi obufanele obungakhethwa obufaka umbala ethayeleni uma ukufundwa kuphansi kakhulu noma kuphezulu kakhulu.
+• Amaswishi abonisa isimo sangempela sedivayisi, hhayi nje umyalo wokugcina othunyelwe.
+• Izinzwa zokuba khona nezokuhlala zivela njengo-"Kutholakele" noma "Akukho muntu".
+• Hudula bese wehlisa ukuze uhlele kabusha amaqembu, amaqoqo namathayela, ngokuhlehlisa. "Khiya Isakhiwo" (kuvuliwe ngokuzenzakalelayo) kuvimbela ukuhambisa ngephutha.
+• Amaqoqo athola uhlaka uma idivayisi ingabikanga isikhathi esingaphezu kwehora (obomvu), inebhethri eliphansi (oluhlaza okwesibhakabhaka) noma isignali ye-Zigbee ebuthakathaka (ophuzi). Amaqoqo asebenzisa amabhethri e-NiMH ashajwayo abalwa njengaphansi kuphela ku-5%.
+• Imenyu yezihlungi ibonisa kuphela amadivayisi anebhethri eliphansi noma isignali ebuthakathaka, noma izinzwa zomswakama ezingaphansi noma ngaphezu kobubanzi bazo obufanele.
+• Isebenza kumafoni naku-Android TV.
+
+Ukusetha nokuvumelanisa
+• Amadivayisi angachaza amathayela awo emlayezweni wokulungiselela we-"/app" ogciniwe (retained), ngakho wonke amafoni akubhulokha efanayo abonisa isakhiwo esifanayo, futhi izinguquko zefoni eyodwa zifinyelela kwamanye.
+• "Thola izinzwa" iskena ibhulokha ifuna ukufundwa bese yakha amathayela amadivayisi angenako ukulungiselela kwe-"/app".
+• Ibha ethi "Vumela ukujoyina" ivumela amadivayisi amasha e-Zigbee ukuthi ajoyine nganoma iyiphi i-router, ngokubala emuva.
+• Amabhulokha amaningi nge-TCP, SSL, WS noma WSS, kuhlanganise nezitifiketi ezisayinwe ngokwazo.
+• Uxhumano lwangemuva olungakhethwa lugcina ukufundwa nezexwayiso kusesikhathini ngisho noma uhlelo lokusebenza luvaliwe.
+
+Izexwayiso
+• Izexwayiso zentuthu ezivela kunoma iyiphi idivayisi ebika intuthu, ngomsindo we-alamu omkhulu ongakhethwa.
+• Izexwayiso zokunisela, ngensimbi nokudlidliza, uma inzwa yomswakama ikhuphuka idlula maphakathi nobubanzi bayo obufanele.
+• Izexwayiso zebhethri eliphansi ezibonisa iphesenti lebhethri.
+
+Ukulondoloza nokulungisa amaphutha
+• Thumela ngaphandle konke ukulungiselela, noma amabhulokha kuphela, njengefayela elicindezelwe. Okulondoloziwe kubethelwa ngokuzenzakalelayo (AES-256-GCM).
+• Buyisela konke, noma uhlanganise amabhulokha kuphela.
+• Noma shicilela futhi ubuyisele okulondoloziwe ngomlayezo we-MQTT ogciniwe, ngaphandle kokuhambisa ifayela.
+• "Itheminali" ebukhoma engahlungwa ibonisa wonke umlayezo we-MQTT, ukuze uhlole okuqukethwe nezihloko.
+
+Isevisi ye-inthanethi engakhethwa
+Inkinobho ethi "Ngenisa ngekhodi" esikrinini esithi "Engeza ibhulokha" isebenzisa i-sync.odiousapps.com, isevisi yokudlulisa imininingwane yokungena eqhutshwa ngunjiniyela. Ungena kuleyo sayithi bese ukhetha imininingwane elondoloziwe, bese igama lomsingathi, igama lomsebenzisi nephasiwedi yebhulokha kubuyiselwa kuhlelo lokusebenza ngaleyo seva. Akukho okuthunyelwayo ngaphandle uma uthepha inkinobho futhi uvuma ukuqhubeka, futhi amabhulokha angahlala efakwa ngesandla noma angeniswe efayeleni. Ikhodi yomthombo yalesi sevisi iyisofthiwe yamahhala (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

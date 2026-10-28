@@ -1,0 +1,1 @@
+- NiMH-rafhlöðustilling klasa er nú deilt með öðrum símum á sama miðlara, í gegnum "/app"-stillingar tækisins ("battery_type": "nimh").

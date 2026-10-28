@@ -1,0 +1,1 @@
+- Klasterin NiMH batareya ayarı indi cihazın "/app" konfiqurasiyası ("battery_type": "nimh") vasitəsilə eyni brokerdəki digər telefonlarla paylaşılır.

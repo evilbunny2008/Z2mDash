@@ -1,0 +1,1 @@
+- Klastri NiMH-aku seadet jagatakse nüüd sama maakleri teiste telefonidega seadme "/app" konfiguratsiooni kaudu ("battery_type": "nimh").

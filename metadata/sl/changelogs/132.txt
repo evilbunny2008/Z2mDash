@@ -1,0 +1,1 @@
+- Nastavitev baterije NiMH za gručo se zdaj deli z drugimi telefoni na istem posredniku prek konfiguracije "/app" naprave ("battery_type": "nimh").

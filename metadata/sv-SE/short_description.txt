@@ -1,0 +1,1 @@
+En Zigbee2MQTT-panel som pratar direkt med din egen MQTT-broker

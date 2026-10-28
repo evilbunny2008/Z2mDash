@@ -1,0 +1,32 @@
+Z2M Dash, Zigbee2MQTT için ücretsiz ve açık kaynaklı bir Android kontrol panelidir. Doğrudan kendi MQTT aracınızla (broker) konuşur; bulut hesabı gerekmez ve hiçbir sağlayıcıya bağlı kalmazsınız. Tüm kurulumunuz tek bir dosyaya kaydedilebilir veya aracın kendisi üzerinden telefonlar arasında paylaşılabilir.
+
+Kontrol paneli
+• Kümelerden oluşan gruplar; her küme bir cihazın kutucuklarını içerir: sensör değerleri, açma/kapama anahtarları ve tek basışlık düğmeler (örneğin bir panjurun STOP düğmesi).
+• Kendi birimleriniz ve ondalık basamaklarınızla sensör kutucukları, ayrıca değer çok düşük veya çok yüksek olduğunda kutucuğu renklendiren isteğe bağlı ideal aralık.
+• Anahtarlar yalnızca son gönderilen komutu değil, cihazın gerçek durumunu gösterir.
+• Varlık ve doluluk sensörleri "Algılandı" veya "Boş" olarak görünür.
+• Grupları, kümeleri ve kutucukları sürükleyip bırakarak yeniden sıralayın, geri alma desteğiyle. "Düzeni Kilitle" (varsayılan olarak açık) yanlışlıkla taşımayı önler.
+• Bir cihaz bir saatten uzun süredir bildirim yapmadığında (kırmızı), pili zayıf olduğunda (mavi) veya Zigbee sinyali zayıf olduğunda (sarı) küme çerçevelenir. Şarj edilebilir NiMH pilli kümeler yalnızca %5'te zayıf sayılır.
+• Filtre menüsü yalnızca pili veya sinyali zayıf cihazları ya da ideal aralığının altında veya üstünde kalan nem sensörlerini gösterir.
+• Telefonlarda ve Android TV'de çalışır.
+
+Kurulum ve eşitleme
+• Cihazlar kendi kutucuklarını saklanan (retained) bir "/app" yapılandırma mesajında tanımlayabilir; böylece aynı araca bağlı her telefon aynı düzeni gösterir ve bir telefonda yapılan değişiklikler diğerlerine ulaşır.
+• "Sensörleri Keşfedin", aracı değerler için tarar ve "/app" yapılandırması olmayan cihazlar için kutucuklar oluşturur.
+• "Katılmaya İzin Ver" çubuğu, yeni Zigbee cihazlarının herhangi bir yönlendirici üzerinden katılmasına izin verir, geri sayımla.
+• TCP, SSL, WS veya WSS üzerinden birden çok araç, kendinden imzalı sertifikalar dahil.
+• İsteğe bağlı arka plan bağlantısı, uygulama kapalıyken bile değerleri ve uyarıları güncel tutar.
+
+Uyarılar
+• Duman bildiren her cihazdan duman uyarıları, isteğe bağlı yüksek sesli alarm ile.
+• Bir nem sensörü ideal aralığının ortasını aşarak yükseldiğinde zil sesi ve titreşimle sulama uyarıları.
+• Pil yüzdesini gösteren zayıf pil uyarıları.
+
+Yedekleme ve hata ayıklama
+• Tüm yapılandırmayı veya yalnızca araçları sıkıştırılmış bir dosya olarak dışa aktarın. Yedekler varsayılan olarak şifrelenir (AES-256-GCM).
+• Her şeyi geri yükleyin veya yalnızca araçları birleştirin.
+• Ya da yedeği, dosya taşımadan, saklanan bir MQTT mesajı üzerinden yayınlayıp geri yükleyin.
+• Canlı ve filtrelenebilir bir "Terminal", içerikleri ve konuları kontrol etmek için her MQTT mesajını gösterir.
+
+İsteğe bağlı çevrimiçi hizmet
+"Aracı Ekle" ekranındaki "Kod aracılığıyla içe aktar" düğmesi, geliştiricinin işlettiği bir kimlik bilgisi aktarma hizmeti olan sync.odiousapps.com'u kullanır. Bu siteye giriş yapıp kayıtlı bir kimlik bilgisi seçersiniz; aracın ana bilgisayar adı, kullanıcı adı ve parolası bu sunucu üzerinden uygulamaya geri gönderilir. Düğmeye dokunup devam etmeyi kabul etmediğiniz sürece hiçbir şey gönderilmez; araçlar her zaman elle girilebilir veya bir dosyadan içe aktarılabilir. Aktarma hizmetinin kaynak kodu özgür yazılımdır (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

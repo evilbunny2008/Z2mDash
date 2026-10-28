@@ -1,0 +1,1 @@
+- Klastera NiMH akumulatora iestatījums tagad tiek koplietots ar citiem tālruņiem uz tā paša brokera, izmantojot ierīces "/app" konfigurāciju ("battery_type": "nimh").

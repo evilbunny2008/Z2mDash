@@ -1,0 +1,1 @@
+Panel pro Zigbee2MQTT, který komunikuje přímo s vaším MQTT brokerem

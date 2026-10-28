@@ -1,0 +1,32 @@
+Z2M Dash er et gratis Android-dashbord med åpen kildekode for Zigbee2MQTT. Det snakker direkte med din egen MQTT-broker, så du trenger ingen skykonto og er ikke bundet til noen leverandør. Hele oppsettet ditt kan lagres i én fil, eller deles mellom telefoner via selve brokeren.
+
+Dashbord
+• Grupper av klynger, der hver klynge har flisene for én enhet: sensoravlesninger, av/på-brytere og knapper med ett trykk (som STOP for en persienne).
+• Sensorfliser med dine egne enheter og desimaler, og et valgfritt ideelt område som farger flisen når en avlesning er for lav eller for høy.
+• Brytere viser enhetens faktiske tilstand, ikke bare den sist sendte kommandoen.
+• Tilstedeværelses- og belegningssensorer vises som "Oppdaget" eller "Fritt".
+• Dra og slipp for å endre rekkefølgen på grupper, klynger og fliser, med angring. "Lås oppsett" (på som standard) hindrer utilsiktede flyttinger.
+• Klynger får en ramme når en enhet ikke har rapportert på over en time (rød), har lavt batteri (blå) eller svakt Zigbee-signal (gul). Klynger på oppladbare NiMH-batterier regnes først som lave ved 5 %.
+• En filtermeny viser bare enheter med lavt batteri eller svakt signal, eller fuktsensorer under eller over sitt ideelle område.
+• Fungerer på telefoner og Android TV.
+
+Oppsett og synkronisering
+• Enheter kan beskrive sine egne fliser i en bevart (retained) "/app"-konfigurasjonsmelding, slik at alle telefoner på samme broker viser samme oppsett, og endringer på én telefon når de andre.
+• "Oppdag sensorer" skanner en broker etter avlesninger og lager fliser for enheter uten "/app"-konfigurasjon.
+• En "Tillat tilkobling"-linje lar nye Zigbee-enheter koble seg til via hvilken som helst ruter, med nedtelling.
+• Flere brokere over TCP, SSL, WS eller WSS, inkludert selvsignerte sertifikater.
+• En valgfri bakgrunnstilkobling holder avlesninger og varsler oppdatert mens appen er lukket.
+
+Varsler
+• Røykvarsler fra enhver enhet som melder røyk, med valgfri høy alarmlyd.
+• Vanningsvarsler med klokkelyd og vibrasjon når en fuktsensor stiger forbi midten av sitt ideelle område.
+• Varsler om lavt batteri som viser batteriprosenten.
+
+Sikkerhetskopi og feilsøking
+• Eksporter hele konfigurasjonen, eller bare brokerne, som en komprimert fil. Sikkerhetskopier er kryptert som standard (AES-256-GCM).
+• Gjenopprett alt, eller flett inn bare brokerne.
+• Eller publiser og gjenopprett en sikkerhetskopi via en bevart MQTT-melding, uten å flytte noen fil.
+• En direkte, filtrerbar "Terminal" viser hver MQTT-melding, for å sjekke innhold og emner.
+
+Valgfri nettjeneste
+Knappen "Importer via kode" på skjermen "Legg til broker" bruker sync.odiousapps.com, et relé for påloggingsdetaljer som drives av utvikleren. Du logger inn på nettstedet og velger lagrede påloggingsdetaljer, og brokerens vertsnavn, brukernavn og passord sendes tilbake til appen via den serveren. Ingenting sendes med mindre du trykker på knappen og godtar å fortsette, og brokere kan alltid legges inn manuelt eller importeres fra en fil. Reléets kildekode er fri programvare (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

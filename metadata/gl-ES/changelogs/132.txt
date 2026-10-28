@@ -1,0 +1,1 @@
+- A configuración de batería NiMH dun clúster agora compártese cos demais teléfonos do mesmo bróker, mediante a configuración "/app" do dispositivo ("battery_type": "nimh").

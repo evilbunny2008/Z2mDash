@@ -1,0 +1,32 @@
+Z2M Dash je bezplatný Android panel s otvoreným zdrojovým kódom pre Zigbee2MQTT. Komunikuje priamo s vaším vlastným MQTT brokerom, takže nepotrebujete cloudový účet a nie ste viazaní na žiadneho poskytovateľa. Celé nastavenie sa dá uložiť do jedného súboru alebo zdieľať medzi telefónmi cez samotný broker.
+
+Panel
+• Skupiny klastrov, kde každý klaster obsahuje dlaždice jedného zariadenia: hodnoty snímačov, vypínače zap/vyp a tlačidlá na jedno stlačenie (napr. STOP pre žalúzie).
+• Dlaždice snímačov s vlastnými jednotkami a počtom desatinných miest a voliteľným ideálnym rozsahom, ktorý dlaždicu zafarbí, keď je hodnota príliš nízka alebo vysoká.
+• Vypínače ukazujú skutočný stav zariadenia, nielen posledný odoslaný príkaz.
+• Snímače prítomnosti a obsadenosti sa zobrazujú ako "Zistené" alebo "Voľné".
+• Presúvaním meníte poradie skupín, klastrov a dlaždíc, s možnosťou vrátenia. "Uzamknúť rozloženie" (predvolene zapnuté) bráni náhodnému presunutiu.
+• Klaster dostane obrys, keď sa zariadenie neozvalo viac ako hodinu (červený), má slabú batériu (modrý) alebo slabý signál Zigbee (žltý). Klastre na nabíjateľných batériách NiMH sa považujú za vybité až pri 5 %.
+• Ponuka filtrov zobrazí iba zariadenia so slabou batériou alebo slabým signálom, prípadne snímače vlhkosti pod alebo nad ideálnym rozsahom.
+• Funguje na telefónoch a Android TV.
+
+Nastavenie a synchronizácia
+• Zariadenia môžu opísať vlastné dlaždice v uchovanej (retained) konfiguračnej správe "/app", takže všetky telefóny na rovnakom brokeri ukazujú rovnaké rozloženie a zmeny z jedného telefónu sa dostanú aj na ostatné.
+• "Vyhľadať snímače" prehľadá broker a vytvorí dlaždice pre zariadenia, ktoré nemajú konfiguráciu "/app".
+• Lišta "Povoliť pripojenie" umožní novým zariadeniam Zigbee pripojiť sa cez ľubovoľný smerovač, s odpočtom.
+• Viac brokerov cez TCP, SSL, WS alebo WSS, vrátane certifikátov podpísaných sebou samým.
+• Voliteľné pripojenie na pozadí udržiava hodnoty a upozornenia aktuálne, aj keď je aplikácia zatvorená.
+
+Upozornenia
+• Upozornenia na dym z ľubovoľného zariadenia, ktoré hlási dym, s voliteľným hlasným poplašným zvukom.
+• Upozornenia na polievanie, so zvončekom a vibráciou, keď snímač vlhkosti stúpne nad stred svojho ideálneho rozsahu.
+• Upozornenia na slabú batériu s percentom nabitia.
+
+Záloha a ladenie
+• Exportujte celú konfiguráciu, alebo iba brokery, ako komprimovaný súbor. Zálohy sú predvolene šifrované (AES-256-GCM).
+• Obnovte všetko, alebo pripojte iba brokery.
+• Alebo zálohu zverejnite a obnovte cez uchovanú správu MQTT, bez prenášania súboru.
+• Živý, filtrovateľný "Terminál" ukazuje každú správu MQTT na kontrolu obsahu a tém.
+
+Voliteľná online služba
+Tlačidlo "Importovať pomocou kódu" na obrazovke "Pridať broker" používa sync.odiousapps.com, prenos prihlasovacích údajov prevádzkovaný vývojárom. Prihlásite sa na tento web a vyberiete uložené údaje, a názov hostiteľa, používateľské meno a heslo brokera sa cez tento server vrátia do aplikácie. Nič sa neodošle, kým neťuknete na tlačidlo a nesúhlasíte s pokračovaním, a brokery sa dajú vždy zadať ručne alebo importovať zo súboru. Zdrojový kód prenosu je slobodný softvér (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

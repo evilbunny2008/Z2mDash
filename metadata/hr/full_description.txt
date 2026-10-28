@@ -1,0 +1,32 @@
+Z2M Dash je besplatna Android nadzorna ploča otvorenog koda za Zigbee2MQTT. Izravno komunicira s vašim vlastitim MQTT brokerom, pa ne treba račun u oblaku i niste vezani ni uz jednog pružatelja. Cijelo postavljanje možete spremiti u jednu datoteku ili ga dijeliti između telefona preko samog brokera.
+
+Nadzorna ploča
+• Grupe klastera, pri čemu svaki klaster sadrži pločice jednog uređaja: očitanja senzora, prekidače uklj./isklj. i gumbe za jedan pritisak (poput STOP za roletu).
+• Pločice senzora s vašim jedinicama i brojem decimala te neobavezni idealni raspon koji oboji pločicu kad je očitanje prenisko ili previsoko.
+• Prekidači pokazuju stvarno stanje uređaja, a ne samo zadnju poslanu naredbu.
+• Senzori prisutnosti i zauzetosti prikazuju se kao "Otkriveno" ili "Slobodno".
+• Povucite i ispustite za promjenu redoslijeda grupa, klastera i pločica, uz poništavanje. "Zaključaj raspored" (zadano uključeno) sprječava slučajna pomicanja.
+• Klaster dobiva obrub kad se uređaj nije javio više od sat vremena (crveni), ima slabu bateriju (plavi) ili slab Zigbee signal (žuti). Klasteri na punjivim NiMH baterijama smatraju se praznima tek na 5 %.
+• Izbornik filtara prikazuje samo uređaje sa slabom baterijom ili slabim signalom, ili senzore vlage ispod ili iznad idealnog raspona.
+• Radi na telefonima i Android TV-u.
+
+Postavljanje i sinkronizacija
+• Uređaji mogu opisati vlastite pločice u zadržanoj (retained) "/app" konfiguracijskoj poruci, pa svi telefoni na istom brokeru prikazuju isti raspored, a promjene s jednog telefona stižu na ostale.
+• "Otkrij senzore" pretražuje broker za očitanjima i stvara pločice za uređaje bez "/app" konfiguracije.
+• Traka "Dopusti pridruživanje" omogućuje novim Zigbee uređajima da se pridruže preko bilo kojeg usmjerivača, s odbrojavanjem.
+• Više brokera preko TCP-a, SSL-a, WS-a ili WSS-a, uključujući samopotpisane certifikate.
+• Neobavezna veza u pozadini održava očitanja i upozorenja ažurnima dok je aplikacija zatvorena.
+
+Upozorenja
+• Upozorenja na dim s bilo kojeg uređaja koji prijavi dim, uz neobavezan glasan zvuk alarma.
+• Upozorenja za zalijevanje, sa zvonom i vibracijom, kad senzor vlage poraste iznad sredine svog idealnog raspona.
+• Upozorenja o slaboj bateriji s postotkom baterije.
+
+Sigurnosna kopija i otklanjanje pogrešaka
+• Izvezite cijelu konfiguraciju, ili samo brokere, kao komprimiranu datoteku. Sigurnosne kopije zadano su šifrirane (AES-256-GCM).
+• Vratite sve ili spojite samo brokere.
+• Ili objavite i vratite sigurnosnu kopiju putem zadržane MQTT poruke, bez premještanja datoteke.
+• "Terminal" uživo s filtriranjem prikazuje svaku MQTT poruku radi provjere sadržaja i tema.
+
+Neobavezna mrežna usluga
+Gumb "Uvezi putem koda" na zaslonu "Dodaj broker" koristi sync.odiousapps.com, posrednika za vjerodajnice kojim upravlja razvojni programer. Prijavite se na tu stranicu i odaberete spremljene vjerodajnice, a naziv hosta, korisničko ime i lozinka brokera vraćaju se u aplikaciju preko tog poslužitelja. Ništa se ne šalje dok ne dodirnete gumb i ne pristanete nastaviti, a brokere uvijek možete unijeti ručno ili uvesti iz datoteke. Izvorni kod posrednika je slobodni softver (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+- Kluster baten NiMH bateria ezarpena broker bereko beste telefonoekin partekatzen da orain, gailuaren "/app" konfigurazioaren bidez ("battery_type": "nimh").

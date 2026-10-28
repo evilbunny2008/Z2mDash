@@ -1,1 +1,1 @@
-An Android dashboard app for Zigbee2MQTT
+A Zigbee2MQTT dashboard that talks directly to your own MQTT broker

@@ -1,0 +1,1 @@
+Isang Zigbee2MQTT dashboard na direktang kumokonekta sa sarili mong MQTT broker

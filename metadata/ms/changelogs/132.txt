@@ -1,0 +1,1 @@
+- Tetapan bateri NiMH bagi kluster kini dikongsi dengan telefon lain pada broker yang sama, melalui konfigurasi "/app" peranti ("battery_type": "nimh").

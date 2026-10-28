@@ -1,0 +1,1 @@
+- Cilësimi i baterisë NiMH i një grumbulli tani ndahet me telefonat e tjerë në të njëjtin broker, përmes konfigurimit "/app" të pajisjes ("battery_type": "nimh").

@@ -1,0 +1,1 @@
+In panel per Zigbee2MQTT che discurra directamain cun tes agen broker MQTT

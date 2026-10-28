@@ -1,0 +1,32 @@
+Z2M Dash on tasuta avatud lähtekoodiga Androidi juhtpaneel Zigbee2MQTT jaoks. See suhtleb otse teie enda MQTT maakleriga, nii et pilvekontot pole vaja ja te pole ühegi teenusepakkujaga seotud. Kogu seadistuse saab salvestada ühte faili või jagada telefonide vahel maakleri enda kaudu.
+
+Juhtpaneel
+• Klastrite grupid, kus iga klaster sisaldab ühe seadme paane: andurite näite, sisse/välja lüliteid ja ühe vajutusega nuppe (näiteks ruloo STOP).
+• Anduripaanid teie enda ühikute ja komakohtadega ning valikulise ideaalvahemikuga, mis värvib paani, kui näit on liiga madal või kõrge.
+• Lülitid näitavad seadme tegelikku olekut, mitte ainult viimast saadetud käsku.
+• Kohalolu- ja hõivatusandurid kuvatakse kui "Tuvastatud" või "Vaba".
+• Lohistage gruppe, klastreid ja paane nende järjekorra muutmiseks, koos tagasivõtmisega. "Lukusta paigutus" (vaikimisi sees) takistab juhuslikke liigutusi.
+• Klaster saab äärise, kui seade pole üle tunni aru andnud (punane), aku on tühjenemas (sinine) või Zigbee signaal on nõrk (kollane). Laetavate NiMH-akudega klastreid loetakse tühjenevaks alles 5% juures.
+• Filtrimenüü näitab ainult nõrga aku või signaaliga seadmeid või niiskusandureid, mis on alla või üle oma ideaalvahemiku.
+• Töötab telefonides ja Android TV-s.
+
+Seadistamine ja sünkroonimine
+• Seadmed saavad oma paane kirjeldada säilitatud (retained) "/app" konfiguratsioonisõnumis, nii et kõik sama maakleri telefonid näitavad sama paigutust ja ühes telefonis tehtud muudatused jõuavad teisteni.
+• "Otsi andureid" skannib maaklerit näitude leidmiseks ja loob paanid seadmetele, millel pole "/app" konfiguratsiooni.
+• "Luba liitumine" riba laseb uutel Zigbee seadmetel liituda mis tahes ruuteri kaudu, koos pöördloendusega.
+• Mitu maaklerit üle TCP, SSL, WS või WSS, ka iseallkirjastatud sertifikaatidega.
+• Valikuline taustaühendus hoiab näidud ja hoiatused ajakohasena ka siis, kui rakendus on suletud.
+
+Hoiatused
+• Suitsuhoiatused igalt seadmelt, mis teatab suitsust, valikulise valju häirehelina.
+• Kastmishoiatused helina ja vibratsiooniga, kui niiskusandur tõuseb üle oma ideaalvahemiku keskkoha.
+• Tühjeneva aku hoiatused koos aku protsendiga.
+
+Varundus ja silumine
+• Eksportige kogu konfiguratsioon või ainult maaklerid tihendatud failina. Varukoopiad on vaikimisi krüpteeritud (AES-256-GCM).
+• Taastage kõik või liitke ainult maaklerid.
+• Või avaldage ja taastage varukoopia säilitatud MQTT sõnumi kaudu, ilma faili liigutamata.
+• Reaalajas filtreeritav "Terminal" näitab iga MQTT sõnumit, et kontrollida sisu ja teemasid.
+
+Valikuline võrguteenus
+Ekraanil "Lisa maakler" olev nupp "Impordi koodiga" kasutab saiti sync.odiousapps.com, arendaja hallatavat mandaadivahendajat. Logite sellele saidile sisse ja valite salvestatud mandaadi ning maakleri hostinimi, kasutajanimi ja parool saadetakse selle serveri kaudu rakendusse tagasi. Midagi ei saadeta, kui te nuppu ei puuduta ega nõustu jätkama, ning maaklereid saab alati sisestada käsitsi või importida failist. Vahendaja lähtekood on vaba tarkvara (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+Papan pemuka Zigbee2MQTT yang berhubung terus dengan broker MQTT anda sendiri

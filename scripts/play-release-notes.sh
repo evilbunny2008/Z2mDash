@@ -7,7 +7,7 @@
 #
 # VERSION defaults to versionName in app/build.gradle.kts, PREVIOUS to the
 # highest v* tag below VERSION. The locales are the folders under
-# fastlane/metadata/android/,
+# fastlane/metadata/android/ (or, if there are none, the locales in the labels file),
 # and the translated Source/Changelog labels come from
 # scripts/play-release-notes.labels.
 # The result is saved to app/dist/release-notes-v<VERSION>.txt, ready to paste
@@ -59,26 +59,36 @@ then
 	echo "Note: tag v$version doesn't exist yet, push it before the notes go live" >&2
 fi
 
-locales=()
-for dir in fastlane/metadata/android/*/
-do
-	locales+=("$(basename "$dir")")
-done
-
-if [[ ${#locales[@]} -eq 0 ]]
-then
-	echo "No locales found under fastlane/metadata/android/" >&2
-	exit 1
-fi
-
 labels_file="scripts/play-release-notes.labels"
 declare -A source_label=() changelog_label=()
+label_locales=()
 while IFS='|' read -r locale source changelog
 do
 	[[ -z "$locale" || "$locale" == \#* ]] && continue
 	source_label[$locale]="$source"
 	changelog_label[$locale]="$changelog"
+	label_locales+=("$locale")
 done < "$labels_file"
+
+locales=()
+shopt -s nullglob
+for dir in fastlane/metadata/android/*/
+do
+	locales+=("$(basename "$dir")")
+done
+shopt -u nullglob
+
+# Without fastlane folders, the labels file is the list of locales
+if [[ ${#locales[@]} -eq 0 ]]
+then
+	locales=("${label_locales[@]}")
+fi
+
+if [[ ${#locales[@]} -eq 0 ]]
+then
+	echo "No locales found under fastlane/metadata/android/ or in $labels_file" >&2
+	exit 1
+fi
 
 # Refuse to write notes with a locale left untranslated
 missing=()

@@ -1,0 +1,1 @@
+Bảng điều khiển Zigbee2MQTT kết nối trực tiếp với broker MQTT của riêng bạn

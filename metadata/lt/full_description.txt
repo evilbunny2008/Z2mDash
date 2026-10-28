@@ -1,0 +1,32 @@
+Z2M Dash yra nemokamas atvirojo kodo Android skydelis, skirtas Zigbee2MQTT. Jis tiesiogiai bendrauja su jūsų nuosavu MQTT brokeriu, todėl nereikia debesijos paskyros ir nesate pririšti prie jokio tiekėjo. Visą sąranką galima išsaugoti viename faile arba bendrinti tarp telefonų per patį brokerį.
+
+Skydelis
+• Klasterių grupės, kur kiekvienas klasteris turi vieno įrenginio plyteles: jutiklių rodmenis, įjungimo/išjungimo jungiklius ir vieno paspaudimo mygtukus (pvz., žaliuzių STOP).
+• Jutiklių plytelės su jūsų pasirinktais vienetais ir dešimtainiais skaitmenimis bei pasirenkamas idealus diapazonas, kuris nuspalvina plytelę, kai rodmuo per mažas ar per didelis.
+• Jungikliai rodo tikrąją įrenginio būseną, o ne tik paskutinę išsiųstą komandą.
+• Buvimo ir užimtumo jutikliai rodomi kaip "Aptikta" arba "Laisva".
+• Vilkite ir numeskite grupes, klasterius ir plyteles, kad pakeistumėte jų tvarką, su galimybe anuliuoti. "Užrakinti išdėstymą" (numatytai įjungta) apsaugo nuo atsitiktinio perkėlimo.
+• Klasteris apvedamas rėmeliu, kai įrenginys nepranešė ilgiau nei valandą (raudonas), turi silpną bateriją (mėlynas) ar silpną Zigbee signalą (geltonas). Klasteriai su įkraunamomis NiMH baterijomis laikomi išsikraunančiais tik pasiekę 5 %.
+• Filtrų meniu rodo tik įrenginius su silpna baterija ar silpnu signalu arba drėgmės jutiklius žemiau ar aukščiau jų idealaus diapazono.
+• Veikia telefonuose ir Android TV.
+
+Sąranka ir sinchronizavimas
+• Įrenginiai gali aprašyti savo plyteles išsaugotame (retained) "/app" konfigūracijos pranešime, todėl visi to paties brokerio telefonai rodo tą patį išdėstymą, o pakeitimai viename telefone pasiekia kitus.
+• "Aptikti jutiklius" nuskaito brokerį ieškodamas rodmenų ir sukuria plyteles įrenginiams, neturintiems "/app" konfigūracijos.
+• Juosta "Leisti prisijungti" leidžia naujiems Zigbee įrenginiams prisijungti per bet kurį maršrutizatorių, su atgaline atskaita.
+• Keli brokeriai per TCP, SSL, WS ar WSS, įskaitant pačių pasirašytus sertifikatus.
+• Pasirenkamas foninis ryšys palaiko rodmenis ir įspėjimus aktualius, kai programėlė uždaryta.
+
+Įspėjimai
+• Dūmų įspėjimai iš bet kurio įrenginio, pranešančio apie dūmus, su pasirenkamu garsiu pavojaus signalu.
+• Laistymo įspėjimai su skambučiu ir vibracija, kai drėgmės jutiklio rodmuo pakyla virš idealaus diapazono vidurio.
+• Silpnos baterijos įspėjimai su baterijos procentais.
+
+Atsarginė kopija ir derinimas
+• Eksportuokite visą konfigūraciją arba tik brokerius kaip suglaudintą failą. Atsarginės kopijos pagal numatytuosius nustatymus šifruojamos (AES-256-GCM).
+• Atkurkite viską arba sujunkite tik brokerius.
+• Arba paskelbkite ir atkurkite atsarginę kopiją per išsaugotą MQTT pranešimą, nekeldami jokio failo.
+• Tiesioginis, filtruojamas "Terminalas" rodo kiekvieną MQTT pranešimą, kad galėtumėte patikrinti turinį ir temas.
+
+Pasirenkama internetinė paslauga
+Ekrano "Pridėti brokerį" mygtukas "Importuoti naudojant kodą" naudoja sync.odiousapps.com – kūrėjo valdomą prisijungimo duomenų perdavimo paslaugą. Prisijungiate prie tos svetainės ir pasirenkate išsaugotus duomenis, o brokerio pagrindinio kompiuterio vardas, naudotojo vardas ir slaptažodis per tą serverį grąžinami į programėlę. Niekas nesiunčiama, kol nepaliečiate mygtuko ir nesutinkate tęsti, o brokerius visada galima įvesti ranka arba importuoti iš failo. Paslaugos šaltinio kodas yra laisvoji programinė įranga (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+Un tableau de bord Zigbee2MQTT qui dialogue directement avec votre broker MQTT

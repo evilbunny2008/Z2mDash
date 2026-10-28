@@ -1,0 +1,32 @@
+Z2M Dash este un panou Android gratuit și open source pentru Zigbee2MQTT. Comunică direct cu propriul tău broker MQTT, deci nu ai nevoie de cont în cloud și nu ești legat de niciun furnizor. Întreaga configurație poate fi salvată într-un singur fișier sau partajată între telefoane prin brokerul însuși.
+
+Panou
+• Grupuri de clustere, fiecare cluster conținând plăcile unui dispozitiv: citiri de senzori, comutatoare pornit/oprit și butoane cu o singură apăsare (cum ar fi STOP pentru o jaluzea).
+• Plăci de senzor cu unitățile și zecimalele tale, plus un interval ideal opțional care colorează placa atunci când o citire este prea mică sau prea mare.
+• Comutatoarele arată starea reală a dispozitivului, nu doar ultima comandă trimisă.
+• Senzorii de prezență și ocupare apar ca "Detectat" sau "Liber".
+• Trage și plasează pentru a reordona grupuri, clustere și plăci, cu anulare. "Blochează aspectul" (activat implicit) previne mutările accidentale.
+• Clusterele primesc un contur când un dispozitiv nu a raportat de peste o oră (roșu), are bateria descărcată (albastru) sau semnal Zigbee slab (galben). Clusterele cu acumulatori NiMH sunt considerate descărcate abia la 5%.
+• Un meniu de filtre arată doar dispozitivele cu baterie descărcată sau semnal slab, ori senzorii de umiditate sub sau peste intervalul lor ideal.
+• Funcționează pe telefoane și Android TV.
+
+Configurare și sincronizare
+• Dispozitivele își pot descrie propriile plăci într-un mesaj de configurare "/app" reținut (retained), astfel încât toate telefoanele de pe același broker arată același aspect, iar modificările făcute pe un telefon ajung la celelalte.
+• "Descoperă senzori" scanează un broker după citiri și creează plăci pentru dispozitivele fără configurare "/app".
+• O bară "Permite alăturarea" lasă dispozitive Zigbee noi să se alăture prin orice router, cu numărătoare inversă.
+• Mai mulți brokeri prin TCP, SSL, WS sau WSS, inclusiv certificate autosemnate.
+• O conexiune opțională în fundal menține citirile și alertele la zi cât timp aplicația este închisă.
+
+Alerte
+• Alerte de fum de la orice dispozitiv care raportează fum, cu un sunet de alarmă puternic opțional.
+• Alerte de udare, cu clopoțel și vibrație, când un senzor de umiditate urcă peste mijlocul intervalului său ideal.
+• Alerte de baterie descărcată care arată procentul bateriei.
+
+Backup și depanare
+• Exportă întreaga configurație, sau doar brokerii, ca fișier comprimat. Backupurile sunt criptate implicit (AES-256-GCM).
+• Restaurează totul sau îmbină doar brokerii.
+• Sau publică și restaurează un backup printr-un mesaj MQTT reținut, fără să muți vreun fișier.
+• Un "Terminal" live, cu filtrare, arată fiecare mesaj MQTT, pentru verificarea conținutului și a topicurilor.
+
+Serviciu online opțional
+Butonul "Importă prin cod" de pe ecranul "Adaugă broker" folosește sync.odiousapps.com, un releu de date de autentificare administrat de dezvoltator. Te conectezi pe acel site și alegi datele salvate, iar numele gazdei, numele de utilizator și parola brokerului sunt trimise înapoi în aplicație prin acel server. Nu se trimite nimic decât dacă atingi butonul și accepți să continui, iar brokerii pot fi oricând introduși manual sau importați dintr-un fișier. Codul sursă al releului este software liber (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

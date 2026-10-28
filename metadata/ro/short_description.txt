@@ -1,0 +1,1 @@
+Un panou Zigbee2MQTT care comunică direct cu propriul tău broker MQTT

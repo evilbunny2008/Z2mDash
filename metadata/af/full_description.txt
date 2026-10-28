@@ -1,0 +1,32 @@
+Z2M Dash is 'n gratis, oopbron-Android-paneelbord vir Zigbee2MQTT. Dit praat direk met jou eie MQTT-makelaar, so daar is geen wolkrekening en geen inlokking nie. Jou hele opstelling kan in 'n enkele lêer gestoor word, of tussen fone gedeel word deur die makelaar self.
+
+Paneelbord
+• Groepe trosse, elke tros met die teëls vir een toestel: sensorlesings, aan/af-skakelaars en eendrukknoppies (soos 'n blinding se STOP).
+• Sensorteëls met jou eie eenhede en desimale plekke, en 'n opsionele ideale reeks wat die teël inkleur wanneer 'n lesing te laag of te hoog is.
+• Skakelaars wys die toestel se werklike toestand, nie net die laaste opdrag wat gestuur is nie.
+• Teenwoordigheid- en besettingsensors wys as "Detected" of "Clear".
+• Sleep en los om groepe, trosse en teëls te herrangskik, met ontdoen. "Lock Layout" (by verstek aan) keer skuiwe per ongeluk.
+• Trosse kry 'n buitelyn wanneer 'n toestel vir meer as 'n uur nie gerapporteer het nie (rooi), 'n lae battery het (blou) of 'n swak Zigbee-sein het (geel). Trosse op herlaaibare NiMH-batterye tel eers by 5% as laag.
+• 'n Filterkieslys wys slegs toestelle met 'n lae battery of swak sein, of vogsensors onder of bo hul ideale reeks.
+• Werk op fone en Android TV.
+
+Opstelling en sinkronisering
+• Toestelle kan hul eie teëls beskryf in 'n behoue "/app"-konfigurasieboodskap, sodat elke foon op dieselfde makelaar dieselfde uitleg wys, en veranderinge op een foon die ander bereik.
+• "Discover Sensors" deursoek 'n makelaar vir lesings en bou teëls vir toestelle sonder 'n "/app"-konfigurasie.
+• 'n "Permit Join"-balk laat nuwe Zigbee-toestelle deur enige roeteerder aansluit, met 'n aftelling.
+• Meerdere makelaars oor TCP, SSL, WS of WSS, insluitend selfondertekende sertifikate.
+• 'n Opsionele agtergrondverbinding hou lesings en waarskuwings lewendig terwyl die app toe is.
+
+Waarskuwings
+• Rookwaarskuwings van enige toestel wat rook aanmeld, met 'n opsionele harde alarmklank.
+• Natmaakwaarskuwings, met 'n klokkie en vibrasie, wanneer 'n vogsensor deur die middel van sy ideale reeks styg.
+• Lae-battery-waarskuwings wat die batterypersentasie wys.
+
+Rugsteun en ontfouting
+• Voer die hele konfigurasie, of net die makelaars, as 'n saamgeperste lêer uit. Rugsteune word by verstek geënkripteer (AES-256-GCM).
+• Herstel alles, of voeg net die makelaars in.
+• Of publiseer en herstel 'n rugsteun deur 'n behoue MQTT-boodskap, sonder 'n lêer om te skuif.
+• 'n Lewendige, filtreerbare "Terminal" wys elke MQTT-boodskap, om loonvragte en onderwerpe na te gaan.
+
+Opsionele aanlyndiens
+Die "Import via code"-knoppie op die "Add Broker"-skerm gebruik sync.odiousapps.com, 'n aanmeldbewysrelais wat deur die ontwikkelaar bedryf word. Jy meld by daardie webwerf aan en kies 'n gestoorde aanmeldbewys, en die makelaar se gasheernaam, gebruikersnaam en wagwoord word deur daardie bediener na die app teruggestuur. Niks word gestuur tensy jy die knoppie tik en instem om voort te gaan nie, en makelaars kan altyd met die hand ingevoer of eerder uit 'n lêer ingevoer word. Die relais se bronkode is vrye sagteware (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+- Setarea de acumulator NiMH a unui cluster este acum partajată cu celelalte telefoane de pe același broker, prin configurarea "/app" a dispozitivului ("battery_type": "nimh").

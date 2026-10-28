@@ -1,0 +1,1 @@
+- Egy klaszter NiMH akkumulátor-beállítása mostantól megosztásra kerül az ugyanazon brókeren lévő többi telefonnal, az eszköz "/app" konfigurációján keresztül ("battery_type": "nimh").

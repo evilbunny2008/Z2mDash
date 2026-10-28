@@ -1,0 +1,32 @@
+Ang Z2M Dash ay isang libre at open-source na Android dashboard para sa Zigbee2MQTT. Direkta itong kumokonekta sa sarili mong MQTT broker, kaya walang cloud account at hindi ka nakatali sa iisang provider. Maaaring i-save ang buong setup mo sa iisang file, o ibahagi sa pagitan ng mga phone sa pamamagitan mismo ng broker.
+
+Dashboard
+• Mga grupo ng cluster, kung saan bawat cluster ay may mga tile para sa isang device: mga reading ng sensor, on/off na switch at mga button na isang pindot lang (gaya ng STOP ng blind).
+• Mga tile ng sensor na may sarili mong unit at decimal place, at opsyonal na ideal range na nagkukulay sa tile kapag masyadong mababa o mataas ang reading.
+• Ipinapakita ng mga switch ang totoong estado ng device, hindi lang ang huling command na ipinadala.
+• Ipinapakita ang mga presence at occupancy sensor bilang "May natukoy" o "Walang tao".
+• I-drag at i-drop para ayusin muli ang mga grupo, cluster at tile, na may undo. Pinipigilan ng "I-lock ang Layout" (naka-on bilang default) ang mga hindi sinasadyang paglipat.
+• Nilalagyan ng outline ang cluster kapag ang device ay hindi nag-ulat nang mahigit isang oras (pula), mahina ang baterya (asul) o mahina ang Zigbee signal (dilaw). Ang mga cluster na gumagamit ng rechargeable na NiMH na baterya ay itinuturing lang na mahina sa 5%.
+• Ang filter menu ay nagpapakita lang ng mga device na mahina ang baterya o signal, o mga moisture sensor na mas mababa o mas mataas sa kanilang ideal range.
+• Gumagana sa mga phone at Android TV.
+
+Setup at sync
+• Maaaring ilarawan ng mga device ang sarili nilang mga tile sa isang retained na "/app" config message, kaya pareho ang layout sa bawat phone sa iisang broker, at umaabot sa iba ang mga pagbabagong ginawa sa isang phone.
+• Ini-scan ng "Maghanap ng mga Sensor" ang isang broker para sa mga reading at gumagawa ng mga tile para sa mga device na walang "/app" config.
+• Ang "Permit Join" bar ay nagpapahintulot sa mga bagong Zigbee device na sumali sa pamamagitan ng anumang router, na may countdown.
+• Maraming broker sa TCP, SSL, WS o WSS, kasama ang mga self-signed certificate.
+• Ang opsyonal na background connection ay nagpapanatiling live sa mga reading at alerto habang nakasara ang app.
+
+Mga alerto
+• Mga smoke alert mula sa anumang device na nag-uulat ng usok, na may opsyonal na malakas na tunog ng alarma.
+• Mga alerto sa pagdidilig, na may chime at vibration, kapag ang moisture sensor ay tumaas lampas sa gitna ng ideal range nito.
+• Mga low battery alert na nagpapakita ng porsyento ng baterya.
+
+Backup at debugging
+• I-export ang buong configuration, o ang mga broker lang, bilang isang compressed file. Naka-encrypt ang mga backup bilang default (AES-256-GCM).
+• I-restore ang lahat, o isama lang ang mga broker.
+• O i-publish at i-restore ang backup sa pamamagitan ng retained na MQTT message, nang hindi naglilipat ng file.
+• Ipinapakita ng live at nafi-filter na "Terminal" ang bawat MQTT message, para masuri ang mga payload at topic.
+
+Opsyonal na online service
+Ang button na "Mag-import gamit ang code" sa screen na "Magdagdag ng Broker" ay gumagamit ng sync.odiousapps.com, isang credential relay na pinapatakbo ng developer. Magla-log in ka sa site na iyon at pipili ng naka-save na credential, at ibinabalik sa app ang hostname, username at password ng broker sa pamamagitan ng server na iyon. Walang ipinapadala maliban kung pindutin mo ang button at pumayag na magpatuloy, at palaging maaaring ilagay nang mano-mano ang mga broker o i-import mula sa isang file. Ang source code ng relay ay libreng software (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

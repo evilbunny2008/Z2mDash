@@ -1,0 +1,1 @@
+Um painel do Zigbee2MQTT que comunica diretamente com o seu próprio broker MQTT

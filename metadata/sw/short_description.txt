@@ -1,0 +1,1 @@
+Dashibodi ya Zigbee2MQTT inayowasiliana moja kwa moja na broker yako ya MQTT

@@ -1,0 +1,1 @@
+- Il parameter da battaria NiMH d'in cluster vegn ussa cundivì cun auters telefonins sin il medem broker, via la configuraziun "/app" da l'apparat ("battery_type": "nimh").

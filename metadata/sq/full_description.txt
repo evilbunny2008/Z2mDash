@@ -1,0 +1,32 @@
+Z2M Dash është një panel Android falas dhe me burim të hapur për Zigbee2MQTT. Ai komunikon drejtpërdrejt me brokerin tuaj MQTT, ndaj nuk ju duhet llogari në re dhe nuk jeni të lidhur me asnjë ofrues. I gjithë konfigurimi juaj mund të ruhet në një skedar të vetëm ose të ndahet mes telefonave përmes vetë brokerit.
+
+Paneli
+• Grupe grumbujsh, ku çdo grumbull mban pllakat e një pajisjeje: leximet e sensorëve, çelësat ndez/fik dhe butonat me një shtypje (si STOP i një grile).
+• Pllaka sensorësh me njësitë dhe shifrat dhjetore që zgjidhni vetë, si dhe një interval ideal opsional që ngjyros pllakën kur leximi është shumë i ulët ose shumë i lartë.
+• Çelësat tregojnë gjendjen e vërtetë të pajisjes, jo vetëm komandën e fundit të dërguar.
+• Sensorët e pranisë dhe të zënies shfaqen si "U zbulua" ose "E lirë".
+• Tërhiqni dhe lëshoni për të rirenditur grupet, grumbujt dhe pllakat, me mundësi zhbërjeje. "Kyç paraqitjen" (aktiv si parazgjedhje) parandalon lëvizjet aksidentale.
+• Grumbujt marrin një kornizë kur një pajisje nuk ka raportuar për më shumë se një orë (e kuqe), ka bateri të dobët (blu) ose sinjal të dobët Zigbee (e verdhë). Grumbujt me bateri të rimbushshme NiMH konsiderohen të dobët vetëm në 5%.
+• Një menu filtrash shfaq vetëm pajisjet me bateri ose sinjal të dobët, ose sensorët e lagështisë nën ose mbi intervalin e tyre ideal.
+• Funksionon në telefona dhe Android TV.
+
+Konfigurimi dhe sinkronizimi
+• Pajisjet mund të përshkruajnë pllakat e tyre në një mesazh konfigurimi "/app" të ruajtur (retained), kështu që çdo telefon në të njëjtin broker shfaq të njëjtën paraqitje dhe ndryshimet në një telefon arrijnë te të tjerët.
+• "Zbulo sensorë" skanon një broker për lexime dhe krijon pllaka për pajisjet pa konfigurim "/app".
+• Një shirit "Lejo bashkimin" u lejon pajisjeve të reja Zigbee të bashkohen përmes çdo ruteri, me numërim mbrapsht.
+• Shumë brokerë përmes TCP, SSL, WS ose WSS, përfshirë certifikatat e vetënënshkruara.
+• Një lidhje opsionale në sfond i mban leximet dhe sinjalizimet të përditësuara ndërkohë që aplikacioni është i mbyllur.
+
+Sinjalizimet
+• Sinjalizime tymi nga çdo pajisje që raporton tym, me një tingull alarmi të fortë opsional.
+• Sinjalizime për ujitje, me zile dhe dridhje, kur një sensor lagështie ngrihet mbi mesin e intervalit të tij ideal.
+• Sinjalizime për bateri të dobët që tregojnë përqindjen e baterisë.
+
+Kopjeruajtja dhe korrigjimi
+• Eksportoni të gjithë konfigurimin, ose vetëm brokerët, si skedar të ngjeshur. Kopjeruajtjet enkriptohen si parazgjedhje (AES-256-GCM).
+• Riktheni gjithçka, ose bashkoni vetëm brokerët.
+• Ose publikoni dhe riktheni një kopjeruajtje përmes një mesazhi MQTT të ruajtur, pa lëvizur asnjë skedar.
+• Një "Terminal" i drejtpërdrejtë dhe i filtrueshëm shfaq çdo mesazh MQTT, për të kontrolluar përmbajtjen dhe temat.
+
+Shërbim opsional në internet
+Butoni "Importo me kod" në ekranin "Shto broker" përdor sync.odiousapps.com, një rele kredencialesh që drejtohet nga zhvilluesi. Hyni në atë sajt dhe zgjidhni një kredencial të ruajtur, dhe emri i hostit, emri i përdoruesit dhe fjalëkalimi i brokerit kthehen në aplikacion përmes atij serveri. Asgjë nuk dërgohet nëse nuk prekni butonin dhe nuk pranoni të vazhdoni, dhe brokerët mund të futen gjithmonë me dorë ose të importohen nga një skedar. Kodi burimor i releut është softuer i lirë (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

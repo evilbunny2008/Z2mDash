@@ -1,0 +1,1 @@
+Un panel para Zigbee2MQTT que se conecta directamente a tu propio bróker MQTT

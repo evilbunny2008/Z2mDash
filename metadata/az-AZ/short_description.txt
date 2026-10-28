@@ -1,0 +1,1 @@
+Birbaşa öz MQTT brokerinizlə işləyən Zigbee2MQTT idarə paneli

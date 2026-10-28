@@ -1,0 +1,32 @@
+Z2M Dash es un panel para Android gratuito y de código abierto para Zigbee2MQTT. Se conecta directamente a tu propio bróker MQTT, así que no necesitas una cuenta en la nube ni quedas atado a ningún proveedor. Toda tu configuración se puede guardar en un único archivo o compartir entre móviles a través del propio bróker.
+
+Panel
+• Grupos de clústeres, cada uno con los mosaicos de un dispositivo: lecturas de sensores, interruptores de encendido/apagado y botones de una sola pulsación (como el STOP de una persiana).
+• Mosaicos de sensor con tus propias unidades y decimales, y un rango ideal opcional que colorea el mosaico cuando una lectura es demasiado baja o alta.
+• Los interruptores muestran el estado real del dispositivo, no solo la última orden enviada.
+• Los sensores de presencia y ocupación se muestran como "Detectado" o "Libre".
+• Arrastra y suelta para reordenar grupos, clústeres y mosaicos, con opción de deshacer. "Bloquear diseño" (activado por defecto) evita movimientos accidentales.
+• Los clústeres se marcan con un contorno cuando un dispositivo lleva más de una hora sin informar (rojo), tiene la batería baja (azul) o una señal Zigbee débil (amarillo). Los clústeres con pilas recargables NiMH solo cuentan como bajos al 5 %.
+• Un menú de filtros muestra solo los dispositivos con batería baja o señal débil, o los sensores de humedad por debajo o por encima de su rango ideal.
+• Funciona en móviles y Android TV.
+
+Configuración y sincronización
+• Los dispositivos pueden describir sus propios mosaicos en un mensaje de configuración "/app" retenido, de modo que todos los móviles del mismo bróker muestran el mismo diseño y los cambios hechos en uno llegan a los demás.
+• "Descubrir sensores" analiza un bróker en busca de lecturas y crea mosaicos para los dispositivos sin configuración "/app".
+• Una barra de "Permitir unirse" deja que nuevos dispositivos Zigbee se unan a través de cualquier router, con cuenta atrás.
+• Varios brókeres por TCP, SSL, WS o WSS, incluidos certificados autofirmados.
+• Una conexión opcional en segundo plano mantiene las lecturas y las alertas al día mientras la aplicación está cerrada.
+
+Alertas
+• Alertas de humo de cualquier dispositivo que detecte humo, con un sonido de alarma fuerte opcional.
+• Alertas de riego, con campanilla y vibración, cuando un sensor de humedad sube por encima de la mitad de su rango ideal.
+• Alertas de batería baja con el porcentaje de batería.
+
+Copia de seguridad y depuración
+• Exporta toda la configuración, o solo los brókeres, como un archivo comprimido. Las copias de seguridad se cifran por defecto (AES-256-GCM).
+• Restaura todo o combina solo los brókeres.
+• O publica y restaura una copia mediante un mensaje MQTT retenido, sin mover ningún archivo.
+• Un "Terminal" en directo y filtrable muestra cada mensaje MQTT, para revisar cargas y temas.
+
+Servicio en línea opcional
+El botón "Importar mediante código" de la pantalla "Agregar broker" utiliza sync.odiousapps.com, un relé de credenciales gestionado por el desarrollador. Inicias sesión en ese sitio y eliges una credencial guardada, y el nombre de host, el usuario y la contraseña del bróker vuelven a la aplicación a través de ese servidor. No se envía nada a menos que toques el botón y aceptes continuar, y los brókeres siempre se pueden introducir a mano o importar desde un archivo. El código fuente del relé es software libre (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

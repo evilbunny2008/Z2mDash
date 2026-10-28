@@ -1,0 +1,1 @@
+'n Zigbee2MQTT-paneelbord wat direk met jou eie MQTT-makelaar praat

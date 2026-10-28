@@ -1,0 +1,32 @@
+Z2M Dash ialah papan pemuka Android percuma dan sumber terbuka untuk Zigbee2MQTT. Ia berhubung terus dengan broker MQTT anda sendiri, jadi tiada akaun awan diperlukan dan anda tidak terikat dengan mana-mana penyedia. Keseluruhan persediaan anda boleh disimpan dalam satu fail, atau dikongsi antara telefon melalui broker itu sendiri.
+
+Papan pemuka
+• Kumpulan kluster, setiap kluster memegang jubin untuk satu peranti: bacaan penderia, suis hidup/mati dan butang sekali tekan (seperti STOP bidai).
+• Jubin penderia dengan unit dan tempat perpuluhan pilihan anda, serta julat ideal pilihan yang mewarnakan jubin apabila bacaan terlalu rendah atau terlalu tinggi.
+• Suis menunjukkan keadaan sebenar peranti, bukan sekadar arahan terakhir yang dihantar.
+• Penderia kehadiran dan penghunian dipaparkan sebagai "Detected" atau "Clear".
+• Seret dan lepas untuk menyusun semula kumpulan, kluster dan jubin, dengan buat asal. "Lock Layout" (dihidupkan secara lalai) menghalang alihan tidak sengaja.
+• Kluster diberi garis luar apabila peranti tidak melapor lebih sejam (merah), baterinya lemah (biru) atau isyarat Zigbee-nya lemah (kuning). Kluster yang menggunakan bateri boleh cas semula NiMH hanya dikira lemah pada 5%.
+• Menu penapis hanya menunjukkan peranti yang baterinya lemah atau isyaratnya lemah, atau penderia kelembapan di bawah atau di atas julat idealnya.
+• Berfungsi pada telefon dan Android TV.
+
+Persediaan dan penyegerakan
+• Peranti boleh menerangkan jubinnya sendiri dalam mesej konfigurasi "/app" yang dikekalkan (retained), jadi setiap telefon pada broker yang sama menunjukkan susun atur yang sama, dan perubahan pada satu telefon sampai ke telefon lain.
+• "Discover Sensors" mengimbas broker untuk bacaan dan membina jubin bagi peranti tanpa konfigurasi "/app".
+• Bar "Permit Join" membolehkan peranti Zigbee baharu menyertai melalui mana-mana penghala, dengan kiraan detik.
+• Berbilang broker melalui TCP, SSL, WS atau WSS, termasuk sijil yang ditandatangani sendiri.
+• Sambungan latar belakang pilihan memastikan bacaan dan amaran sentiasa terkini semasa apl ditutup.
+
+Amaran
+• Amaran asap daripada mana-mana peranti yang melaporkan asap, dengan bunyi penggera kuat pilihan.
+• Amaran penyiraman, dengan bunyi loceng dan getaran, apabila penderia kelembapan naik melepasi bahagian tengah julat idealnya.
+• Amaran bateri lemah yang menunjukkan peratusan bateri.
+
+Sandaran dan nyahpepijat
+• Eksport keseluruhan konfigurasi, atau broker sahaja, sebagai fail termampat. Sandaran disulitkan secara lalai (AES-256-GCM).
+• Pulihkan semuanya, atau gabungkan broker sahaja.
+• Atau terbitkan dan pulihkan sandaran melalui mesej MQTT yang dikekalkan, tanpa perlu memindahkan fail.
+• "Terminal" langsung yang boleh ditapis menunjukkan setiap mesej MQTT, untuk menyemak muatan dan topik.
+
+Perkhidmatan dalam talian pilihan
+Butang "Import via code" pada skrin "Add Broker" menggunakan sync.odiousapps.com, geganti kelayakan yang dikendalikan oleh pembangun. Anda log masuk ke laman itu dan memilih kelayakan yang disimpan, dan nama hos, nama pengguna serta kata laluan broker dihantar semula ke apl melalui pelayan itu. Tiada apa-apa dihantar melainkan anda mengetik butang dan bersetuju untuk meneruskan, dan broker sentiasa boleh dimasukkan secara manual atau diimport daripada fail. Kod sumber geganti ini ialah perisian bebas (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

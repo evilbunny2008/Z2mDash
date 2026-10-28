@@ -1,0 +1,32 @@
+Z2M Dash ir bezmaksas atvērtā koda Android panelis Zigbee2MQTT. Tas sazinās tieši ar jūsu paša MQTT brokeri, tāpēc nav vajadzīgs mākoņa konts un jūs neesat piesaistīts nevienam pakalpojumu sniedzējam. Visu iestatījumu var saglabāt vienā failā vai koplietot starp tālruņiem caur pašu brokeri.
+
+Panelis
+• Klasteru grupas, kur katrs klasteris satur vienas ierīces flīzes: sensoru rādījumus, ieslēgšanas/izslēgšanas slēdžus un vienas nospiešanas pogas (piemēram, žalūziju STOP).
+• Sensoru flīzes ar jūsu mērvienībām un decimālzīmēm, kā arī neobligāts ideālais diapazons, kas iekrāso flīzi, kad rādījums ir pārāk zems vai augsts.
+• Slēdži rāda ierīces patieso stāvokli, nevis tikai pēdējo nosūtīto komandu.
+• Klātbūtnes un aizņemtības sensori tiek rādīti kā "Konstatēts" vai "Brīvs".
+• Velciet un nometiet, lai pārkārtotu grupas, klasterus un flīzes, ar atsaukšanas iespēju. "Bloķēt izkārtojumu" (pēc noklusējuma ieslēgts) novērš nejaušu pārvietošanu.
+• Klasteris iegūst apmali, kad ierīce nav ziņojusi ilgāk par stundu (sarkana), tai ir zems akumulators (zila) vai vājš Zigbee signāls (dzeltena). Klasteri ar uzlādējamiem NiMH akumulatoriem tiek uzskatīti par izlādētiem tikai pie 5%.
+• Filtru izvēlne rāda tikai ierīces ar zemu akumulatoru vai vāju signālu, vai mitruma sensorus zem vai virs to ideālā diapazona.
+• Darbojas tālruņos un Android TV.
+
+Iestatīšana un sinhronizācija
+• Ierīces var aprakstīt savas flīzes saglabātā (retained) "/app" konfigurācijas ziņojumā, tāpēc visi tālruņi uz tā paša brokera rāda vienādu izkārtojumu, un izmaiņas vienā tālrunī nonāk arī pārējos.
+• "Atklāt sensorus" skenē brokeri, meklējot rādījumus, un izveido flīzes ierīcēm bez "/app" konfigurācijas.
+• Josla "Atļaut pievienošanos" ļauj jaunām Zigbee ierīcēm pievienoties caur jebkuru maršrutētāju, ar atpakaļskaitīšanu.
+• Vairāki brokeri caur TCP, SSL, WS vai WSS, ieskaitot pašparakstītus sertifikātus.
+• Neobligāts fona savienojums uztur rādījumus un brīdinājumus aktuālus, kamēr lietotne ir aizvērta.
+
+Brīdinājumi
+• Dūmu brīdinājumi no jebkuras ierīces, kas ziņo par dūmiem, ar neobligātu skaļu trauksmes skaņu.
+• Laistīšanas brīdinājumi ar zvanu un vibrāciju, kad mitruma sensora rādījums paceļas pāri ideālā diapazona vidum.
+• Zema akumulatora brīdinājumi ar akumulatora procentiem.
+
+Dublēšana un atkļūdošana
+• Eksportējiet visu konfigurāciju vai tikai brokerus kā saspiestu failu. Dublējumi pēc noklusējuma ir šifrēti (AES-256-GCM).
+• Atjaunojiet visu vai apvienojiet tikai brokerus.
+• Vai publicējiet un atjaunojiet dublējumu caur saglabātu MQTT ziņojumu, nepārvietojot failu.
+• Tiešsaistes, filtrējams "Terminālis" rāda katru MQTT ziņojumu, lai pārbaudītu saturu un tēmas.
+
+Neobligāts tiešsaistes pakalpojums
+Ekrāna "Pievienot brokeri" poga "Importēt ar kodu" izmanto sync.odiousapps.com – izstrādātāja uzturētu pieteikšanās datu pārsūtītāju. Jūs piesakāties šajā vietnē un izvēlaties saglabātus datus, un brokera resursdatora nosaukums, lietotājvārds un parole caur šo serveri tiek atgriezti lietotnē. Nekas netiek nosūtīts, kamēr nepieskaraties pogai un nepiekrītat turpināt, un brokerus vienmēr var ievadīt manuāli vai importēt no faila. Pārsūtītāja pirmkods ir brīvā programmatūra (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

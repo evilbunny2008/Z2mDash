@@ -1,0 +1,32 @@
+Z2M Dash je brezplačna nadzorna plošča za Android z odprto kodo za Zigbee2MQTT. Neposredno se povezuje z vašim lastnim posrednikom MQTT, zato ne potrebujete računa v oblaku in niste vezani na nobenega ponudnika. Celotno nastavitev lahko shranite v eno datoteko ali jo delite med telefoni prek samega posrednika.
+
+Nadzorna plošča
+• Skupine gruč, kjer vsaka gruča vsebuje ploščice ene naprave: odčitke senzorjev, stikala za vklop/izklop in gumbe za en pritisk (na primer STOP za žaluzije).
+• Ploščice senzorjev z vašimi enotami in decimalnimi mesti ter neobveznim idealnim razponom, ki ploščico obarva, ko je odčitek prenizek ali previsok.
+• Stikala kažejo dejansko stanje naprave, ne le zadnjega poslanega ukaza.
+• Senzorji prisotnosti in zasedenosti so prikazani kot "Zaznano" ali "Prosto".
+• Povlecite in spustite, da spremenite vrstni red skupin, gruč in ploščic, z možnostjo razveljavitve. "Zakleni postavitev" (privzeto vklopljeno) preprečuje nenamerne premike.
+• Gruča dobi obrobo, ko se naprava ni oglasila več kot uro (rdeča), ima šibko baterijo (modra) ali šibak signal Zigbee (rumena). Gruče na polnilnih baterijah NiMH veljajo za izpraznjene šele pri 5 %.
+• Meni filtrov prikaže le naprave s šibko baterijo ali šibkim signalom ali senzorje vlage pod ali nad njihovim idealnim razponom.
+• Deluje na telefonih in Android TV.
+
+Nastavitev in sinhronizacija
+• Naprave lahko opišejo svoje ploščice v ohranjenem (retained) konfiguracijskem sporočilu "/app", zato vsi telefoni na istem posredniku kažejo enako postavitev, spremembe na enem telefonu pa dosežejo ostale.
+• "Odkrij senzorje" preišče posrednika za odčitki in ustvari ploščice za naprave brez konfiguracije "/app".
+• Vrstica "Dovoli pridružitev" omogoča novim napravam Zigbee, da se pridružijo prek kateregakoli usmerjevalnika, z odštevanjem.
+• Več posrednikov prek TCP, SSL, WS ali WSS, vključno s samopodpisanimi potrdili.
+• Neobvezna povezava v ozadju ohranja odčitke in opozorila posodobljene, ko je aplikacija zaprta.
+
+Opozorila
+• Opozorila na dim iz katerekoli naprave, ki zazna dim, z neobveznim glasnim alarmnim zvokom.
+• Opozorila za zalivanje, z zvončkom in vibriranjem, ko se senzor vlage dvigne nad sredino svojega idealnega razpona.
+• Opozorila o šibki bateriji z odstotkom baterije.
+
+Varnostna kopija in odpravljanje napak
+• Izvozite celotno konfiguracijo ali le posrednike kot stisnjeno datoteko. Varnostne kopije so privzeto šifrirane (AES-256-GCM).
+• Obnovite vse ali združite le posrednike.
+• Ali pa objavite in obnovite varnostno kopijo prek ohranjenega sporočila MQTT, brez prenašanja datoteke.
+• "Terminal" v živo s filtriranjem prikazuje vsako sporočilo MQTT za preverjanje vsebine in tem.
+
+Neobvezna spletna storitev
+Gumb "Uvozi s kodo" na zaslonu "Dodaj posrednika" uporablja sync.odiousapps.com, posrednika poverilnic, ki ga upravlja razvijalec. Prijavite se na to spletno mesto in izberete shranjene poverilnice, ime gostitelja, uporabniško ime in geslo posrednika pa se prek tega strežnika vrnejo v aplikacijo. Nič se ne pošlje, dokler se ne dotaknete gumba in se strinjate z nadaljevanjem, posrednike pa lahko vedno vnesete ročno ali uvozite iz datoteke. Izvorna koda storitve je prosto programje (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

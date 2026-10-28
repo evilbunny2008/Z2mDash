@@ -1,0 +1,1 @@
+- Die NiMH-Akku-Einstellung eines Clusters wird jetzt über die "/app"-Konfiguration des Geräts ("battery_type": "nimh") mit anderen Handys am selben Broker geteilt.

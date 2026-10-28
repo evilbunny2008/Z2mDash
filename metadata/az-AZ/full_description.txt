@@ -1,0 +1,32 @@
+Z2M Dash Zigbee2MQTT üçün pulsuz, açıq mənbəli Android idarə panelidir. O, birbaşa öz MQTT brokerinizlə əlaqə saxlayır, ona görə də bulud hesabı lazım deyil və heç bir xidmətə bağlı qalmırsınız. Bütün quraşdırmanızı bir fayla saxlaya və ya brokerin özü vasitəsilə telefonlar arasında paylaşa bilərsiniz.
+
+İdarə paneli
+• Klaster qrupları; hər klaster bir cihazın plitələrini saxlayır: sensor göstəriciləri, yandırıb-söndürmə açarları və bir dəfə basılan düymələr (məsələn, jalüzün STOP düyməsi).
+• Öz ölçü vahidləriniz və onluq rəqəmləriniz olan sensor plitələri, həmçinin göstərici çox aşağı və ya çox yüksək olanda plitəni rəngləyən istəyə bağlı ideal diapazon.
+• Açarlar yalnız son göndərilən əmri deyil, cihazın real vəziyyətini göstərir.
+• Mövcudluq və doluluq sensorları "Aşkar edildi" və ya "Boş" kimi görünür.
+• Qrupları, klasterləri və plitələri sürükləyib buraxmaqla yenidən sıralayın, geri qaytarma imkanı ilə. "Düzeni kilidlə" (standart olaraq aktiv) təsadüfi yerdəyişmələrin qarşısını alır.
+• Cihaz bir saatdan çox məlumat göndərmədikdə (qırmızı), batareyası zəif olduqda (mavi) və ya Zigbee siqnalı zəif olduqda (sarı) klaster çərçivəyə alınır. Doldurula bilən NiMH batareyalı klasterlər yalnız 5%-də zəif sayılır.
+• Filtr menyusu yalnız batareyası və ya siqnalı zəif olan cihazları, ya da ideal diapazonundan aşağı və ya yuxarı olan rütubət sensorlarını göstərir.
+• Telefonlarda və Android TV-də işləyir.
+
+Quraşdırma və sinxronizasiya
+• Cihazlar öz plitələrini saxlanılan (retained) "/app" konfiqurasiya mesajında təsvir edə bilər, beləliklə eyni brokerə qoşulan bütün telefonlar eyni düzeni göstərir və bir telefonda edilən dəyişikliklər digərlərinə çatır.
+• "Sensorları aşkar et" brokeri göstəricilər üçün skan edir və "/app" konfiqurasiyası olmayan cihazlar üçün plitələr yaradır.
+• "Qoşulmağa icazə" paneli yeni Zigbee cihazlarının istənilən router vasitəsilə qoşulmasına imkan verir, geri sayımla.
+• TCP, SSL, WS və ya WSS üzərindən bir neçə broker, öz-özünə imzalanmış sertifikatlar daxil olmaqla.
+• İstəyə bağlı fon bağlantısı tətbiq bağlı olanda belə göstəriciləri və xəbərdarlıqları canlı saxlayır.
+
+Xəbərdarlıqlar
+• Tüstü bildirən istənilən cihazdan tüstü xəbərdarlıqları, istəyə bağlı yüksək həyəcan səsi ilə.
+• Rütubət sensoru ideal diapazonunun ortasından yuxarı qalxanda zəng səsi və vibrasiya ilə suvarma xəbərdarlıqları.
+• Batareya faizini göstərən zəif batareya xəbərdarlıqları.
+
+Ehtiyat nüsxə və sazlama
+• Bütün konfiqurasiyanı və ya yalnız brokerləri sıxılmış fayl kimi ixrac edin. Ehtiyat nüsxələr standart olaraq şifrələnir (AES-256-GCM).
+• Hər şeyi bərpa edin və ya yalnız brokerləri birləşdirin.
+• Və ya ehtiyat nüsxəni saxlanılan MQTT mesajı vasitəsilə dərc edib bərpa edin, heç bir faylı köçürmədən.
+• Canlı, filtrlənə bilən "Terminal" faydalı yükləri və mövzuları yoxlamaq üçün hər MQTT mesajını göstərir.
+
+İstəyə bağlı onlayn xidmət
+"Broker əlavə et" ekranındakı "Kodla idxal et" düyməsi tərtibatçının idarə etdiyi giriş məlumatları ötürücüsü olan sync.odiousapps.com saytından istifadə edir. Siz həmin sayta daxil olub saxlanmış giriş məlumatını seçirsiniz, brokerin host adı, istifadəçi adı və parolu isə həmin server vasitəsilə tətbiqə qaytarılır. Düyməyə toxunub davam etməyə razılıq verməsəniz, heç nə göndərilmir; brokerləri həmişə əl ilə daxil etmək və ya fayldan idxal etmək olar. Ötürücünün mənbə kodu azad proqram təminatıdır (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

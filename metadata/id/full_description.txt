@@ -1,0 +1,32 @@
+Z2M Dash adalah dasbor Android gratis dan sumber terbuka untuk Zigbee2MQTT. Aplikasi ini terhubung langsung ke broker MQTT milik Anda sendiri, jadi tidak perlu akun cloud dan tidak terikat pada penyedia mana pun. Seluruh pengaturan Anda bisa disimpan dalam satu file, atau dibagikan antarponsel melalui broker itu sendiri.
+
+Dasbor
+• Grup berisi kluster, dan setiap kluster memuat ubin untuk satu perangkat: pembacaan sensor, sakelar nyala/mati, dan tombol sekali tekan (seperti STOP pada tirai).
+• Ubin sensor dengan satuan dan jumlah desimal pilihan Anda, serta rentang ideal opsional yang mewarnai ubin saat pembacaan terlalu rendah atau terlalu tinggi.
+• Sakelar menampilkan status perangkat yang sebenarnya, bukan hanya perintah terakhir yang dikirim.
+• Sensor kehadiran dan okupansi ditampilkan sebagai "Terdeteksi" atau "Kosong".
+• Seret dan lepas untuk menyusun ulang grup, kluster, dan ubin, dengan fitur urungkan. "Kunci Tata Letak" (aktif secara default) mencegah pemindahan yang tidak disengaja.
+• Kluster diberi garis tepi saat perangkat tidak melapor lebih dari satu jam (merah), baterainya lemah (biru), atau sinyal Zigbee-nya lemah (kuning). Kluster dengan baterai isi ulang NiMH baru dianggap lemah pada 5%.
+• Menu filter hanya menampilkan perangkat dengan baterai lemah atau sinyal lemah, atau sensor kelembapan di bawah atau di atas rentang idealnya.
+• Berfungsi di ponsel dan Android TV.
+
+Pengaturan dan sinkronisasi
+• Perangkat dapat menjelaskan ubinnya sendiri dalam pesan konfigurasi "/app" yang dipertahankan (retained), sehingga setiap ponsel pada broker yang sama menampilkan tata letak yang sama, dan perubahan di satu ponsel sampai ke ponsel lain.
+• "Temukan Sensor" memindai broker untuk mencari pembacaan dan membuat ubin bagi perangkat yang tidak memiliki konfigurasi "/app".
+• Bilah "Izin Bergabung" memungkinkan perangkat Zigbee baru bergabung melalui router mana pun, dengan hitung mundur.
+• Beberapa broker melalui TCP, SSL, WS, atau WSS, termasuk sertifikat yang ditandatangani sendiri.
+• Koneksi latar belakang opsional menjaga pembacaan dan peringatan tetap terkini saat aplikasi ditutup.
+
+Peringatan
+• Peringatan asap dari perangkat apa pun yang melaporkan asap, dengan suara alarm keras opsional.
+• Peringatan penyiraman, dengan bunyi lonceng dan getaran, saat sensor kelembapan naik melewati titik tengah rentang idealnya.
+• Peringatan baterai lemah yang menampilkan persentase baterai.
+
+Cadangan dan debugging
+• Ekspor seluruh konfigurasi, atau hanya broker, sebagai file terkompresi. Cadangan dienkripsi secara default (AES-256-GCM).
+• Pulihkan semuanya, atau gabungkan hanya broker.
+• Atau terbitkan dan pulihkan cadangan melalui pesan MQTT yang dipertahankan, tanpa memindahkan file.
+• "Terminal" langsung yang dapat difilter menampilkan setiap pesan MQTT, untuk memeriksa payload dan topik.
+
+Layanan online opsional
+Tombol "Impor melalui kode" pada layar "Tambahkan Broker" menggunakan sync.odiousapps.com, relai kredensial yang dijalankan oleh pengembang. Anda masuk ke situs tersebut dan memilih kredensial yang tersimpan, lalu nama host, nama pengguna, dan kata sandi broker dikirim kembali ke aplikasi melalui server itu. Tidak ada yang dikirim kecuali Anda mengetuk tombol dan setuju untuk melanjutkan, dan broker selalu dapat dimasukkan secara manual atau diimpor dari file. Kode sumber relai ini adalah perangkat lunak bebas (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

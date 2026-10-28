@@ -1,0 +1,32 @@
+Z2M Dash és un tauler per a Android gratuït i de codi obert per a Zigbee2MQTT. Es connecta directament al vostre propi broker MQTT, així que no cal cap compte al núvol i no quedeu lligats a cap proveïdor. Tota la configuració es pot desar en un sol fitxer o compartir entre telèfons a través del mateix broker.
+
+Tauler
+• Grups de clústers, cadascun amb les rajoles d'un dispositiu: lectures de sensors, interruptors d'encesa/apagada i botons d'una sola pulsació (com l'STOP d'una persiana).
+• Rajoles de sensor amb les vostres unitats i decimals, i un interval ideal opcional que acoloreix la rajola quan una lectura és massa baixa o massa alta.
+• Els interruptors mostren l'estat real del dispositiu, no només l'última ordre enviada.
+• Els sensors de presència i d'ocupació es mostren com a "Detectat" o "Lliure".
+• Arrossegueu i deixeu anar per reordenar grups, clústers i rajoles, amb opció de desfer. "Bloqueja la disposició" (activat per defecte) evita moviments accidentals.
+• Els clústers es contornegen quan un dispositiu fa més d'una hora que no informa (vermell), té la bateria baixa (blau) o té un senyal Zigbee feble (groc). Els clústers amb bateries recarregables NiMH només es consideren baixos al 5%.
+• Un menú de filtres mostra només els dispositius amb bateria baixa o senyal feble, o els sensors d'humitat per sota o per sobre del seu interval ideal.
+• Funciona en telèfons i Android TV.
+
+Configuració i sincronització
+• Els dispositius poden descriure les seves pròpies rajoles en un missatge de configuració "/app" retingut, de manera que tots els telèfons del mateix broker mostren la mateixa disposició i els canvis fets en un arriben als altres.
+• "Descobreix sensors" escaneja un broker a la recerca de lectures i crea rajoles per als dispositius sense configuració "/app".
+• Una barra de "Permet unir-se" deixa que nous dispositius Zigbee s'uneixin a través de qualsevol encaminador, amb compte enrere.
+• Diversos brokers per TCP, SSL, WS o WSS, inclosos certificats autosignats.
+• Una connexió opcional en segon pla manté les lectures i les alertes al dia mentre l'aplicació està tancada.
+
+Alertes
+• Alertes de fum de qualsevol dispositiu que detecti fum, amb un so d'alarma fort opcional.
+• Alertes de reg, amb campaneta i vibració, quan un sensor d'humitat puja per sobre del punt mitjà del seu interval ideal.
+• Alertes de bateria baixa que mostren el percentatge de bateria.
+
+Còpia de seguretat i depuració
+• Exporteu tota la configuració, o només els brokers, com a fitxer comprimit. Les còpies de seguretat es xifren per defecte (AES-256-GCM).
+• Restaureu-ho tot o fusioneu-hi només els brokers.
+• O publiqueu i restaureu una còpia a través d'un missatge MQTT retingut, sense haver de moure cap fitxer.
+• Un "Terminal" en directe i filtrable mostra cada missatge MQTT, per revisar càrregues i temes.
+
+Servei en línia opcional
+El botó "Importa amb un codi" de la pantalla "Afegeix un intermediari" utilitza sync.odiousapps.com, un relé de credencials gestionat pel desenvolupador. Inicieu la sessió en aquest lloc i trieu una credencial desada, i el nom d'amfitrió, el nom d'usuari i la contrasenya del broker tornen a l'aplicació a través d'aquest servidor. No s'envia res tret que toqueu el botó i accepteu continuar, i els brokers sempre es poden introduir a mà o importar des d'un fitxer. El codi font del relé és programari lliure (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

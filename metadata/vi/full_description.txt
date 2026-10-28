@@ -1,0 +1,32 @@
+Z2M Dash là bảng điều khiển Android miễn phí, mã nguồn mở dành cho Zigbee2MQTT. Ứng dụng kết nối trực tiếp với broker MQTT của riêng bạn, nên không cần tài khoản đám mây và không bị ràng buộc với nhà cung cấp nào. Toàn bộ thiết lập của bạn có thể lưu vào một tệp duy nhất, hoặc chia sẻ giữa các điện thoại qua chính broker.
+
+Bảng điều khiển
+• Các nhóm cụm, mỗi cụm chứa các ô của một thiết bị: chỉ số cảm biến, công tắc bật/tắt và nút nhấn một lần (như nút STOP của rèm).
+• Ô cảm biến với đơn vị và số chữ số thập phân tùy chọn, cùng khoảng lý tưởng tùy chọn tô màu ô khi chỉ số quá thấp hoặc quá cao.
+• Công tắc hiển thị trạng thái thực của thiết bị, không chỉ lệnh cuối cùng đã gửi.
+• Cảm biến hiện diện và chiếm chỗ hiển thị là "Đã phát hiện" hoặc "Không có người".
+• Kéo và thả để sắp xếp lại nhóm, cụm và ô, có thể hoàn tác. "Khóa bố cục" (bật theo mặc định) ngăn di chuyển nhầm.
+• Cụm được viền khi thiết bị không báo cáo hơn một giờ (đỏ), pin yếu (xanh dương) hoặc tín hiệu Zigbee yếu (vàng). Cụm dùng pin sạc NiMH chỉ bị tính là yếu khi còn 5%.
+• Menu bộ lọc chỉ hiển thị thiết bị pin yếu hoặc tín hiệu yếu, hoặc cảm biến độ ẩm dưới hay trên khoảng lý tưởng.
+• Hoạt động trên điện thoại và Android TV.
+
+Thiết lập và đồng bộ
+• Thiết bị có thể mô tả các ô của mình trong tin nhắn cấu hình "/app" được giữ lại (retained), nên mọi điện thoại trên cùng broker đều hiển thị cùng bố cục, và thay đổi trên một điện thoại sẽ đến các máy khác.
+• "Khám phá cảm biến" quét broker để tìm chỉ số và tạo ô cho các thiết bị không có cấu hình "/app".
+• Thanh "Cho phép tham gia" cho thiết bị Zigbee mới tham gia qua bất kỳ bộ định tuyến nào, kèm đếm ngược.
+• Nhiều broker qua TCP, SSL, WS hoặc WSS, kể cả chứng chỉ tự ký.
+• Kết nối nền tùy chọn giữ chỉ số và cảnh báo luôn cập nhật khi ứng dụng đã đóng.
+
+Cảnh báo
+• Cảnh báo khói từ bất kỳ thiết bị nào báo có khói, với âm báo động lớn tùy chọn.
+• Cảnh báo tưới cây, có chuông và rung, khi cảm biến độ ẩm tăng vượt qua giữa khoảng lý tưởng.
+• Cảnh báo pin yếu kèm phần trăm pin.
+
+Sao lưu và gỡ lỗi
+• Xuất toàn bộ cấu hình, hoặc chỉ các broker, dưới dạng tệp nén. Bản sao lưu được mã hóa theo mặc định (AES-256-GCM).
+• Khôi phục tất cả, hoặc chỉ gộp các broker.
+• Hoặc xuất bản và khôi phục bản sao lưu qua tin nhắn MQTT được giữ lại, không cần di chuyển tệp.
+• "Terminal" trực tiếp, có thể lọc, hiển thị mọi tin nhắn MQTT để kiểm tra nội dung và chủ đề.
+
+Dịch vụ trực tuyến tùy chọn
+Nút "Nhập qua mã" trên màn hình "Thêm broker" sử dụng sync.odiousapps.com, một dịch vụ chuyển tiếp thông tin đăng nhập do nhà phát triển vận hành. Bạn đăng nhập vào trang đó và chọn thông tin đã lưu, rồi tên máy chủ, tên người dùng và mật khẩu của broker được gửi lại ứng dụng qua máy chủ đó. Không có gì được gửi trừ khi bạn nhấn nút và đồng ý tiếp tục, và broker luôn có thể nhập thủ công hoặc nhập từ tệp. Mã nguồn của dịch vụ chuyển tiếp là phần mềm tự do (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

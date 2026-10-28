@@ -1,0 +1,32 @@
+Z2M Dash on ilmainen, avoimen lähdekoodin Android-kojelauta Zigbee2MQTT:lle. Se puhuu suoraan omalle MQTT-välittäjällesi, joten pilvitiliä ei tarvita eikä mikään palveluntarjoaja sido sinua. Koko asetuksesi voi tallentaa yhteen tiedostoon tai jakaa puhelimien kesken itse välittäjän kautta.
+
+Kojelauta
+• Klusteriryhmiä, joissa jokainen klusteri sisältää yhden laitteen ruudut: anturilukemat, päälle/pois-kytkimet ja yhden painalluksen painikkeet (kuten rullaverhon STOP).
+• Anturiruudut omilla yksiköillä ja desimaaleilla sekä valinnainen ihannealue, joka värittää ruudun, kun lukema on liian matala tai korkea.
+• Kytkimet näyttävät laitteen todellisen tilan, eivät vain viimeksi lähetettyä komentoa.
+• Läsnäolo- ja varausanturit näkyvät tilassa "Havaittu" tai "Tyhjä".
+• Järjestä ryhmiä, klustereita ja ruutuja vetämällä ja pudottamalla, kumoamismahdollisuuden kanssa. "Lukitse asettelu" (oletuksena päällä) estää vahingossa tehdyt siirrot.
+• Klusteri saa reunuksen, kun laite ei ole raportoinut yli tuntiin (punainen), sen akku on vähissä (sininen) tai sen Zigbee-signaali on heikko (keltainen). Ladattavia NiMH-akkuja käyttävät klusterit lasketaan vähissä oleviksi vasta 5 %:ssa.
+• Suodatinvalikko näyttää vain laitteet, joiden akku on vähissä tai signaali heikko, tai kosteusanturit, jotka ovat ihannealueensa ala- tai yläpuolella.
+• Toimii puhelimissa ja Android TV:ssä.
+
+Asetukset ja synkronointi
+• Laitteet voivat kuvata omat ruutunsa säilytetyssä (retained) "/app"-asetusviestissä, joten jokainen saman välittäjän puhelin näyttää saman asettelun ja yhdellä puhelimella tehdyt muutokset välittyvät muille.
+• "Etsi antureita" skannaa välittäjän lukemien varalta ja luo ruudut laitteille, joilla ei ole "/app"-asetuksia.
+• "Salli liittyminen" -palkki päästää uudet Zigbee-laitteet liittymään minkä tahansa reitittimen kautta, lähtölaskennan kanssa.
+• Useita välittäjiä TCP:n, SSL:n, WS:n tai WSS:n kautta, myös itse allekirjoitetuilla varmenteilla.
+• Valinnainen taustayhteys pitää lukemat ja hälytykset ajan tasalla, kun sovellus on suljettu.
+
+Hälytykset
+• Savuhälytykset mistä tahansa savua ilmoittavasta laitteesta, valinnaisella kovalla hälytysäänellä.
+• Kastelumuistutukset kilahduksella ja värinällä, kun kosteusanturin lukema nousee ihannealueensa keskikohdan yli.
+• Akun vähyyshälytykset, joissa näkyy akun varaustaso prosentteina.
+
+Varmuuskopiointi ja vianetsintä
+• Vie koko asetus tai vain välittäjät pakattuna tiedostona. Varmuuskopiot salataan oletuksena (AES-256-GCM).
+• Palauta kaikki tai yhdistä pelkät välittäjät.
+• Tai julkaise ja palauta varmuuskopio säilytetyn MQTT-viestin kautta ilman tiedoston siirtämistä.
+• Reaaliaikainen, suodatettava "Pääte" näyttää jokaisen MQTT-viestin sisällön ja aiheiden tarkistamista varten.
+
+Valinnainen verkkopalvelu
+"Lisää välittäjä" -näytön "Tuo koodilla" -painike käyttää sivustoa sync.odiousapps.com, kehittäjän ylläpitämää tunnistetietojen välityspalvelua. Kirjaudut sivustolle ja valitset tallennetut tunnistetiedot, ja välittäjän isäntänimi, käyttäjätunnus ja salasana palautetaan sovellukseen kyseisen palvelimen kautta. Mitään ei lähetetä, ellet napauta painiketta ja hyväksy jatkamista, ja välittäjät voi aina syöttää käsin tai tuoda tiedostosta. Välityspalvelun lähdekoodi on vapaata ohjelmistoa (Unlicense): https://github.com/evilbunny2008/MX3Launcher/tree/main/website

@@ -1,0 +1,1 @@
+Zigbee2MQTT nadzorna ploča koja izravno komunicira s vašim MQTT brokerom
