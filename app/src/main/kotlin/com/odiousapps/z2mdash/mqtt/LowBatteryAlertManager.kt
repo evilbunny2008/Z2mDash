@@ -241,8 +241,7 @@ class LowBatteryAlertManager(
          * 0 is never low (see this class's own doc: mains-powered devices report a fixed 0).
          */
         fun isLowBattery(battery: Double?, batteryType: BatteryType = BatteryType.STANDARD): Boolean {
-            if (battery == null || battery <= 0.0) return false
-            return when (batteryType) {
+            return !(battery == null || battery <= 0.0) && when (batteryType) {
                 BatteryType.STANDARD -> battery <= LOW_BATTERY_THRESHOLD
                 BatteryType.NIMH -> battery < NIMH_LOW_BATTERY_THRESHOLD
             }
