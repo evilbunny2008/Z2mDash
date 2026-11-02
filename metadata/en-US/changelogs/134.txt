@@ -1,0 +1,1 @@
+- Battery-powered devices now always show a battery icon on their cluster, so you can switch them to NiMH before they ever read as low. It shows a charging battery when set to NiMH.

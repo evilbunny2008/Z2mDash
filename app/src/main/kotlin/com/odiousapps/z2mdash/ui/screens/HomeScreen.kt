@@ -33,6 +33,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.BatteryChargingFull
+import androidx.compose.material.icons.filled.BatteryFull
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
@@ -2418,6 +2419,18 @@ private fun isClusterLowBattery(
         }
     }
 
+/**
+ * Whether any device behind [panels] runs on a battery at all - a reading of 0 doesn't count, the
+ * same as LowBatteryAlertManager.isLowBattery, as mains-powered devices can report a fixed 0.
+ */
+private fun isClusterBatteryPowered(panels: List<Panel>, payloads: Map<String, String>): Boolean =
+    panels.any { panel ->
+        deviceTopicKeysFor(panel).any { key ->
+            val battery = payloads[key]?.let { JsonPath.extract(it, "battery") }?.toDoubleOrNull()
+            battery != null && battery > 0.0
+        }
+    }
+
 /** The dashboard filters the Home screen's filter FABs switch between - at most one at a time. */
 private enum class DashboardFilter { STALE, LOW_BATTERY, WEAK_SIGNAL, LOW_MOISTURE, HIGH_MOISTURE }
 
@@ -2611,6 +2624,9 @@ private fun ClusterCard(
     val lowBatteryState = remember(panels, batteryType) {
         derivedStateOf { isClusterLowBattery(panels, payloadsState.value, batteryType) }
     }
+    val batteryPoweredState = remember(panels) {
+        derivedStateOf { isClusterBatteryPowered(panels, payloadsState.value) }
+    }
     val weakSignalState = remember(panels) {
         derivedStateOf { isClusterWeakSignal(panels, payloadsState.value) }
     }
@@ -2732,7 +2748,10 @@ private fun ClusterCard(
                     ),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    softWrap = false
+                    softWrap = false,
+                    // Measured last, so a long name truncates rather than squeezing the buttons
+                    // after it out of the row.
+                    modifier = Modifier.weight(1f, fill = false)
                 )
                 if (ageText != null) {
                     val ageTextStyle = MaterialTheme.typography.labelSmall.copy(
@@ -2755,10 +2774,10 @@ private fun ClusterCard(
                         )
                     }
                 }
-                // Doubles as the way into the battery type setting - only shown once there's
-                // something to act on (a low reading, or already set to NiMH so it can be switched
-                // back), rather than adding yet another always-present button to every caption.
-                if (showLowBattery || batteryType == BatteryType.NIMH) {
+                // Doubles as the way into the battery type setting, on every battery-powered
+                // cluster - NiMH needs setting before a reading ever looks low. Kept for a cluster
+                // set to NiMH even with no reading yet, so it can always be switched back.
+                if (batteryPoweredState.value || batteryType == BatteryType.NIMH) {
                     Spacer(Modifier.width(4.dp))
                     IconButton(onClick = onBatteryType, modifier = Modifier.size(28.dp)) {
                         if (showLowBattery) {
@@ -2773,7 +2792,8 @@ private fun ClusterCard(
                             )
                         } else {
                             Icon(
-                                Icons.Default.BatteryChargingFull,
+                                if (batteryType == BatteryType.NIMH) Icons.Default.BatteryChargingFull
+                                else Icons.Default.BatteryFull,
                                 contentDescription = stringResource(R.string.home_battery_type_cluster, name),
                                 modifier = Modifier.size(16.dp)
                             )
