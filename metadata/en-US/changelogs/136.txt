@@ -1,0 +1,1 @@
+- Android 17: the local network permission is now only asked for when a broker is actually on your home network.

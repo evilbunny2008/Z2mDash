@@ -11,10 +11,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.odiousapps.z2mdash.mqtt.LocalNetwork
 import com.odiousapps.z2mdash.service.MqttForegroundService
 import com.odiousapps.z2mdash.ui.navigation.AppNavHost
 import com.odiousapps.z2mdash.ui.theme.Z2mDashTheme
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -40,11 +43,15 @@ class MainActivity : ComponentActivity() {
         }
 
         // Android 17+ blocks LAN connections without ACCESS_LOCAL_NETWORK. Only asked for once a
-        // broker exists (not on a fresh install's Welcome screen), so the prompt has context.
-        // The background service can't ask, so this is the one place it's requested.
+        // broker's host turns out to be a LAN address (checked again whenever a broker is added or
+        // edited), so internet-only brokers never see the prompt. At most once per launch, and the
+        // background service can't ask, so this is the one place it's requested.
         if (Build.VERSION.SDK_INT >= ANDROID_17 && !hasLocalNetworkPermission()) {
             lifecycleScope.launch {
-                app.configRepository.config.first { it.brokers.isNotEmpty() }
+                app.configRepository.config
+                    .map { config -> config.brokers.map { it.host }.toSet() }
+                    .distinctUntilChanged()
+                    .first { hosts -> LocalNetwork.anyLocal(hosts) }
                 if (!hasLocalNetworkPermission()) {
                     localNetworkPermissionLauncher.launch(Manifest.permission.ACCESS_LOCAL_NETWORK)
                 }
