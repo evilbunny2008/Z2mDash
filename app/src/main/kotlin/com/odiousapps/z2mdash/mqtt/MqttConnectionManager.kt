@@ -298,6 +298,15 @@ class MqttConnectionManager(
     }
 
     /**
+     * Restarts every auto-connect broker straight away instead of waiting out HiveMQ's reconnect
+     * backoff - used once the local network permission is granted, since every attempt made
+     * before then failed.
+     */
+    fun reconnectAll() {
+        brokerById.values.filter { it.autoConnect }.forEach { connections[it.id]?.reconnect() }
+    }
+
+    /**
      * Disconnects every broker without forgetting it (`connections`/`brokerById` stay populated,
      * unlike [applyConfig]'s removal path) - a later [applyConfig] call (e.g. on foreground
      * resume) reconnects and re-subscribes each one from scratch safely either way.

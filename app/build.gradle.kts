@@ -36,8 +36,8 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 134
-        versionName = "0.0.134"
+        versionCode = 135
+        versionName = "0.0.135"
     }
 
     // Generates android:localeConfig from the values-*/ folders, so
@@ -250,7 +250,7 @@ dependencies {
     // MQTT client. Actively maintained, MQTT 3.1.1 + 5.0, robust TCP/SSL/WS/WSS
     // transports with real automatic-reconnect handling - this is what replaces
     // Paho's flaky websocket keepalive.
-    implementation("com.hivemq:hivemq-mqtt-client:1.4.1")
+    implementation("com.hivemq:hivemq-mqtt-client:1.4.2")
     implementation("io.netty:netty-common:4.1.133.Final")
     implementation("io.netty:netty-handler:4.1.133.Final")
     implementation("io.netty:netty-codec:4.1.133.Final")

@@ -1,0 +1,1 @@
+- Android 17: asks for the new local network permission, which is needed to reach MQTT brokers on your home network.

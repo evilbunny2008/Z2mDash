@@ -8,6 +8,9 @@
         tools:ignore="ForegroundServicesPolicy" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_DATA_SYNC" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <!-- Android 17+ blocks connections to LAN addresses (i.e. most MQTT brokers) for apps
+         targeting API 37 unless this runtime permission is granted. -->
+    <uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
 
     <!-- Not a TV-only app - these just declare it also works fine without a
          touchscreen or the Leanback D-pad-navigation feature set, which is
