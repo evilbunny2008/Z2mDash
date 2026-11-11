@@ -557,7 +557,15 @@ fun retopicClusterAndPublish(
     clusterId: String,
     oldTopicPrefix: String,
     newTopicPrefix: String
-) {
+) = synchronized(app.configRepository.reconcileLock) {
+    // Held for the whole sequence, and the old "/app" forgotten locally below rather than left to
+    // the broker's empty echo - otherwise, from the moment retopicAutoConfiguredDevice stops
+    // tracking the old topic until that echo (plus MqttConnectionManager's batching delay) lands,
+    // its still-cached, still-live payload looks like an untracked device to any reconcile pass
+    // that happens to run (every incoming sensor message triggers one), and
+    // DeviceAutoConfigManager.detectNewDevices auto-accepts it as a brand-new device - a full
+    // second copy of every panel in this cluster, still on the old topic. Only "sometimes",
+    // because it depended on some other MQTT traffic landing inside that window.
     val clusterPanels = app.configRepository.config.value.groups
         .find { it.id == groupId }?.panels
         ?.filter { it.clusterId == clusterId } ?: emptyList()
@@ -601,6 +609,7 @@ fun retopicClusterAndPublish(
         app.connectionManager.publish(brokerId, "$newTopicPrefix/app", oldAppPayload, retain = true)
     }
     if (device != null) {
+        app.connectionManager.forgetPayload(device.brokerId, device.appConfigTopic)
         app.connectionManager.publish(device.brokerId, device.appConfigTopic, "", retain = true)
     }
 }

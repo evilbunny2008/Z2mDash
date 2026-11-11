@@ -288,6 +288,19 @@ class MqttConnectionManager(
         connections[brokerId]?.publish(topic, payload, retain)
     }
 
+    /**
+     * Drops [topic]'s cached payload straight away, exactly as if its empty "cleared" retained
+     * message had just arrived - for a caller that is itself clearing that topic and can't afford
+     * to wait for the broker's echo (plus the batching delay) before every reconcile pass stops
+     * seeing it. See AutoConfigPush.retopicClusterAndPublish.
+     */
+    fun forgetPayload(brokerId: String, topic: String) {
+        val key = keyFor(brokerId, topic)
+        _latestPayloads.update { it - key }
+        _latestPayloadTimestamps.update { it - key }
+        schedulePersist()
+    }
+
     /** Subscribes to one specific topic on a broker - used by the MQTT backup/restore screen. */
     fun subscribe(brokerId: String, topic: String) {
         connections[brokerId]?.subscribe(topic)

@@ -1,0 +1,1 @@
+- Fixed changing a cluster's topic sometimes creating a duplicate copy of all its panels instead of just moving them.
