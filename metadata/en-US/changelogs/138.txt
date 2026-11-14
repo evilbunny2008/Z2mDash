@@ -1,0 +1,1 @@
+- Removed translations for languages that Google Play doesn't support. The app will show those languages in English instead.
