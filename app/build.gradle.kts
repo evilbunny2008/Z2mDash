@@ -36,8 +36,8 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 139
-        versionName = "0.0.139"
+        versionCode = 140
+        versionName = "0.0.140"
     }
 
     // Generates android:localeConfig from the values-*/ folders, so
@@ -244,7 +244,7 @@ dependencies {
     // above) since Compose Foundation 1.7.0.
     implementation("androidx.tv:tv-material:1.1.0")
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.12.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.13.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.11.0")
 
     // MQTT client. Actively maintained, MQTT 3.1.1 + 5.0, robust TCP/SSL/WS/WSS

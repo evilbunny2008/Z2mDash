@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Ուղարկում է իրական ծանուցում (ձայնով, եթե վերևում միացված է)՝ օգտագործելով նույն տրամաբանությունը, ինչ ծխի իրական զգուշացումը – լավ միջոց համոզվելու, որ այն իսկապես կգրավի ձեր ուշադրությունը, նախքան դրա կարիքը կունենաք</string>
 	<string name="alerts_sound">Զգուշացման ձայն</string>
 	<string name="alerts_sound_detail">Ծանուցման հետ միասին նվագարկել ազդանշանի նման բարձր ձայն</string>
+	<string name="alerts_temperature">Ջերմաստիճանի ծանուցումներ</string>
+	<string name="alerts_temperature_detail">Ծանուցել, երբ ջերմաստիճանի սենսորը հասնում է իր համար սահմանված վերին կամ ստորին սահմանին – սահմանները նշելու համար հպեք ջերմաստիճանի սալիկի ցուցմունքին</string>
+	<string name="alerts_temperature_test_detail">Ուղարկում է իրական ծանուցում՝ օգտագործելով նույն տրամաբանությունը, ինչ իրական ջերմաստիճանի ծանուցումը, անկախ վերևի փոխարկիչից</string>
 	<string name="alerts_test">Փորձնական ծանուցում</string>
 	<string name="alerts_title">Ազդանշան/զգուշացում</string>
 	<string name="alerts_watering">Ջրելու զգուշացումներ</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’–ում ոչ մի կլաստեր այդ թեմայում չէր</string>
 	<string name="home_search_clusters">Որոնել կլաստերներ</string>
 	<string name="home_stale_description">Տվյալները մեկ ժամից ավելի հին են</string>
+	<string name="home_temperature_limit_high">Ծանուցել այս արժեքում կամ ավելի</string>
+	<string name="home_temperature_limit_low">Ծանուցել այս արժեքում կամ պակաս</string>
+	<string name="home_temperature_limits_hint">Սահմանն անջատելու համար թողեք այն դատարկ</string>
+	<string name="home_temperature_limits_invalid">Վերին սահմանը պետք է մեծ լինի ստորինից</string>
+	<string name="home_temperature_limits_title">Ջերմաստիճանի ծանուցումներ՝ ‘%1$s’</string>
 	<string name="home_undo">Հետարկել</string>
 	<string name="home_value">Արժեք</string>
 	<string name="home_weak_signal_description">Կապի որակը %1$d–ից ցածր</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Գլխավոր</string>
 	<string name="tab_settings">Կարգավորումներ</string>
 	<string name="tab_terminal">Տերմինալ</string>
+	<string name="temperature_channel">Ջերմաստիճանի ծանուցումներ</string>
+	<string name="temperature_channel_desc">Զգուշացնում է, երբ ջերմաստիճանի սենսորը հասնում է իր համար սահմանված վերին կամ ստորին սահմանին</string>
+	<string name="temperature_notif_high_text">%1$s վերին սահմանը հասել է – հպեք՝ %2$s-ը բացելու համար</string>
+	<string name="temperature_notif_high_title">%1$s՝ չափազանց տաք (%2$s)</string>
+	<string name="temperature_notif_low_text">%1$s ստորին սահմանը հասել է – հպեք՝ %2$s-ը բացելու համար</string>
+	<string name="temperature_notif_low_title">%1$s՝ չափազանց ցուրտ (%2$s)</string>
+	<string name="temperature_notif_test_text">Ահա թե ինչ տեսք ունի ջերմաստիճանի ծանուցումը</string>
 	<string name="terminal_all_brokers">Բոլոր բրոքերները</string>
 	<string name="terminal_broker">Բրոքեր</string>
 	<string name="terminal_clear">Մաքրել մատյանը</string>

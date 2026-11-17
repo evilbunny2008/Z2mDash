@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Kích hoạt thông báo thực (có âm thanh, nếu được bật ở trên) bằng cách sử dụng logic chính xác giống như cảnh báo khói thực sự – một cách hay để xác nhận rằng thông báo đó sẽ thực sự thu hút sự chú ý của bạn trước khi bạn cần</string>
 	<string name="alerts_sound">Âm thanh cảnh báo</string>
 	<string name="alerts_sound_detail">Phát âm thanh kiểu báo thức lớn cùng với thông báo</string>
+	<string name="alerts_temperature">Cảnh báo nhiệt độ</string>
+	<string name="alerts_temperature_detail">Thông báo khi cảm biến nhiệt độ đạt ngưỡng cao hoặc thấp đã đặt cho nó – nhấn vào số đo của ô nhiệt độ để đặt ngưỡng</string>
+	<string name="alerts_temperature_test_detail">Gửi một thông báo thật dùng đúng logic như một cảnh báo nhiệt độ thật, bất kể công tắc ở trên</string>
 	<string name="alerts_test">Thông báo kiểm tra</string>
 	<string name="alerts_title">Báo động/Cảnh báo</string>
 	<string name="alerts_watering">Cảnh báo tưới nước</string>
@@ -228,6 +231,11 @@
 	<string name="home_retopic_none">Không có cụm nào trong ‘%1$s’ về chủ đề đó</string>
 	<string name="home_search_clusters">Cụm tìm kiếm</string>
 	<string name="home_stale_description">Dữ liệu đã cũ hơn một giờ</string>
+	<string name="home_temperature_limit_high">Cảnh báo khi bằng hoặc cao hơn</string>
+	<string name="home_temperature_limit_low">Cảnh báo khi bằng hoặc thấp hơn</string>
+	<string name="home_temperature_limits_hint">Để trống một ngưỡng để tắt ngưỡng đó</string>
+	<string name="home_temperature_limits_invalid">Ngưỡng cao phải lớn hơn ngưỡng thấp</string>
+	<string name="home_temperature_limits_title">Cảnh báo nhiệt độ cho ‘%1$s’</string>
 	<string name="home_undo">Hoàn tác</string>
 	<string name="home_value">Giá trị</string>
 	<string name="home_weak_signal_description">Chất lượng liên kết dưới %1$d</string>
@@ -370,6 +378,13 @@
 	<string name="tab_home">Trang chủ</string>
 	<string name="tab_settings">Cài đặt</string>
 	<string name="tab_terminal">Phần cuối</string>
+	<string name="temperature_channel">Cảnh báo nhiệt độ</string>
+	<string name="temperature_channel_desc">Cảnh báo khi cảm biến nhiệt độ đạt ngưỡng cao hoặc thấp đã đặt cho nó</string>
+	<string name="temperature_notif_high_text">Đã đạt ngưỡng cao %1$s – nhấn để mở %2$s</string>
+	<string name="temperature_notif_high_title">%1$s quá nóng (%2$s)</string>
+	<string name="temperature_notif_low_text">Đã đạt ngưỡng thấp %1$s – nhấn để mở %2$s</string>
+	<string name="temperature_notif_low_title">%1$s quá lạnh (%2$s)</string>
+	<string name="temperature_notif_test_text">Đây là giao diện của thông báo cảnh báo nhiệt độ</string>
 	<string name="terminal_all_brokers">Tất cả các broker</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Xóa nhật ký</string>

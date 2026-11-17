@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Hutuma arifa halisi (pamoja na sauti, ikiwa imewashwa hapo juu) kwa kutumia mantiki ile ile ya tahadhari halisi ya moshi – njia nzuri ya kuhakikisha kuwa itavuta umakini wako kabla hujaihitaji</string>
 	<string name="alerts_sound">Sauti ya Tahadhari</string>
 	<string name="alerts_sound_detail">Cheza sauti kubwa kama ya kengele pamoja na arifa</string>
+	<string name="alerts_temperature">Arifa za Halijoto</string>
+	<string name="alerts_temperature_detail">Arifu kihisi cha halijoto kinapofikia kikomo cha juu au cha chini kilichowekwa kwa ajili yake – gusa usomaji wa kigae cha halijoto ili kuweka vikomo</string>
+	<string name="alerts_temperature_test_detail">Hutuma arifa halisi kwa kutumia mantiki ileile kabisa ya arifa halisi ya halijoto, bila kujali swichi iliyo juu</string>
 	<string name="alerts_test">Jaribu Arifa</string>
 	<string name="alerts_title">Kengele/Tahadhari</string>
 	<string name="alerts_watering">Tahadhari za Kumwagilia</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Hakuna clusters katika ‘%1$s’ zilizokuwa kwenye topic hiyo</string>
 	<string name="home_search_clusters">Tafuta clusters</string>
 	<string name="home_stale_description">Data ina zaidi ya saa moja</string>
+	<string name="home_temperature_limit_high">Arifu kwenye au juu ya</string>
+	<string name="home_temperature_limit_low">Arifu kwenye au chini ya</string>
+	<string name="home_temperature_limits_hint">Acha kikomo kitupu ili kukizima</string>
+	<string name="home_temperature_limits_invalid">Kikomo cha juu lazima kiwe juu ya kikomo cha chini</string>
+	<string name="home_temperature_limits_title">Arifa za halijoto za ‘%1$s’</string>
 	<string name="home_undo">Tendua</string>
 	<string name="home_value">Thamani</string>
 	<string name="home_weak_signal_description">Ubora wa kiungo chini ya %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Nyumbani</string>
 	<string name="tab_settings">Mipangilio</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Arifa za halijoto</string>
+	<string name="temperature_channel_desc">Huonya kihisi cha halijoto kinapofikia kikomo cha juu au cha chini kilichowekwa kwa ajili yake</string>
+	<string name="temperature_notif_high_text">Kikomo chako cha juu cha %1$s kimefikiwa – gusa ili kufungua %2$s</string>
+	<string name="temperature_notif_high_title">%1$s ina joto sana (%2$s)</string>
+	<string name="temperature_notif_low_text">Kikomo chako cha chini cha %1$s kimefikiwa – gusa ili kufungua %2$s</string>
+	<string name="temperature_notif_low_title">%1$s ina baridi sana (%2$s)</string>
+	<string name="temperature_notif_test_text">Hivi ndivyo arifa ya halijoto inavyoonekana</string>
 	<string name="terminal_all_brokers">Brokers zote</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Futa kumbukumbu</string>

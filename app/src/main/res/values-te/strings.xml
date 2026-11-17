@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">నిజమైన పొగ హెచ్చరిక వలె ఖచ్చితమైన లాజిక్‌ని ఉపయోగించి నిజమైన నోటిఫికేషన్‌ను (ధ్వనితో పాటు, పైన ప్రారంభించబడితే) ప్రదర్శిస్తుంది – ఇది మీకు అవసరమైన ముందు మీ దృష్టిని ఆకర్షిస్తుంది అని నిర్ధారించడానికి ఒక మంచి మార్గం</string>
 	<string name="alerts_sound">హెచ్చరిక ధ్వని</string>
 	<string name="alerts_sound_detail">నోటిఫికేషన్‌తో పాటు బిగ్గరగా అలారం–స్టైల్ సౌండ్‌ని ప్లే చేయండి</string>
+	<string name="alerts_temperature">ఉష్ణోగ్రత హెచ్చరికలు</string>
+	<string name="alerts_temperature_detail">ఉష్ణోగ్రత సెన్సార్ దాని కోసం సెట్ చేసిన ఎగువ లేదా దిగువ పరిమితిని చేరినప్పుడు తెలియజేయండి – పరిమితులను సెట్ చేయడానికి ఉష్ణోగ్రత టైల్ రీడింగ్‌ను ట్యాప్ చేయండి</string>
+	<string name="alerts_temperature_test_detail">పై టోగుల్‌తో సంబంధం లేకుండా, నిజమైన ఉష్ణోగ్రత హెచ్చరికకు ఉన్న అదే తర్కాన్ని ఉపయోగించి నిజమైన నోటిఫికేషన్‌ను పంపుతుంది</string>
 	<string name="alerts_test">పరీక్ష నోటిఫికేషన్</string>
 	<string name="alerts_title">అలారం/అలర్ట్</string>
 	<string name="alerts_watering">నీరు త్రాగుటకు లేక హెచ్చరికలు</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">ఆ అంశంపై ‘%1$s’లో క్లస్టర్‌లు లేవు</string>
 	<string name="home_search_clusters">శోధన సమూహాలు</string>
 	<string name="home_stale_description">డేటా ఒక గంట కంటే పాతది</string>
+	<string name="home_temperature_limit_high">ఈ విలువ లేదా అంతకంటే ఎక్కువ వద్ద హెచ్చరించు</string>
+	<string name="home_temperature_limit_low">ఈ విలువ లేదా అంతకంటే తక్కువ వద్ద హెచ్చరించు</string>
+	<string name="home_temperature_limits_hint">పరిమితిని ఆఫ్ చేయడానికి దాన్ని ఖాళీగా వదలండి</string>
+	<string name="home_temperature_limits_invalid">ఎగువ పరిమితి దిగువ పరిమితి కంటే ఎక్కువగా ఉండాలి</string>
+	<string name="home_temperature_limits_title">‘%1$s’ కోసం ఉష్ణోగ్రత హెచ్చరికలు</string>
 	<string name="home_undo">అన్డు</string>
 	<string name="home_value">విలువ</string>
 	<string name="home_weak_signal_description">లింక్ నాణ్యత %1$d కంటే తక్కువ</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">హోమ్</string>
 	<string name="tab_settings">సెట్టింగ్‌లు</string>
 	<string name="tab_terminal">టెర్మినల్</string>
+	<string name="temperature_channel">ఉష్ణోగ్రత హెచ్చరికలు</string>
+	<string name="temperature_channel_desc">ఉష్ణోగ్రత సెన్సార్ దాని కోసం సెట్ చేసిన ఎగువ లేదా దిగువ పరిమితిని చేరినప్పుడు హెచ్చరిస్తుంది</string>
+	<string name="temperature_notif_high_text">మీ %1$s ఎగువ పరిమితి చేరుకుంది – %2$s తెరవడానికి ట్యాప్ చేయండి</string>
+	<string name="temperature_notif_high_title">%1$s చాలా వెచ్చగా ఉంది (%2$s)</string>
+	<string name="temperature_notif_low_text">మీ %1$s దిగువ పరిమితి చేరుకుంది – %2$s తెరవడానికి ట్యాప్ చేయండి</string>
+	<string name="temperature_notif_low_title">%1$s చాలా చల్లగా ఉంది (%2$s)</string>
+	<string name="temperature_notif_test_text">ఉష్ణోగ్రత హెచ్చరిక నోటిఫికేషన్ ఇలా కనిపిస్తుంది</string>
 	<string name="terminal_all_brokers">అందరు బ్రోకర్లు</string>
 	<string name="terminal_broker">బ్రోకర్</string>
 	<string name="terminal_clear">లాగ్‌ను క్లియర్ చేయండి</string>

@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Stuurt een echte melding (met geluid, indien hierboven ingeschakeld) met precies dezelfde logica als een echte rookmelding – een goede manier om te controleren dat hij echt je aandacht trekt voordat je hem nodig hebt</string>
 	<string name="alerts_sound">Waarschuwingsgeluid</string>
 	<string name="alerts_sound_detail">Speel een luid alarmachtig geluid af bij de melding</string>
+	<string name="alerts_temperature">Temperatuurmeldingen</string>
+	<string name="alerts_temperature_detail">Melden wanneer een temperatuursensor de ingestelde boven- of ondergrens bereikt – tik op de meetwaarde van een temperatuurtegel om de grenzen in te stellen</string>
+	<string name="alerts_temperature_test_detail">Verstuurt een echte melding met precies dezelfde logica als een echte temperatuurmelding, ongeacht de schakelaar hierboven</string>
 	<string name="alerts_test">Testmelding</string>
 	<string name="alerts_title">Alarm/Waarschuwing</string>
 	<string name="alerts_watering">Water geven–meldingen</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Geen clusters in ‘%1$s’ stonden op dat topic</string>
 	<string name="home_search_clusters">Clusters zoeken</string>
 	<string name="home_stale_description">Gegevens zijn meer dan een uur oud</string>
+	<string name="home_temperature_limit_high">Melden bij of boven</string>
+	<string name="home_temperature_limit_low">Melden bij of onder</string>
+	<string name="home_temperature_limits_hint">Laat een grens leeg om deze uit te zetten</string>
+	<string name="home_temperature_limits_invalid">De bovengrens moet hoger zijn dan de ondergrens</string>
+	<string name="home_temperature_limits_title">Temperatuurmeldingen voor ‘%1$s’</string>
 	<string name="home_undo">Ongedaan maken</string>
 	<string name="home_value">Waarde</string>
 	<string name="home_weak_signal_description">Linkkwaliteit onder %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Start</string>
 	<string name="tab_settings">Instellingen</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Temperatuurmeldingen</string>
+	<string name="temperature_channel_desc">Meldt wanneer een temperatuursensor de ingestelde boven- of ondergrens bereikt</string>
+	<string name="temperature_notif_high_text">Bovengrens van %1$s bereikt – tik om %2$s te openen</string>
+	<string name="temperature_notif_high_title">%1$s is te warm (%2$s)</string>
+	<string name="temperature_notif_low_text">Ondergrens van %1$s bereikt – tik om %2$s te openen</string>
+	<string name="temperature_notif_low_title">%1$s is te koud (%2$s)</string>
+	<string name="temperature_notif_test_text">Zo ziet een temperatuurmelding eruit</string>
 	<string name="terminal_all_brokers">Alle brokers</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Log wissen</string>

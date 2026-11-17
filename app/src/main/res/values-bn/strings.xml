@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">প্রকৃত ধোঁয়া সতর্কতার মতো একই যুক্তি ব্যবহার করে একটি বাস্তব বিজ্ঞপ্তি (শব্দ সহ, যদি উপরে সক্ষম করা থাকে) ফায়ার করে – এটি নিশ্চিত করার একটি ভাল উপায় যে এটি আপনার প্রয়োজনের আগে আপনার মনোযোগ আকর্ষণ করবে।</string>
 	<string name="alerts_sound">সতর্কতা শব্দ</string>
 	<string name="alerts_sound_detail">বিজ্ঞপ্তির পাশাপাশি একটি জোরে অ্যালার্ম–স্টাইলের শব্দ বাজান</string>
+	<string name="alerts_temperature">তাপমাত্রা সতর্কতা</string>
+	<string name="alerts_temperature_detail">কোনো তাপমাত্রা সেন্সর তার জন্য নির্ধারিত উচ্চ বা নিম্ন সীমায় পৌঁছালে জানান – সীমা নির্ধারণ করতে তাপমাত্রা টাইলের রিডিংয়ে ট্যাপ করুন</string>
+	<string name="alerts_temperature_test_detail">উপরের টগল যাই হোক না কেন, প্রকৃত তাপমাত্রা সতর্কতার মতো হুবহু একই যুক্তি ব্যবহার করে একটি আসল বিজ্ঞপ্তি পাঠায়</string>
 	<string name="alerts_test">পরীক্ষার বিজ্ঞপ্তি</string>
 	<string name="alerts_title">অ্যালার্ম/সতর্কতা</string>
 	<string name="alerts_watering">জল দেওয়ার সতর্কতা</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ এর কোনো ক্লাস্টার সেই বিষয়ে ছিল না</string>
 	<string name="home_search_clusters">অনুসন্ধান ক্লাস্টার</string>
 	<string name="home_stale_description">ডেটা এক ঘণ্টারও বেশি পুরনো৷</string>
+	<string name="home_temperature_limit_high">এই মান বা তার বেশি হলে সতর্ক করুন</string>
+	<string name="home_temperature_limit_low">এই মান বা তার কম হলে সতর্ক করুন</string>
+	<string name="home_temperature_limits_hint">সীমা বন্ধ করতে এটি ফাঁকা রাখুন</string>
+	<string name="home_temperature_limits_invalid">উচ্চ সীমা অবশ্যই নিম্ন সীমার চেয়ে বেশি হতে হবে</string>
+	<string name="home_temperature_limits_title">‘%1$s’-এর তাপমাত্রা সতর্কতা</string>
 	<string name="home_undo">পূর্বাবস্থায় ফেরান</string>
 	<string name="home_value">মান</string>
 	<string name="home_weak_signal_description">লিঙ্ক গুণমান %1$d এর নিচে</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">বাড়ি</string>
 	<string name="tab_settings">সেটিংস</string>
 	<string name="tab_terminal">টার্মিনাল</string>
+	<string name="temperature_channel">তাপমাত্রা সতর্কতা</string>
+	<string name="temperature_channel_desc">কোনো তাপমাত্রা সেন্সর তার জন্য নির্ধারিত উচ্চ বা নিম্ন সীমায় পৌঁছালে সতর্ক করে</string>
+	<string name="temperature_notif_high_text">আপনার %1$s উচ্চ সীমায় পৌঁছেছে – %2$s খুলতে ট্যাপ করুন</string>
+	<string name="temperature_notif_high_title">%1$s খুব গরম (%2$s)</string>
+	<string name="temperature_notif_low_text">আপনার %1$s নিম্ন সীমায় পৌঁছেছে – %2$s খুলতে ট্যাপ করুন</string>
+	<string name="temperature_notif_low_title">%1$s খুব ঠান্ডা (%2$s)</string>
+	<string name="temperature_notif_test_text">একটি তাপমাত্রা সতর্কতা বিজ্ঞপ্তি দেখতে এমন হয়</string>
 	<string name="terminal_all_brokers">সব দালাল</string>
 	<string name="terminal_broker">দালাল</string>
 	<string name="terminal_clear">সাফ লগ</string>

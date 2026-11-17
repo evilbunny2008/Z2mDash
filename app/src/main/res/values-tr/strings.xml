@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Gerçek bir duman alarmıyla tamamen aynı mantığı kullanarak gerçek bir bildirim (yukarıda etkinleştirildiyse sesli olarak) başlatır; bu, ihtiyaç duymadan önce gerçekten dikkatinizi çekeceğini doğrulamanın iyi bir yoludur</string>
 	<string name="alerts_sound">Uyarı Sesi</string>
 	<string name="alerts_sound_detail">Bildirimin yanında yüksek alarm tarzı bir ses çalın</string>
+	<string name="alerts_temperature">Sıcaklık Uyarıları</string>
+	<string name="alerts_temperature_detail">Bir sıcaklık sensörü kendisi için ayarlanan üst veya alt sınıra ulaştığında bildir – sınırları ayarlamak için bir sıcaklık kutucuğunun değerine dokunun</string>
+	<string name="alerts_temperature_test_detail">Yukarıdaki anahtardan bağımsız olarak, gerçek bir sıcaklık uyarısıyla tamamen aynı mantığı kullanarak gerçek bir bildirim gönderir</string>
 	<string name="alerts_test">Test Bildirimi</string>
 	<string name="alerts_title">Alarm/Uyarı</string>
 	<string name="alerts_watering">Sulama Uyarıları</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ içinde bu konuyla ilgili hiçbir küme yoktu</string>
 	<string name="home_search_clusters">Kümeleri arayın</string>
 	<string name="home_stale_description">Veriler bir saatten daha eski</string>
+	<string name="home_temperature_limit_high">Bu değerde veya üstünde uyar</string>
+	<string name="home_temperature_limit_low">Bu değerde veya altında uyar</string>
+	<string name="home_temperature_limits_hint">Kapatmak için bir sınırı boş bırakın</string>
+	<string name="home_temperature_limits_invalid">Üst sınır alt sınırdan yüksek olmalıdır</string>
+	<string name="home_temperature_limits_title">‘%1$s’ için sıcaklık uyarıları</string>
 	<string name="home_undo">Geri al</string>
 	<string name="home_value">Değer</string>
 	<string name="home_weak_signal_description">Bağlantı kalitesi %1$d’nin altında</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Ev</string>
 	<string name="tab_settings">Ayarlar</string>
 	<string name="tab_terminal">terminal</string>
+	<string name="temperature_channel">Sıcaklık uyarıları</string>
+	<string name="temperature_channel_desc">Bir sıcaklık sensörü kendisi için ayarlanan üst veya alt sınıra ulaştığında uyarır</string>
+	<string name="temperature_notif_high_text">%1$s üst sınırına ulaşıldı – %2$s uygulamasını açmak için dokunun</string>
+	<string name="temperature_notif_high_title">%1$s çok sıcak (%2$s)</string>
+	<string name="temperature_notif_low_text">%1$s alt sınırına ulaşıldı – %2$s uygulamasını açmak için dokunun</string>
+	<string name="temperature_notif_low_title">%1$s çok soğuk (%2$s)</string>
+	<string name="temperature_notif_test_text">Bir sıcaklık uyarısı bildirimi böyle görünür</string>
 	<string name="terminal_all_brokers">Tüm aracılar</string>
 	<string name="terminal_broker">Aracı</string>
 	<string name="terminal_clear">Günlüğü temizle</string>

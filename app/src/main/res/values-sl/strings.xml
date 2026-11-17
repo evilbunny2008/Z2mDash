@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Pošlje pravo obvestilo (z zvokom, če je zgoraj omogočen) z natanko enako logiko kot pravo opozorilo o dimu – dober način, da preverite, ali bo res pritegnilo vašo pozornost, preden ga boste potrebovali</string>
 	<string name="alerts_sound">Zvok opozorila</string>
 	<string name="alerts_sound_detail">Skupaj z obvestilom predvajaj glasen zvok, podoben alarmu</string>
+	<string name="alerts_temperature">Opozorila o temperaturi</string>
+	<string name="alerts_temperature_detail">Obvesti, ko temperaturni senzor doseže zanj nastavljeno zgornjo ali spodnjo mejo – za nastavitev meja tapnite odčitek ploščice s temperaturo</string>
+	<string name="alerts_temperature_test_detail">Pošlje pravo obvestilo z enako logiko kot pravo opozorilo o temperaturi, ne glede na stikalo zgoraj</string>
 	<string name="alerts_test">Preizkusno obvestilo</string>
 	<string name="alerts_title">Alarm/opozorilo</string>
 	<string name="alerts_watering">Opozorila za zalivanje</string>
@@ -249,6 +252,11 @@
 	<string name="home_retopic_none">Noben grozd v ‘%1$s’ ni bil na tej temi</string>
 	<string name="home_search_clusters">Išči grozde</string>
 	<string name="home_stale_description">Podatki so starejši od ene ure</string>
+	<string name="home_temperature_limit_high">Opozori pri tej vrednosti ali višje</string>
+	<string name="home_temperature_limit_low">Opozori pri tej vrednosti ali nižje</string>
+	<string name="home_temperature_limits_hint">Pustite mejo prazno, da jo izklopite</string>
+	<string name="home_temperature_limits_invalid">Zgornja meja mora biti višja od spodnje</string>
+	<string name="home_temperature_limits_title">Opozorila o temperaturi za ‘%1$s’</string>
 	<string name="home_undo">Razveljavi</string>
 	<string name="home_value">Vrednost</string>
 	<string name="home_weak_signal_description">Kakovost povezave pod %1$d</string>
@@ -409,6 +417,13 @@
 	<string name="tab_home">Domov</string>
 	<string name="tab_settings">Nastavitve</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Opozorila o temperaturi</string>
+	<string name="temperature_channel_desc">Opozori, ko temperaturni senzor doseže zanj nastavljeno zgornjo ali spodnjo mejo</string>
+	<string name="temperature_notif_high_text">Dosežena zgornja meja %1$s – tapnite, da odprete %2$s</string>
+	<string name="temperature_notif_high_title">%1$s: pretoplo (%2$s)</string>
+	<string name="temperature_notif_low_text">Dosežena spodnja meja %1$s – tapnite, da odprete %2$s</string>
+	<string name="temperature_notif_low_title">%1$s: premrzlo (%2$s)</string>
+	<string name="temperature_notif_test_text">Tako je videti obvestilo o temperaturi</string>
 	<string name="terminal_all_brokers">Vsi posredniki</string>
 	<string name="terminal_broker">Posrednik</string>
 	<string name="terminal_clear">Počisti dnevnik</string>

@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Lähettää oikean ilmoituksen (äänen kanssa, jos se on otettu käyttöön yllä) täsmälleen samalla logiikalla kuin aito savuhälytys – hyvä tapa varmistaa, että se todella herättää huomiosi ennen kuin sitä tarvitaan</string>
 	<string name="alerts_sound">Hälytysääni</string>
 	<string name="alerts_sound_detail">Toista kova hälytysmäinen ääni ilmoituksen yhteydessä</string>
+	<string name="alerts_temperature">Lämpötilahälytykset</string>
+	<string name="alerts_temperature_detail">Ilmoita, kun lämpötila-anturi saavuttaa sille asetetun ylä- tai alarajan – aseta rajat napauttamalla lämpötilaruudun lukemaa</string>
+	<string name="alerts_temperature_test_detail">Lähettää oikean ilmoituksen täsmälleen samalla logiikalla kuin aito lämpötilahälytys, yllä olevasta kytkimestä riippumatta</string>
 	<string name="alerts_test">Testi–ilmoitus</string>
 	<string name="alerts_title">Hälytys/ilmoitus</string>
 	<string name="alerts_watering">Kastelumuistutukset</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Yksikään ryhmän ‘%1$s’ klusteri ei ollut tuossa aiheessa</string>
 	<string name="home_search_clusters">Hae klustereita</string>
 	<string name="home_stale_description">Tiedot ovat yli tunnin vanhoja</string>
+	<string name="home_temperature_limit_high">Hälytä kun vähintään</string>
+	<string name="home_temperature_limit_low">Hälytä kun enintään</string>
+	<string name="home_temperature_limits_hint">Jätä raja tyhjäksi poistaaksesi sen käytöstä</string>
+	<string name="home_temperature_limits_invalid">Ylärajan on oltava alarajaa suurempi</string>
+	<string name="home_temperature_limits_title">Lämpötilahälytykset: ‘%1$s’</string>
 	<string name="home_undo">Kumoa</string>
 	<string name="home_value">Arvo</string>
 	<string name="home_weak_signal_description">Linkin laatu alle %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Koti</string>
 	<string name="tab_settings">Asetukset</string>
 	<string name="tab_terminal">Pääte</string>
+	<string name="temperature_channel">Lämpötilahälytykset</string>
+	<string name="temperature_channel_desc">Hälyttää, kun lämpötila-anturi saavuttaa sille asetetun ylä- tai alarajan</string>
+	<string name="temperature_notif_high_text">Yläraja %1$s saavutettu – avaa %2$s napauttamalla</string>
+	<string name="temperature_notif_high_title">%1$s on liian lämmin (%2$s)</string>
+	<string name="temperature_notif_low_text">Alaraja %1$s saavutettu – avaa %2$s napauttamalla</string>
+	<string name="temperature_notif_low_title">%1$s on liian kylmä (%2$s)</string>
+	<string name="temperature_notif_test_text">Tältä lämpötilahälytys näyttää</string>
 	<string name="terminal_all_brokers">Kaikki välittäjät</string>
 	<string name="terminal_broker">Välittäjä</string>
 	<string name="terminal_clear">Tyhjennä loki</string>

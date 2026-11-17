@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">ផ្ញើការជូនដំណឹងពិតប្រាកដ (មានសំឡេង ប្រសិនបើបានបើកខាងលើ) ដោយប្រើតក្កវិជ្ជាដូចគ្នាទាំងស្រុងនឹងការជូនដំណឹងផ្សែងពិត – ជាវិធីល្អដើម្បីបញ្ជាក់ថាវាពិតជានឹងទាក់ទាញការយកចិត្តទុកដាក់របស់អ្នក មុនពេលអ្នកត្រូវការវា</string>
 	<string name="alerts_sound">សំឡេងជូនដំណឹង</string>
 	<string name="alerts_sound_detail">ចាក់សំឡេងខ្លាំងបែបរោទ៍ ជាមួយការជូនដំណឹង</string>
+	<string name="alerts_temperature">ការជូនដំណឹងសីតុណ្ហភាព</string>
+	<string name="alerts_temperature_detail">ជូនដំណឹងនៅពេលឧបករណ៍ចាប់សីតុណ្ហភាពឈានដល់កម្រិតខ្ពស់ ឬទាបដែលបានកំណត់ – ចុចលើតម្លៃនៃប្រអប់សីតុណ្ហភាពដើម្បីកំណត់កម្រិត</string>
+	<string name="alerts_temperature_test_detail">ផ្ញើការជូនដំណឹងពិតប្រាកដ ដោយប្រើតក្កវិជ្ជាដូចគ្នាទាំងស្រុងនឹងការជូនដំណឹងសីតុណ្ហភាពពិត ដោយមិនគិតពីកុងតាក់ខាងលើ</string>
 	<string name="alerts_test">ការជូនដំណឹងសាកល្បង</string>
 	<string name="alerts_title">រោទ៍/ការជូនដំណឹង</string>
 	<string name="alerts_watering">ការជូនដំណឹងស្រោចទឹក</string>
@@ -228,6 +231,11 @@
 	<string name="home_retopic_none">គ្មានចង្កោមក្នុង ‘%1$s’ នៅលើប្រធានបទនោះទេ</string>
 	<string name="home_search_clusters">ស្វែងរកចង្កោម</string>
 	<string name="home_stale_description">ទិន្នន័យចាស់ជាងមួយម៉ោង</string>
+	<string name="home_temperature_limit_high">ជូនដំណឹងនៅ ឬលើសពីនេះ</string>
+	<string name="home_temperature_limit_low">ជូនដំណឹងនៅ ឬក្រោមនេះ</string>
+	<string name="home_temperature_limits_hint">ទុកកម្រិតឱ្យទទេ ដើម្បីបិទវា</string>
+	<string name="home_temperature_limits_invalid">កម្រិតខ្ពស់ត្រូវតែលើសកម្រិតទាប</string>
+	<string name="home_temperature_limits_title">ការជូនដំណឹងសីតុណ្ហភាពសម្រាប់ ‘%1$s’</string>
 	<string name="home_undo">មិនធ្វើវិញ</string>
 	<string name="home_value">តម្លៃ</string>
 	<string name="home_weak_signal_description">គុណភាពតំណក្រោម %1$d</string>
@@ -370,6 +378,13 @@
 	<string name="tab_home">ទំព័រដើម</string>
 	<string name="tab_settings">ការកំណត់</string>
 	<string name="tab_terminal">ទែមីណាល់</string>
+	<string name="temperature_channel">ការជូនដំណឹងសីតុណ្ហភាព</string>
+	<string name="temperature_channel_desc">ជូនដំណឹងនៅពេលឧបករណ៍ចាប់សីតុណ្ហភាពឈានដល់កម្រិតខ្ពស់ ឬទាបដែលបានកំណត់</string>
+	<string name="temperature_notif_high_text">បានឈានដល់កម្រិតខ្ពស់ %1$s – ចុចដើម្បីបើក %2$s</string>
+	<string name="temperature_notif_high_title">%1$s ក្តៅពេក (%2$s)</string>
+	<string name="temperature_notif_low_text">បានឈានដល់កម្រិតទាប %1$s – ចុចដើម្បីបើក %2$s</string>
+	<string name="temperature_notif_low_title">%1$s ត្រជាក់ពេក (%2$s)</string>
+	<string name="temperature_notif_test_text">នេះជារបៀបដែលការជូនដំណឹងសីតុណ្ហភាពមើលទៅ</string>
 	<string name="terminal_all_brokers">ប្រូកឃ័រទាំងអស់</string>
 	<string name="terminal_broker">ប្រូកឃ័រ</string>
 	<string name="terminal_clear">សម្អាតកំណត់ហេតុ</string>

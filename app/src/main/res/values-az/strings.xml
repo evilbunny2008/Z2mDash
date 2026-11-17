@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Həqiqi tüstü xəbərdarlığı ilə eyni məntiqdən istifadə edərək real bildiriş göndərir (yuxarıda aktivdirsə, səslə) – ehtiyac yaranmazdan əvvəl onun diqqətinizi həqiqətən cəlb edəcəyini yoxlamağın yaxşı yolu</string>
 	<string name="alerts_sound">Xəbərdarlıq səsi</string>
 	<string name="alerts_sound_detail">Bildirişlə birlikdə ucadan siqnala bənzər səs səsləndir</string>
+	<string name="alerts_temperature">Temperatur xəbərdarlıqları</string>
+	<string name="alerts_temperature_detail">Temperatur sensoru onun üçün təyin edilmiş yuxarı və ya aşağı həddə çatdıqda bildiriş göndər – hədləri təyin etmək üçün temperatur plitəsinin göstəricisinə toxunun</string>
+	<string name="alerts_temperature_test_detail">Yuxarıdakı açardan asılı olmayaraq, həqiqi temperatur xəbərdarlığı ilə tam eyni məntiqdən istifadə edərək real bildiriş göndərir</string>
 	<string name="alerts_test">Sınaq bildirişi</string>
 	<string name="alerts_title">Siqnal/xəbərdarlıq</string>
 	<string name="alerts_watering">Suvarma xəbərdarlıqları</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ daxilində heç bir klaster həmin mövzuda deyildi</string>
 	<string name="home_search_clusters">Klasterləri axtar</string>
 	<string name="home_stale_description">Məlumatlar bir saatdan köhnədir</string>
+	<string name="home_temperature_limit_high">Bu dəyərdə və ya yuxarıda xəbərdar et</string>
+	<string name="home_temperature_limit_low">Bu dəyərdə və ya aşağıda xəbərdar et</string>
+	<string name="home_temperature_limits_hint">Həddi söndürmək üçün boş buraxın</string>
+	<string name="home_temperature_limits_invalid">Yuxarı hədd aşağı həddən böyük olmalıdır</string>
+	<string name="home_temperature_limits_title">‘%1$s’ üçün temperatur xəbərdarlıqları</string>
 	<string name="home_undo">Geri al</string>
 	<string name="home_value">Dəyər</string>
 	<string name="home_weak_signal_description">Bağlantı keyfiyyəti %1$d altında</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Ana səhifə</string>
 	<string name="tab_settings">Ayarlar</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Temperatur xəbərdarlıqları</string>
+	<string name="temperature_channel_desc">Temperatur sensoru onun üçün təyin edilmiş yuxarı və ya aşağı həddə çatdıqda xəbərdar edir</string>
+	<string name="temperature_notif_high_text">%1$s yuxarı həddinə çatıldı – %2$s tətbiqini açmaq üçün toxunun</string>
+	<string name="temperature_notif_high_title">%1$s çox istidir (%2$s)</string>
+	<string name="temperature_notif_low_text">%1$s aşağı həddinə çatıldı – %2$s tətbiqini açmaq üçün toxunun</string>
+	<string name="temperature_notif_low_title">%1$s çox soyuqdur (%2$s)</string>
+	<string name="temperature_notif_test_text">Temperatur xəbərdarlığı bildirişi belə görünür</string>
 	<string name="terminal_all_brokers">Bütün brokerlər</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Jurnalı təmizlə</string>

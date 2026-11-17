@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">உண்மையான புகை எச்சரிக்கை போன்ற அதே தர்க்கத்தைப் பயன்படுத்தி உண்மையான அறிவிப்பை (ஒலியுடன், மேலே இயக்கப்பட்டிருந்தால்) வெளியிடுகிறது – இது உங்களுக்குத் தேவைப்படுவதற்கு முன்பே உங்கள் கவனத்தை ஈர்க்கும் என்பதை உறுதிப்படுத்துவதற்கான சிறந்த வழி</string>
 	<string name="alerts_sound">எச்சரிக்கை ஒலி</string>
 	<string name="alerts_sound_detail">அறிவிப்புடன் உரத்த அலாரம் பாணி ஒலியை இயக்கவும்</string>
+	<string name="alerts_temperature">வெப்பநிலை எச்சரிக்கைகள்</string>
+	<string name="alerts_temperature_detail">வெப்பநிலை சென்சார் அதற்கு அமைக்கப்பட்ட மேல் அல்லது கீழ் வரம்பை அடையும்போது தெரிவி – வரம்புகளை அமைக்க வெப்பநிலை டைலின் அளவீட்டைத் தட்டவும்</string>
+	<string name="alerts_temperature_test_detail">மேலே உள்ள நிலைமாற்றி எதுவாக இருந்தாலும், உண்மையான வெப்பநிலை எச்சரிக்கையின் அதே தர்க்கத்தைப் பயன்படுத்தி உண்மையான அறிவிப்பை அனுப்புகிறது</string>
 	<string name="alerts_test">சோதனை அறிவிப்பு</string>
 	<string name="alerts_title">அலாரம்/எச்சரிக்கை</string>
 	<string name="alerts_watering">நீர்ப்பாசனம் எச்சரிக்கைகள்</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">அந்த தலைப்பில் ‘%1$s’ இல் எந்த கிளஸ்டர்களும் இல்லை</string>
 	<string name="home_search_clusters">தேடல் கொத்துகள்</string>
 	<string name="home_stale_description">தரவு ஒரு மணி நேரத்திற்கும் மேலாக உள்ளது</string>
+	<string name="home_temperature_limit_high">இந்த மதிப்பில் அல்லது அதற்கு மேல் எச்சரி</string>
+	<string name="home_temperature_limit_low">இந்த மதிப்பில் அல்லது அதற்குக் கீழ் எச்சரி</string>
+	<string name="home_temperature_limits_hint">ஒரு வரம்பை முடக்க அதைக் காலியாக விடவும்</string>
+	<string name="home_temperature_limits_invalid">மேல் வரம்பு கீழ் வரம்பை விட அதிகமாக இருக்க வேண்டும்</string>
+	<string name="home_temperature_limits_title">‘%1$s’க்கான வெப்பநிலை எச்சரிக்கைகள்</string>
 	<string name="home_undo">செயல்தவிர்</string>
 	<string name="home_value">மதிப்பு</string>
 	<string name="home_weak_signal_description">இணைப்பின் தரம் %1$dக்குக் கீழே உள்ளது</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">வீடு</string>
 	<string name="tab_settings">அமைப்புகள்</string>
 	<string name="tab_terminal">முனையம்</string>
+	<string name="temperature_channel">வெப்பநிலை எச்சரிக்கைகள்</string>
+	<string name="temperature_channel_desc">வெப்பநிலை சென்சார் அதற்கு அமைக்கப்பட்ட மேல் அல்லது கீழ் வரம்பை அடையும்போது எச்சரிக்கிறது</string>
+	<string name="temperature_notif_high_text">உங்கள் %1$s மேல் வரம்பை அடைந்தது – %2$s ஐத் திறக்கத் தட்டவும்</string>
+	<string name="temperature_notif_high_title">%1$s மிகவும் சூடாக உள்ளது (%2$s)</string>
+	<string name="temperature_notif_low_text">உங்கள் %1$s கீழ் வரம்பை அடைந்தது – %2$s ஐத் திறக்கத் தட்டவும்</string>
+	<string name="temperature_notif_low_title">%1$s மிகவும் குளிராக உள்ளது (%2$s)</string>
+	<string name="temperature_notif_test_text">வெப்பநிலை எச்சரிக்கை அறிவிப்பு இப்படித் தோன்றும்</string>
 	<string name="terminal_all_brokers">அனைத்து தரகர்கள்</string>
 	<string name="terminal_broker">தரகர்</string>
 	<string name="terminal_clear">தெளிவான பதிவு</string>

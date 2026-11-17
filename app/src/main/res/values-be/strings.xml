@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Адпраўляе сапраўднае апавяшчэнне (з гукам, калі ён уключаны вышэй) з той жа логікай, што і сапраўднае папярэджанне пра дым – добры спосаб пераканацца, што яно сапраўды прыцягне вашу ўвагу, перш чым гэта спатрэбіцца</string>
 	<string name="alerts_sound">Гук папярэджання</string>
 	<string name="alerts_sound_detail">Прайграваць гучны гук, падобны на сігналізацыю, разам з апавяшчэннем</string>
+	<string name="alerts_temperature">Абвесткі пра тэмпературу</string>
+	<string name="alerts_temperature_detail">Апавяшчаць, калі датчык тэмпературы дасягае зададзенага для яго верхняга або ніжняга ліміту – націсніце на паказанне пліткі тэмпературы, каб задаць ліміты</string>
+	<string name="alerts_temperature_test_detail">Адпраўляе сапраўднае апавяшчэнне з той жа логікай, што і сапраўдная абвестка пра тэмпературу, незалежна ад пераключальніка вышэй</string>
 	<string name="alerts_test">Тэставае апавяшчэнне</string>
 	<string name="alerts_title">Трывога/Папярэджанне</string>
 	<string name="alerts_watering">Папярэджанні пра паліў</string>
@@ -249,6 +252,11 @@
 	<string name="home_retopic_none">У ‘%1$s’ няма кластараў з гэтай тэмай</string>
 	<string name="home_search_clusters">Пошук кластараў</string>
 	<string name="home_stale_description">Даныя старэйшыя за гадзіну</string>
+	<string name="home_temperature_limit_high">Абвяшчаць пры гэтым значэнні або вышэй</string>
+	<string name="home_temperature_limit_low">Абвяшчаць пры гэтым значэнні або ніжэй</string>
+	<string name="home_temperature_limits_hint">Пакіньце ліміт пустым, каб адключыць яго</string>
+	<string name="home_temperature_limits_invalid">Верхні ліміт павінен быць вышэй за ніжні</string>
+	<string name="home_temperature_limits_title">Абвесткі пра тэмпературу для ‘%1$s’</string>
 	<string name="home_undo">Адрабіць</string>
 	<string name="home_value">Значэнне</string>
 	<string name="home_weak_signal_description">Якасць сувязі ніжэй за %1$d</string>
@@ -409,6 +417,13 @@
 	<string name="tab_home">Галоўная</string>
 	<string name="tab_settings">Налады</string>
 	<string name="tab_terminal">Тэрмінал</string>
+	<string name="temperature_channel">Абвесткі пра тэмпературу</string>
+	<string name="temperature_channel_desc">Абвяшчае, калі датчык тэмпературы дасягае зададзенага для яго верхняга або ніжняга ліміту</string>
+	<string name="temperature_notif_high_text">Дасягнуты верхні ліміт %1$s – націсніце, каб адкрыць %2$s</string>
+	<string name="temperature_notif_high_title">%1$s: занадта цёпла (%2$s)</string>
+	<string name="temperature_notif_low_text">Дасягнуты ніжні ліміт %1$s – націсніце, каб адкрыць %2$s</string>
+	<string name="temperature_notif_low_title">%1$s: занадта холадна (%2$s)</string>
+	<string name="temperature_notif_test_text">Вось як выглядае апавяшчэнне пра тэмпературу</string>
 	<string name="terminal_all_brokers">Усе брокеры</string>
 	<string name="terminal_broker">Брокер</string>
 	<string name="terminal_clear">Ачысціць журнал</string>

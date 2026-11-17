@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">یک اعلان واقعی (همراه با صدا، اگر در بالا فعال باشد) را با دقیقاً همان منطق هشدار واقعی دود ارسال می‌کند – راه خوبی برای اطمینان از اینکه پیش از نیاز واقعاً توجه شما را جلب می‌کند</string>
 	<string name="alerts_sound">صدای هشدار</string>
 	<string name="alerts_sound_detail">پخش صدای بلندی شبیه آژیر همراه با اعلان</string>
+	<string name="alerts_temperature">هشدارهای دما</string>
+	<string name="alerts_temperature_detail">وقتی یک حسگر دما به حد بالا یا پایین تعیین‌شده برای آن برسد اطلاع بده – برای تنظیم حدها روی عدد کاشی دما ضربه بزنید</string>
+	<string name="alerts_temperature_test_detail">یک اعلان واقعی با دقیقاً همان منطق هشدار دمای واقعی ارسال می‌کند، صرف‌نظر از کلید بالا</string>
 	<string name="alerts_test">اعلان آزمایشی</string>
 	<string name="alerts_title">آژیر/هشدار</string>
 	<string name="alerts_watering">هشدارهای آبیاری</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">هیچ خوشه‌ای در «%1$s» روی آن تاپیک نبود</string>
 	<string name="home_search_clusters">جستجوی خوشه‌ها</string>
 	<string name="home_stale_description">داده‌ها بیش از یک ساعت قدیمی هستند</string>
+	<string name="home_temperature_limit_high">هشدار در این مقدار یا بالاتر</string>
+	<string name="home_temperature_limit_low">هشدار در این مقدار یا پایین‌تر</string>
+	<string name="home_temperature_limits_hint">برای خاموش کردن یک حد، آن را خالی بگذارید</string>
+	<string name="home_temperature_limits_invalid">حد بالا باید بیشتر از حد پایین باشد</string>
+	<string name="home_temperature_limits_title">هشدارهای دما برای ‘%1$s’</string>
 	<string name="home_undo">واگرد</string>
 	<string name="home_value">مقدار</string>
 	<string name="home_weak_signal_description">کیفیت پیوند کمتر از %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">خانه</string>
 	<string name="tab_settings">تنظیمات</string>
 	<string name="tab_terminal">ترمینال</string>
+	<string name="temperature_channel">هشدارهای دما</string>
+	<string name="temperature_channel_desc">وقتی یک حسگر دما به حد بالا یا پایین تعیین‌شده برای آن برسد هشدار می‌دهد</string>
+	<string name="temperature_notif_high_text">به حد بالای %1$s رسید – برای باز کردن %2$s ضربه بزنید</string>
+	<string name="temperature_notif_high_title">%1$s خیلی گرم است (%2$s)</string>
+	<string name="temperature_notif_low_text">به حد پایین %1$s رسید – برای باز کردن %2$s ضربه بزنید</string>
+	<string name="temperature_notif_low_title">%1$s خیلی سرد است (%2$s)</string>
+	<string name="temperature_notif_test_text">اعلان هشدار دما این‌گونه به نظر می‌رسد</string>
 	<string name="terminal_all_brokers">همهٔ بروکرها</string>
 	<string name="terminal_broker">بروکر</string>
 	<string name="terminal_clear">پاک کردن گزارش</string>

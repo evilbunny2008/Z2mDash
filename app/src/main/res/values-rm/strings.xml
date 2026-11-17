@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Tramet ina vaira notificaziun (cun tun, sche activà survart) cun exactamain la medema logica sco in vair avertiment da fim – ina buna moda da verifitgar ch’ella attira propi Vossa attenziun avant che Vus duvrais ella</string>
 	<string name="alerts_sound">Tun d’avertiment</string>
 	<string name="alerts_sound_detail">Sunar in tun ferm sco in alarm ensemen cun la notificaziun</string>
+	<string name="alerts_temperature">Avertiments da temperatura</string>
+	<string name="alerts_temperature_detail">Avisar cur ch’in sensor da temperatura cuntanscha il limit aut u bass definì per el – tutgar la valur d’ina plattina da temperatura per definir ils limits</string>
+	<string name="alerts_temperature_test_detail">Trametta ina notificaziun reala cun exactamain la medema logica sco in avertiment da temperatura vair, independentamain da l’interruptur survart</string>
 	<string name="alerts_test">Notificaziun da test</string>
 	<string name="alerts_title">Alarm/Avertiment</string>
 	<string name="alerts_watering">Avertiments d’adaquar</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Nagins clusters en ‘%1$s’ n’eran sin quel tema</string>
 	<string name="home_search_clusters">Tschertgar clusters</string>
 	<string name="home_stale_description">Las datas èn pli veglias ch’in’ura</string>
+	<string name="home_temperature_limit_high">Avertir a partir da</string>
+	<string name="home_temperature_limit_low">Avertir sut</string>
+	<string name="home_temperature_limits_hint">Laschar in limit vid per al deactivar</string>
+	<string name="home_temperature_limits_invalid">Il limit aut sto esser pli aut ch’il limit bass</string>
+	<string name="home_temperature_limits_title">Avertiments da temperatura per ‘%1$s’</string>
 	<string name="home_undo">Revocar</string>
 	<string name="home_value">Valur</string>
 	<string name="home_weak_signal_description">Qualitad da la colliaziun sut %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Pagina iniziala</string>
 	<string name="tab_settings">Parameters</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Avertiments da temperatura</string>
+	<string name="temperature_channel_desc">Avertescha cur ch’in sensor da temperatura cuntanscha il limit aut u bass definì per el</string>
+	<string name="temperature_notif_high_text">Cuntanschì il limit aut da %1$s – tutgar per avrir %2$s</string>
+	<string name="temperature_notif_high_title">%1$s è memia chaud (%2$s)</string>
+	<string name="temperature_notif_low_text">Cuntanschì il limit bass da %1$s – tutgar per avrir %2$s</string>
+	<string name="temperature_notif_low_title">%1$s è memia fraid (%2$s)</string>
+	<string name="temperature_notif_test_text">Uschia vesa ora in avertiment da temperatura</string>
 	<string name="terminal_all_brokers">Tut ils brokers</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Stizzar il protocol</string>

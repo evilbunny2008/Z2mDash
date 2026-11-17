@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">සැබෑ දුම් ඇඟවීමකට සමාන තර්කනයම භාවිතයෙන් සැබෑ දැනුම්දීමක් (ඉහත සක්‍රිය කර ඇත්නම් ශබ්දය සමඟ) යවයි – ඔබට එය අවශ්‍ය වීමට පෙර එය සැබවින්ම ඔබේ අවධානය ලබා ගන්නා බව තහවුරු කිරීමට හොඳ ක්‍රමයකි</string>
 	<string name="alerts_sound">ඇඟවීම් ශබ්දය</string>
 	<string name="alerts_sound_detail">දැනුම්දීම සමඟ හඬ නඟා අනතුරු ඇඟවීමේ ශබ්දයක් වාදනය කරන්න</string>
+	<string name="alerts_temperature">උෂ්ණත්ව ඇඟවීම්</string>
+	<string name="alerts_temperature_detail">උෂ්ණත්ව සංවේදකයක් ඒ සඳහා සකසා ඇති ඉහළ හෝ පහළ සීමාවට ළඟා වූ විට දැනුම් දෙන්න – සීමා සැකසීමට උෂ්ණත්ව ටයිලයේ කියවීම තට්ටු කරන්න</string>
+	<string name="alerts_temperature_test_detail">ඉහත ටොගලය කුමක් වුවත්, සැබෑ උෂ්ණත්ව ඇඟවීමක ඇති එකම තර්කය භාවිතයෙන් සැබෑ දැනුම්දීමක් යවයි</string>
 	<string name="alerts_test">පරීක්ෂණ දැනුම්දීම</string>
 	<string name="alerts_title">අනතුරු ඇඟවීම/ඇඟවීම</string>
 	<string name="alerts_watering">ජලය දැමීමේ ඇඟවීම්</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ හි කිසිදු පොකුරක් එම මාතෘකාවේ නොතිබුණි</string>
 	<string name="home_search_clusters">පොකුරු සොයන්න</string>
 	<string name="home_stale_description">දත්ත පැයකට වඩා පැරණියි</string>
+	<string name="home_temperature_limit_high">මෙම අගයේ හෝ ඉහළින් ඇඟවීම</string>
+	<string name="home_temperature_limit_low">මෙම අගයේ හෝ පහළින් ඇඟවීම</string>
+	<string name="home_temperature_limits_hint">සීමාවක් අක්‍රිය කිරීමට එය හිස්ව තබන්න</string>
+	<string name="home_temperature_limits_invalid">ඉහළ සීමාව පහළ සීමාවට වඩා වැඩි විය යුතුය</string>
+	<string name="home_temperature_limits_title">‘%1$s’ සඳහා උෂ්ණත්ව ඇඟවීම්</string>
 	<string name="home_undo">අහෝසි කරන්න</string>
 	<string name="home_value">අගය</string>
 	<string name="home_weak_signal_description">සබැඳි ගුණාත්මකභාවය %1$d ට අඩු</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">මුල් පිටුව</string>
 	<string name="tab_settings">සැකසීම්</string>
 	<string name="tab_terminal">ටර්මිනලය</string>
+	<string name="temperature_channel">උෂ්ණත්ව ඇඟවීම්</string>
+	<string name="temperature_channel_desc">උෂ්ණත්ව සංවේදකයක් ඒ සඳහා සකසා ඇති ඉහළ හෝ පහළ සීමාවට ළඟා වූ විට අනතුරු අඟවයි</string>
+	<string name="temperature_notif_high_text">ඔබගේ %1$s ඉහළ සීමාවට ළඟා විය – %2$s විවෘත කිරීමට තට්ටු කරන්න</string>
+	<string name="temperature_notif_high_title">%1$s ඉතා උණුසුම්ය (%2$s)</string>
+	<string name="temperature_notif_low_text">ඔබගේ %1$s පහළ සීමාවට ළඟා විය – %2$s විවෘත කිරීමට තට්ටු කරන්න</string>
+	<string name="temperature_notif_low_title">%1$s ඉතා සීතලය (%2$s)</string>
+	<string name="temperature_notif_test_text">උෂ්ණත්ව ඇඟවීම් දැනුම්දීමක් මෙලෙස පෙනේ</string>
 	<string name="terminal_all_brokers">සියලු බ්‍රෝකර්වරු</string>
 	<string name="terminal_broker">බ්‍රෝකර්</string>
 	<string name="terminal_clear">ලොගය හිස් කරන්න</string>

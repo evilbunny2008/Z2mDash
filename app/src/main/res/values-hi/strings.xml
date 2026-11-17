@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">वास्तविक धूम्रपान चेतावनी के समान तर्क का उपयोग करके एक वास्तविक अधिसूचना (ध्वनि के साथ, यदि ऊपर सक्षम है) सक्रिय करता है – यह पुष्टि करने का एक अच्छा तरीका है कि यह वास्तव में आपका ध्यान आकर्षित करेगा इससे पहले कि आपको इसकी आवश्यकता हो</string>
 	<string name="alerts_sound">चेतावनी ध्वनि</string>
 	<string name="alerts_sound_detail">अधिसूचना के साथ–साथ तेज़ अलार्म–शैली की ध्वनि बजाएं</string>
+	<string name="alerts_temperature">तापमान अलर्ट</string>
+	<string name="alerts_temperature_detail">जब कोई तापमान सेंसर उसके लिए सेट की गई ऊपरी या निचली सीमा तक पहुँचे तो सूचित करें – सीमाएँ सेट करने के लिए तापमान टाइल की रीडिंग पर टैप करें</string>
+	<string name="alerts_temperature_test_detail">ऊपर दिए गए टॉगल की परवाह किए बिना, असली तापमान अलर्ट जैसे ही तर्क का उपयोग करके एक वास्तविक सूचना भेजता है</string>
 	<string name="alerts_test">परीक्षण अधिसूचना</string>
 	<string name="alerts_title">अलार्म/चेतावनी</string>
 	<string name="alerts_watering">पानी देने की चेतावनी</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ में कोई भी क्लस्टर उस विषय पर नहीं था</string>
 	<string name="home_search_clusters">क्लस्टर खोजें</string>
 	<string name="home_stale_description">डेटा एक घंटे से अधिक पुराना है</string>
+	<string name="home_temperature_limit_high">इस मान या इससे ऊपर पर अलर्ट करें</string>
+	<string name="home_temperature_limit_low">इस मान या इससे नीचे पर अलर्ट करें</string>
+	<string name="home_temperature_limits_hint">किसी सीमा को बंद करने के लिए उसे खाली छोड़ें</string>
+	<string name="home_temperature_limits_invalid">ऊपरी सीमा निचली सीमा से अधिक होनी चाहिए</string>
+	<string name="home_temperature_limits_title">‘%1$s’ के लिए तापमान अलर्ट</string>
 	<string name="home_undo">पूर्ववत</string>
 	<string name="home_value">मान</string>
 	<string name="home_weak_signal_description">लिंक गुणवत्ता %1$d से नीचे</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">घर</string>
 	<string name="tab_settings">सेटिंग्स</string>
 	<string name="tab_terminal">टर्मिनल</string>
+	<string name="temperature_channel">तापमान अलर्ट</string>
+	<string name="temperature_channel_desc">जब कोई तापमान सेंसर उसके लिए सेट की गई ऊपरी या निचली सीमा तक पहुँचता है तो अलर्ट करता है</string>
+	<string name="temperature_notif_high_text">आपकी %1$s की ऊपरी सीमा पहुँच गई – %2$s खोलने के लिए टैप करें</string>
+	<string name="temperature_notif_high_title">%1$s बहुत गर्म है (%2$s)</string>
+	<string name="temperature_notif_low_text">आपकी %1$s की निचली सीमा पहुँच गई – %2$s खोलने के लिए टैप करें</string>
+	<string name="temperature_notif_low_title">%1$s बहुत ठंडा है (%2$s)</string>
+	<string name="temperature_notif_test_text">तापमान अलर्ट सूचना ऐसी दिखती है</string>
 	<string name="terminal_all_brokers">सभी दलाल</string>
 	<string name="terminal_broker">दलाल</string>
 	<string name="terminal_clear">लॉग साफ करें</string>

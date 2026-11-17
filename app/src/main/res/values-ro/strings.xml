@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Trimite o notificare reală (cu sunet, dacă este activat mai sus) folosind exact aceeași logică precum o alertă reală de fum – o metodă bună de a confirma că îți va atrage cu adevărat atenția înainte să ai nevoie de ea</string>
 	<string name="alerts_sound">Sunet de alertă</string>
 	<string name="alerts_sound_detail">Redă un sunet puternic, de tip alarmă, împreună cu notificarea</string>
+	<string name="alerts_temperature">Alerte de temperatură</string>
+	<string name="alerts_temperature_detail">Notifică atunci când un senzor de temperatură atinge limita superioară sau inferioară setată pentru el – atinge valoarea unei plăci de temperatură pentru a seta limitele</string>
+	<string name="alerts_temperature_test_detail">Trimite o notificare reală folosind exact aceeași logică precum o alertă de temperatură autentică, indiferent de comutatorul de mai sus</string>
 	<string name="alerts_test">Notificare de test</string>
 	<string name="alerts_title">Alarmă/Alertă</string>
 	<string name="alerts_watering">Alerte de udare</string>
@@ -242,6 +245,11 @@
 	<string name="home_retopic_none">Niciun cluster din „%1$s” nu era pe acel topic</string>
 	<string name="home_search_clusters">Caută clustere</string>
 	<string name="home_stale_description">Datele sunt mai vechi de o oră</string>
+	<string name="home_temperature_limit_high">Alertează la sau peste</string>
+	<string name="home_temperature_limit_low">Alertează la sau sub</string>
+	<string name="home_temperature_limits_hint">Lasă o limită goală pentru a o dezactiva</string>
+	<string name="home_temperature_limits_invalid">Limita superioară trebuie să fie peste limita inferioară</string>
+	<string name="home_temperature_limits_title">Alerte de temperatură pentru „%1$s”</string>
 	<string name="home_undo">Anulează</string>
 	<string name="home_value">Valoare</string>
 	<string name="home_weak_signal_description">Calitatea legăturii sub %1$d</string>
@@ -396,6 +404,13 @@
 	<string name="tab_home">Acasă</string>
 	<string name="tab_settings">Setări</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Alerte de temperatură</string>
+	<string name="temperature_channel_desc">Avertizează atunci când un senzor de temperatură atinge limita superioară sau inferioară setată pentru el</string>
+	<string name="temperature_notif_high_text">Limita superioară de %1$s a fost atinsă – atinge pentru a deschide %2$s</string>
+	<string name="temperature_notif_high_title">%1$s este prea cald (%2$s)</string>
+	<string name="temperature_notif_low_text">Limita inferioară de %1$s a fost atinsă – atinge pentru a deschide %2$s</string>
+	<string name="temperature_notif_low_title">%1$s este prea rece (%2$s)</string>
+	<string name="temperature_notif_test_text">Așa arată o notificare de alertă de temperatură</string>
 	<string name="terminal_all_brokers">Toți brokerii</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Golește jurnalul</string>

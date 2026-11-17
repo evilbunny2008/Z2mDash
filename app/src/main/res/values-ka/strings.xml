@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">აგზავნის რეალურ შეტყობინებას (ხმით, თუ ზემოთ ჩართულია) ზუსტად იმავე ლოგიკით, როგორც ნამდვილი კვამლის გაფრთხილება – კარგი გზაა იმის დასადასტურებლად, რომ ის ნამდვილად მიიპყრობს თქვენს ყურადღებას, სანამ დაგჭირდებათ</string>
 	<string name="alerts_sound">გაფრთხილების ხმა</string>
 	<string name="alerts_sound_detail">შეტყობინებასთან ერთად ხმამაღალი, განგაშის მსგავსი ხმის დაკვრა</string>
+	<string name="alerts_temperature">ტემპერატურის გაფრთხილებები</string>
+	<string name="alerts_temperature_detail">შეტყობინება, როცა ტემპერატურის სენსორი მისთვის დაყენებულ ზედა ან ქვედა ზღვარს მიაღწევს – ზღვრების დასაყენებლად შეეხეთ ტემპერატურის ფილის მაჩვენებელს</string>
+	<string name="alerts_temperature_test_detail">აგზავნის ნამდვილ შეტყობინებას ზუსტად იმავე ლოგიკით, როგორც ნამდვილი ტემპერატურის გაფრთხილება, ზემოთ მოცემული გადამრთველის მიუხედავად</string>
 	<string name="alerts_test">სატესტო შეტყობინება</string>
 	<string name="alerts_title">განგაში/გაფრთხილება</string>
 	<string name="alerts_watering">მორწყვის გაფრთხილებები</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">„%1$s“-ში არცერთი კლასტერი არ იყო ამ თემაზე</string>
 	<string name="home_search_clusters">კლასტერების ძიება</string>
 	<string name="home_stale_description">მონაცემები ერთ საათზე ძველია</string>
+	<string name="home_temperature_limit_high">გაფრთხილება ამ მნიშვნელობაზე ან ზემოთ</string>
+	<string name="home_temperature_limit_low">გაფრთხილება ამ მნიშვნელობაზე ან ქვემოთ</string>
+	<string name="home_temperature_limits_hint">ზღვრის გამოსართავად დატოვეთ ის ცარიელი</string>
+	<string name="home_temperature_limits_invalid">ზედა ზღვარი ქვედაზე მაღალი უნდა იყოს</string>
+	<string name="home_temperature_limits_title">ტემპერატურის გაფრთხილებები: ‘%1$s’</string>
 	<string name="home_undo">დაბრუნება</string>
 	<string name="home_value">მნიშვნელობა</string>
 	<string name="home_weak_signal_description">კავშირის ხარისხი %1$d-ზე დაბალია</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">მთავარი</string>
 	<string name="tab_settings">პარამეტრები</string>
 	<string name="tab_terminal">ტერმინალი</string>
+	<string name="temperature_channel">ტემპერატურის გაფრთხილებები</string>
+	<string name="temperature_channel_desc">აფრთხილებს, როცა ტემპერატურის სენსორი მისთვის დაყენებულ ზედა ან ქვედა ზღვარს მიაღწევს</string>
+	<string name="temperature_notif_high_text">მიღწეულია %1$s ზედა ზღვარი – შეეხეთ %2$s-ის გასახსნელად</string>
+	<string name="temperature_notif_high_title">%1$s: ძალიან თბილა (%2$s)</string>
+	<string name="temperature_notif_low_text">მიღწეულია %1$s ქვედა ზღვარი – შეეხეთ %2$s-ის გასახსნელად</string>
+	<string name="temperature_notif_low_title">%1$s: ძალიან ცივა (%2$s)</string>
+	<string name="temperature_notif_test_text">ასე გამოიყურება ტემპერატურის გაფრთხილება</string>
 	<string name="terminal_all_brokers">ყველა ბროკერი</string>
 	<string name="terminal_broker">ბროკერი</string>
 	<string name="terminal_clear">ჟურნალის გასუფთავება</string>

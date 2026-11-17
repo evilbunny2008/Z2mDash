@@ -10,6 +10,7 @@ import com.odiousapps.z2mdash.mqtt.DeviceAutoConfigManager
 import com.odiousapps.z2mdash.mqtt.LowBatteryAlertManager
 import com.odiousapps.z2mdash.mqtt.MqttConnectionManager
 import com.odiousapps.z2mdash.mqtt.SmokeAlertManager
+import com.odiousapps.z2mdash.mqtt.TemperatureAlertManager
 import com.odiousapps.z2mdash.mqtt.WateringAlertManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
@@ -31,6 +32,8 @@ class Z2mDashApplication : Application() {
         private set
     lateinit var lowBatteryAlertManager: LowBatteryAlertManager
         private set
+    lateinit var temperatureAlertManager: TemperatureAlertManager
+        private set
 
     override fun onCreate() {
         super.onCreate()
@@ -41,6 +44,7 @@ class Z2mDashApplication : Application() {
         smokeAlertManager = SmokeAlertManager(this, configRepository, connectionManager)
         wateringAlertManager = WateringAlertManager(this, configRepository, connectionManager)
         lowBatteryAlertManager = LowBatteryAlertManager(this, configRepository, connectionManager)
+        temperatureAlertManager = TemperatureAlertManager(this, configRepository, connectionManager)
 
         connectionManager.applyConfig(configRepository.config.value)
         connectionManager.startPersistingCache()
@@ -48,6 +52,7 @@ class Z2mDashApplication : Application() {
         smokeAlertManager.start(appScope)
         wateringAlertManager.start(appScope)
         lowBatteryAlertManager.start(appScope)
+        temperatureAlertManager.start(appScope)
         appScope.launch {
             configRepository.config.collect { config ->
                 connectionManager.applyConfig(config)

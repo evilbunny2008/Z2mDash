@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Nagpapadala ng totoong notification (may tunog, kung naka-on sa itaas) gamit ang eksaktong parehong lohika ng tunay na alerto sa usok – magandang paraan para matiyak na talagang makukuha nito ang iyong pansin bago mo ito kailanganin</string>
 	<string name="alerts_sound">Tunog ng Alerto</string>
 	<string name="alerts_sound_detail">Magpatugtog ng malakas na tunog na parang alarma kasabay ng notification</string>
+	<string name="alerts_temperature">Mga Alerto sa Temperatura</string>
+	<string name="alerts_temperature_detail">Mag-abiso kapag naabot ng sensor ng temperatura ang mataas o mababang limitasyong itinakda para rito – i-tap ang reading ng tile ng temperatura para itakda ang mga limitasyon</string>
+	<string name="alerts_temperature_test_detail">Nagpapadala ng tunay na notification gamit ang eksaktong parehong lohika ng tunay na alerto sa temperatura, anuman ang toggle sa itaas</string>
 	<string name="alerts_test">Subukan ang Notification</string>
 	<string name="alerts_title">Alarma/Alerto</string>
 	<string name="alerts_watering">Mga Alerto sa Pagdidilig</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Walang cluster sa ‘%1$s’ na nasa topic na iyon</string>
 	<string name="home_search_clusters">Maghanap ng cluster</string>
 	<string name="home_stale_description">Mahigit isang oras na ang data</string>
+	<string name="home_temperature_limit_high">Mag-alerto sa o higit sa</string>
+	<string name="home_temperature_limit_low">Mag-alerto sa o mas mababa sa</string>
+	<string name="home_temperature_limits_hint">Iwanang blangko ang limitasyon para i-off ito</string>
+	<string name="home_temperature_limits_invalid">Dapat mas mataas ang mataas na limitasyon kaysa sa mababang limitasyon</string>
+	<string name="home_temperature_limits_title">Mga alerto sa temperatura para sa ‘%1$s’</string>
 	<string name="home_undo">I-undo</string>
 	<string name="home_value">Halaga</string>
 	<string name="home_weak_signal_description">Link quality na mas mababa sa %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Home</string>
 	<string name="tab_settings">Mga Setting</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Mga alerto sa temperatura</string>
+	<string name="temperature_channel_desc">Nag-aalerto kapag naabot ng sensor ng temperatura ang mataas o mababang limitasyong itinakda para rito</string>
+	<string name="temperature_notif_high_text">Naabot na ang mataas na limitasyon mong %1$s – i-tap para buksan ang %2$s</string>
+	<string name="temperature_notif_high_title">Masyadong mainit ang %1$s (%2$s)</string>
+	<string name="temperature_notif_low_text">Naabot na ang mababang limitasyon mong %1$s – i-tap para buksan ang %2$s</string>
+	<string name="temperature_notif_low_title">Masyadong malamig ang %1$s (%2$s)</string>
+	<string name="temperature_notif_test_text">Ganito ang hitsura ng notification ng alerto sa temperatura</string>
 	<string name="terminal_all_brokers">Lahat ng broker</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">I-clear ang log</string>

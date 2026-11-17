@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Изпраща истинско известие (със звук, ако е включен по-горе) със същата логика като реален сигнал за дим – добър начин да се уверите, че наистина ще привлече вниманието ви, преди да ви потрябва</string>
 	<string name="alerts_sound">Звук на сигнала</string>
 	<string name="alerts_sound_detail">Възпроизвеждане на силен звук като аларма заедно с известието</string>
+	<string name="alerts_temperature">Предупреждения за температура</string>
+	<string name="alerts_temperature_detail">Известяване, когато температурен сензор достигне зададената за него горна или долна граница – докоснете показанието на плочката за температура, за да зададете границите</string>
+	<string name="alerts_temperature_test_detail">Изпраща истинско известие със същата логика като реално предупреждение за температура, независимо от превключвателя по-горе</string>
 	<string name="alerts_test">Тестово известие</string>
 	<string name="alerts_title">Аларма/Сигнал</string>
 	<string name="alerts_watering">Сигнали за поливане</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Нито един клъстер в „%1$s“ не беше в тази тема</string>
 	<string name="home_search_clusters">Търсене на клъстери</string>
 	<string name="home_stale_description">Данните са по-стари от един час</string>
+	<string name="home_temperature_limit_high">Предупреждение при или над</string>
+	<string name="home_temperature_limit_low">Предупреждение при или под</string>
+	<string name="home_temperature_limits_hint">Оставете граница празна, за да я изключите</string>
+	<string name="home_temperature_limits_invalid">Горната граница трябва да е над долната</string>
+	<string name="home_temperature_limits_title">Предупреждения за температура за ‘%1$s’</string>
 	<string name="home_undo">Отмяна</string>
 	<string name="home_value">Стойност</string>
 	<string name="home_weak_signal_description">Качество на връзката под %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Начало</string>
 	<string name="tab_settings">Настройки</string>
 	<string name="tab_terminal">Терминал</string>
+	<string name="temperature_channel">Предупреждения за температура</string>
+	<string name="temperature_channel_desc">Предупреждава, когато температурен сензор достигне зададената за него горна или долна граница</string>
+	<string name="temperature_notif_high_text">Достигната е горната граница от %1$s – докоснете, за да отворите %2$s</string>
+	<string name="temperature_notif_high_title">%1$s е твърде топло (%2$s)</string>
+	<string name="temperature_notif_low_text">Достигната е долната граница от %1$s – докоснете, за да отворите %2$s</string>
+	<string name="temperature_notif_low_title">%1$s е твърде студено (%2$s)</string>
+	<string name="temperature_notif_test_text">Така изглежда известие за температура</string>
 	<string name="terminal_all_brokers">Всички брокери</string>
 	<string name="terminal_broker">Брокер</string>
 	<string name="terminal_clear">Изчистване на журнала</string>

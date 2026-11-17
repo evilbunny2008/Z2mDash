@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Выдает настоящее уведомление (со звуком, если оно включено выше), используя ту же логику, что и настоящее оповещение о дыме — хороший способ убедиться, что оно действительно привлечет ваше внимание до того, как оно вам понадобится</string>
 	<string name="alerts_sound">Звук оповещения</string>
 	<string name="alerts_sound_detail">Одновременно с уведомлением воспроизводится громкий звук будильника</string>
+	<string name="alerts_temperature">Оповещения о температуре</string>
+	<string name="alerts_temperature_detail">Уведомлять, когда датчик температуры достигает заданного для него верхнего или нижнего предела – нажмите на показание плитки температуры, чтобы задать пределы</string>
+	<string name="alerts_temperature_test_detail">Отправляет настоящее уведомление с той же логикой, что и реальное оповещение о температуре, независимо от переключателя выше</string>
 	<string name="alerts_test">Тестовое уведомление</string>
 	<string name="alerts_title">Сигнализация/оповещение</string>
 	<string name="alerts_watering">Оповещения о поливе</string>
@@ -249,6 +252,11 @@
 	<string name="home_retopic_none">По этой теме не было кластеров в ‘%1$s’</string>
 	<string name="home_search_clusters">Поисковые кластеры</string>
 	<string name="home_stale_description">Данные старше часа</string>
+	<string name="home_temperature_limit_high">Оповещать при этом значении или выше</string>
+	<string name="home_temperature_limit_low">Оповещать при этом значении или ниже</string>
+	<string name="home_temperature_limits_hint">Оставьте предел пустым, чтобы отключить его</string>
+	<string name="home_temperature_limits_invalid">Верхний предел должен быть выше нижнего</string>
+	<string name="home_temperature_limits_title">Оповещения о температуре для ‘%1$s’</string>
 	<string name="home_undo">Отменить</string>
 	<string name="home_value">Значение</string>
 	<string name="home_weak_signal_description">Качество ссылки ниже %1$d</string>
@@ -409,6 +417,13 @@
 	<string name="tab_home">Дом</string>
 	<string name="tab_settings">Настройки</string>
 	<string name="tab_terminal">Терминал</string>
+	<string name="temperature_channel">Оповещения о температуре</string>
+	<string name="temperature_channel_desc">Оповещает, когда датчик температуры достигает заданного для него верхнего или нижнего предела</string>
+	<string name="temperature_notif_high_text">Достигнут верхний предел %1$s – нажмите, чтобы открыть %2$s</string>
+	<string name="temperature_notif_high_title">%1$s: слишком тепло (%2$s)</string>
+	<string name="temperature_notif_low_text">Достигнут нижний предел %1$s – нажмите, чтобы открыть %2$s</string>
+	<string name="temperature_notif_low_title">%1$s: слишком холодно (%2$s)</string>
+	<string name="temperature_notif_test_text">Так выглядит уведомление о температуре</string>
 	<string name="terminal_all_brokers">Все брокеры</string>
 	<string name="terminal_broker">Маклер</string>
 	<string name="terminal_clear">Очистить журнал</string>

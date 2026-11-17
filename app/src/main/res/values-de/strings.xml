@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Löst eine echte Benachrichtigung aus (mit Ton, sofern oben aktiviert) und verwendet dabei genau die gleiche Logik wie ein echter Rauchalarm – eine gute Möglichkeit, zu bestätigen, dass er tatsächlich Ihre Aufmerksamkeit erregt, bevor Sie es brauchen</string>
 	<string name="alerts_sound">Alarmton</string>
 	<string name="alerts_sound_detail">Spielen Sie neben der Benachrichtigung einen lauten Alarmton ab</string>
+	<string name="alerts_temperature">Temperaturwarnungen</string>
+	<string name="alerts_temperature_detail">Benachrichtigen, wenn ein Temperatursensor die für ihn festgelegte Ober- oder Untergrenze erreicht – tippen Sie auf den Messwert einer Temperaturkachel, um die Grenzen festzulegen</string>
+	<string name="alerts_temperature_test_detail">Löst eine echte Benachrichtigung aus, die genau die gleiche Logik wie eine echte Temperaturwarnung verwendet, unabhängig von der oben genannten Option</string>
 	<string name="alerts_test">Testbenachrichtigung</string>
 	<string name="alerts_title">Alarm/Warnung</string>
 	<string name="alerts_watering">Bewässerungswarnungen</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Zu diesem Thema gab es keine Cluster in ‘%1$s’</string>
 	<string name="home_search_clusters">Suchcluster</string>
 	<string name="home_stale_description">Die Daten sind mehr als eine Stunde alt</string>
+	<string name="home_temperature_limit_high">Warnen bei oder über</string>
+	<string name="home_temperature_limit_low">Warnen bei oder unter</string>
+	<string name="home_temperature_limits_hint">Lassen Sie eine Grenze leer, um sie auszuschalten</string>
+	<string name="home_temperature_limits_invalid">Die Obergrenze muss über der Untergrenze liegen</string>
+	<string name="home_temperature_limits_title">Temperaturwarnungen für ‘%1$s’</string>
 	<string name="home_undo">Rückgängig machen</string>
 	<string name="home_value">Wert</string>
 	<string name="home_weak_signal_description">Linkqualität unter %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Heim</string>
 	<string name="tab_settings">Einstellungen</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Temperaturwarnungen</string>
+	<string name="temperature_channel_desc">Warnt, wenn ein Temperatursensor die für ihn festgelegte Ober- oder Untergrenze erreicht</string>
+	<string name="temperature_notif_high_text">Obergrenze von %1$s erreicht – tippen, um %2$s zu öffnen</string>
+	<string name="temperature_notif_high_title">%1$s ist zu warm (%2$s)</string>
+	<string name="temperature_notif_low_text">Untergrenze von %1$s erreicht – tippen, um %2$s zu öffnen</string>
+	<string name="temperature_notif_low_title">%1$s ist zu kalt (%2$s)</string>
+	<string name="temperature_notif_test_text">So sieht eine Temperaturwarnung aus</string>
 	<string name="terminal_all_brokers">Alle Makler</string>
 	<string name="terminal_broker">Makler</string>
 	<string name="terminal_clear">Protokoll löschen</string>

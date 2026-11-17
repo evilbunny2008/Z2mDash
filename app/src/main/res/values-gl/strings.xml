@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Envía unha notificación real (con son, se está activado enriba) usando exactamente a mesma lóxica que unha alerta de fume auténtica – unha boa forma de confirmar que de verdade chamará a túa atención antes de que a necesites</string>
 	<string name="alerts_sound">Son de alerta</string>
 	<string name="alerts_sound_detail">Reproducir un son forte tipo alarma xunto coa notificación</string>
+	<string name="alerts_temperature">Alertas de temperatura</string>
+	<string name="alerts_temperature_detail">Notificar cando un sensor de temperatura alcance o límite alto ou baixo establecido para el – toca a lectura dunha tella de temperatura para establecer os seus límites</string>
+	<string name="alerts_temperature_test_detail">Envía unha notificación real coa mesma lóxica exacta que unha alerta de temperatura auténtica, independentemente do interruptor de arriba</string>
 	<string name="alerts_test">Notificación de proba</string>
 	<string name="alerts_title">Alarma/alerta</string>
 	<string name="alerts_watering">Alertas de rego</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Ningún clúster de ‘%1$s’ estaba nese tema</string>
 	<string name="home_search_clusters">Buscar clústeres</string>
 	<string name="home_stale_description">Os datos teñen máis dunha hora</string>
+	<string name="home_temperature_limit_high">Avisar a partir de</string>
+	<string name="home_temperature_limit_low">Avisar por debaixo de</string>
+	<string name="home_temperature_limits_hint">Deixa un límite en branco para desactivalo</string>
+	<string name="home_temperature_limits_invalid">O límite alto debe ser maior que o límite baixo</string>
+	<string name="home_temperature_limits_title">Alertas de temperatura para ‘%1$s’</string>
 	<string name="home_undo">Desfacer</string>
 	<string name="home_value">Valor</string>
 	<string name="home_weak_signal_description">Calidade de ligazón inferior a %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Inicio</string>
 	<string name="tab_settings">Configuración</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Alertas de temperatura</string>
+	<string name="temperature_channel_desc">Avisa cando un sensor de temperatura alcanza o límite alto ou baixo establecido para el</string>
+	<string name="temperature_notif_high_text">Alcanzouse o teu límite alto de %1$s – toca para abrir %2$s</string>
+	<string name="temperature_notif_high_title">%1$s está demasiado quente (%2$s)</string>
+	<string name="temperature_notif_low_text">Alcanzouse o teu límite baixo de %1$s – toca para abrir %2$s</string>
+	<string name="temperature_notif_low_title">%1$s está demasiado frío (%2$s)</string>
+	<string name="temperature_notif_test_text">Así se ve unha notificación de alerta de temperatura</string>
 	<string name="terminal_all_brokers">Todos os brókers</string>
 	<string name="terminal_broker">Bróker</string>
 	<string name="terminal_clear">Borrar rexistro</string>

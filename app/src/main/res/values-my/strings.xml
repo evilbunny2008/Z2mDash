@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">အမှန်တကယ် မီးခိုးသတိပေးချက်နှင့် တူညီသော နည်းလမ်းအတိုင်း အကြောင်းကြားချက်အစစ်တစ်ခု (အထက်တွင် ဖွင့်ထားပါက အသံပါ) ပို့ပေးသည် – လိုအပ်လာချိန်မတိုင်မီ သင့်အာရုံကို တကယ်ဆွဲနိုင်ကြောင်း စစ်ဆေးရန် ကောင်းသောနည်းလမ်းဖြစ်သည်</string>
 	<string name="alerts_sound">သတိပေးသံ</string>
 	<string name="alerts_sound_detail">အကြောင်းကြားချက်နှင့်အတူ နှိုးစက်သံကဲ့သို့ ကျယ်လောင်သောအသံ ဖွင့်ရန်</string>
+	<string name="alerts_temperature">အပူချိန် သတိပေးချက်များ</string>
+	<string name="alerts_temperature_detail">အပူချိန်အာရုံခံကိရိယာသည် ၎င်းအတွက် သတ်မှတ်ထားသော အမြင့် သို့မဟုတ် အနိမ့်ကန့်သတ်ချက်သို့ ရောက်သောအခါ အသိပေးရန် – ကန့်သတ်ချက်များ သတ်မှတ်ရန် အပူချိန်အကွက်၏ တန်ဖိုးကို တို့ပါ</string>
+	<string name="alerts_temperature_test_detail">အထက်ပါခလုတ်ကို မည်သို့ပင်ထားစေ၊ တကယ့်အပူချိန်သတိပေးချက်နှင့် အတူတူပင် ယုတ္တိကို အသုံးပြု၍ အစစ်အမှန် အကြောင်းကြားချက်ကို ပို့သည်</string>
 	<string name="alerts_test">စမ်းသပ် အကြောင်းကြားချက်</string>
 	<string name="alerts_title">နှိုးစက်/သတိပေးချက်</string>
 	<string name="alerts_watering">ရေလောင်း သတိပေးချက်များ</string>
@@ -228,6 +231,11 @@
 	<string name="home_retopic_none">‘%1$s’ ရှိ မည်သည့် cluster မျှ ထို topic ပေါ်တွင် မရှိပါ</string>
 	<string name="home_search_clusters">cluster များ ရှာရန်</string>
 	<string name="home_stale_description">ဒေတာသည် တစ်နာရီထက် ပိုဟောင်းနေသည်</string>
+	<string name="home_temperature_limit_high">ဤတန်ဖိုး သို့မဟုတ် အထက်တွင် သတိပေးရန်</string>
+	<string name="home_temperature_limit_low">ဤတန်ဖိုး သို့မဟုတ် အောက်တွင် သတိပေးရန်</string>
+	<string name="home_temperature_limits_hint">ကန့်သတ်ချက်ကို ပိတ်ရန် ကွက်လပ်ထားပါ</string>
+	<string name="home_temperature_limits_invalid">အမြင့်ကန့်သတ်ချက်သည် အနိမ့်ကန့်သတ်ချက်ထက် မြင့်ရမည်</string>
+	<string name="home_temperature_limits_title">‘%1$s’ အတွက် အပူချိန် သတိပေးချက်များ</string>
 	<string name="home_undo">ပြန်ဖျက်ရန်</string>
 	<string name="home_value">တန်ဖိုး</string>
 	<string name="home_weak_signal_description">ချိတ်ဆက်မှု အရည်အသွေး %1$d အောက်</string>
@@ -370,6 +378,13 @@
 	<string name="tab_home">ပင်မ</string>
 	<string name="tab_settings">ဆက်တင်များ</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">အပူချိန် သတိပေးချက်များ</string>
+	<string name="temperature_channel_desc">အပူချိန်အာရုံခံကိရိယာသည် ၎င်းအတွက် သတ်မှတ်ထားသော အမြင့် သို့မဟုတ် အနိမ့်ကန့်သတ်ချက်သို့ ရောက်သောအခါ သတိပေးသည်</string>
+	<string name="temperature_notif_high_text">သင်၏ %1$s အမြင့်ကန့်သတ်ချက်သို့ ရောက်ပြီ – %2$s ကိုဖွင့်ရန် တို့ပါ</string>
+	<string name="temperature_notif_high_title">%1$s အလွန်ပူနေသည် (%2$s)</string>
+	<string name="temperature_notif_low_text">သင်၏ %1$s အနိမ့်ကန့်သတ်ချက်သို့ ရောက်ပြီ – %2$s ကိုဖွင့်ရန် တို့ပါ</string>
+	<string name="temperature_notif_low_title">%1$s အလွန်အေးနေသည် (%2$s)</string>
+	<string name="temperature_notif_test_text">အပူချိန်သတိပေးချက် အကြောင်းကြားချက်သည် ဤသို့ ပေါ်သည်</string>
 	<string name="terminal_all_brokers">ဘရိုကာအားလုံး</string>
 	<string name="terminal_broker">ဘရိုကာ</string>
 	<string name="terminal_clear">မှတ်တမ်း ရှင်းရန်</string>

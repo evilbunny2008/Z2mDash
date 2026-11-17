@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Menembakkan notifikasi nyata (dengan suara, jika diaktifkan di atas) menggunakan logika yang sama persis dengan peringatan asap asli – cara yang baik untuk mengonfirmasi bahwa notifikasi tersebut benar–benar menarik perhatian Anda sebelum Anda memerlukannya</string>
 	<string name="alerts_sound">Suara Peringatan</string>
 	<string name="alerts_sound_detail">Putar suara bergaya alarm yang keras di samping notifikasi</string>
+	<string name="alerts_temperature">Peringatan Suhu</string>
+	<string name="alerts_temperature_detail">Beri tahu saat sensor suhu mencapai batas atas atau bawah yang ditetapkan untuknya – ketuk angka pada ubin suhu untuk menetapkan batasnya</string>
+	<string name="alerts_temperature_test_detail">Mengirim notifikasi sungguhan dengan logika yang persis sama seperti peringatan suhu asli, terlepas dari tombol di atas</string>
 	<string name="alerts_test">Pemberitahuan Tes</string>
 	<string name="alerts_title">Alarm/Peringatan</string>
 	<string name="alerts_watering">Peringatan Penyiraman</string>
@@ -228,6 +231,11 @@
 	<string name="home_retopic_none">Tidak ada cluster di ‘%1$s’ yang membahas topik tersebut</string>
 	<string name="home_search_clusters">Cluster pencarian</string>
 	<string name="home_stale_description">Data berumur lebih dari satu jam</string>
+	<string name="home_temperature_limit_high">Peringatkan pada atau di atas</string>
+	<string name="home_temperature_limit_low">Peringatkan pada atau di bawah</string>
+	<string name="home_temperature_limits_hint">Biarkan batas kosong untuk menonaktifkannya</string>
+	<string name="home_temperature_limits_invalid">Batas atas harus lebih tinggi dari batas bawah</string>
+	<string name="home_temperature_limits_title">Peringatan suhu untuk ‘%1$s’</string>
 	<string name="home_undo">Membuka</string>
 	<string name="home_value">Nilai</string>
 	<string name="home_weak_signal_description">Kualitas tautan di bawah %1$d</string>
@@ -370,6 +378,13 @@
 	<string name="tab_home">Rumah</string>
 	<string name="tab_settings">Pengaturan</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Peringatan suhu</string>
+	<string name="temperature_channel_desc">Memperingatkan saat sensor suhu mencapai batas atas atau bawah yang ditetapkan untuknya</string>
+	<string name="temperature_notif_high_text">Batas atas %1$s tercapai – ketuk untuk membuka %2$s</string>
+	<string name="temperature_notif_high_title">%1$s terlalu panas (%2$s)</string>
+	<string name="temperature_notif_low_text">Batas bawah %1$s tercapai – ketuk untuk membuka %2$s</string>
+	<string name="temperature_notif_low_title">%1$s terlalu dingin (%2$s)</string>
+	<string name="temperature_notif_test_text">Beginilah tampilan notifikasi peringatan suhu</string>
 	<string name="terminal_all_brokers">Semua broker</string>
 	<string name="terminal_broker">Makelar</string>
 	<string name="terminal_clear">Hapus catatan</string>

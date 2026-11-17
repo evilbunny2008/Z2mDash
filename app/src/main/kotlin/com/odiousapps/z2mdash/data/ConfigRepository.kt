@@ -418,6 +418,16 @@ class ConfigRepository(private val context: Context, private val scope: Coroutin
         })
     }
 
+    /** Sets [panelId]'s temperature alert limits - both sides null removes its entry entirely. */
+    fun setTemperatureAlertLimits(panelId: String, limits: TemperatureAlertLimits) = update { cfg ->
+        val updated = if (limits.low == null && limits.high == null) {
+            cfg.temperatureAlertLimits - panelId
+        } else {
+            cfg.temperatureAlertLimits + (panelId to limits)
+        }
+        cfg.copy(temperatureAlertLimits = updated)
+    }
+
     /**
      * Moves every panel of cluster [clusterId] from [fromGroupId] into [toGroupId] (its cluster
      * entry follows - see normalizeClusters). When [insertBeforeClusterKey] names an existing

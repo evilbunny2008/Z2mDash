@@ -1,0 +1,2 @@
+- New temperature alerts: tap a temperature tile's reading to set a high and/or low limit, and get notified when it's reached - handy for a sensor in a window, to know when to shut it on a hot day or a cold night.
+- Leave either limit blank to switch it off, and turn temperature alerts off entirely in Settings > Alerts.

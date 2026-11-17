@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Dërgon një njoftim të vërtetë (me zë, nëse është aktivizuar më sipër) duke përdorur saktësisht të njëjtën logjikë si një sinjalizim i vërtetë për tym – një mënyrë e mirë për t’u siguruar që do të tërheqë vërtet vëmendjen tuaj para se t’ju duhet</string>
 	<string name="alerts_sound">Zëri i sinjalizimit</string>
 	<string name="alerts_sound_detail">Luaj një zë të fortë si alarm së bashku me njoftimin</string>
+	<string name="alerts_temperature">Sinjalizime temperature</string>
+	<string name="alerts_temperature_detail">Njofto kur një sensor temperature arrin kufirin e sipërm ose të poshtëm të caktuar për të – prek leximin e një pllake temperature për të caktuar kufijtë</string>
+	<string name="alerts_temperature_test_detail">Dërgon një njoftim të vërtetë me saktësisht të njëjtën logjikë si një sinjalizim i vërtetë temperature, pavarësisht ndërprerësit më sipër</string>
 	<string name="alerts_test">Njoftim provë</string>
 	<string name="alerts_title">Alarm/sinjalizim</string>
 	<string name="alerts_watering">Sinjalizime për ujitje</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Asnjë klaster në ‘%1$s’ nuk ishte në atë temë</string>
 	<string name="home_search_clusters">Kërko klasterë</string>
 	<string name="home_stale_description">Të dhënat janë më të vjetra se një orë</string>
+	<string name="home_temperature_limit_high">Sinjalizo në ose mbi</string>
+	<string name="home_temperature_limit_low">Sinjalizo në ose nën</string>
+	<string name="home_temperature_limits_hint">Lëre një kufi bosh për ta çaktivizuar</string>
+	<string name="home_temperature_limits_invalid">Kufiri i sipërm duhet të jetë mbi kufirin e poshtëm</string>
+	<string name="home_temperature_limits_title">Sinjalizime temperature për ‘%1$s’</string>
 	<string name="home_undo">Zhbëj</string>
 	<string name="home_value">Vlera</string>
 	<string name="home_weak_signal_description">Cilësia e lidhjes nën %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Kreu</string>
 	<string name="tab_settings">Cilësimet</string>
 	<string name="tab_terminal">Terminali</string>
+	<string name="temperature_channel">Sinjalizime temperature</string>
+	<string name="temperature_channel_desc">Sinjalizon kur një sensor temperature arrin kufirin e sipërm ose të poshtëm të caktuar për të</string>
+	<string name="temperature_notif_high_text">U arrit kufiri i sipërm prej %1$s – prek për të hapur %2$s</string>
+	<string name="temperature_notif_high_title">%1$s është shumë ngrohtë (%2$s)</string>
+	<string name="temperature_notif_low_text">U arrit kufiri i poshtëm prej %1$s – prek për të hapur %2$s</string>
+	<string name="temperature_notif_low_title">%1$s është shumë ftohtë (%2$s)</string>
+	<string name="temperature_notif_test_text">Kështu duket një njoftim sinjalizimi temperature</string>
 	<string name="terminal_all_brokers">Të gjithë brokerët</string>
 	<string name="terminal_broker">Brokeri</string>
 	<string name="terminal_clear">Pastro regjistrin</string>

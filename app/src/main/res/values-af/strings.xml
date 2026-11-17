@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Stuur ’n regte kennisgewing (met klank, indien hierbo geaktiveer) met presies dieselfde logika as ’n egte rookwaarskuwing – ’n goeie manier om te bevestig dat dit werklik jou aandag sal trek voordat jy dit nodig het</string>
 	<string name="alerts_sound">Waarskuwingsklank</string>
 	<string name="alerts_sound_detail">Speel ’n harde alarmagtige klank saam met die kennisgewing</string>
+	<string name="alerts_temperature">Temperatuurwaarskuwings</string>
+	<string name="alerts_temperature_detail">Stel in kennis wanneer ’n temperatuursensor die hoë of lae limiet bereik wat daarvoor gestel is – tik op ’n temperatuurteël se lesing om sy limiete te stel</string>
+	<string name="alerts_temperature_test_detail">Stuur ’n regte kennisgewing met presies dieselfde logika as ’n egte temperatuurwaarskuwing, ongeag die skakelaar hierbo</string>
 	<string name="alerts_test">Toetskennisgewing</string>
 	<string name="alerts_title">Alarm/Waarskuwing</string>
 	<string name="alerts_watering">Natgooiwaarskuwings</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Geen klusters in ‘%1$s’ was op daardie onderwerp nie</string>
 	<string name="home_search_clusters">Soek klusters</string>
 	<string name="home_stale_description">Data is meer as ’n uur oud</string>
+	<string name="home_temperature_limit_high">Waarsku by of bo</string>
+	<string name="home_temperature_limit_low">Waarsku by of onder</string>
+	<string name="home_temperature_limits_hint">Laat ’n limiet leeg om dit af te skakel</string>
+	<string name="home_temperature_limits_invalid">Die hoë limiet moet bo die lae limiet wees</string>
+	<string name="home_temperature_limits_title">Temperatuurwaarskuwings vir ‘%1$s’</string>
 	<string name="home_undo">Ontdoen</string>
 	<string name="home_value">Waarde</string>
 	<string name="home_weak_signal_description">Skakelgehalte onder %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Tuis</string>
 	<string name="tab_settings">Instellings</string>
 	<string name="tab_terminal">Terminaal</string>
+	<string name="temperature_channel">Temperatuurwaarskuwings</string>
+	<string name="temperature_channel_desc">Waarsku wanneer ’n temperatuursensor die hoë of lae limiet bereik wat daarvoor gestel is</string>
+	<string name="temperature_notif_high_text">Jou hoë limiet van %1$s is bereik – tik om %2$s oop te maak</string>
+	<string name="temperature_notif_high_title">%1$s is te warm (%2$s)</string>
+	<string name="temperature_notif_low_text">Jou lae limiet van %1$s is bereik – tik om %2$s oop te maak</string>
+	<string name="temperature_notif_low_title">%1$s is te koud (%2$s)</string>
+	<string name="temperature_notif_test_text">Só lyk ’n temperatuurwaarskuwing</string>
 	<string name="terminal_all_brokers">Alle brokers</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Vee log uit</string>

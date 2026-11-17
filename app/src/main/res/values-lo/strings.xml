@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">ສົ່ງການແຈ້ງເຕືອນແທ້ (ມີສຽງ ຖ້າເປີດໄວ້ດ້ານເທິງ) ໂດຍໃຊ້ຕັກກະດຽວກັນທຸກຢ່າງກັບການແຈ້ງເຕືອນຄວັນແທ້ – ເປັນວິທີທີ່ດີໃນການຢືນຢັນວ່າມັນຈະດຶງດູດຄວາມສົນໃຈຂອງທ່ານແທ້ ກ່ອນທີ່ທ່ານຈະຕ້ອງການມັນ</string>
 	<string name="alerts_sound">ສຽງແຈ້ງເຕືອນ</string>
 	<string name="alerts_sound_detail">ຫຼິ້ນສຽງດັງແບບສັນຍານເຕືອນໄພ ພ້ອມກັບການແຈ້ງເຕືອນ</string>
+	<string name="alerts_temperature">ການແຈ້ງເຕືອນອຸນຫະພູມ</string>
+	<string name="alerts_temperature_detail">ແຈ້ງເຕືອນເມື່ອເຊັນເຊີອຸນຫະພູມຮອດຂີດຈຳກັດສູງ ຫຼື ຕ່ຳທີ່ຕັ້ງໄວ້ – ແຕະທີ່ຄ່າຂອງແຜ່ນອຸນຫະພູມເພື່ອຕັ້ງຂີດຈຳກັດ</string>
+	<string name="alerts_temperature_test_detail">ສົ່ງການແຈ້ງເຕືອນແທ້ ໂດຍໃຊ້ຫຼັກການດຽວກັນທຸກຢ່າງກັບການແຈ້ງເຕືອນອຸນຫະພູມແທ້ ໂດຍບໍ່ຂຶ້ນກັບສະວິດຂ້າງເທິງ</string>
 	<string name="alerts_test">ການແຈ້ງເຕືອນທົດສອບ</string>
 	<string name="alerts_title">ສັນຍານເຕືອນ/ການແຈ້ງເຕືອນ</string>
 	<string name="alerts_watering">ການແຈ້ງເຕືອນຫົດນ້ຳ</string>
@@ -228,6 +231,11 @@
 	<string name="home_retopic_none">ບໍ່ມີກຸ່ມຍ່ອຍໃນ ‘%1$s’ ຢູ່ໃນຫົວຂໍ້ນັ້ນ</string>
 	<string name="home_search_clusters">ຄົ້ນຫາກຸ່ມຍ່ອຍ</string>
 	<string name="home_stale_description">ຂໍ້ມູນເກົ່າກວ່າໜຶ່ງຊົ່ວໂມງ</string>
+	<string name="home_temperature_limit_high">ເຕືອນເມື່ອເທົ່າ ຫຼື ສູງກວ່າ</string>
+	<string name="home_temperature_limit_low">ເຕືອນເມື່ອເທົ່າ ຫຼື ຕ່ຳກວ່າ</string>
+	<string name="home_temperature_limits_hint">ປະຂີດຈຳກັດໃຫ້ຫວ່າງເພື່ອປິດມັນ</string>
+	<string name="home_temperature_limits_invalid">ຂີດຈຳກັດສູງຕ້ອງສູງກວ່າຂີດຈຳກັດຕ່ຳ</string>
+	<string name="home_temperature_limits_title">ການແຈ້ງເຕືອນອຸນຫະພູມສຳລັບ ‘%1$s’</string>
 	<string name="home_undo">ຍົກເລີກການກະທຳ</string>
 	<string name="home_value">ຄ່າ</string>
 	<string name="home_weak_signal_description">ຄຸນນະພາບລິ້ງຕ່ຳກວ່າ %1$d</string>
@@ -370,6 +378,13 @@
 	<string name="tab_home">ໜ້າຫຼັກ</string>
 	<string name="tab_settings">ການຕັ້ງຄ່າ</string>
 	<string name="tab_terminal">ເທີມິນອນ</string>
+	<string name="temperature_channel">ການແຈ້ງເຕືອນອຸນຫະພູມ</string>
+	<string name="temperature_channel_desc">ເຕືອນເມື່ອເຊັນເຊີອຸນຫະພູມຮອດຂີດຈຳກັດສູງ ຫຼື ຕ່ຳທີ່ຕັ້ງໄວ້</string>
+	<string name="temperature_notif_high_text">ຮອດຂີດຈຳກັດສູງ %1$s ແລ້ວ – ແຕະເພື່ອເປີດ %2$s</string>
+	<string name="temperature_notif_high_title">%1$s ຮ້ອນເກີນໄປ (%2$s)</string>
+	<string name="temperature_notif_low_text">ຮອດຂີດຈຳກັດຕ່ຳ %1$s ແລ້ວ – ແຕະເພື່ອເປີດ %2$s</string>
+	<string name="temperature_notif_low_title">%1$s ເຢັນເກີນໄປ (%2$s)</string>
+	<string name="temperature_notif_test_text">ນີ້ຄືລັກສະນະຂອງການແຈ້ງເຕືອນອຸນຫະພູມ</string>
 	<string name="terminal_all_brokers">ໂບຣກເກີທັງໝົດ</string>
 	<string name="terminal_broker">ໂບຣກເກີ</string>
 	<string name="terminal_clear">ລ້າງບັນທຶກ</string>

@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Нақты түтін ескертуімен дәл бірдей логикамен шынайы хабарландыру жібереді (жоғарыда қосылған болса, дыбыспен) – қажет болмай тұрып оның назарыңызды шынымен аударатынын тексерудің жақсы жолы</string>
 	<string name="alerts_sound">Ескерту дыбысы</string>
 	<string name="alerts_sound_detail">Хабарландырумен бірге қатты дабыл тәрізді дыбыс ойнату</string>
+	<string name="alerts_temperature">Температура ескертулері</string>
+	<string name="alerts_temperature_detail">Температура сенсоры оған орнатылған жоғарғы не төменгі шекке жеткенде хабарлау – шектерді орнату үшін температура плиткасының көрсеткішін түртіңіз</string>
+	<string name="alerts_temperature_test_detail">Жоғарыдағы қосқышқа қарамастан, нақты температура ескертуімен дәл бірдей логиканы пайдаланып шынайы хабарландыру жібереді</string>
 	<string name="alerts_test">Сынақ хабарландыруы</string>
 	<string name="alerts_title">Дабыл/ескерту</string>
 	<string name="alerts_watering">Суару ескертулері</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ ішіндегі бірде–бір кластер ол тақырыпта болмады</string>
 	<string name="home_search_clusters">Кластерлерді іздеу</string>
 	<string name="home_stale_description">Деректер бір сағаттан ескі</string>
+	<string name="home_temperature_limit_high">Осы мәнде немесе одан жоғары ескерту</string>
+	<string name="home_temperature_limit_low">Осы мәнде немесе одан төмен ескерту</string>
+	<string name="home_temperature_limits_hint">Шекті өшіру үшін оны бос қалдырыңыз</string>
+	<string name="home_temperature_limits_invalid">Жоғарғы шек төменгі шектен жоғары болуы керек</string>
+	<string name="home_temperature_limits_title">‘%1$s’ үшін температура ескертулері</string>
 	<string name="home_undo">Қайтару</string>
 	<string name="home_value">Мән</string>
 	<string name="home_weak_signal_description">Байланыс сапасы %1$d төмен</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Басты бет</string>
 	<string name="tab_settings">Параметрлер</string>
 	<string name="tab_terminal">Терминал</string>
+	<string name="temperature_channel">Температура ескертулері</string>
+	<string name="temperature_channel_desc">Температура сенсоры оған орнатылған жоғарғы не төменгі шекке жеткенде ескертеді</string>
+	<string name="temperature_notif_high_text">%1$s жоғарғы шегіне жетті – %2$s ашу үшін түртіңіз</string>
+	<string name="temperature_notif_high_title">%1$s тым жылы (%2$s)</string>
+	<string name="temperature_notif_low_text">%1$s төменгі шегіне жетті – %2$s ашу үшін түртіңіз</string>
+	<string name="temperature_notif_low_title">%1$s тым суық (%2$s)</string>
+	<string name="temperature_notif_test_text">Температура ескертуі осылай көрінеді</string>
 	<string name="terminal_all_brokers">Барлық брокер</string>
 	<string name="terminal_broker">Брокер</string>
 	<string name="terminal_clear">Журналды тазалау</string>

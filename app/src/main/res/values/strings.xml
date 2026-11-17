@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Fires a real notification (with sound, if enabled above) using the exact same logic as a genuine smoke alert – a good way to confirm it’ll actually get your attention before you need it to</string>
 	<string name="alerts_sound">Alert Sound</string>
 	<string name="alerts_sound_detail">Play a loud alarm–style sound alongside the notification</string>
+	<string name="alerts_temperature">Temperature Alerts</string>
+	<string name="alerts_temperature_detail">Notify when a temperature sensor reaches the high or low limit set for it – tap a temperature tile’s reading to set its limits</string>
+	<string name="alerts_temperature_test_detail">Fires a real notification using the exact same logic as a genuine temperature alert, regardless of the toggle above</string>
 	<string name="alerts_test">Test Notification</string>
 	<string name="alerts_title">Alarm/Alert</string>
 	<string name="alerts_watering">Watering Alerts</string>
@@ -239,6 +242,11 @@
 	<string name="home_retopic_none">No clusters in ‘%1$s’ were on that topic</string>
 	<string name="home_search_clusters">Search clusters</string>
 	<string name="home_stale_description">Data is more than an hour old</string>
+	<string name="home_temperature_limit_high">Alert at or above</string>
+	<string name="home_temperature_limit_low">Alert at or below</string>
+	<string name="home_temperature_limits_hint">Leave a limit blank to turn it off</string>
+	<string name="home_temperature_limits_invalid">The high limit must be above the low limit</string>
+	<string name="home_temperature_limits_title">Temperature alerts for ‘%1$s’</string>
 	<string name="home_undo">Undo</string>
 	<string name="home_value">Value</string>
 	<string name="home_weak_signal_description">Link quality below %1$d</string>
@@ -387,6 +395,13 @@
 	<string name="tab_home">Home</string>
 	<string name="tab_settings">Settings</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Temperature alerts</string>
+	<string name="temperature_channel_desc">Alerts when a temperature sensor reaches the high or low limit set for it</string>
+	<string name="temperature_notif_high_text">Reached your %1$s high limit – tap to open %2$s</string>
+	<string name="temperature_notif_high_title">%1$s is too warm (%2$s)</string>
+	<string name="temperature_notif_low_text">Reached your %1$s low limit – tap to open %2$s</string>
+	<string name="temperature_notif_low_title">%1$s is too cold (%2$s)</string>
+	<string name="temperature_notif_test_text">This is what a temperature alert notification looks like</string>
 	<string name="terminal_all_brokers">All brokers</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Clear log</string>

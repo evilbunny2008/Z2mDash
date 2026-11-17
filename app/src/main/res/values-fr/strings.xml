@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Déclenche une véritable notification (avec son, si activé ci–dessus) en utilisant exactement la même logique qu’une véritable alerte à la fumée – un bon moyen de confirmer qu’elle attirera réellement votre attention avant que vous en ayez besoin</string>
 	<string name="alerts_sound">Son d’alerte</string>
 	<string name="alerts_sound_detail">Jouez un son fort de style alarme à côté de la notification</string>
+	<string name="alerts_temperature">Alertes de température</string>
+	<string name="alerts_temperature_detail">Avertir lorsqu’un capteur de température atteint la limite haute ou basse définie pour lui – touchez la valeur d’une tuile de température pour définir ses limites</string>
+	<string name="alerts_temperature_test_detail">Déclenche une vraie notification avec exactement la même logique qu’une véritable alerte de température, quel que soit l’interrupteur ci-dessus</string>
 	<string name="alerts_test">Avis de test</string>
 	<string name="alerts_title">Alarme/Alerte</string>
 	<string name="alerts_watering">Alertes d’arrosage</string>
@@ -242,6 +245,11 @@
 	<string name="home_retopic_none">Aucun cluster dans ‘ %1$s ’ n’était sur ce sujet</string>
 	<string name="home_search_clusters">Rechercher des clusters</string>
 	<string name="home_stale_description">Les données datent de plus d’une heure</string>
+	<string name="home_temperature_limit_high">Alerter à partir de</string>
+	<string name="home_temperature_limit_low">Alerter en dessous de</string>
+	<string name="home_temperature_limits_hint">Laissez une limite vide pour la désactiver</string>
+	<string name="home_temperature_limits_invalid">La limite haute doit être supérieure à la limite basse</string>
+	<string name="home_temperature_limits_title">Alertes de température pour ‘ %1$s ’</string>
 	<string name="home_undo">Défaire</string>
 	<string name="home_value">Valeur</string>
 	<string name="home_weak_signal_description">Qualité du lien inférieure à %1$d</string>
@@ -396,6 +404,13 @@
 	<string name="tab_home">Maison</string>
 	<string name="tab_settings">Paramètres</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Alertes de température</string>
+	<string name="temperature_channel_desc">Avertit lorsqu’un capteur de température atteint la limite haute ou basse définie pour lui</string>
+	<string name="temperature_notif_high_text">Limite haute de %1$s atteinte – touchez pour ouvrir %2$s</string>
+	<string name="temperature_notif_high_title">%1$s : trop chaud (%2$s)</string>
+	<string name="temperature_notif_low_text">Limite basse de %1$s atteinte – touchez pour ouvrir %2$s</string>
+	<string name="temperature_notif_low_title">%1$s : trop froid (%2$s)</string>
+	<string name="temperature_notif_test_text">Voici à quoi ressemble une alerte de température</string>
 	<string name="terminal_all_brokers">Tous les brokers</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Effacer le journal</string>

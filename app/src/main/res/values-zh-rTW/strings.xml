@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">使用與真正的煙霧警報完全相同的邏輯觸發真正的通知（帶有聲音，如果上面啟用）——這是確認它確實會在您需要之前引起您注意的好方法。</string>
 	<string name="alerts_sound">警報聲</string>
 	<string name="alerts_sound_detail">在通知旁邊播放響亮的警報聲</string>
+	<string name="alerts_temperature">溫度提醒</string>
+	<string name="alerts_temperature_detail">溫度感應器達到為其設定的上限或下限時發出通知 – 輕觸溫度圖塊的讀數即可設定上下限</string>
+	<string name="alerts_temperature_test_detail">無論上方開關為何，都會使用與真實溫度提醒完全相同的邏輯發送一則真實通知</string>
 	<string name="alerts_test">測試通知</string>
 	<string name="alerts_title">警報/提醒</string>
 	<string name="alerts_watering">澆水警報</string>
@@ -228,6 +231,11 @@
 	<string name="home_retopic_none">「%1$s」中沒有關於該主題的叢集</string>
 	<string name="home_search_clusters">搜尋叢集</string>
 	<string name="home_stale_description">資料已存在一個多小時了</string>
+	<string name="home_temperature_limit_high">達到或高於此值時提醒</string>
+	<string name="home_temperature_limit_low">達到或低於此值時提醒</string>
+	<string name="home_temperature_limits_hint">留空即可關閉該限值</string>
+	<string name="home_temperature_limits_invalid">上限必須高於下限</string>
+	<string name="home_temperature_limits_title">「%1$s」的溫度提醒</string>
 	<string name="home_undo">撤銷</string>
 	<string name="home_value">值</string>
 	<string name="home_weak_signal_description">連結品質低於%1$d</string>
@@ -370,6 +378,13 @@
 	<string name="tab_home">家</string>
 	<string name="tab_settings">設定</string>
 	<string name="tab_terminal">終端</string>
+	<string name="temperature_channel">溫度提醒</string>
+	<string name="temperature_channel_desc">溫度感應器達到為其設定的上限或下限時發出提醒</string>
+	<string name="temperature_notif_high_text">已達到上限 %1$s – 輕觸開啟 %2$s</string>
+	<string name="temperature_notif_high_title">%1$s 溫度過高（%2$s）</string>
+	<string name="temperature_notif_low_text">已達到下限 %1$s – 輕觸開啟 %2$s</string>
+	<string name="temperature_notif_low_title">%1$s 溫度過低（%2$s）</string>
+	<string name="temperature_notif_test_text">溫度提醒通知就是這個樣子</string>
 	<string name="terminal_all_brokers">所有經紀商</string>
 	<string name="terminal_broker">代理</string>
 	<string name="terminal_clear">清除日誌</string>

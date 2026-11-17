@@ -129,11 +129,13 @@ import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.data.TemperatureAlertLimits
 import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
 import com.odiousapps.z2mdash.data.batteryTypeOf
 import com.odiousapps.z2mdash.data.clusterKey
 import com.odiousapps.z2mdash.data.clusterName
+import com.odiousapps.z2mdash.data.clusterNameOf
 import com.odiousapps.z2mdash.data.forceRepublishGroupAppTopics
 import com.odiousapps.z2mdash.data.orderedPanelsOf
 import com.odiousapps.z2mdash.data.publishAppTopicForClusterIfMissing
@@ -144,6 +146,7 @@ import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
 import com.odiousapps.z2mdash.data.retopicClusterAndPublish
 import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
 import com.odiousapps.z2mdash.mqtt.LowBatteryAlertManager
+import com.odiousapps.z2mdash.mqtt.TemperatureAlertManager
 import com.odiousapps.z2mdash.ui.components.AlertBlue
 import com.odiousapps.z2mdash.ui.components.AlertYellow
 import com.odiousapps.z2mdash.ui.components.ButtonTile
@@ -265,13 +268,25 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var retopicNewTopicText by remember { mutableStateOf("") }
     var pendingValueEdit by remember { mutableStateOf<Panel.Sensor?>(null) }
     var valueEditText by remember { mutableStateOf("") }
+    var pendingTemperatureLimits by remember { mutableStateOf<Panel.Sensor?>(null) }
+    var temperatureHighText by remember { mutableStateOf("") }
+    var temperatureLowText by remember { mutableStateOf("") }
     // Shared by every PanelTile (standalone or inside a ClusterCard) - reads the sensor's current
     // raw value fresh rather than trusting any composed/cached display string, so the dialog
-    // prefills with what's actually retained right now.
+    // prefills with what's actually retained right now. A live temperature reading's tap opens
+    // its alert limits instead (see TemperatureAlertManager), prefilled from this phone's own
+    // config - there's no value of its own to edit.
     val onEditSensorValue: (Panel.Sensor) -> Unit = { sensorPanel ->
-        val currentPayload = app.connectionManager.latestPayloads.value["${sensorPanel.brokerId}|${sensorPanel.topic}"]
-        valueEditText = currentPayload?.let { JsonPath.extract(it, sensorPanel.jsonPath) } ?: ""
-        pendingValueEdit = sensorPanel
+        if (TemperatureAlertManager.isTemperatureAlertPanel(sensorPanel)) {
+            val limits = app.configRepository.config.value.temperatureAlertLimits[sensorPanel.id]
+            temperatureHighText = limits?.high?.let(::formatLimit).orEmpty()
+            temperatureLowText = limits?.low?.let(::formatLimit).orEmpty()
+            pendingTemperatureLimits = sensorPanel
+        } else {
+            val currentPayload = app.connectionManager.latestPayloads.value["${sensorPanel.brokerId}|${sensorPanel.topic}"]
+            valueEditText = currentPayload?.let { JsonPath.extract(it, sensorPanel.jsonPath) } ?: ""
+            pendingValueEdit = sensorPanel
+        }
     }
     var renamingGroup by remember { mutableStateOf<PanelGroup?>(null) }
     var renameText by remember { mutableStateOf("") }
@@ -2213,7 +2228,64 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             dismissButton = { TextButton(onClick = { pendingValueEdit = null }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
+
+    pendingTemperatureLimits?.let { panel ->
+        // Blank is a valid answer (that side switched off); anything else has to parse.
+        val high = parseLimit(temperatureHighText)
+        val low = parseLimit(temperatureLowText)
+        val highValid = temperatureHighText.isBlank() || high != null
+        val lowValid = temperatureLowText.isBlank() || low != null
+        val ordered = high == null || low == null || low < high
+        AlertDialog(
+            onDismissRequest = { pendingTemperatureLimits = null },
+            title = { Text(stringResource(R.string.home_temperature_limits_title, config.clusterNameOf(panel).ifBlank { panel.label })) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = temperatureHighText,
+                        onValueChange = { temperatureHighText = it },
+                        label = { Text(stringResource(R.string.home_temperature_limit_high)) },
+                        suffix = { Text(panel.unit) },
+                        isError = !highValid || !ordered,
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
+                    )
+                    OutlinedTextField(
+                        value = temperatureLowText,
+                        onValueChange = { temperatureLowText = it },
+                        label = { Text(stringResource(R.string.home_temperature_limit_low)) },
+                        suffix = { Text(panel.unit) },
+                        isError = !lowValid || !ordered,
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
+                    )
+                    Text(
+                        stringResource(if (ordered) R.string.home_temperature_limits_hint else R.string.home_temperature_limits_invalid),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (ordered) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        app.configRepository.setTemperatureAlertLimits(panel.id, TemperatureAlertLimits(low = low, high = high))
+                        pendingTemperatureLimits = null
+                    },
+                    enabled = highValid && lowValid && ordered
+                ) { Text(stringResource(R.string.common_save)) }
+            },
+            dismissButton = { TextButton(onClick = { pendingTemperatureLimits = null }) { Text(stringResource(R.string.common_cancel)) } }
+        )
+    }
 }
+
+/** A temperature limit typed into the limits dialog - either decimal separator accepted. */
+private fun parseLimit(text: String): Double? = text.trim().replace(',', '.').toDoubleOrNull()
+
+/** A stored limit as prefilled back into the dialog - "28", not "28.0". */
+private fun formatLimit(value: Double): String =
+    if (value % 1.0 == 0.0) value.toLong().toString() else value.toString()
 
 private data class PendingClusterDelete(val groupId: String, val name: String, val panelIds: List<String>)
 
@@ -2917,7 +2989,7 @@ private fun PanelTile(
                 iconTint = if (derived.isPresenceField && derived.isPresent) MaterialTheme.colorScheme.primary else null,
                 scale = tileScale,
                 onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") },
-                editable = panel.editable,
+                editable = panel.editable || TemperatureAlertManager.isTemperatureAlertPanel(panel),
                 onEditValue = { onEditSensorValue(panel) }
             )
         }

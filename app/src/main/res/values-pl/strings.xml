@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Wysyła prawdziwe powiadomienie (z dźwiękiem, jeśli włączono powyżej) przy użyciu dokładnie tej samej logiki co prawdziwy alert o dymie – dobry sposób, by upewnić się, że naprawdę zwróci Twoją uwagę, zanim będzie potrzebny</string>
 	<string name="alerts_sound">Dźwięk alertu</string>
 	<string name="alerts_sound_detail">Odtwarzaj głośny dźwięk w stylu alarmu wraz z powiadomieniem</string>
+	<string name="alerts_temperature">Alerty temperatury</string>
+	<string name="alerts_temperature_detail">Powiadamiaj, gdy czujnik temperatury osiągnie ustawiony dla niego górny lub dolny limit – dotknij odczytu kafelka temperatury, aby ustawić limity</string>
+	<string name="alerts_temperature_test_detail">Wysyła prawdziwe powiadomienie z dokładnie tą samą logiką co prawdziwy alert temperatury, niezależnie od przełącznika powyżej</string>
 	<string name="alerts_test">Powiadomienie testowe</string>
 	<string name="alerts_title">Alarm/Alert</string>
 	<string name="alerts_watering">Alerty podlewania</string>
@@ -249,6 +252,11 @@
 	<string name="home_retopic_none">Żaden klaster w „%1$s” nie był w tym temacie</string>
 	<string name="home_search_clusters">Szukaj klastrów</string>
 	<string name="home_stale_description">Dane są starsze niż godzina</string>
+	<string name="home_temperature_limit_high">Alarmuj przy tej wartości lub wyższej</string>
+	<string name="home_temperature_limit_low">Alarmuj przy tej wartości lub niższej</string>
+	<string name="home_temperature_limits_hint">Pozostaw limit pusty, aby go wyłączyć</string>
+	<string name="home_temperature_limits_invalid">Górny limit musi być wyższy niż dolny</string>
+	<string name="home_temperature_limits_title">Alerty temperatury dla „%1$s”</string>
 	<string name="home_undo">Cofnij</string>
 	<string name="home_value">Wartość</string>
 	<string name="home_weak_signal_description">Jakość łącza poniżej %1$d</string>
@@ -409,6 +417,13 @@
 	<string name="tab_home">Start</string>
 	<string name="tab_settings">Ustawienia</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Alerty temperatury</string>
+	<string name="temperature_channel_desc">Ostrzega, gdy czujnik temperatury osiągnie ustawiony dla niego górny lub dolny limit</string>
+	<string name="temperature_notif_high_text">Osiągnięto górny limit %1$s – dotknij, aby otworzyć %2$s</string>
+	<string name="temperature_notif_high_title">%1$s: za ciepło (%2$s)</string>
+	<string name="temperature_notif_low_text">Osiągnięto dolny limit %1$s – dotknij, aby otworzyć %2$s</string>
+	<string name="temperature_notif_low_title">%1$s: za zimno (%2$s)</string>
+	<string name="temperature_notif_test_text">Tak wygląda powiadomienie o temperaturze</string>
 	<string name="terminal_all_brokers">Wszystkie brokery</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Wyczyść dziennik</string>

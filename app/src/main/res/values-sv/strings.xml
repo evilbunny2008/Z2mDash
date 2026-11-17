@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Skickar en riktig avisering (med ljud, om det är aktiverat ovan) med exakt samma logik som en äkta rökvarning – ett bra sätt att bekräfta att den verkligen fångar din uppmärksamhet innan du behöver den</string>
 	<string name="alerts_sound">Varningsljud</string>
 	<string name="alerts_sound_detail">Spela ett högt larmliknande ljud tillsammans med aviseringen</string>
+	<string name="alerts_temperature">Temperaturvarningar</string>
+	<string name="alerts_temperature_detail">Meddela när en temperatursensor når den övre eller nedre gräns som angetts för den – tryck på värdet i en temperaturruta för att ange gränserna</string>
+	<string name="alerts_temperature_test_detail">Skickar en riktig avisering med exakt samma logik som en äkta temperaturvarning, oavsett reglaget ovan</string>
 	<string name="alerts_test">Testavisering</string>
 	<string name="alerts_title">Larm/Varning</string>
 	<string name="alerts_watering">Vattningsvarningar</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Inga kluster i ”%1$s” låg på det ämnet</string>
 	<string name="home_search_clusters">Sök kluster</string>
 	<string name="home_stale_description">Data är mer än en timme gammal</string>
+	<string name="home_temperature_limit_high">Varna vid eller över</string>
+	<string name="home_temperature_limit_low">Varna vid eller under</string>
+	<string name="home_temperature_limits_hint">Lämna en gräns tom för att stänga av den</string>
+	<string name="home_temperature_limits_invalid">Den övre gränsen måste vara högre än den nedre</string>
+	<string name="home_temperature_limits_title">Temperaturvarningar för ‘%1$s’</string>
 	<string name="home_undo">Ångra</string>
 	<string name="home_value">Värde</string>
 	<string name="home_weak_signal_description">Länkkvalitet under %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Hem</string>
 	<string name="tab_settings">Inställningar</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Temperaturvarningar</string>
+	<string name="temperature_channel_desc">Varnar när en temperatursensor når den övre eller nedre gräns som angetts för den</string>
+	<string name="temperature_notif_high_text">Den övre gränsen på %1$s har nåtts – tryck för att öppna %2$s</string>
+	<string name="temperature_notif_high_title">%1$s är för varm (%2$s)</string>
+	<string name="temperature_notif_low_text">Den nedre gränsen på %1$s har nåtts – tryck för att öppna %2$s</string>
+	<string name="temperature_notif_low_title">%1$s är för kall (%2$s)</string>
+	<string name="temperature_notif_test_text">Så här ser en temperaturvarning ut</string>
 	<string name="terminal_all_brokers">Alla brokers</string>
 	<string name="terminal_broker">Broker</string>
 	<string name="terminal_clear">Rensa logg</string>

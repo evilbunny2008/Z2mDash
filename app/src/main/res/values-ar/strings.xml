@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">يطلق إشعارًا حقيقيًا (بصوت، إذا تم تمكينه أعلاه) باستخدام نفس المنطق تمامًا مثل تنبيه الدخان الحقيقي – وهي طريقة جيدة للتأكد من أنه سيجذب انتباهك بالفعل قبل أن تحتاج إليه</string>
 	<string name="alerts_sound">صوت التنبيه</string>
 	<string name="alerts_sound_detail">قم بتشغيل صوت عالٍ على غرار المنبه بجانب الإشعار</string>
+	<string name="alerts_temperature">تنبيهات درجة الحرارة</string>
+	<string name="alerts_temperature_detail">الإشعار عندما يصل مستشعر درجة الحرارة إلى الحد الأعلى أو الأدنى المعيّن له – انقر على قراءة مربع درجة الحرارة لتعيين حدوده</string>
+	<string name="alerts_temperature_test_detail">يرسل إشعارًا حقيقيًا باستخدام المنطق نفسه تمامًا لتنبيه درجة حرارة حقيقي، بغض النظر عن المفتاح أعلاه</string>
 	<string name="alerts_test">إشعار الاختبار</string>
 	<string name="alerts_title">إنذار/تنبيه</string>
 	<string name="alerts_watering">تنبيهات الري</string>
@@ -263,6 +266,11 @@
 	<string name="home_retopic_none">لم تكن هناك مجموعات في ‘%1$s’ حول هذا الموضوع</string>
 	<string name="home_search_clusters">مجموعات البحث</string>
 	<string name="home_stale_description">البيانات عمرها أكثر من ساعة</string>
+	<string name="home_temperature_limit_high">التنبيه عند هذه القيمة أو أعلى</string>
+	<string name="home_temperature_limit_low">التنبيه عند هذه القيمة أو أقل</string>
+	<string name="home_temperature_limits_hint">اترك الحد فارغًا لإيقافه</string>
+	<string name="home_temperature_limits_invalid">يجب أن يكون الحد الأعلى أكبر من الحد الأدنى</string>
+	<string name="home_temperature_limits_title">تنبيهات درجة الحرارة لـ ‘%1$s’</string>
 	<string name="home_undo">تراجع</string>
 	<string name="home_value">قيمة</string>
 	<string name="home_weak_signal_description">جودة الرابط أقل من %1$d</string>
@@ -435,6 +443,13 @@
 	<string name="tab_home">بيت</string>
 	<string name="tab_settings">إعدادات</string>
 	<string name="tab_terminal">صالة</string>
+	<string name="temperature_channel">تنبيهات درجة الحرارة</string>
+	<string name="temperature_channel_desc">ينبّه عندما يصل مستشعر درجة الحرارة إلى الحد الأعلى أو الأدنى المعيّن له</string>
+	<string name="temperature_notif_high_text">تم بلوغ الحد الأعلى %1$s – انقر لفتح %2$s</string>
+	<string name="temperature_notif_high_title">%1$s دافئ جدًا (%2$s)</string>
+	<string name="temperature_notif_low_text">تم بلوغ الحد الأدنى %1$s – انقر لفتح %2$s</string>
+	<string name="temperature_notif_low_title">%1$s بارد جدًا (%2$s)</string>
+	<string name="temperature_notif_test_text">هكذا يبدو إشعار تنبيه درجة الحرارة</string>
 	<string name="terminal_all_brokers">جميع السماسرة</string>
 	<string name="terminal_broker">وسيط</string>
 	<string name="terminal_clear">مسح السجل</string>

@@ -151,10 +151,11 @@ fun SensorTile(
     // proportions in a smaller box.
     scale: Float = 1f,
     onEdit: () -> Unit = {},
-    // See Panel.Sensor's editable doc. When true, the icon becomes the config-edit affordance
-    // (matching ToggleTile/ButtonTile's own icon-is-edit convention) and the rest of the tile
-    // opens onEditValue instead - a plain (non-editable) tile is unaffected, keeping its whole
-    // Surface as the config-edit click target exactly as before.
+    // See Panel.Sensor's editable doc - also set for a live temperature reading, whose value tap
+    // opens its alert limits (see TemperatureAlertManager). When true, the icon becomes the
+    // config-edit affordance (matching ToggleTile/ButtonTile's own icon-is-edit convention) and
+    // the rest of the tile opens onEditValue instead - any other tile is unaffected, keeping its
+    // whole Surface as the config-edit click target exactly as before.
     editable: Boolean = false,
     onEditValue: () -> Unit = {}
 ) {

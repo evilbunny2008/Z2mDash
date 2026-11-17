@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Sendir raunverulega tilkynningu (með hljóði, ef kveikt er á því hér að ofan) sem notar nákvæmlega sömu rökfræði og ósvikin reykviðvörun – góð leið til að staðfesta að hún nái í raun athygli þinni áður en þú þarft á henni að halda</string>
 	<string name="alerts_sound">Viðvörunarhljóð</string>
 	<string name="alerts_sound_detail">Spila hávært viðvörunarhljóð samhliða tilkynningunni</string>
+	<string name="alerts_temperature">Hitaviðvaranir</string>
+	<string name="alerts_temperature_detail">Láta vita þegar hitaskynjari nær efri eða neðri mörkum sem stillt eru fyrir hann – ýttu á mælingu hitareits til að stilla mörkin</string>
+	<string name="alerts_temperature_test_detail">Sendir raunverulega tilkynningu með nákvæmlega sömu rökum og ósvikin hitaviðvörun, óháð rofanum að ofan</string>
 	<string name="alerts_test">Prófunartilkynning</string>
 	<string name="alerts_title">Viðvörun/Tilkynning</string>
 	<string name="alerts_watering">Vökvunarviðvaranir</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Engir klasar í ‘%1$s’ voru á því efni</string>
 	<string name="home_search_clusters">Leita í klösum</string>
 	<string name="home_stale_description">Gögnin eru meira en klukkustundar gömul</string>
+	<string name="home_temperature_limit_high">Vara við við eða yfir</string>
+	<string name="home_temperature_limit_low">Vara við við eða undir</string>
+	<string name="home_temperature_limits_hint">Hafðu mörk auð til að slökkva á þeim</string>
+	<string name="home_temperature_limits_invalid">Efri mörkin verða að vera hærri en neðri mörkin</string>
+	<string name="home_temperature_limits_title">Hitaviðvaranir fyrir ‘%1$s’</string>
 	<string name="home_undo">Afturkalla</string>
 	<string name="home_value">Gildi</string>
 	<string name="home_weak_signal_description">Tengigæði undir %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Heim</string>
 	<string name="tab_settings">Stillingar</string>
 	<string name="tab_terminal">Útstöð</string>
+	<string name="temperature_channel">Hitaviðvaranir</string>
+	<string name="temperature_channel_desc">Varar við þegar hitaskynjari nær efri eða neðri mörkum sem stillt eru fyrir hann</string>
+	<string name="temperature_notif_high_text">Efri mörkum %1$s náð – ýttu til að opna %2$s</string>
+	<string name="temperature_notif_high_title">%1$s er of heitt (%2$s)</string>
+	<string name="temperature_notif_low_text">Neðri mörkum %1$s náð – ýttu til að opna %2$s</string>
+	<string name="temperature_notif_low_title">%1$s er of kalt (%2$s)</string>
+	<string name="temperature_notif_test_text">Svona lítur hitaviðvörun út</string>
 	<string name="terminal_all_brokers">Allir miðlarar</string>
 	<string name="terminal_broker">Miðlari</string>
 	<string name="terminal_clear">Hreinsa annál</string>

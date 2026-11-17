@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">Saadab päris teatise (heliga, kui see on ülal lubatud) täpselt sama loogikaga nagu tõeline suitsuhoiatus – hea viis veenduda, et see tõesti su tähelepanu köidab, enne kui seda vaja läheb</string>
 	<string name="alerts_sound">Hoiatusheli</string>
 	<string name="alerts_sound_detail">Esita teatise ajal vali alarmilaadne heli</string>
+	<string name="alerts_temperature">Temperatuurihoiatused</string>
+	<string name="alerts_temperature_detail">Teavita, kui temperatuuriandur jõuab talle määratud ülemise või alumise piirini – piiride määramiseks puuduta temperatuuripaani näitu</string>
+	<string name="alerts_temperature_test_detail">Saadab päris teavituse täpselt sama loogikaga nagu tõeline temperatuurihoiatus, olenemata ülaltoodud lülitist</string>
 	<string name="alerts_test">Testteatis</string>
 	<string name="alerts_title">Alarm/hoiatus</string>
 	<string name="alerts_watering">Kastmishoiatused</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">Ükski grupi ‘%1$s’ klaster polnud selles teemas</string>
 	<string name="home_search_clusters">Otsi klastreid</string>
 	<string name="home_stale_description">Andmed on üle tunni vanad</string>
+	<string name="home_temperature_limit_high">Hoiata sellel väärtusel või üle selle</string>
+	<string name="home_temperature_limit_low">Hoiata sellel väärtusel või alla selle</string>
+	<string name="home_temperature_limits_hint">Piiri väljalülitamiseks jäta see tühjaks</string>
+	<string name="home_temperature_limits_invalid">Ülemine piir peab olema alumisest kõrgem</string>
+	<string name="home_temperature_limits_title">Temperatuurihoiatused: ‘%1$s’</string>
 	<string name="home_undo">Võta tagasi</string>
 	<string name="home_value">Väärtus</string>
 	<string name="home_weak_signal_description">Lingi kvaliteet alla %1$d</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">Avaleht</string>
 	<string name="tab_settings">Seaded</string>
 	<string name="tab_terminal">Terminal</string>
+	<string name="temperature_channel">Temperatuurihoiatused</string>
+	<string name="temperature_channel_desc">Hoiatab, kui temperatuuriandur jõuab talle määratud ülemise või alumise piirini</string>
+	<string name="temperature_notif_high_text">Ülemine piir %1$s on saavutatud – puuduta, et avada %2$s</string>
+	<string name="temperature_notif_high_title">%1$s on liiga soe (%2$s)</string>
+	<string name="temperature_notif_low_text">Alumine piir %1$s on saavutatud – puuduta, et avada %2$s</string>
+	<string name="temperature_notif_low_title">%1$s on liiga külm (%2$s)</string>
+	<string name="temperature_notif_test_text">Selline näeb välja temperatuurihoiatuse teavitus</string>
 	<string name="terminal_all_brokers">Kõik maaklerid</string>
 	<string name="terminal_broker">Maakler</string>
 	<string name="terminal_clear">Tühjenda logi</string>

@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">વાસ્તવિક ધુમાડા ચેતવણી જેવા જ તર્કનો ઉપયોગ કરીને એક વાસ્તવિક નોટિફિકેશન (ઉપર ચાલુ હોય તો અવાજ સાથે) મોકલે છે – જરૂર પડે તે પહેલાં તે ખરેખર તમારું ધ્યાન ખેંચશે તેની ખાતરી કરવાની સારી રીત</string>
 	<string name="alerts_sound">ચેતવણીનો અવાજ</string>
 	<string name="alerts_sound_detail">નોટિફિકેશન સાથે એલાર્મ જેવો મોટો અવાજ વગાડો</string>
+	<string name="alerts_temperature">તાપમાન ચેતવણીઓ</string>
+	<string name="alerts_temperature_detail">જ્યારે તાપમાન સેન્સર તેના માટે સેટ કરેલી ઊંચી અથવા નીચી મર્યાદા સુધી પહોંચે ત્યારે સૂચિત કરો – મર્યાદાઓ સેટ કરવા તાપમાન ટાઇલના રીડિંગ પર ટૅપ કરો</string>
+	<string name="alerts_temperature_test_detail">ઉપરના ટૉગલને ધ્યાનમાં લીધા વિના, વાસ્તવિક તાપમાન ચેતવણી જેવા જ તર્કનો ઉપયોગ કરીને સાચી સૂચના મોકલે છે</string>
 	<string name="alerts_test">પરીક્ષણ નોટિફિકેશન</string>
 	<string name="alerts_title">એલાર્મ/ચેતવણી</string>
 	<string name="alerts_watering">પાણી આપવાની ચેતવણીઓ</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’માં કોઈ ક્લસ્ટર તે ટૉપિક પર નહોતું</string>
 	<string name="home_search_clusters">ક્લસ્ટર શોધો</string>
 	<string name="home_stale_description">ડેટા એક કલાકથી વધુ જૂનો છે</string>
+	<string name="home_temperature_limit_high">આ મૂલ્ય અથવા વધુ પર ચેતવો</string>
+	<string name="home_temperature_limit_low">આ મૂલ્ય અથવા ઓછા પર ચેતવો</string>
+	<string name="home_temperature_limits_hint">મર્યાદા બંધ કરવા તેને ખાલી છોડો</string>
+	<string name="home_temperature_limits_invalid">ઊંચી મર્યાદા નીચી મર્યાદા કરતાં વધુ હોવી જોઈએ</string>
+	<string name="home_temperature_limits_title">‘%1$s’ માટે તાપમાન ચેતવણીઓ</string>
 	<string name="home_undo">પૂર્વવત્ કરો</string>
 	<string name="home_value">મૂલ્ય</string>
 	<string name="home_weak_signal_description">લિંક ગુણવત્તા %1$dથી ઓછી</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">હોમ</string>
 	<string name="tab_settings">સેટિંગ</string>
 	<string name="tab_terminal">ટર્મિનલ</string>
+	<string name="temperature_channel">તાપમાન ચેતવણીઓ</string>
+	<string name="temperature_channel_desc">જ્યારે તાપમાન સેન્સર તેના માટે સેટ કરેલી ઊંચી અથવા નીચી મર્યાદા સુધી પહોંચે ત્યારે ચેતવે છે</string>
+	<string name="temperature_notif_high_text">તમારી %1$s ઊંચી મર્યાદા પહોંચી – %2$s ખોલવા ટૅપ કરો</string>
+	<string name="temperature_notif_high_title">%1$s ખૂબ ગરમ છે (%2$s)</string>
+	<string name="temperature_notif_low_text">તમારી %1$s નીચી મર્યાદા પહોંચી – %2$s ખોલવા ટૅપ કરો</string>
+	<string name="temperature_notif_low_title">%1$s ખૂબ ઠંડું છે (%2$s)</string>
+	<string name="temperature_notif_test_text">તાપમાન ચેતવણી સૂચના આવી દેખાય છે</string>
 	<string name="terminal_all_brokers">બધા બ્રોકર</string>
 	<string name="terminal_broker">બ્રોકર</string>
 	<string name="terminal_clear">લૉગ સાફ કરો</string>

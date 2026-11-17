@@ -15,6 +15,9 @@
 	<string name="alerts_smoke_test_detail">ನಿಜವಾದ ಹೊಗೆ ಎಚ್ಚರಿಕೆಯ ಅದೇ ತರ್ಕವನ್ನು ಬಳಸಿ ನಿಜವಾದ ಅಧಿಸೂಚನೆಯನ್ನು (ಮೇಲೆ ಸಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ ಧ್ವನಿಯೊಂದಿಗೆ) ಕಳುಹಿಸುತ್ತದೆ – ನಿಮಗೆ ಅಗತ್ಯವಾಗುವ ಮೊದಲೇ ಅದು ನಿಜವಾಗಿಯೂ ನಿಮ್ಮ ಗಮನ ಸೆಳೆಯುತ್ತದೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಉತ್ತಮ ಮಾರ್ಗ</string>
 	<string name="alerts_sound">ಎಚ್ಚರಿಕೆ ಧ್ವನಿ</string>
 	<string name="alerts_sound_detail">ಅಧಿಸೂಚನೆಯೊಂದಿಗೆ ಅಲಾರಂ ರೀತಿಯ ಜೋರಾದ ಧ್ವನಿಯನ್ನು ಪ್ಲೇ ಮಾಡಿ</string>
+	<string name="alerts_temperature">ತಾಪಮಾನ ಎಚ್ಚರಿಕೆಗಳು</string>
+	<string name="alerts_temperature_detail">ತಾಪಮಾನ ಸೆನ್ಸರ್ ಅದಕ್ಕೆ ಹೊಂದಿಸಿದ ಮೇಲಿನ ಅಥವಾ ಕೆಳಗಿನ ಮಿತಿಯನ್ನು ತಲುಪಿದಾಗ ಸೂಚಿಸಿ – ಮಿತಿಗಳನ್ನು ಹೊಂದಿಸಲು ತಾಪಮಾನ ಟೈಲ್‌ನ ರೀಡಿಂಗ್ ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+	<string name="alerts_temperature_test_detail">ಮೇಲಿನ ಟಾಗಲ್ ಏನೇ ಇರಲಿ, ನಿಜವಾದ ತಾಪಮಾನ ಎಚ್ಚರಿಕೆಯಂತೆಯೇ ಅದೇ ತರ್ಕವನ್ನು ಬಳಸಿ ನೈಜ ಅಧಿಸೂಚನೆ ಕಳುಹಿಸುತ್ತದೆ</string>
 	<string name="alerts_test">ಪರೀಕ್ಷಾ ಅಧಿಸೂಚನೆ</string>
 	<string name="alerts_title">ಅಲಾರಂ/ಎಚ್ಚರಿಕೆ</string>
 	<string name="alerts_watering">ನೀರುಣಿಸುವ ಎಚ್ಚರಿಕೆಗಳು</string>
@@ -235,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ ನಲ್ಲಿ ಯಾವುದೇ ಕ್ಲಸ್ಟರ್ ಆ ಟಾಪಿಕ್‌ನಲ್ಲಿ ಇರಲಿಲ್ಲ</string>
 	<string name="home_search_clusters">ಕ್ಲಸ್ಟರ್‌ಗಳನ್ನು ಹುಡುಕಿ</string>
 	<string name="home_stale_description">ಡೇಟಾ ಒಂದು ಗಂಟೆಗಿಂತ ಹಳೆಯದು</string>
+	<string name="home_temperature_limit_high">ಈ ಮೌಲ್ಯ ಅಥವಾ ಹೆಚ್ಚಿನಲ್ಲಿ ಎಚ್ಚರಿಸಿ</string>
+	<string name="home_temperature_limit_low">ಈ ಮೌಲ್ಯ ಅಥವಾ ಕಡಿಮೆಯಲ್ಲಿ ಎಚ್ಚರಿಸಿ</string>
+	<string name="home_temperature_limits_hint">ಮಿತಿಯನ್ನು ಆಫ್ ಮಾಡಲು ಅದನ್ನು ಖಾಲಿ ಬಿಡಿ</string>
+	<string name="home_temperature_limits_invalid">ಮೇಲಿನ ಮಿತಿ ಕೆಳಗಿನ ಮಿತಿಗಿಂತ ಹೆಚ್ಚಿರಬೇಕು</string>
+	<string name="home_temperature_limits_title">‘%1$s’ ಗಾಗಿ ತಾಪಮಾನ ಎಚ್ಚರಿಕೆಗಳು</string>
 	<string name="home_undo">ರದ್ದುಗೊಳಿಸಿ</string>
 	<string name="home_value">ಮೌಲ್ಯ</string>
 	<string name="home_weak_signal_description">ಲಿಂಕ್ ಗುಣಮಟ್ಟ %1$d ಕ್ಕಿಂತ ಕಡಿಮೆ</string>
@@ -383,6 +391,13 @@
 	<string name="tab_home">ಮುಖಪುಟ</string>
 	<string name="tab_settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
 	<string name="tab_terminal">ಟರ್ಮಿನಲ್</string>
+	<string name="temperature_channel">ತಾಪಮಾನ ಎಚ್ಚರಿಕೆಗಳು</string>
+	<string name="temperature_channel_desc">ತಾಪಮಾನ ಸೆನ್ಸರ್ ಅದಕ್ಕೆ ಹೊಂದಿಸಿದ ಮೇಲಿನ ಅಥವಾ ಕೆಳಗಿನ ಮಿತಿಯನ್ನು ತಲುಪಿದಾಗ ಎಚ್ಚರಿಸುತ್ತದೆ</string>
+	<string name="temperature_notif_high_text">ನಿಮ್ಮ %1$s ಮೇಲಿನ ಮಿತಿ ತಲುಪಿದೆ – %2$s ತೆರೆಯಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+	<string name="temperature_notif_high_title">%1$s ತುಂಬಾ ಬೆಚ್ಚಗಿದೆ (%2$s)</string>
+	<string name="temperature_notif_low_text">ನಿಮ್ಮ %1$s ಕೆಳಗಿನ ಮಿತಿ ತಲುಪಿದೆ – %2$s ತೆರೆಯಲು ಟ್ಯಾಪ್ ಮಾಡಿ</string>
+	<string name="temperature_notif_low_title">%1$s ತುಂಬಾ ತಣ್ಣಗಿದೆ (%2$s)</string>
+	<string name="temperature_notif_test_text">ತಾಪಮಾನ ಎಚ್ಚರಿಕೆ ಅಧಿಸೂಚನೆ ಹೀಗೆ ಕಾಣುತ್ತದೆ</string>
 	<string name="terminal_all_brokers">ಎಲ್ಲಾ ಬ್ರೋಕರ್‌ಗಳು</string>
 	<string name="terminal_broker">ಬ್ರೋಕರ್</string>
 	<string name="terminal_clear">ಲಾಗ್ ತೆರವುಗೊಳಿಸಿ</string>

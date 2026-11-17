@@ -13,6 +13,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.BatteryAlert
 import androidx.compose.material.icons.filled.NotificationsOff
+import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
@@ -47,7 +48,8 @@ fun AlertSettingsScreen(navController: NavController) {
     val app = LocalContext.current.applicationContext as Z2mDashApplication
     val config by app.configRepository.config.collectAsState()
     val notificationPermission = rememberNotificationPermissionState()
-    val anyAlertEnabled = config.smokeAlertsEnabled || config.wateringAlertsEnabled || config.lowBatteryAlertsEnabled
+    val anyAlertEnabled = config.smokeAlertsEnabled || config.wateringAlertsEnabled || config.lowBatteryAlertsEnabled ||
+        config.temperatureAlertsEnabled
 
     Scaffold(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
@@ -179,6 +181,36 @@ fun AlertSettingsScreen(navController: NavController) {
                 }
                 Text(
                     stringResource(R.string.alerts_battery_test_detail),
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.Center
+                )
+            }
+            ListItem(
+                headlineContent = { Text(stringResource(R.string.alerts_temperature)) },
+                supportingContent = {
+                    Text(stringResource(R.string.alerts_temperature_detail))
+                },
+                trailingContent = { Switch(checked = config.temperatureAlertsEnabled, onCheckedChange = null) },
+                modifier = Modifier.toggleableRow(config.temperatureAlertsEnabled) { enabled ->
+                    if (enabled) notificationPermission.request()
+                    app.configRepository.update { it.copy(temperatureAlertsEnabled = enabled) }
+                }
+            )
+            Column(
+                modifier = Modifier.fillMaxWidth().padding(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = {
+                    notificationPermission.request()
+                    app.temperatureAlertManager.triggerTestAlert()
+                }) {
+                    Icon(Icons.Default.Thermostat, contentDescription = null)
+                    Spacer(Modifier.padding(4.dp))
+                    Text(stringResource(R.string.alerts_test))
+                }
+                Text(
+                    stringResource(R.string.alerts_temperature_test_detail),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
                 )

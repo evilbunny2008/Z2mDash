@@ -152,6 +152,17 @@ data class PanelCluster(
 @Serializable
 enum class BatteryType { STANDARD, NIMH }
 
+/**
+ * A temperature sensor's own alert limits (see TemperatureAlertManager), in the sensor's own
+ * units - null switches that side off, so e.g. the overnight "too cold" alert can be dropped for
+ * winter without losing the "too warm" one.
+ */
+@Serializable
+data class TemperatureAlertLimits(
+    val low: Double? = null,
+    val high: Double? = null
+)
+
 @Serializable
 data class PanelGroup(
     val id: String,
@@ -316,6 +327,18 @@ data class AppConfig(
     // LowBatteryAlertManager) - same "watches every payload, unscoped to a configured panel"
     // approach as smokeAlertsEnabled. On by default.
     val lowBatteryAlertsEnabled: Boolean = true,
+    // Notifies when a temperature sensor rises to its own high limit or drops to its own low
+    // limit (see TemperatureAlertManager) - e.g. a sensor sitting in a window, so it can be shut
+    // before the room heats up, or overnight once it gets too cold. On by default; does nothing
+    // until a tile actually has limits set in temperatureAlertLimits.
+    val temperatureAlertsEnabled: Boolean = true,
+    // Keyed by Panel.id rather than stored on Panel.Sensor itself - an auto-configured device's
+    // panels are rebuilt from its "/app" payload on every reconcile (see
+    // ConfigRepository.applyDeviceAutoConfig), which would silently drop any field the payload
+    // doesn't carry, whereas the ids themselves stay stable across reconciles. Local to this
+    // phone, not shared via "/app", so each phone sharing a broker chooses for itself whether
+    // (and when) to be woken by a window.
+    val temperatureAlertLimits: Map<String, TemperatureAlertLimits> = emptyMap(),
     // Whether the one-time decimals migration (see ConfigRepository.load) has already run -
     // without this flag it would re-apply every launch and overwrite a deliberate later choice.
     val decimalsMigrationApplied: Boolean = false,
