@@ -154,8 +154,10 @@ enum class BatteryType { STANDARD, NIMH }
 
 /**
  * A temperature sensor's own alert limits (see TemperatureAlertManager), in the sensor's own
- * units - null switches that side off, so e.g. the overnight "too cold" alert can be dropped for
- * winter without losing the "too warm" one.
+ * units: [high] notifies on rising to it, [low] on dropping to it. Independent crossings rather
+ * than a range, so [low] may sit above [high] (e.g. rising to 23, dropping to 26). Null switches
+ * that side off, so e.g. the overnight drop alert can be dropped for winter without losing the
+ * rising one.
  */
 @Serializable
 data class TemperatureAlertLimits(

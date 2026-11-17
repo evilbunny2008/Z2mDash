@@ -26,7 +26,10 @@ import kotlinx.coroutines.launch
  * Watches every temperature sensor with its own limits set (AppConfig.temperatureAlertLimits,
  * set by tapping the tile's reading) and notifies when the reading rises to its high limit or
  * drops to its low limit - e.g. a sensor sitting in a window, so the window can be shut before the
- * room heats up on a hot day, or overnight once it gets too cold. Each side fires once on the
+ * room heats up on a hot day, or overnight once it gets too cold. The two sides are tracked
+ * entirely independently, so the low limit may sit above the high one (rising to 23 and dropping
+ * to 26 on a weather station is a normal setup) without either interfering with the other. Each
+ * side fires once on the
  * crossing, then re-arms only after the reading has come back by at least [HYSTERESIS] (clearing
  * that notification at the same time), so a reading hovering right on the limit doesn't
  * re-notify on every small wobble.

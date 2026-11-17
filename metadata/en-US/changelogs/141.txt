@@ -1,0 +1,1 @@
+- Temperature alerts: the "rising to" and "dropping to" temperatures are now set independently, so pairs like rising to 23 and dropping to 26 can be saved, with clearer wording in the dialog and notifications.

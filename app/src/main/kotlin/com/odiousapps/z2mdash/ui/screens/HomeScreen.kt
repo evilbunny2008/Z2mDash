@@ -2230,12 +2230,13 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     }
 
     pendingTemperatureLimits?.let { panel ->
-        // Blank is a valid answer (that side switched off); anything else has to parse.
+        // Blank is a valid answer (that side switched off); anything else has to parse. The two
+        // are independent crossings, not a range - rising to 23 while dropping to 26 is a
+        // perfectly sensible pair (e.g. a weather station), so there's no ordering check.
         val high = parseLimit(temperatureHighText)
         val low = parseLimit(temperatureLowText)
         val highValid = temperatureHighText.isBlank() || high != null
         val lowValid = temperatureLowText.isBlank() || low != null
-        val ordered = high == null || low == null || low < high
         AlertDialog(
             onDismissRequest = { pendingTemperatureLimits = null },
             title = { Text(stringResource(R.string.home_temperature_limits_title, config.clusterNameOf(panel).ifBlank { panel.label })) },
@@ -2246,7 +2247,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         onValueChange = { temperatureHighText = it },
                         label = { Text(stringResource(R.string.home_temperature_limit_high)) },
                         suffix = { Text(panel.unit) },
-                        isError = !highValid || !ordered,
+                        isError = !highValid,
                         singleLine = true,
                         keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
                     )
@@ -2255,14 +2256,14 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         onValueChange = { temperatureLowText = it },
                         label = { Text(stringResource(R.string.home_temperature_limit_low)) },
                         suffix = { Text(panel.unit) },
-                        isError = !lowValid || !ordered,
+                        isError = !lowValid,
                         singleLine = true,
                         keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
                     )
                     Text(
-                        stringResource(if (ordered) R.string.home_temperature_limits_hint else R.string.home_temperature_limits_invalid),
+                        stringResource(R.string.home_temperature_limits_hint),
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (ordered) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             },
@@ -2272,7 +2273,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         app.configRepository.setTemperatureAlertLimits(panel.id, TemperatureAlertLimits(low = low, high = high))
                         pendingTemperatureLimits = null
                     },
-                    enabled = highValid && lowValid && ordered
+                    enabled = highValid && lowValid
                 ) { Text(stringResource(R.string.common_save)) }
             },
             dismissButton = { TextButton(onClick = { pendingTemperatureLimits = null }) { Text(stringResource(R.string.common_cancel)) } }
