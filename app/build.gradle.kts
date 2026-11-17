@@ -19,6 +19,10 @@ plugins {
 android {
     namespace = "com.odiousapps.z2mdash"
     compileSdk = 37
+    // Pinned rather than left to AGP's default, which wasn't installed - the app has no native
+    // code of its own, but AGP still uses the NDK to strip and extract symbols from Compose's
+    // bundled libandroidx.graphics.path.so.
+    ndkVersion = "30.0.1624837"
 
     // Disables the "Dependency metadata" signing block AGP embeds by
     // default for Google Play Console's own dependency tracking. This has
