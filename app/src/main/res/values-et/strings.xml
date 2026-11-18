@@ -127,7 +127,7 @@
 		<item quantity="one">Lisa %1$d paneel</item>
 		<item quantity="other">Lisa %1$d paneeli</item>
 	</plurals>
-	<string name="discover_all_applied">Kõik leitud seadmed on rakendatud – siin pole enam midagi seadistada</string>
+	<string name="discover_already_configured">Juba armatuurlaual</string>
 	<string name="discover_apply">Rakenda seadme konfiguratsioon</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Loob %1$d paneeli täpselt nii, nagu %2$s loetleb, gruppi ‘%3$s’, jättes allolevad märkeruudud vahele</item>

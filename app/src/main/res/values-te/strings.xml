@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d ప్యానెల్‌ను జోడించండి</item>
 		<item quantity="other">%1$d ప్యానెల్‌లను జోడించండి</item>
 	</plurals>
-	<string name="discover_all_applied">కనుగొనబడిన అన్ని పరికరాలు వర్తింపజేయబడ్డాయి – ఇక్కడ కాన్ఫిగర్ చేయడానికి ఏమీ మిగిలి లేదు</string>
+	<string name="discover_already_configured">ఇప్పటికే డ్యాష్‌బోర్డ్‌లో ఉంది</string>
 	<string name="discover_apply">పరికర కాన్ఫిగరేషన్‌ని వర్తింపజేయండి</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">దిగువ చెక్‌బాక్స్‌లను దాటవేస్తూ, ‘%3$s’ సమూహంలో %2$sలో జాబితా చేయబడినట్లుగా ఖచ్చితంగా %1$d ప్యానెల్‌ను సృష్టిస్తుంది</item>

@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d paneel toevoegen</item>
 		<item quantity="other">%1$d panelen toevoegen</item>
 	</plurals>
-	<string name="discover_all_applied">Alle ontdekte apparaten zijn toegepast – hier valt niets meer te configureren</string>
+	<string name="discover_already_configured">Staat al op het dashboard</string>
 	<string name="discover_apply">Apparaatconfiguratie toepassen</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Maakt %1$d paneel precies zoals vermeld in %2$s aan in groep ‘%3$s’, zonder de selectievakjes hieronder</item>

@@ -129,7 +129,7 @@
 		<item quantity="one">Add %1$d panel</item>
 		<item quantity="other">Add %1$d panels</item>
 	</plurals>
-	<string name="discover_all_applied">All discovered devices have been applied – nothing left to configure here</string>
+	<string name="discover_already_configured">Already on the dashboard</string>
 	<string name="discover_apply">Apply device config</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Creates %1$d panel exactly as listed in %2$s into group ‘%3$s’, skipping the checkboxes below</item>

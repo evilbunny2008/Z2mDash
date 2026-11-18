@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d ፓነል አክል</item>
 		<item quantity="other">%1$d ፓነሎች አክል</item>
 	</plurals>
-	<string name="discover_all_applied">ሁሉም የተገኙ መሣሪያዎች ተተግብረዋል – እዚህ የሚዋቀር ምንም የቀረ ነገር የለም</string>
+	<string name="discover_already_configured">አስቀድሞ በዳሽቦርዱ ላይ አለ</string>
 	<string name="discover_apply">የመሣሪያ ውቅረትን ተግብር</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">ከታች ያሉትን አመልካች ሳጥኖች በመዝለል፣ በ%2$s ውስጥ እንደተዘረዘረው በትክክል %1$d ፓነል ወደ ቡድን ‘%3$s’ ይፈጥራል</item>

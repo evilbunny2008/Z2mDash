@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">ເພີ່ມ %1$d ແຜງ</item>
 	</plurals>
-	<string name="discover_all_applied">ອຸປະກອນທີ່ຄົ້ນພົບທັງໝົດຖືກນຳໃຊ້ແລ້ວ – ບໍ່ມີຫຍັງເຫຼືອໃຫ້ກຳນົດຄ່າຢູ່ນີ້</string>
+	<string name="discover_already_configured">ຢູ່ໃນແຜງຄວບຄຸມແລ້ວ</string>
 	<string name="discover_apply">ນຳໃຊ້ການກຳນົດຄ່າອຸປະກອນ</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">ສ້າງ %1$d ແຜງຕາມທີ່ລະບຸໄວ້ໃນ %2$s ທຸກຢ່າງເຂົ້າໃນກຸ່ມ ‘%3$s’ ໂດຍຂ້າມກ່ອງໝາຍດ້ານລຸ່ມ</item>

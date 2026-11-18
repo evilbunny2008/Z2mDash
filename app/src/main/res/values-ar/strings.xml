@@ -131,7 +131,7 @@
 		<item quantity="two">أضف %1$d لوحة</item>
 		<item quantity="zero">أضف %1$d من اللوحات</item>
 	</plurals>
-	<string name="discover_all_applied">تم تطبيق جميع الأجهزة المكتشفة، ولم يتبق شيء لتكوينه هنا</string>
+	<string name="discover_already_configured">موجود بالفعل في لوحة المعلومات</string>
 	<string name="discover_apply">تطبيق تكوين الجهاز</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="few">إنشاء %1$d لوحات تمامًا كما هو مذكور في %2$s في المجموعة ‘%3$s’، مع تخطي مربعات الاختيار أدناه</item>

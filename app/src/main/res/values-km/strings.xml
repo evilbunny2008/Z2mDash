@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">បន្ថែមផ្ទាំង %1$d</item>
 	</plurals>
-	<string name="discover_all_applied">ឧបករណ៍ដែលបានរកឃើញទាំងអស់ត្រូវបានអនុវត្តហើយ – គ្មានអ្វីនៅសល់ដើម្បីកំណត់នៅទីនេះទេ</string>
+	<string name="discover_already_configured">មាននៅលើផ្ទាំងគ្រប់គ្រងរួចហើយ</string>
 	<string name="discover_apply">អនុវត្តការកំណត់ឧបករណ៍</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">បង្កើតផ្ទាំង %1$d ដូចដែលបានរាយក្នុង %2$s ទៅក្នុងក្រុម ‘%3$s’ ដោយរំលងប្រអប់ធីកខាងក្រោម</item>

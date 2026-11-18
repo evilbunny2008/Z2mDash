@@ -129,7 +129,7 @@
 		<item quantity="many">Přidat %1$d panelu</item>
 		<item quantity="other">Přidat %1$d panelů</item>
 	</plurals>
-	<string name="discover_all_applied">Všechna nalezená zařízení byla použita – zde už není co nastavovat</string>
+	<string name="discover_already_configured">Už je na nástěnce</string>
 	<string name="discover_apply">Použít konfiguraci zařízení</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Vytvoří %1$d panel přesně podle %2$s ve skupině „%3$s“ a přeskočí zaškrtávací políčka níže</item>

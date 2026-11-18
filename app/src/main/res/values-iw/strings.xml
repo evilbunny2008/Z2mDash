@@ -128,7 +128,7 @@
 		<item quantity="other">הוספת %1$d לוחות</item>
 		<item quantity="two">הוספת %1$d לוחות</item>
 	</plurals>
-	<string name="discover_all_applied">כל המכשירים שהתגלו הוחלו – לא נשאר כאן מה להגדיר</string>
+	<string name="discover_already_configured">כבר בלוח הבקרה</string>
 	<string name="discover_apply">החלת תצורת המכשיר</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">יוצר לוח %1$d בדיוק כפי שמופיע ב–%2$s בקבוצה ‘%3$s’, תוך דילוג על תיבות הסימון שלמטה</item>

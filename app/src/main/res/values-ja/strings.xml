@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">%1$d パネルを追加</item>
 	</plurals>
-	<string name="discover_all_applied">検出されたすべてのデバイスが適用されました。ここで設定するものは何も残っていません</string>
+	<string name="discover_already_configured">ダッシュボードに追加済み</string>
 	<string name="discover_apply">デバイス構成を適用する</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">%2$s にリストされているとおりに %1$d 個のパネルをグループ ‘%3$s’ に作成し、以下のチェックボックスをスキップします</item>

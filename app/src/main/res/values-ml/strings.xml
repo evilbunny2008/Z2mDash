@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d പാനൽ ചേർക്കുക</item>
 		<item quantity="other">%1$d പാനലുകൾ ചേർക്കുക</item>
 	</plurals>
-	<string name="discover_all_applied">കണ്ടെത്തിയ എല്ലാ ഉപകരണങ്ങളും പ്രയോഗിച്ചു – ഇവിടെ കോൺഫിഗർ ചെയ്യാൻ ഒന്നും ബാക്കിയില്ല</string>
+	<string name="discover_already_configured">ഇതിനകം ഡാഷ്‌ബോർഡിലുണ്ട്</string>
 	<string name="discover_apply">ഉപകരണ കോൺഫിഗ് പ്രയോഗിക്കുക</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s-ൽ ലിസ്റ്റ് ചെയ്തത് പോലെ തന്നെ %1$d പാനൽ ‘%3$s’ ഗ്രൂപ്പിൽ സൃഷ്ടിക്കുന്നു, താഴെയുള്ള ചെക്ക്ബോക്സുകൾ ഒഴിവാക്കുന്നു</item>

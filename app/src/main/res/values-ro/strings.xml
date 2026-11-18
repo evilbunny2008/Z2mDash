@@ -128,7 +128,7 @@
 		<item quantity="few">Adaugă %1$d panouri</item>
 		<item quantity="other">Adaugă %1$d de panouri</item>
 	</plurals>
-	<string name="discover_all_applied">Toate dispozitivele descoperite au fost aplicate – nu a mai rămas nimic de configurat aici</string>
+	<string name="discover_already_configured">Deja pe tabloul de bord</string>
 	<string name="discover_apply">Aplică configurația dispozitivului</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Creează %1$d panou exact cum este listat în %2$s în grupul „%3$s”, ignorând casetele de mai jos</item>

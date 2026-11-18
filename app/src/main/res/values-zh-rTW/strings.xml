@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">增加 %1$d 個面板</item>
 	</plurals>
-	<string name="discover_all_applied">所有發現的裝置均已套用 – 此處無需配置。</string>
+	<string name="discover_already_configured">已在儀表板上</string>
 	<string name="discover_apply">應用裝置配置</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">完全按照 %2$s 中列出的方式將 %1$d 個面板​​建立到群組「%3$s」中，並跳過下面的核取方塊。</item>

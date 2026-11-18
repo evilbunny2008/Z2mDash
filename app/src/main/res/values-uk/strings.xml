@@ -129,7 +129,7 @@
 		<item quantity="many">Додати %1$d панелей</item>
 		<item quantity="other">Додати %1$d панелі</item>
 	</plurals>
-	<string name="discover_all_applied">Усі виявлені пристрої застосовано – тут більше нічого налаштовувати</string>
+	<string name="discover_already_configured">Уже на панелі</string>
 	<string name="discover_apply">Застосувати конфігурацію пристрою</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Створює %1$d панель точно за списком у %2$s у групі «%3$s», пропускаючи прапорці нижче</item>

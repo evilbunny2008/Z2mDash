@@ -128,7 +128,7 @@
 		<item quantity="few">Додај %1$d панела</item>
 		<item quantity="other">Додај %1$d панела</item>
 	</plurals>
-	<string name="discover_all_applied">Сви откривени уређаји су примењени – овде више нема ништа за конфигурисање</string>
+	<string name="discover_already_configured">Већ је на контролној табли</string>
 	<string name="discover_apply">Примени конфигурацију уређаја</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Прави %1$d панел тачно како је наведено у %2$s у групи ‘%3$s’, прескачући поља за потврду испод</item>

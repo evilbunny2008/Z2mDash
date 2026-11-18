@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d panel əlavə et</item>
 		<item quantity="other">%1$d panel əlavə et</item>
 	</plurals>
-	<string name="discover_all_applied">Bütün aşkar edilmiş cihazlar tətbiq edildi – burada konfiqurasiya ediləcək heç nə qalmadı</string>
+	<string name="discover_already_configured">Artıq idarə panelindədir</string>
 	<string name="discover_apply">Cihaz konfiqurasiyasını tətbiq et</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s daxilində göstərildiyi kimi dəqiq %1$d paneli ‘%3$s’ qrupunda yaradır, aşağıdakı qeyd qutularını keçir</item>

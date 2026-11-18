@@ -127,7 +127,7 @@
 		<item quantity="one">Lägg till %1$d panel</item>
 		<item quantity="other">Lägg till %1$d paneler</item>
 	</plurals>
-	<string name="discover_all_applied">Alla upptäckta enheter har tillämpats – det finns inget kvar att konfigurera här</string>
+	<string name="discover_already_configured">Redan på översikten</string>
 	<string name="discover_apply">Tillämpa enhetskonfiguration</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Skapar %1$d panel exakt enligt %2$s i gruppen ”%3$s” och hoppar över kryssrutorna nedan</item>

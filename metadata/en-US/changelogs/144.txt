@@ -1,0 +1,2 @@
+- Discover: devices are now listed in natural order (Tank_2 before Tank_10).
+- Discover: devices already on the dashboard are now listed (marked as such) instead of disappearing from the list.

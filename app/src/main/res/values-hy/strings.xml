@@ -127,7 +127,7 @@
 		<item quantity="one">Ավելացնել %1$d վահանակ</item>
 		<item quantity="other">Ավելացնել %1$d վահանակ</item>
 	</plurals>
-	<string name="discover_all_applied">Բոլոր հայտնաբերված սարքերը կիրառվել են – այստեղ կազմաձևելու ոչինչ չի մնացել</string>
+	<string name="discover_already_configured">Արդեն վահանակում է</string>
 	<string name="discover_apply">Կիրառել սարքի կազմաձևը</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Ստեղծում է %1$d վահանակ ճիշտ այնպես, ինչպես նշված է %2$s–ում, ‘%3$s’ խմբում՝ բաց թողնելով ստորև նշավանդակները</item>

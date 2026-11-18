@@ -127,7 +127,7 @@
 		<item quantity="one">افزودن %1$d پنل</item>
 		<item quantity="other">افزودن %1$d پنل</item>
 	</plurals>
-	<string name="discover_all_applied">همهٔ دستگاه‌های کشف‌شده اعمال شدند – چیزی برای پیکربندی در اینجا باقی نمانده است</string>
+	<string name="discover_already_configured">از قبل در داشبورد است</string>
 	<string name="discover_apply">اعمال پیکربندی دستگاه</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%1$d پنل را دقیقاً مطابق فهرست %2$s در گروه «%3$s» ایجاد می‌کند و از کادرهای علامت پایین صرف‌نظر می‌کند</item>

@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">Tambahkan %1$d panel</item>
 	</plurals>
-	<string name="discover_all_applied">Semua perangkat yang ditemukan telah diterapkan – tidak ada lagi yang perlu dikonfigurasi di sini</string>
+	<string name="discover_already_configured">Sudah ada di dasbor</string>
 	<string name="discover_apply">Terapkan konfigurasi perangkat</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">Membuat %1$d panel persis seperti yang tercantum dalam %2$s ke dalam grup ‘%3$s’, melewati kotak centang di bawah</item>

@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">เพิ่ม %1$d พาเนล</item>
 	</plurals>
-	<string name="discover_all_applied">ใช้อุปกรณ์ที่ค้นพบทั้งหมดแล้ว – ไม่มีอะไรเหลือให้กำหนดค่าที่นี่</string>
+	<string name="discover_already_configured">อยู่บนแดชบอร์ดแล้ว</string>
 	<string name="discover_apply">ใช้การกำหนดค่าอุปกรณ์</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">สร้าง %1$d พาเนลตามที่ระบุไว้ใน %2$s ทุกประการในกลุ่ม ‘%3$s’ โดยข้ามช่องทำเครื่องหมายด้านล่าง</item>

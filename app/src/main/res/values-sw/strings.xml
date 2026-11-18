@@ -127,7 +127,7 @@
 		<item quantity="one">Ongeza panel %1$d</item>
 		<item quantity="other">Ongeza panels %1$d</item>
 	</plurals>
-	<string name="discover_all_applied">Vifaa vyote vilivyogunduliwa vimetumika – hakuna kilichobaki cha kusanidi hapa</string>
+	<string name="discover_already_configured">Tayari kwenye dashibodi</string>
 	<string name="discover_apply">Tumia usanidi wa kifaa</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Huunda panel %1$d kama ilivyoorodheshwa kwenye %2$s ndani ya kikundi ‘%3$s’, ikiruka visanduku vya kuteua vilivyo hapo chini</item>

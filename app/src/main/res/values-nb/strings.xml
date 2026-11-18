@@ -127,7 +127,7 @@
 		<item quantity="one">Legg til %1$d panel</item>
 		<item quantity="other">Legg til %1$d paneler</item>
 	</plurals>
-	<string name="discover_all_applied">Alle oppdagede enheter er tatt i bruk – det er ingenting igjen å konfigurere her</string>
+	<string name="discover_already_configured">Allerede på oversikten</string>
 	<string name="discover_apply">Bruk enhetskonfigurasjon</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Oppretter %1$d panel nøyaktig som oppført i %2$s i gruppen ‘%3$s’, og hopper over avmerkingsboksene nedenfor</item>

@@ -127,7 +127,7 @@
 		<item quantity="one">Voeg %1$d paneel by</item>
 		<item quantity="other">Voeg %1$d panele by</item>
 	</plurals>
-	<string name="discover_all_applied">Alle ontdekte toestelle is toegepas – niks meer om hier op te stel nie</string>
+	<string name="discover_already_configured">Reeds op die paneelbord</string>
 	<string name="discover_apply">Pas toestelkonfigurasie toe</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Skep %1$d paneel presies soos gelys in %2$s in groep ‘%3$s’, en slaan die merkblokkies hieronder oor</item>

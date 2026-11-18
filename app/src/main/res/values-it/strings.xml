@@ -128,7 +128,7 @@
 		<item quantity="many">Aggiungi %1$d pannelli</item>
 		<item quantity="other">Aggiungi %1$d pannelli</item>
 	</plurals>
-	<string name="discover_all_applied">Tutti i dispositivi rilevati sono stati applicati – non c’è altro da configurare qui</string>
+	<string name="discover_already_configured">Già nella dashboard</string>
 	<string name="discover_apply">Applica configurazione dispositivo</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Crea %1$d pannello esattamente come elencato in %2$s nel gruppo ‘%3$s’, ignorando le caselle qui sotto</item>

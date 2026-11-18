@@ -129,7 +129,7 @@
 		<item quantity="one">Добавить панель %1$d</item>
 		<item quantity="other">Добавить панели %1$d</item>
 	</plurals>
-	<string name="discover_all_applied">Все обнаруженные устройства были применены – здесь больше нечего настраивать</string>
+	<string name="discover_already_configured">Уже на панели</string>
 	<string name="discover_apply">Применить конфигурацию устройства</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="few">Создает %1$d панелей точно так, как указано в %2$s, в группу ‘%3$s’, пропуская флажки ниже</item>

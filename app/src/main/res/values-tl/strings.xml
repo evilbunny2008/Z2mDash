@@ -127,7 +127,7 @@
 		<item quantity="one">Magdagdag ng %1$d panel</item>
 		<item quantity="other">Magdagdag ng %1$d na panel</item>
 	</plurals>
-	<string name="discover_all_applied">Nailapat na ang lahat ng natuklasang device – wala nang kailangang i-configure dito</string>
+	<string name="discover_already_configured">Nasa dashboard na</string>
 	<string name="discover_apply">Ilapat ang device config</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Gagawa ng %1$d panel nang eksakto gaya ng nakalista sa %2$s sa grupong ‘%3$s’, at lalaktawan ang mga checkbox sa ibaba</item>

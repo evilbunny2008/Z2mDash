@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</item>
 		<item quantity="other">%1$d ਪੈਨਲ ਸ਼ਾਮਲ ਕਰੋ</item>
 	</plurals>
-	<string name="discover_all_applied">ਸਾਰੀਆਂ ਖੋਜੀਆਂ ਗਈਆਂ ਡਿਵਾਈਸਾਂ ਲਾਗੂ ਕੀਤੀਆਂ ਗਈਆਂ ਹਨ – ਇੱਥੇ ਕੌਂਫਿਗਰ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ ਬਚਿਆ ਹੈ</string>
+	<string name="discover_already_configured">ਪਹਿਲਾਂ ਹੀ ਡੈਸ਼ਬੋਰਡ ’ਤੇ ਹੈ</string>
 	<string name="discover_apply">ਡਿਵਾਈਸ ਸੰਰਚਨਾ ਲਾਗੂ ਕਰੋ</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">ਹੇਠਾਂ ਦਿੱਤੇ ਚੈਕਬਾਕਸਾਂ ਨੂੰ ਛੱਡ ਕੇ, %1$d ਪੈਨਲ ਨੂੰ %2$s ਵਿੱਚ ਸੂਚੀਬੱਧ ਕੀਤੇ ਗਰੁੱਪ ‘%3$s’ ਵਿੱਚ ਬਣਾਉਂਦਾ ਹੈ</item>

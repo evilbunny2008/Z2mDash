@@ -127,7 +127,7 @@
 		<item quantity="one">Engadir %1$d panel</item>
 		<item quantity="other">Engadir %1$d paneis</item>
 	</plurals>
-	<string name="discover_all_applied">Aplicáronse todos os dispositivos descubertos – non queda nada por configurar aquí</string>
+	<string name="discover_already_configured">Xa está no panel</string>
 	<string name="discover_apply">Aplicar configuración do dispositivo</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Crea %1$d panel exactamente como figura en %2$s no grupo ‘%3$s’, omitindo as caixas de verificación de abaixo</item>

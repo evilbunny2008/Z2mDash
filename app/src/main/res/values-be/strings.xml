@@ -129,7 +129,7 @@
 		<item quantity="one">Дадаць %1$d панэль</item>
 		<item quantity="other">Дадаць %1$d панэлі</item>
 	</plurals>
-	<string name="discover_all_applied">Усе выяўленыя прылады прыменены – тут больш няма чаго наладжваць</string>
+	<string name="discover_already_configured">Ужо на панэлі</string>
 	<string name="discover_apply">Прымяніць канфігурацыю прылады</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="few">Стварае %1$d панэлі дакладна як у %2$s у групе ‘%3$s’, мінаючы сцяжкі ніжэй</item>

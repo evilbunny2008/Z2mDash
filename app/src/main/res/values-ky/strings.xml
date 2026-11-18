@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d панель кошуу</item>
 		<item quantity="other">%1$d панель кошуу</item>
 	</plurals>
-	<string name="discover_all_applied">Бардык табылган түзмөктөр колдонулду – бул жерде жөндөй турган эч нерсе калган жок</string>
+	<string name="discover_already_configured">Тактада бар</string>
 	<string name="discover_apply">Түзмөктүн конфигурациясын колдонуу</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s ичинде көрсөтүлгөндөй так %1$d панелди ‘%3$s’ тобуна түзөт, төмөндөгү белгилөө кутучаларын өткөрүп жиберет</item>

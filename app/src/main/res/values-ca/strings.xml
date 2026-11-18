@@ -128,7 +128,7 @@
 		<item quantity="many">Afegeix %1$d panells</item>
 		<item quantity="other">Afegeix %1$d panells</item>
 	</plurals>
-	<string name="discover_all_applied">S’han aplicat tots els dispositius descoberts – no queda res per configurar aquí</string>
+	<string name="discover_already_configured">Ja és al tauler</string>
 	<string name="discover_apply">Aplica la configuració del dispositiu</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Crea %1$d panell exactament com figura a %2$s al grup ‘%3$s’, ometent les caselles de sota</item>

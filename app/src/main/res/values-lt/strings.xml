@@ -129,7 +129,7 @@
 		<item quantity="many">Pridėti %1$d skydelio</item>
 		<item quantity="other">Pridėti %1$d skydelių</item>
 	</plurals>
-	<string name="discover_all_applied">Visi aptikti įrenginiai pritaikyti – čia nebeliko ką konfigūruoti</string>
+	<string name="discover_already_configured">Jau skydelyje</string>
 	<string name="discover_apply">Taikyti įrenginio konfigūraciją</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Sukuria %1$d skydelį tiksliai taip, kaip nurodyta %2$s, grupėje ‘%3$s’, praleisdamas žemiau esančius žymimuosius langelius</item>

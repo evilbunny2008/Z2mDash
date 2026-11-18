@@ -127,7 +127,7 @@
 		<item quantity="one">පුවරු %1$d ක් එක් කරන්න</item>
 		<item quantity="other">පුවරු %1$d ක් එක් කරන්න</item>
 	</plurals>
-	<string name="discover_all_applied">සොයාගත් සියලු උපාංග යොදා ඇත – මෙහි වින්‍යාස කිරීමට කිසිවක් ඉතිරි නැත</string>
+	<string name="discover_already_configured">දැනටමත් උපකරණ පුවරුවේ ඇත</string>
 	<string name="discover_apply">උපාංග වින්‍යාසය යොදන්න</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s හි ලැයිස්තුගත කර ඇති ආකාරයටම පුවරු %1$d ක් ‘%3$s’ කණ්ඩායමට සාදයි, පහත සලකුණු කොටු මඟ හරිමින්</item>

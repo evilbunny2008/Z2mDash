@@ -127,7 +127,7 @@
 		<item quantity="one">Lisää %1$d paneeli</item>
 		<item quantity="other">Lisää %1$d paneelia</item>
 	</plurals>
-	<string name="discover_all_applied">Kaikki löydetyt laitteet on otettu käyttöön – täällä ei ole enää mitään määritettävää</string>
+	<string name="discover_already_configured">Jo kojelaudalla</string>
 	<string name="discover_apply">Käytä laitteen määrityksiä</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Luo %1$d paneelin täsmälleen kohteen %2$s mukaisesti ryhmään ‘%3$s’ ja ohittaa alla olevat valintaruudut</item>

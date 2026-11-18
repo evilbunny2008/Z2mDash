@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d প্যানেল যোগ করুন</item>
 		<item quantity="other">%1$d প্যানেল যোগ করুন</item>
 	</plurals>
-	<string name="discover_all_applied">সমস্ত আবিষ্কৃত ডিভাইস প্রয়োগ করা হয়েছে – এখানে কনফিগার করার জন্য কিছুই অবশিষ্ট নেই</string>
+	<string name="discover_already_configured">ইতিমধ্যে ড্যাশবোর্ডে আছে</string>
 	<string name="discover_apply">ডিভাইস কনফিগারেশন প্রয়োগ করুন</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%1$d প্যানেল তৈরি করে ঠিক যেমনটি %2$s এ তালিকাভুক্ত ‘%3$s’ গ্রুপে, নীচের চেকবক্সগুলি এড়িয়ে যায়</item>

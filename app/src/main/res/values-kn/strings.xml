@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d ಪ್ಯಾನೆಲ್ ಸೇರಿಸಿ</item>
 		<item quantity="other">%1$d ಪ್ಯಾನೆಲ್‌ಗಳನ್ನು ಸೇರಿಸಿ</item>
 	</plurals>
-	<string name="discover_all_applied">ಪತ್ತೆಯಾದ ಎಲ್ಲಾ ಸಾಧನಗಳನ್ನು ಅನ್ವಯಿಸಲಾಗಿದೆ – ಇಲ್ಲಿ ಕಾನ್ಫಿಗರ್ ಮಾಡಲು ಏನೂ ಉಳಿದಿಲ್ಲ</string>
+	<string name="discover_already_configured">ಈಗಾಗಲೇ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್‌ನಲ್ಲಿದೆ</string>
 	<string name="discover_apply">ಸಾಧನ ಕಾನ್ಫಿಗ್ ಅನ್ವಯಿಸಿ</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s ನಲ್ಲಿ ಪಟ್ಟಿ ಮಾಡಿದಂತೆಯೇ %1$d ಪ್ಯಾನೆಲ್ ಅನ್ನು ‘%3$s’ ಗುಂಪಿನಲ್ಲಿ ರಚಿಸುತ್ತದೆ, ಕೆಳಗಿನ ಚೆಕ್‌ಬಾಕ್ಸ್‌ಗಳನ್ನು ಬಿಟ್ಟುಬಿಡುತ್ತದೆ</item>

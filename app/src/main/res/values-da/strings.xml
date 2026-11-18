@@ -127,7 +127,7 @@
 		<item quantity="one">Tilføj %1$d panel</item>
 		<item quantity="other">Tilføj %1$d paneler</item>
 	</plurals>
-	<string name="discover_all_applied">Alle fundne enheder er anvendt – der er intet tilbage at konfigurere her</string>
+	<string name="discover_already_configured">Allerede på oversigten</string>
 	<string name="discover_apply">Anvend enhedskonfiguration</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Opretter %1$d panel præcis som angivet i %2$s i gruppen ‘%3$s’ og springer afkrydsningsfelterne nedenfor over</item>

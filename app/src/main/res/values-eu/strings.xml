@@ -127,7 +127,7 @@
 		<item quantity="one">Gehitu panel %1$d</item>
 		<item quantity="other">Gehitu %1$d panel</item>
 	</plurals>
-	<string name="discover_all_applied">Aurkitutako gailu guztiak aplikatu dira – ez dago hemen konfiguratzeko ezer</string>
+	<string name="discover_already_configured">Dagoeneko arbelean dago</string>
 	<string name="discover_apply">Aplikatu gailuaren konfigurazioa</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Panel %1$d sortzen du %2$s(e)n zerrendatutako moduan ‘%3$s’ taldean, beheko kontrol–laukiak saltatuz</item>

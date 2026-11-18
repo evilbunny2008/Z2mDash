@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d પૅનલ ઉમેરો</item>
 		<item quantity="other">%1$d પૅનલ ઉમેરો</item>
 	</plurals>
-	<string name="discover_all_applied">બધા શોધાયેલા ઉપકરણો લાગુ કર્યા – અહીં ગોઠવવા માટે કંઈ બાકી નથી</string>
+	<string name="discover_already_configured">પહેલેથી ડેશબોર્ડ પર છે</string>
 	<string name="discover_apply">ઉપકરણ ગોઠવણી લાગુ કરો</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$sમાં સૂચિબદ્ધ પ્રમાણે જ %1$d પૅનલ ‘%3$s’ જૂથમાં બનાવે છે, નીચેના ચેકબૉક્સ છોડીને</item>

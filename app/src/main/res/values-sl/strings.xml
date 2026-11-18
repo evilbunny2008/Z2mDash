@@ -129,7 +129,7 @@
 		<item quantity="few">Dodaj %1$d plošče</item>
 		<item quantity="other">Dodaj %1$d plošč</item>
 	</plurals>
-	<string name="discover_all_applied">Vse odkrite naprave so bile uporabljene – tukaj ni več ničesar za konfiguriranje</string>
+	<string name="discover_already_configured">Že na nadzorni plošči</string>
 	<string name="discover_apply">Uporabi konfiguracijo naprave</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Ustvari %1$d ploščo natanko tako, kot je navedeno v %2$s, v skupini ‘%3$s’ in preskoči spodnja potrditvena polja</item>

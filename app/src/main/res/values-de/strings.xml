@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d Panel hinzufügen</item>
 		<item quantity="other">Fügen Sie %1$d Panels hinzu</item>
 	</plurals>
-	<string name="discover_all_applied">Alle erkannten Geräte wurden übernommen – hier muss nichts mehr konfiguriert werden</string>
+	<string name="discover_already_configured">Bereits auf dem Dashboard</string>
 	<string name="discover_apply">Gerätekonfiguration anwenden</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Erstellt %1$d Panel genau wie in %2$s aufgeführt in der Gruppe ‘%3$s’, wobei die Kontrollkästchen unten übersprungen werden</item>

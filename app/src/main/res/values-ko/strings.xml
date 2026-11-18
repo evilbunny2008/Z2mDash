@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">패널 %1$d개 추가</item>
 	</plurals>
-	<string name="discover_all_applied">발견된 모든 기기가 적용되었습니다 – 여기서 더 구성할 항목이 없습니다</string>
+	<string name="discover_already_configured">이미 대시보드에 있음</string>
 	<string name="discover_apply">기기 구성 적용</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">%2$s에 나열된 그대로 패널 %1$d개를 ‘%3$s’ 그룹에 만들고, 아래 체크박스는 건너뜁니다</item>

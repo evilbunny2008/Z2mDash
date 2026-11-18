@@ -128,7 +128,7 @@
 		<item quantity="one">Agregar %1$d panel</item>
 		<item quantity="other">Agregar %1$d paneles</item>
 	</plurals>
-	<string name="discover_all_applied">Se han aplicado todos los dispositivos descubiertos; no queda nada por configurar aquí</string>
+	<string name="discover_already_configured">Ya está en el panel</string>
 	<string name="discover_apply">Aplicar configuración del dispositivo</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="many">Crea %1$d paneles exactamente como se enumeran en %2$s en el grupo ‘%3$s’, omitiendo las casillas de verificación a continuación</item>

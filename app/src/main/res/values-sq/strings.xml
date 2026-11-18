@@ -127,7 +127,7 @@
 		<item quantity="one">Shto %1$d panel</item>
 		<item quantity="other">Shto %1$d panele</item>
 	</plurals>
-	<string name="discover_all_applied">Të gjitha pajisjet e zbuluara janë aplikuar – nuk ka mbetur asgjë për t’u konfiguruar këtu</string>
+	<string name="discover_already_configured">Tashmë në panel</string>
 	<string name="discover_apply">Apliko konfigurimin e pajisjes</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Krijon %1$d panel saktësisht siç renditet në %2$s në grupin ‘%3$s’, duke anashkaluar kutitë e zgjedhjes më poshtë</item>

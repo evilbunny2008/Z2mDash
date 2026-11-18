@@ -128,7 +128,7 @@
 		<item quantity="one">Pievienot %1$d paneli</item>
 		<item quantity="other">Pievienot %1$d paneļus</item>
 	</plurals>
-	<string name="discover_all_applied">Visas atrastās ierīces ir lietotas – šeit vairs nav ko konfigurēt</string>
+	<string name="discover_already_configured">Jau ir informācijas panelī</string>
 	<string name="discover_apply">Lietot ierīces konfigurāciju</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="zero">Izveido %1$d paneļus tieši tā, kā norādīts %2$s, grupā ‘%3$s’, izlaižot zemāk esošās izvēles rūtiņas</item>

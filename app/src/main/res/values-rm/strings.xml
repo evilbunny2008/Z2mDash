@@ -127,7 +127,7 @@
 		<item quantity="one">Agiuntar %1$d panel</item>
 		<item quantity="other">Agiuntar %1$d panels</item>
 	</plurals>
-	<string name="discover_all_applied">Tut ils apparats chattads èn vegnids applitgads – i na resta nagut da configurar qua</string>
+	<string name="discover_already_configured">Gia sin la tavla</string>
 	<string name="discover_apply">Applitgar la configuraziun da l’apparat</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Creescha %1$d panel exactamain sco endatà en %2$s en la gruppa ‘%3$s’, e sursigla las chaschettas sutvart</item>

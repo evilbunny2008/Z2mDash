@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d प्यानल थप्नुहोस्</item>
 		<item quantity="other">%1$d प्यानलहरू थप्नुहोस्</item>
 	</plurals>
-	<string name="discover_all_applied">पत्ता लागेका सबै उपकरणहरू लागू गरियो – यहाँ कन्फिगर गर्न केही बाँकी छैन</string>
+	<string name="discover_already_configured">पहिले नै ड्यासबोर्डमा छ</string>
 	<string name="discover_apply">उपकरण कन्फिग लागू गर्नुहोस्</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s मा सूचीबद्ध भए जस्तै %1$d प्यानल ‘%3$s’ समूहमा बनाउँछ, तलका चेकबक्सहरू छोडेर</item>

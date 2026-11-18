@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d پینل شامل کریں</item>
 		<item quantity="other">%1$d پینلز شامل کریں</item>
 	</plurals>
-	<string name="discover_all_applied">تمام دریافت شدہ آلات لاگو ہو گئے – یہاں کنفیگر کرنے کو کچھ باقی نہیں</string>
+	<string name="discover_already_configured">پہلے سے ڈیش بورڈ پر ہے</string>
 	<string name="discover_apply">آلے کی کنفیگ لاگو کریں</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s میں درج کے عین مطابق %1$d پینل ‘%3$s’ گروپ میں بناتا ہے، نیچے کے چیک باکسز کو چھوڑتے ہوئے</item>

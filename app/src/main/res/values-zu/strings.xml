@@ -127,7 +127,7 @@
 		<item quantity="one">Engeza iphaneli engu–%1$d</item>
 		<item quantity="other">Engeza amaphaneli angu–%1$d</item>
 	</plurals>
-	<string name="discover_all_applied">Wonke amadivayisi atholiwe asetshenzisiwe – akukho okusele okufanele kulungiselelwe lapha</string>
+	<string name="discover_already_configured">Kakade kudeshibhodi</string>
 	<string name="discover_apply">Sebenzisa ukulungiselelwa kwedivayisi</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Idala iphaneli engu–%1$d ncamashi njengoba ibhaliwe ku–%2$s eqenjini elithi ‘%3$s’, yeqa amabhokisi okuhlola angezansi</item>

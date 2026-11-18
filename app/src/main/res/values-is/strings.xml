@@ -127,7 +127,7 @@
 		<item quantity="one">Bæta við %1$d spjaldi</item>
 		<item quantity="other">Bæta við %1$d spjöldum</item>
 	</plurals>
-	<string name="discover_all_applied">Öllum fundnum tækjum hefur verið beitt – ekkert eftir að stilla hér</string>
+	<string name="discover_already_configured">Þegar á mælaborðinu</string>
 	<string name="discover_apply">Beita tækjastillingu</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Býr til %1$d spjald nákvæmlega eins og skráð er í %2$s í hópinn ‘%3$s’, og sleppir gátreitunum hér að neðan</item>

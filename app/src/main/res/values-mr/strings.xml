@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d पॅनेल जोडा</item>
 		<item quantity="other">%1$d पॅनेल जोडा</item>
 	</plurals>
-	<string name="discover_all_applied">सर्व आढळलेले डिव्हाइस लागू केले गेले आहेत – येथे कॉन्फिगर करण्यासाठी काहीही उरले नाही</string>
+	<string name="discover_already_configured">आधीच डॅशबोर्डवर आहे</string>
 	<string name="discover_apply">डिव्हाइस कॉन्फिग लागू करा</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">खालील चेकबॉक्सेस वगळून, गट ‘%3$s’ मध्ये %2$s मध्ये सूचीबद्ध केल्याप्रमाणे %1$d पॅनेल तयार करते</item>

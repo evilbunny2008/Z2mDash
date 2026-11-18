@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">Thêm bảng %1$d</item>
 	</plurals>
-	<string name="discover_all_applied">Tất cả các thiết bị được phát hiện đã được áp dụng – không còn gì để định cấu hình ở đây</string>
+	<string name="discover_already_configured">Đã có trên bảng điều khiển</string>
 	<string name="discover_apply">Áp dụng cấu hình thiết bị</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">Tạo %1$d bảng chính xác như được liệt kê trong %2$s vào nhóm ‘%3$s’, bỏ qua các hộp kiểm bên dưới</item>

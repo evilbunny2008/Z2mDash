@@ -127,7 +127,7 @@
 		<item quantity="one">Προσθήκη %1$d πάνελ</item>
 		<item quantity="other">Προσθήκη %1$d πάνελ</item>
 	</plurals>
-	<string name="discover_all_applied">Όλες οι συσκευές που εντοπίστηκαν έχουν εφαρμοστεί – δεν έμεινε τίποτα να διαμορφωθεί εδώ</string>
+	<string name="discover_already_configured">Ήδη στον πίνακα ελέγχου</string>
 	<string name="discover_apply">Εφαρμογή διαμόρφωσης συσκευής</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Δημιουργεί %1$d πάνελ ακριβώς όπως αναφέρεται στο %2$s στην ομάδα «%3$s», παρακάμπτοντας τα πλαίσια ελέγχου παρακάτω</item>

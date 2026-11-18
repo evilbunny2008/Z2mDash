@@ -126,7 +126,7 @@
 	<plurals name="discover_add_panels">
 		<item quantity="other">panel %1$d ခု ထည့်ရန်</item>
 	</plurals>
-	<string name="discover_all_applied">တွေ့ရှိသော စက်ပစ္စည်းအားလုံးကို အသုံးချပြီးပါပြီ – ဤနေရာတွင် ပြင်ဆင်ရန် ဘာမျှ မကျန်တော့ပါ</string>
+	<string name="discover_already_configured">ဒက်ရှ်ဘုတ်ပေါ်တွင် ရှိပြီးဖြစ်သည်</string>
 	<string name="discover_apply">စက်ပစ္စည်း ဖွဲ့စည်းပုံ အသုံးချရန်</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="other">%2$s တွင် ဖော်ပြထားသည့်အတိုင်း panel %1$d ခုကို ‘%3$s’ အုပ်စုထဲတွင် ဖန်တီးပြီး အောက်ပါ အမှန်ခြစ်ကွက်များကို ကျော်သွားမည်</item>

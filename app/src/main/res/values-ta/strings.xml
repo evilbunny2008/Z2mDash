@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d பேனலைச் சேர்க்கவும்</item>
 		<item quantity="other">%1$d பேனல்களைச் சேர்க்கவும்</item>
 	</plurals>
-	<string name="discover_all_applied">கண்டுபிடிக்கப்பட்ட அனைத்து சாதனங்களும் பயன்படுத்தப்பட்டன – இங்கே உள்ளமைக்க எதுவும் இல்லை</string>
+	<string name="discover_already_configured">ஏற்கெனவே டாஷ்போர்டில் உள்ளது</string>
 	<string name="discover_apply">சாதன கட்டமைப்பைப் பயன்படுத்தவும்</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">கீழே உள்ள தேர்வுப்பெட்டிகளைத் தவிர்த்து, %2$s இல் பட்டியலிடப்பட்டுள்ளபடி %1$d பேனலை ‘%3$s’ குழுவில் உருவாக்குகிறது</item>

@@ -128,7 +128,7 @@
 		<item quantity="few">Dodaj %1$d ploče</item>
 		<item quantity="other">Dodaj %1$d ploča</item>
 	</plurals>
-	<string name="discover_all_applied">Svi otkriveni uređaji su primijenjeni – ovdje više nema ništa za konfiguriranje</string>
+	<string name="discover_already_configured">Već je na nadzornoj ploči</string>
 	<string name="discover_apply">Primijeni konfiguraciju uređaja</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Stvara %1$d ploču točno kako je navedeno u %2$s u grupi ‘%3$s’, preskačući potvrdne okvire ispod</item>

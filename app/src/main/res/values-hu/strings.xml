@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d panel hozzáadása</item>
 		<item quantity="other">%1$d panel hozzáadása</item>
 	</plurals>
-	<string name="discover_all_applied">Minden felfedezett eszköz alkalmazva – itt már nincs mit beállítani</string>
+	<string name="discover_already_configured">Már az irányítópulton van</string>
 	<string name="discover_apply">Eszközkonfiguráció alkalmazása</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%1$d panelt hoz létre pontosan a(z) %2$s szerint a(z) „%3$s” csoportban, kihagyva a lenti jelölőnégyzeteket</item>

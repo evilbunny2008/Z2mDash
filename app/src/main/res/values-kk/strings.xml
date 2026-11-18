@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d панель қосу</item>
 		<item quantity="other">%1$d панель қосу</item>
 	</plurals>
-	<string name="discover_all_applied">Барлық табылған құрылғылар қолданылды – мұнда баптайтын ештеңе қалмады</string>
+	<string name="discover_already_configured">Тақтада бар</string>
 	<string name="discover_apply">Құрылғы конфигурациясын қолдану</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s ішінде көрсетілгендей дәл %1$d панельді ‘%3$s’ тобына жасайды, төмендегі құсбелгілерді өткізіп жібереді</item>

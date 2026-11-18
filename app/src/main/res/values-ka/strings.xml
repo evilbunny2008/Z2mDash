@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d პანელის დამატება</item>
 		<item quantity="other">%1$d პანელის დამატება</item>
 	</plurals>
-	<string name="discover_all_applied">ყველა აღმოჩენილი მოწყობილობა გამოყენებულია – აქ კონფიგურაციისთვის აღარაფერი დარჩა</string>
+	<string name="discover_already_configured">უკვე დაფაზეა</string>
 	<string name="discover_apply">მოწყობილობის კონფიგურაციის გამოყენება</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">ქმნის %1$d პანელს ზუსტად ისე, როგორც %2$s-შია ჩამოთვლილი, ჯგუფში „%3$s“, ქვემოთ მოცემული მოსანიშნი ველების გამოტოვებით</item>

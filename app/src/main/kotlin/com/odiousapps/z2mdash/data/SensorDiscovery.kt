@@ -193,7 +193,35 @@ object SensorDiscovery {
         val fromDeviceLists = exposedFieldsByTopic.mapNotNull { (topic, keys) ->
             if (topic in seenTopics || keys.isEmpty()) null else sensorFor(topic, keys.map { DiscoveredField(it, null) })
         }
-        return (fromPayloads + fromDeviceLists).sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.topic })
+        return (fromPayloads + fromDeviceLists).sortedWith(compareBy(NaturalOrder) { it.topic })
+    }
+
+    /**
+     * Case-insensitive, with runs of digits compared by value - "Tank_2" before "Tank_10", which
+     * plain string order puts the other way round.
+     */
+    private object NaturalOrder : Comparator<String> {
+        private val chunk = Regex("\\d+|\\D+")
+
+        override fun compare(a: String, b: String): Int {
+            val aParts = chunk.findAll(a).map { it.value }.toList()
+            val bParts = chunk.findAll(b).map { it.value }.toList()
+            for (i in 0 until minOf(aParts.size, bParts.size)) {
+                val x = aParts[i]
+                val y = bParts[i]
+                val result = if (x[0].isDigit() && y[0].isDigit()) {
+                    // Compared as digit strings, not parsed numbers, so a long run can't overflow:
+                    // strip leading zeros, then the longer run is the bigger number.
+                    val xs = x.trimStart('0')
+                    val ys = y.trimStart('0')
+                    if (xs.length != ys.length) xs.length - ys.length else xs.compareTo(ys)
+                } else {
+                    x.compareTo(y, ignoreCase = true)
+                }
+                if (result != 0) return result
+            }
+            return aParts.size - bParts.size
+        }
     }
 
     private const val BRIDGE_DEVICES_SUFFIX = "/bridge/devices"

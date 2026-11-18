@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d panel ekle</item>
 		<item quantity="other">%1$d panel ekle</item>
 	</plurals>
-	<string name="discover_all_applied">Keşfedilen tüm cihazlar uygulandı; burada yapılandırılacak hiçbir şey kalmadı</string>
+	<string name="discover_already_configured">Zaten panoda</string>
 	<string name="discover_apply">Cihaz yapılandırmasını uygula</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Aşağıdaki onay kutularını atlayarak %1$d paneli tam olarak %2$s’de listelendiği gibi ‘%3$s’ grubunda oluşturur</item>

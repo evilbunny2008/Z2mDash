@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d पैनल जोड़ें</item>
 		<item quantity="other">%1$d पैनल जोड़ें</item>
 	</plurals>
-	<string name="discover_all_applied">खोजे गए सभी उपकरण लागू कर दिए गए हैं – यहां कॉन्फ़िगर करने के लिए कुछ भी नहीं बचा है</string>
+	<string name="discover_already_configured">पहले से डैशबोर्ड पर है</string>
 	<string name="discover_apply">dवाइस कॉन्फ़िगरेशन लागू करें</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">नीचे दिए गए चेकबॉक्स को छोड़ कर, %1$d पैनल बिल्कुल वैसा ही बनाता है जैसा कि %2$s में समूह ‘%3$s’ में सूचीबद्ध है।</item>

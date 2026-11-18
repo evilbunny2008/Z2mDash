@@ -127,7 +127,7 @@
 		<item quantity="one">%1$d самбар нэмэх</item>
 		<item quantity="other">%1$d самбар нэмэх</item>
 	</plurals>
-	<string name="discover_all_applied">Илрүүлсэн бүх төхөөрөмжийг хэрэгжүүлсэн – энд тохируулах зүйл үлдээгүй</string>
+	<string name="discover_already_configured">Хяналтын самбарт аль хэдийн байна</string>
 	<string name="discover_apply">Төхөөрөмжийн тохиргоог хэрэгжүүлэх</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">%2$s–д жагсаасны дагуу яг %1$d самбарыг ‘%3$s’ бүлэгт үүсгэж, доорх чагтуудыг алгасна</item>

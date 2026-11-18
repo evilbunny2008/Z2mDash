@@ -99,13 +99,13 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
         allPayloads.filterKeys { it.startsWith(prefix) }.mapKeys { it.key.removePrefix(prefix) }
     }
     val discovered = remember(brokerPayloads) { SensorDiscovery.discoverSensors(brokerPayloads) }
-    // Already-autoconfigured devices stay hidden permanently - DeviceAutoConfigManager
-    // keeps them up to date in the background from here on.
-    val visibleSensors = discovered.filterNot { sensor ->
-        config.autoConfiguredDevices.any {
-            it.brokerId == selectedBrokerId && it.appConfigTopic == sensor.appConfigTopic
-        }
+    // Already-autoconfigured devices are still listed (hiding them made a device that was on the
+    // dashboard look as if discovery couldn't find it at all), just without their "Apply device
+    // config" action - DeviceAutoConfigManager keeps them up to date in the background from here on.
+    fun isAutoConfigured(sensor: SensorDiscovery.DiscoveredSensor): Boolean = config.autoConfiguredDevices.any {
+        it.brokerId == selectedBrokerId && it.appConfigTopic == sensor.appConfigTopic
     }
+    val configurableSensors = discovered.filterNot { isAutoConfigured(it) }
     val selectedCount = selections.values.count { it }
 
     // Resolves (creating if needed) the group new panels should land in. Shared
@@ -173,11 +173,11 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                     }
                 },
                 actions = {
-                    if (visibleSensors.isNotEmpty()) {
-                        val allExpanded = visibleSensors.all { expandedTopics[it.topic] ?: false }
+                    if (discovered.isNotEmpty()) {
+                        val allExpanded = discovered.all { expandedTopics[it.topic] ?: false }
                         IconButton(onClick = {
                             val newState = !allExpanded
-                            visibleSensors.forEach { expandedTopics[it.topic] = newState }
+                            discovered.forEach { expandedTopics[it.topic] = newState }
                         }) {
                             Icon(
                                 if (allExpanded) Icons.Default.UnfoldLess else Icons.Default.UnfoldMore,
@@ -202,7 +202,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                         // joining an existing same-named cluster in the target group, as typing
                         // that name on the Add Panel screen would.
                         val clusterIdsByTopic = mutableMapOf<String, Pair<String, PanelCluster?>>()
-                        visibleSensors.forEach { sensor ->
+                        discovered.forEach { sensor ->
                             sensor.fields.forEach { field ->
                                 val key = "${sensor.topic}|${field.key}"
                                 if (selections[key] == true) {
@@ -303,18 +303,16 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
             Spacer(Modifier.height(24.dp))
             if (discovered.isEmpty()) {
                 Text(stringResource(R.string.discover_none_found))
-            } else if (visibleSensors.isEmpty()) {
-                Text(stringResource(R.string.discover_all_applied))
             } else {
                 Text(
                     stringResource(R.string.discover_instructions),
                     style = MaterialTheme.typography.bodySmall
                 )
-                if (visibleSensors.any { it.appConfigTopic != null }) {
+                if (configurableSensors.any { it.appConfigTopic != null }) {
                     Spacer(Modifier.height(12.dp))
                     Button(
                         onClick = {
-                            val applied = visibleSensors.count { applyOneDevice(it) }
+                            val applied = configurableSensors.count { applyOneDevice(it) }
                             lastBulkApplyCount = applied
                         },
                         modifier = Modifier.fillMaxWidth()
@@ -330,7 +328,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                         )
                     }
                 }
-                visibleSensors.forEach { sensor ->
+                discovered.forEach { sensor ->
                     Spacer(Modifier.height(16.dp))
                     val isExpanded = expandedTopics[sensor.topic] ?: false
                     val selectedInTopic = sensor.fields.count { selections["${sensor.topic}|${it.key}"] == true }
@@ -342,6 +340,13 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                     ) {
                         Column(Modifier.weight(1f)) {
                             Text(sensor.topic, style = MaterialTheme.typography.titleSmall)
+                            if (isAutoConfigured(sensor)) {
+                                Text(
+                                    stringResource(R.string.discover_already_configured),
+                                    style = MaterialTheme.typography.bodySmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                            }
                             if (!isExpanded && selectedInTopic > 0) {
                                 Text(
                                     pluralStringResource(R.plurals.discover_selected, sensor.fields.size, selectedInTopic, sensor.fields.size),
@@ -360,7 +365,8 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                     val deviceConfig = appConfigPayload?.let { SensorDiscovery.parseDeviceAppConfig(it) }
 
                     if (isExpanded) {
-                        if (appConfigTopic != null && appConfigPayload != null && deviceConfig != null) {
+                        val canApply = !isAutoConfigured(sensor) && appConfigTopic != null && appConfigPayload != null
+                        if (canApply && deviceConfig != null) {
                             Spacer(Modifier.height(4.dp))
                             OutlinedButton(
                                 onClick = { applyOneDevice(sensor) },
@@ -387,7 +393,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                                 style = MaterialTheme.typography.bodySmall
                             )
                             Spacer(Modifier.height(8.dp))
-                        } else if (appConfigTopic != null && appConfigPayload != null) {
+                        } else if (canApply) {
                             Spacer(Modifier.height(4.dp))
                             Text(
                                 stringResource(R.string.discover_bad_config, appConfigTopic),

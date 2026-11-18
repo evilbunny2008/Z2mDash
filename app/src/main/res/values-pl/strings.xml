@@ -129,7 +129,7 @@
 		<item quantity="many">Dodaj %1$d paneli</item>
 		<item quantity="other">Dodaj %1$d panelu</item>
 	</plurals>
-	<string name="discover_all_applied">Zastosowano wszystkie wykryte urządzenia – nie ma tu już nic do skonfigurowania</string>
+	<string name="discover_already_configured">Już na pulpicie</string>
 	<string name="discover_apply">Zastosuj konfigurację urządzenia</string>
 	<plurals name="discover_apply_detail_group">
 		<item quantity="one">Tworzy %1$d panel dokładnie tak, jak podano w %2$s, w grupie „%3$s”, pomijając pola wyboru poniżej</item>
