@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Пълен капацитет</string>
 	<string name="home_tank_capacity_hint" formatted="false">Плочката за обем показва нивото % × този капацитет.</string>
 	<string name="home_tank_capacity_title">Капацитет на резервоара за ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_unit_hint">напр. L или gal</string>
 	<string name="home_tank_volume_label">Обем</string>
 	<string name="home_temperature_limit_high">Известяване при покачване до</string>
 	<string name="home_temperature_limit_low">Известяване при спадане до</string>

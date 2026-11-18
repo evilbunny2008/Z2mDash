@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Бүрэн багтаамж</string>
 	<string name="home_tank_capacity_hint" formatted="false">Эзэлхүүний хавтан түвшин % × энэ багтаамжийг харуулна.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ савны багтаамж</string>
-	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_unit_hint">ж. нь L эсвэл gal</string>
 	<string name="home_tank_volume_label">Эзэлхүүн</string>
 	<string name="home_temperature_limit_high">Энэ хүртэл өсөхөд мэдэгдэх</string>
 	<string name="home_temperature_limit_low">Энэ хүртэл буурахад мэдэгдэх</string>

@@ -234,7 +234,7 @@
 	<string name="home_tank_capacity">滿容量</string>
 	<string name="home_tank_capacity_hint" formatted="false">水量圖塊顯示水位 % × 此容量。</string>
 	<string name="home_tank_capacity_title">‘%1$s’的水箱容量</string>
-	<string name="home_tank_capacity_unit">公升</string>
+	<string name="home_tank_unit_hint">例如 L 或 gal</string>
 	<string name="home_tank_volume_label">水量</string>
 	<string name="home_temperature_limit_high">上升到此溫度時通知</string>
 	<string name="home_temperature_limit_low">下降到此溫度時通知</string>

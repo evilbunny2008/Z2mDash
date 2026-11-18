@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Tam kapasite</string>
 	<string name="home_tank_capacity_hint" formatted="false">Hacim kutucuğu seviye % × bu kapasiteyi gösterir.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ için depo kapasitesi</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">örn. L veya gal</string>
 	<string name="home_tank_volume_label">Hacim</string>
 	<string name="home_temperature_limit_high">Şu değere yükselince bildir</string>
 	<string name="home_temperature_limit_low">Şu değere düşünce bildir</string>

@@ -248,7 +248,7 @@
 	<string name="home_tank_capacity">Capacité totale</string>
 	<string name="home_tank_capacity_hint" formatted="false">La tuile de volume affiche le niveau % × cette capacité.</string>
 	<string name="home_tank_capacity_title">Capacité du réservoir pour ‘ %1$s ’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">p. ex. L ou gal</string>
 	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Avertir en montant à</string>
 	<string name="home_temperature_limit_low">Avertir en descendant à</string>

@@ -255,7 +255,7 @@
 	<string name="home_tank_capacity">Polna prostornina</string>
 	<string name="home_tank_capacity_hint" formatted="false">Ploščica količine prikazuje nivo % × to prostornino.</string>
 	<string name="home_tank_capacity_title">Prostornina rezervoarja za ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">npr. L ali gal</string>
 	<string name="home_tank_volume_label">Količina</string>
 	<string name="home_temperature_limit_high">Obvesti ob dvigu na</string>
 	<string name="home_temperature_limit_low">Obvesti ob padcu na</string>

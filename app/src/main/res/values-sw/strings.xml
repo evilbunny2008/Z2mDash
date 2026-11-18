@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Ujazo kamili</string>
 	<string name="home_tank_capacity_hint" formatted="false">Kigae cha kiasi huonyesha kiwango % × ujazo huu.</string>
 	<string name="home_tank_capacity_title">Ujazo wa tangi la ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">k.m. L au gal</string>
 	<string name="home_tank_volume_label">Kiasi</string>
 	<string name="home_temperature_limit_high">Arifu inapopanda hadi</string>
 	<string name="home_temperature_limit_low">Arifu inaposhuka hadi</string>

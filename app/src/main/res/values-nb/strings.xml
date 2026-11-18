@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Full kapasitet</string>
 	<string name="home_tank_capacity_hint" formatted="false">Volumflisen viser nivået % × denne kapasiteten.</string>
 	<string name="home_tank_capacity_title">Tankkapasitet for ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">f.eks. L eller gal</string>
 	<string name="home_tank_volume_label">Volum</string>
 	<string name="home_temperature_limit_high">Varsle ved stigning til</string>
 	<string name="home_temperature_limit_low">Varsle ved fall til</string>

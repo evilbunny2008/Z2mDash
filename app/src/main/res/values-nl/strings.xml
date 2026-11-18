@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Volledige inhoud</string>
 	<string name="home_tank_capacity_hint" formatted="false">De volumetegel toont het niveau % × deze inhoud.</string>
 	<string name="home_tank_capacity_title">Tankinhoud voor ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">bijv. L of gal</string>
 	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Melden bij stijgen tot</string>
 	<string name="home_temperature_limit_low">Melden bij dalen tot</string>

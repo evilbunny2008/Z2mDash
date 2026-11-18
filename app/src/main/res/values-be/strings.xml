@@ -255,7 +255,7 @@
 	<string name="home_tank_capacity">Поўная ёмістасць</string>
 	<string name="home_tank_capacity_hint" formatted="false">Плітка аб’ёму паказвае ўзровень % × гэтую ёмістасць.</string>
 	<string name="home_tank_capacity_title">Ёмістасць бака для ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_unit_hint">напр. L або gal</string>
 	<string name="home_tank_volume_label">Аб’ём</string>
 	<string name="home_temperature_limit_high">Апавяшчаць пры павышэнні да</string>
 	<string name="home_temperature_limit_low">Апавяшчаць пры паніжэнні да</string>

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">പൂർണ്ണ ശേഷി</string>
 	<string name="home_tank_capacity_hint" formatted="false">അളവ് ടൈൽ നില % × ഈ ശേഷി കാണിക്കുന്നു.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ ടാങ്ക് ശേഷി</string>
-	<string name="home_tank_capacity_unit">ലി</string>
+	<string name="home_tank_unit_hint">ഉദാ. L അല്ലെങ്കിൽ gal</string>
 	<string name="home_tank_volume_label">അളവ്</string>
 	<string name="home_temperature_limit_high">ഇതിലേക്ക് ഉയരുമ്പോൾ അറിയിക്കുക</string>
 	<string name="home_temperature_limit_low">ഇതിലേക്ക് താഴുമ്പോൾ അറിയിക്കുക</string>

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Capacitad totala</string>
 	<string name="home_tank_capacity_hint" formatted="false">La plattetta da volumen mussa il nivel % × questa capacitad.</string>
 	<string name="home_tank_capacity_title">Capacitad dal reservuar per ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">p.ex. L u gal</string>
 	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Avisar cun auzar sin</string>
 	<string name="home_temperature_limit_low">Avisar cun sbassar sin</string>

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">ሙሉ አቅም</string>
 	<string name="home_tank_capacity_hint" formatted="false">የመጠን ሰሌዳው ደረጃ % × ይህን አቅም ያሳያል።</string>
 	<string name="home_tank_capacity_title">የ‘%1$s’ ታንክ አቅም</string>
-	<string name="home_tank_capacity_unit">ሊ</string>
+	<string name="home_tank_unit_hint">ለምሳሌ L ወይም gal</string>
 	<string name="home_tank_volume_label">መጠን</string>
 	<string name="home_temperature_limit_high">ወደዚህ ሲጨምር አሳውቅ</string>
 	<string name="home_temperature_limit_low">ወደዚህ ሲቀንስ አሳውቅ</string>

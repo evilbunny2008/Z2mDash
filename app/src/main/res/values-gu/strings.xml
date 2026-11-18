@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">પૂર્ણ ક્ષમતા</string>
 	<string name="home_tank_capacity_hint" formatted="false">જથ્થાની ટાઇલ સ્તર % × આ ક્ષમતા બતાવે છે.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ માટે ટાંકીની ક્ષમતા</string>
-	<string name="home_tank_capacity_unit">લિ</string>
+	<string name="home_tank_unit_hint">દા.ત. L અથવા gal</string>
 	<string name="home_tank_volume_label">જથ્થો</string>
 	<string name="home_temperature_limit_high">આટલું વધે ત્યારે સૂચિત કરો</string>
 	<string name="home_temperature_limit_low">આટલું ઘટે ત્યારે સૂચિત કરો</string>

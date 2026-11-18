@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">পূর্ণ ধারণক্ষমতা</string>
 	<string name="home_tank_capacity_hint" formatted="false">আয়তন টাইলটি স্তর % × এই ধারণক্ষমতা দেখায়।</string>
 	<string name="home_tank_capacity_title">‘%1$s’-এর ট্যাঙ্কের ধারণক্ষমতা</string>
-	<string name="home_tank_capacity_unit">লি</string>
+	<string name="home_tank_unit_hint">যেমন L বা gal</string>
 	<string name="home_tank_volume_label">আয়তন</string>
 	<string name="home_temperature_limit_high">এতে উঠলে জানান</string>
 	<string name="home_temperature_limit_low">এতে নামলে জানান</string>

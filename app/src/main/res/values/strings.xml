@@ -245,7 +245,7 @@
 	<string name="home_tank_capacity">Full capacity</string>
 	<string name="home_tank_capacity_hint" formatted="false">The volume tile shows the level % × this capacity.</string>
 	<string name="home_tank_capacity_title">Tank capacity for ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">e.g. L or gal</string>
 	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Notify when rising to</string>
 	<string name="home_temperature_limit_low">Notify when dropping to</string>

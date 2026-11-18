@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Толук сыйымдуулук</string>
 	<string name="home_tank_capacity_hint" formatted="false">Көлөм плиткасы деңгээл % × бул сыйымдуулукту көрсөтөт.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ резервуарынын сыйымдуулугу</string>
-	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_unit_hint">мис. L же gal</string>
 	<string name="home_tank_volume_label">Көлөм</string>
 	<string name="home_temperature_limit_high">Ушуга чейин көтөрүлгөндө билдирүү</string>
 	<string name="home_temperature_limit_low">Ушуга чейин төмөндөгөндө билдирүү</string>

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">مکمل گنجائش</string>
 	<string name="home_tank_capacity_hint" formatted="false">حجم ٹائل سطح % × یہ گنجائش دکھاتی ہے۔</string>
 	<string name="home_tank_capacity_title">‘%1$s’ کے ٹینک کی گنجائش</string>
-	<string name="home_tank_capacity_unit">لیٹر</string>
+	<string name="home_tank_unit_hint">مثلاً L یا gal</string>
 	<string name="home_tank_volume_label">حجم</string>
 	<string name="home_temperature_limit_high">اتنا بڑھنے پر مطلع کریں</string>
 	<string name="home_temperature_limit_low">اتنا گھٹنے پر مطلع کریں</string>

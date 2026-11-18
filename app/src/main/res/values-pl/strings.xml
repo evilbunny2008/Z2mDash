@@ -255,7 +255,7 @@
 	<string name="home_tank_capacity">Pełna pojemność</string>
 	<string name="home_tank_capacity_hint" formatted="false">Kafelek objętości pokazuje poziom % × tę pojemność.</string>
 	<string name="home_tank_capacity_title">Pojemność zbiornika dla ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_unit_hint">np. L lub gal</string>
 	<string name="home_tank_volume_label">Objętość</string>
 	<string name="home_temperature_limit_high">Powiadom przy wzroście do</string>
 	<string name="home_temperature_limit_low">Powiadom przy spadku do</string>

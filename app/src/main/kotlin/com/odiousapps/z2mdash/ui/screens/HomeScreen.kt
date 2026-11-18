@@ -276,6 +276,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var temperatureLowText by remember { mutableStateOf("") }
     var pendingTankCapacity by remember { mutableStateOf<PendingTankCapacity?>(null) }
     var tankCapacityText by remember { mutableStateOf("") }
+    var tankUnitText by remember { mutableStateOf("") }
     // Shared by every PanelTile (standalone or inside a ClusterCard) - reads the sensor's current
     // raw value fresh rather than trusting any composed/cached display string, so the dialog
     // prefills with what's actually retained right now. A live temperature reading's tap opens
@@ -289,6 +290,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                 .filterIsInstance<Panel.Sensor>()
                 .find { it.tankCapacity != null && it.brokerId == sensorPanel.brokerId && it.topic == sensorPanel.topic && it.jsonPath == sensorPanel.jsonPath }
             tankCapacityText = volumePanel?.tankCapacity?.let(::formatLimit).orEmpty()
+            tankUnitText = volumePanel?.unit.orEmpty()
             pendingTankCapacity = PendingTankCapacity(group.id, sensorPanel, volumePanel)
         } else if (TemperatureAlertManager.isTemperatureAlertPanel(sensorPanel)) {
             val limits = app.configRepository.config.value.temperatureAlertLimits[sensorPanel.id]
@@ -2307,10 +2309,19 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         value = tankCapacityText,
                         onValueChange = { tankCapacityText = it },
                         label = { Text(stringResource(R.string.home_tank_capacity)) },
-                        suffix = { Text(stringResource(R.string.home_tank_capacity_unit)) },
                         isError = !capacityValid,
                         singleLine = true,
                         keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
+                    )
+                    // No conversion happens anywhere - the volume comes out in whatever unit the
+                    // capacity was entered in, so this is purely the label shown after it.
+                    OutlinedTextField(
+                        value = tankUnitText,
+                        onValueChange = { tankUnitText = it },
+                        label = { Text(stringResource(R.string.panel_unit)) },
+                        placeholder = { Text(stringResource(R.string.home_tank_unit_hint)) },
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions()
                     )
                     Text(
                         stringResource(R.string.home_tank_capacity_hint),
@@ -2324,7 +2335,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                     onClick = {
                         val volumePanel = pending.volumePanel
                         if (volumePanel != null) {
-                            val updated = volumePanel.copy(tankCapacity = capacity)
+                            val updated = volumePanel.copy(tankCapacity = capacity, unit = tankUnitText.trim())
                             app.configRepository.updatePanel(pending.groupId, updated)
                             pushPanelDetailsIfAutoConfigured(app, volumePanel, updated)
                         } else {
@@ -2335,7 +2346,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                                 panel.copy(
                                     id = StableIds.newId(),
                                     label = app.getString(R.string.home_tank_volume_label),
-                                    unit = app.getString(R.string.home_tank_capacity_unit),
+                                    unit = tankUnitText.trim(),
                                     icon = TileIcon.TANK,
                                     decimals = 0,
                                     idealRangeTopic = "",

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">ಪೂರ್ಣ ಸಾಮರ್ಥ್ಯ</string>
 	<string name="home_tank_capacity_hint" formatted="false">ಪರಿಮಾಣ ಟೈಲ್ ಮಟ್ಟ % × ಈ ಸಾಮರ್ಥ್ಯವನ್ನು ತೋರಿಸುತ್ತದೆ.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ ಗಾಗಿ ಟ್ಯಾಂಕ್ ಸಾಮರ್ಥ್ಯ</string>
-	<string name="home_tank_capacity_unit">ಲೀ</string>
+	<string name="home_tank_unit_hint">ಉದಾ. L ಅಥವಾ gal</string>
 	<string name="home_tank_volume_label">ಪರಿಮಾಣ</string>
 	<string name="home_temperature_limit_high">ಇದಕ್ಕೆ ಏರಿದಾಗ ಸೂಚಿಸಿ</string>
 	<string name="home_temperature_limit_low">ಇದಕ್ಕೆ ಇಳಿದಾಗ ಸೂಚಿಸಿ</string>

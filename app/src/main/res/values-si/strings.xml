@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">සම්පූර්ණ ධාරිතාව</string>
 	<string name="home_tank_capacity_hint" formatted="false">පරිමා ටයිලය මට්ටම % × මෙම ධාරිතාව පෙන්වයි.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ සඳහා ටැංකි ධාරිතාව</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">උදා. L හෝ gal</string>
 	<string name="home_tank_volume_label">පරිමාව</string>
 	<string name="home_temperature_limit_high">මෙයට ඉහළ යන විට දැනුම් දෙන්න</string>
 	<string name="home_temperature_limit_low">මෙයට පහළ යන විට දැනුම් දෙන්න</string>

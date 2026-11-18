@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Tam tutum</string>
 	<string name="home_tank_capacity_hint" formatted="false">Həcm plitəsi səviyyə % × bu tutumu göstərir.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ üçün çən tutumu</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">məs. L və ya gal</string>
 	<string name="home_tank_volume_label">Həcm</string>
 	<string name="home_temperature_limit_high">Bu dəyərə qalxdıqda bildir</string>
 	<string name="home_temperature_limit_low">Bu dəyərə düşdükdə bildir</string>

@@ -248,7 +248,7 @@
 	<string name="home_tank_capacity">Puni kapacitet</string>
 	<string name="home_tank_capacity_hint" formatted="false">Pločica volumena prikazuje razinu % × ovaj kapacitet.</string>
 	<string name="home_tank_capacity_title">Kapacitet spremnika za ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">npr. L ili gal</string>
 	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Obavijesti pri porastu na</string>
 	<string name="home_temperature_limit_low">Obavijesti pri padu na</string>

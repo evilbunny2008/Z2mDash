@@ -255,7 +255,7 @@
 	<string name="home_tank_capacity">Повна ємність</string>
 	<string name="home_tank_capacity_hint" formatted="false">Плитка об’єму показує рівень % × цю ємність.</string>
 	<string name="home_tank_capacity_title">Ємність бака для ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_unit_hint">напр. L або gal</string>
 	<string name="home_tank_volume_label">Об’єм</string>
 	<string name="home_temperature_limit_high">Сповіщати при підвищенні до</string>
 	<string name="home_temperature_limit_low">Сповіщати при зниженні до</string>

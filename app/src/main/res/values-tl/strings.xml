@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Buong kapasidad</string>
 	<string name="home_tank_capacity_hint" formatted="false">Ipinapakita ng tile ng dami ang antas % × kapasidad na ito.</string>
 	<string name="home_tank_capacity_title">Kapasidad ng tangke para sa ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">hal. L o gal</string>
 	<string name="home_tank_volume_label">Dami</string>
 	<string name="home_temperature_limit_high">Mag-abiso kapag tumaas sa</string>
 	<string name="home_temperature_limit_low">Mag-abiso kapag bumaba sa</string>

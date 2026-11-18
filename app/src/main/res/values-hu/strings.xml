@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Teljes űrtartalom</string>
 	<string name="home_tank_capacity_hint" formatted="false">A mennyiség csempe a szint % × ezt az űrtartalmat mutatja.</string>
 	<string name="home_tank_capacity_title">Tartály űrtartalma: ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_unit_hint">pl. L vagy gal</string>
 	<string name="home_tank_volume_label">Mennyiség</string>
 	<string name="home_temperature_limit_high">Értesítés emelkedéskor erre</string>
 	<string name="home_temperature_limit_low">Értesítés csökkenéskor erre</string>

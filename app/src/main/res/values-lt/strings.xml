@@ -255,7 +255,7 @@
 	<string name="home_tank_capacity">Pilna talpa</string>
 	<string name="home_tank_capacity_hint" formatted="false">Tūrio plytelė rodo lygį % × šią talpą.</string>
 	<string name="home_tank_capacity_title">Talpos tūris: ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_unit_hint">pvz., L arba gal</string>
 	<string name="home_tank_volume_label">Tūris</string>
 	<string name="home_temperature_limit_high">Pranešti pakilus iki</string>
 	<string name="home_temperature_limit_low">Pranešti nukritus iki</string>

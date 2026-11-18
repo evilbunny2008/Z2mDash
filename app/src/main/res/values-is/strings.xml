@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Full rýmd</string>
 	<string name="home_tank_capacity_hint" formatted="false">Magnflísin sýnir stöðu % × þessa rýmd.</string>
 	<string name="home_tank_capacity_title">Rýmd tanks fyrir ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">t.d. L eða gal</string>
 	<string name="home_tank_volume_label">Magn</string>
 	<string name="home_temperature_limit_high">Láta vita við hækkun í</string>
 	<string name="home_temperature_limit_low">Láta vita við lækkun í</string>

@@ -248,7 +248,7 @@
 	<string name="home_tank_capacity">Capacidad total</string>
 	<string name="home_tank_capacity_hint" formatted="false">El mosaico de volumen muestra el nivel % × esta capacidad.</string>
 	<string name="home_tank_capacity_title">Capacidad del depósito de ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">p. ej. L o gal</string>
 	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Avisar al subir a</string>
 	<string name="home_temperature_limit_low">Avisar al bajar a</string>

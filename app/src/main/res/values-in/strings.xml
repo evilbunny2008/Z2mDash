@@ -234,7 +234,7 @@
 	<string name="home_tank_capacity">Kapasitas penuh</string>
 	<string name="home_tank_capacity_hint" formatted="false">Ubin volume menampilkan level % × kapasitas ini.</string>
 	<string name="home_tank_capacity_title">Kapasitas tangki untuk ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">mis. L atau gal</string>
 	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Beri tahu saat naik ke</string>
 	<string name="home_temperature_limit_low">Beri tahu saat turun ke</string>

@@ -255,7 +255,7 @@
 	<string name="home_tank_capacity">Plná kapacita</string>
 	<string name="home_tank_capacity_hint" formatted="false">Dlaždica objemu zobrazuje hladinu % × túto kapacitu.</string>
 	<string name="home_tank_capacity_title">Kapacita nádrže pre ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_unit_hint">napr. L alebo gal</string>
 	<string name="home_tank_volume_label">Objem</string>
 	<string name="home_temperature_limit_high">Upozorniť pri vzostupe na</string>
 	<string name="home_temperature_limit_low">Upozorniť pri poklese na</string>

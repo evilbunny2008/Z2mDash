@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Լրիվ տարողություն</string>
 	<string name="home_tank_capacity_hint" formatted="false">Ծավալի սալիկը ցույց է տալիս մակարդակը % × այս տարողությունը։</string>
 	<string name="home_tank_capacity_title">Բաքի տարողությունը ‘%1$s’-ի համար</string>
-	<string name="home_tank_capacity_unit">լ</string>
+	<string name="home_tank_unit_hint">օր.՝ L կամ gal</string>
 	<string name="home_tank_volume_label">Ծավալ</string>
 	<string name="home_temperature_limit_high">Ծանուցել բարձրանալիս մինչև</string>
 	<string name="home_temperature_limit_low">Ծանուցել իջնելիս մինչև</string>

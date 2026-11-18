@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Full kapacitet</string>
 	<string name="home_tank_capacity_hint" formatted="false">Volymrutan visar nivån % × denna kapacitet.</string>
 	<string name="home_tank_capacity_title">Tankkapacitet för ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">t.ex. L eller gal</string>
 	<string name="home_tank_volume_label">Volym</string>
 	<string name="home_temperature_limit_high">Meddela vid stigning till</string>
 	<string name="home_temperature_limit_low">Meddela vid sjunkning till</string>

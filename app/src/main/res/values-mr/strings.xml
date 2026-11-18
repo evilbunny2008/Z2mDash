@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">पूर्ण क्षमता</string>
 	<string name="home_tank_capacity_hint" formatted="false">प्रमाण टाइल पातळी % × ही क्षमता दाखवते.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ साठी टाकीची क्षमता</string>
-	<string name="home_tank_capacity_unit">ली</string>
+	<string name="home_tank_unit_hint">उदा. L किंवा gal</string>
 	<string name="home_tank_volume_label">प्रमाण</string>
 	<string name="home_temperature_limit_high">इतके वाढल्यावर सूचित करा</string>
 	<string name="home_temperature_limit_low">इतके घटल्यावर सूचित करा</string>

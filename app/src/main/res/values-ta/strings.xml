@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">முழு கொள்ளளவு</string>
 	<string name="home_tank_capacity_hint" formatted="false">அளவு ஓடு நிலை % × இந்தக் கொள்ளளவைக் காட்டுகிறது.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ தொட்டியின் கொள்ளளவு</string>
-	<string name="home_tank_capacity_unit">லி</string>
+	<string name="home_tank_unit_hint">எ.கா. L அல்லது gal</string>
 	<string name="home_tank_volume_label">அளவு</string>
 	<string name="home_temperature_limit_high">இதற்கு உயரும்போது தெரிவி</string>
 	<string name="home_temperature_limit_low">இதற்குக் குறையும்போது தெரிவி</string>

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Полн капацитет</string>
 	<string name="home_tank_capacity_hint" formatted="false">Плочката за волумен го прикажува нивото % × овој капацитет.</string>
 	<string name="home_tank_capacity_title">Капацитет на резервоарот за ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_unit_hint">на пр. L или gal</string>
 	<string name="home_tank_volume_label">Волумен</string>
 	<string name="home_temperature_limit_high">Извести при пораст до</string>
 	<string name="home_temperature_limit_low">Извести при пад до</string>

@@ -234,7 +234,7 @@
 	<string name="home_tank_capacity">ຄວາມຈຸເຕັມ</string>
 	<string name="home_tank_capacity_hint" formatted="false">ແຜ່ນປະລິມານສະແດງລະດັບ % × ຄວາມຈຸນີ້.</string>
 	<string name="home_tank_capacity_title">ຄວາມຈຸຖັງສຳລັບ ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">ເຊັ່ນ L ຫຼື gal</string>
 	<string name="home_tank_volume_label">ປະລິມານ</string>
 	<string name="home_temperature_limit_high">ແຈ້ງເຕືອນເມື່ອຂຶ້ນຮອດ</string>
 	<string name="home_temperature_limit_low">ແຈ້ງເຕືອນເມື່ອລົງຮອດ</string>

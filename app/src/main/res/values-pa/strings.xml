@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">ਪੂਰੀ ਸਮਰੱਥਾ</string>
 	<string name="home_tank_capacity_hint" formatted="false">ਮਾਤਰਾ ਟਾਈਲ ਪੱਧਰ % × ਇਹ ਸਮਰੱਥਾ ਦਿਖਾਉਂਦੀ ਹੈ।</string>
 	<string name="home_tank_capacity_title">‘%1$s’ ਲਈ ਟੈਂਕ ਸਮਰੱਥਾ</string>
-	<string name="home_tank_capacity_unit">ਲੀ</string>
+	<string name="home_tank_unit_hint">ਜਿਵੇਂ L ਜਾਂ gal</string>
 	<string name="home_tank_volume_label">ਮਾਤਰਾ</string>
 	<string name="home_temperature_limit_high">ਇੰਨਾ ਵਧਣ ’ਤੇ ਸੂਚਿਤ ਕਰੋ</string>
 	<string name="home_temperature_limit_low">ਇੰਨਾ ਘਟਣ ’ਤੇ ਸੂਚਿਤ ਕਰੋ</string>

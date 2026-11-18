@@ -248,7 +248,7 @@
 	<string name="home_tank_capacity">Capacità totale</string>
 	<string name="home_tank_capacity_hint" formatted="false">Il riquadro del volume mostra il livello % × questa capacità.</string>
 	<string name="home_tank_capacity_title">Capacità del serbatoio per ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">es. L o gal</string>
 	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Avvisa salendo a</string>
 	<string name="home_temperature_limit_low">Avvisa scendendo a</string>

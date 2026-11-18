@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Täysi tilavuus</string>
 	<string name="home_tank_capacity_hint" formatted="false">Määräruutu näyttää pinnankorkeuden % × tämän tilavuuden.</string>
 	<string name="home_tank_capacity_title">Säiliön tilavuus: ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_unit_hint">esim. L tai gal</string>
 	<string name="home_tank_volume_label">Määrä</string>
 	<string name="home_temperature_limit_high">Ilmoita noustessa arvoon</string>
 	<string name="home_temperature_limit_low">Ilmoita laskiessa arvoon</string>

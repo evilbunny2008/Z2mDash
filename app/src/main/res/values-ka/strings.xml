@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">სრული მოცულობა</string>
 	<string name="home_tank_capacity_hint" formatted="false">მოცულობის ფილა აჩვენებს დონეს % × ეს მოცულობა.</string>
 	<string name="home_tank_capacity_title">ავზის მოცულობა: ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">ლ</string>
+	<string name="home_tank_unit_hint">მაგ. L ან gal</string>
 	<string name="home_tank_volume_label">მოცულობა</string>
 	<string name="home_temperature_limit_high">შეტყობინება აწევისას</string>
 	<string name="home_temperature_limit_low">შეტყობინება დაწევისას</string>

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Kapaciteti i plotë</string>
 	<string name="home_tank_capacity_hint" formatted="false">Pllaka e vëllimit tregon nivelin % × këtë kapacitet.</string>
 	<string name="home_tank_capacity_title">Kapaciteti i depozitës për ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">p.sh. L ose gal</string>
 	<string name="home_tank_volume_label">Vëllimi</string>
 	<string name="home_temperature_limit_high">Njofto kur rritet në</string>
 	<string name="home_temperature_limit_low">Njofto kur ulet në</string>

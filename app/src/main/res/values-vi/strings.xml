@@ -234,7 +234,7 @@
 	<string name="home_tank_capacity">Dung tích tối đa</string>
 	<string name="home_tank_capacity_hint" formatted="false">Ô thể tích hiển thị mức % × dung tích này.</string>
 	<string name="home_tank_capacity_title">Dung tích bồn cho ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">vd: L hoặc gal</string>
 	<string name="home_tank_volume_label">Thể tích</string>
 	<string name="home_temperature_limit_high">Thông báo khi tăng đến</string>
 	<string name="home_temperature_limit_low">Thông báo khi giảm đến</string>

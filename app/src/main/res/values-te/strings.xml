@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">పూర్తి సామర్థ్యం</string>
 	<string name="home_tank_capacity_hint" formatted="false">పరిమాణ టైల్ స్థాయి % × ఈ సామర్థ్యాన్ని చూపుతుంది.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ ట్యాంక్ సామర్థ్యం</string>
-	<string name="home_tank_capacity_unit">లీ</string>
+	<string name="home_tank_unit_hint">ఉదా. L లేదా gal</string>
 	<string name="home_tank_volume_label">పరిమాణం</string>
 	<string name="home_temperature_limit_high">ఇంతకు పెరిగినప్పుడు తెలియజేయి</string>
 	<string name="home_temperature_limit_low">ఇంతకు తగ్గినప్పుడు తెలియజేయి</string>

@@ -269,7 +269,7 @@
 	<string name="home_tank_capacity">السعة الكاملة</string>
 	<string name="home_tank_capacity_hint" formatted="false">يعرض مربع الحجم نسبة المستوى % × هذه السعة.</string>
 	<string name="home_tank_capacity_title">سعة الخزان لـ ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">لتر</string>
+	<string name="home_tank_unit_hint">مثل L أو gal</string>
 	<string name="home_tank_volume_label">الحجم</string>
 	<string name="home_temperature_limit_high">الإشعار عند الارتفاع إلى</string>
 	<string name="home_temperature_limit_low">الإشعار عند الانخفاض إلى</string>

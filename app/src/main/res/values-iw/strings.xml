@@ -248,7 +248,7 @@
 	<string name="home_tank_capacity">קיבולת מלאה</string>
 	<string name="home_tank_capacity_hint" formatted="false">אריח הנפח מציג את המפלס % × קיבולת זו.</string>
 	<string name="home_tank_capacity_title">קיבולת המכל עבור ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">ל׳</string>
+	<string name="home_tank_unit_hint">למשל L או gal</string>
 	<string name="home_tank_volume_label">נפח</string>
 	<string name="home_temperature_limit_high">הודעה בעלייה אל</string>
 	<string name="home_temperature_limit_low">הודעה בירידה אל</string>

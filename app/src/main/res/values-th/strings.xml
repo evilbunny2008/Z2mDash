@@ -234,7 +234,7 @@
 	<string name="home_tank_capacity">ความจุเต็ม</string>
 	<string name="home_tank_capacity_hint" formatted="false">ไทล์ปริมาตรแสดงระดับ % × ความจุนี้</string>
 	<string name="home_tank_capacity_title">ความจุถังของ ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">ลิตร</string>
+	<string name="home_tank_unit_hint">เช่น L หรือ gal</string>
 	<string name="home_tank_volume_label">ปริมาตร</string>
 	<string name="home_temperature_limit_high">แจ้งเตือนเมื่อขึ้นถึง</string>
 	<string name="home_temperature_limit_low">แจ้งเตือนเมื่อลงถึง</string>

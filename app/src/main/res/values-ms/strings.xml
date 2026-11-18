@@ -234,7 +234,7 @@
 	<string name="home_tank_capacity">Kapasiti penuh</string>
 	<string name="home_tank_capacity_hint" formatted="false">Jubin isi padu menunjukkan paras % × kapasiti ini.</string>
 	<string name="home_tank_capacity_title">Kapasiti tangki untuk ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">cth. L atau gal</string>
 	<string name="home_tank_volume_label">Isi padu</string>
 	<string name="home_temperature_limit_high">Maklumkan apabila naik ke</string>
 	<string name="home_temperature_limit_low">Maklumkan apabila turun ke</string>

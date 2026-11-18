@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">पूर्ण क्षमता</string>
 	<string name="home_tank_capacity_hint" formatted="false">मात्रा टाइल स्तर % × यह क्षमता दिखाती है।</string>
 	<string name="home_tank_capacity_title">‘%1$s’ के लिए टैंक क्षमता</string>
-	<string name="home_tank_capacity_unit">ली</string>
+	<string name="home_tank_unit_hint">जैसे L या gal</string>
 	<string name="home_tank_volume_label">मात्रा</string>
 	<string name="home_temperature_limit_high">इतना बढ़ने पर सूचित करें</string>
 	<string name="home_temperature_limit_low">इतना घटने पर सूचित करें</string>

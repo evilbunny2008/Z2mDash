@@ -248,7 +248,7 @@
 	<string name="home_tank_capacity">Capacitate totală</string>
 	<string name="home_tank_capacity_hint" formatted="false">Dala de volum arată nivelul % × această capacitate.</string>
 	<string name="home_tank_capacity_title">Capacitatea rezervorului pentru ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">de ex. L sau gal</string>
 	<string name="home_tank_volume_label">Volum</string>
 	<string name="home_temperature_limit_high">Notifică la urcarea la</string>
 	<string name="home_temperature_limit_low">Notifică la coborârea la</string>

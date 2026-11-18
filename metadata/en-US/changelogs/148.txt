@@ -1,0 +1,1 @@
+- Tank capacity dialog: no longer assumes litres - enter the capacity in any unit and type the unit to show (e.g. L or gal) on the volume tile.

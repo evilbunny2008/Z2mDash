@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Volle Kapazität</string>
 	<string name="home_tank_capacity_hint" formatted="false">Die Volumen-Kachel zeigt den Füllstand % × diese Kapazität.</string>
 	<string name="home_tank_capacity_title">Tankkapazität für ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">z. B. L oder gal</string>
 	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Benachrichtigen beim Anstieg auf</string>
 	<string name="home_temperature_limit_low">Benachrichtigen beim Abfall auf</string>

@@ -234,7 +234,7 @@
 	<string name="home_tank_capacity">満水容量</string>
 	<string name="home_tank_capacity_hint" formatted="false">水量タイルは水位 % × この容量を表示します。</string>
 	<string name="home_tank_capacity_title">‘%1$s’のタンク容量</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">例: L、gal</string>
 	<string name="home_tank_volume_label">水量</string>
 	<string name="home_temperature_limit_high">この温度まで上昇したら通知</string>
 	<string name="home_temperature_limit_low">この温度まで下降したら通知</string>

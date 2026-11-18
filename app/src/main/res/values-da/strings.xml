@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Fuld kapacitet</string>
 	<string name="home_tank_capacity_hint" formatted="false">Volumenfeltet viser niveauet % × denne kapacitet.</string>
 	<string name="home_tank_capacity_title">Tankkapacitet for ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">f.eks. L eller gal</string>
 	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Giv besked ved stigning til</string>
 	<string name="home_temperature_limit_low">Giv besked ved fald til</string>

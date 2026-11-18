@@ -248,7 +248,7 @@
 	<string name="home_tank_capacity">Capacitat total</string>
 	<string name="home_tank_capacity_hint" formatted="false">La rajola de volum mostra el nivell % × aquesta capacitat.</string>
 	<string name="home_tank_capacity_title">Capacitat del dipòsit per a ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">p. ex. L o gal</string>
 	<string name="home_tank_volume_label">Volum</string>
 	<string name="home_temperature_limit_high">Avisa en pujar a</string>
 	<string name="home_temperature_limit_low">Avisa en baixar a</string>

@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Толық сыйымдылық</string>
 	<string name="home_tank_capacity_hint" formatted="false">Көлем тақтасы деңгей % × осы сыйымдылықты көрсетеді.</string>
 	<string name="home_tank_capacity_title">‘%1$s’ резервуарының сыйымдылығы</string>
-	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_unit_hint">мыс. L немесе gal</string>
 	<string name="home_tank_volume_label">Көлем</string>
 	<string name="home_temperature_limit_high">Осыған дейін көтерілгенде хабарлау</string>
 	<string name="home_temperature_limit_low">Осыған дейін төмендегенде хабарлау</string>

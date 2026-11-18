@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Täismaht</string>
 	<string name="home_tank_capacity_hint" formatted="false">Mahu paan näitab taset % × see maht.</string>
 	<string name="home_tank_capacity_title">Paagi maht: ‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">nt L või gal</string>
 	<string name="home_tank_volume_label">Maht</string>
 	<string name="home_temperature_limit_high">Teavita tõustes tasemeni</string>
 	<string name="home_temperature_limit_low">Teavita langedes tasemeni</string>

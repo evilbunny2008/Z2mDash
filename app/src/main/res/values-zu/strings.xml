@@ -241,7 +241,7 @@
 	<string name="home_tank_capacity">Umthamo ogcwele</string>
 	<string name="home_tank_capacity_hint" formatted="false">Ithayela levolumu libonisa izinga % × lo mthamo.</string>
 	<string name="home_tank_capacity_title">Umthamo wethangi we-‘%1$s’</string>
-	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_unit_hint">isb. L noma gal</string>
 	<string name="home_tank_volume_label">Ivolumu</string>
 	<string name="home_temperature_limit_high">Yazisa uma inyuka ifike ku-</string>
 	<string name="home_temperature_limit_low">Yazisa uma yehla ifike ku-</string>
