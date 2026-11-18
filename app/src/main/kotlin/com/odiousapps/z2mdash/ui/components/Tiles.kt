@@ -56,6 +56,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -160,7 +161,11 @@ fun SensorTile(
     // the rest of the tile opens onEditValue instead - any other tile is unaffected, keeping its
     // whole Surface as the config-edit click target exactly as before.
     editable: Boolean = false,
-    onEditValue: () -> Unit = {}
+    onEditValue: () -> Unit = {},
+    // Solid bright red when the tile's topic is outside every base topic its broker is set to read
+    // and nothing has arrived on it this session - e.g. a base topic since removed from the broker
+    // (see isOrphanedTopic in HomeScreen). Overrides any range alert colouring.
+    orphaned: Boolean = false
 ) {
     val flashingAlertColor = when (alert) {
         SensorAlert.BELOW_MIN -> AlertRed
@@ -169,6 +174,7 @@ fun SensorTile(
     }
 
     val backgroundColor = when {
+        orphaned -> MaterialTheme.colorScheme.error
         flashingAlertColor != null && blinkEnabled -> {
             val infiniteTransition = rememberInfiniteTransition(label = "sensorAlert")
             val flashFraction = infiniteTransition.animateFloat(
@@ -194,7 +200,8 @@ fun SensorTile(
             .clickable(onClick = if (editable) onEditValue else onEdit),
         shape = RoundedCornerShape(12.dp),
         color = backgroundColor,
-        tonalElevation = if (flashingAlertColor != null || alert == SensorAlert.IN_RANGE) 0.dp else 1.dp
+        contentColor = if (orphaned) MaterialTheme.colorScheme.onError else contentColorFor(backgroundColor),
+        tonalElevation = if (orphaned || flashingAlertColor != null || alert == SensorAlert.IN_RANGE) 0.dp else 1.dp
     ) {
         Column(
             modifier = Modifier.padding(12.dp * scale).fillMaxWidth().fillMaxHeight(),
@@ -253,7 +260,9 @@ fun ToggleTile(
     // size regardless of scale - it's an interactive control with a mandated touch target, not
     // decorative, so shrinking it would only make it harder to hit for no benefit.
     scale: Float = 1f,
-    onEdit: () -> Unit = {}
+    onEdit: () -> Unit = {},
+    // See SensorTile's `orphaned` param.
+    orphaned: Boolean = false
 ) {
     // The edit click is deliberately NOT on the whole Surface - Switch's Material-mandated 48dp
     // touch target can swallow most of a tile this small, making a whole-card edit click
@@ -269,7 +278,9 @@ fun ToggleTile(
     Surface(
         modifier = modifier.heightIn(min = 120.dp * scale),
         shape = RoundedCornerShape(12.dp),
-        tonalElevation = 1.dp
+        color = if (orphaned) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surface,
+        contentColor = if (orphaned) MaterialTheme.colorScheme.onError else contentColorFor(MaterialTheme.colorScheme.surface),
+        tonalElevation = if (orphaned) 0.dp else 1.dp
     ) {
         Column(
             modifier = Modifier.padding(12.dp * scale).fillMaxWidth().fillMaxHeight(),
@@ -314,14 +325,18 @@ fun ButtonTile(
     // See SensorTile's `scale` param - same proportional sizing. The Button itself stays full
     // size regardless of scale, same reasoning as ToggleTile's Switch.
     scale: Float = 1f,
-    onEdit: () -> Unit = {}
+    onEdit: () -> Unit = {},
+    // See SensorTile's `orphaned` param.
+    orphaned: Boolean = false
 ) {
     // See ToggleTile's own comment on tvFocusIndicator living on the icon/Button individually,
     // not this outer Surface - same ambiguous-whole-tile-border bug applies here.
     Surface(
         modifier = modifier.heightIn(min = 120.dp * scale),
         shape = RoundedCornerShape(12.dp),
-        tonalElevation = 1.dp
+        color = if (orphaned) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.surface,
+        contentColor = if (orphaned) MaterialTheme.colorScheme.onError else contentColorFor(MaterialTheme.colorScheme.surface),
+        tonalElevation = if (orphaned) 0.dp else 1.dp
     ) {
         Column(
             modifier = Modifier.padding(12.dp * scale).fillMaxWidth().fillMaxHeight(),

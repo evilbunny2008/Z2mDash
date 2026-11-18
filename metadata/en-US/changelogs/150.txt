@@ -1,0 +1,1 @@
+Tiles turn bright red when their topic is outside every base topic the broker reads and nothing has arrived on it - e.g. left over from a removed base topic.

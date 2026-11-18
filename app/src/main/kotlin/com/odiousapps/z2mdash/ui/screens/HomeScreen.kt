@@ -3040,7 +3040,8 @@ private data class SensorTileDerived(
     val value: String,
     val alert: SensorAlert,
     val isPresenceField: Boolean,
-    val isPresent: Boolean
+    val isPresent: Boolean,
+    val orphaned: Boolean
 )
 
 /** Renders a single Sensor or Toggle tile, wired up to its live payload and edit/toggle actions. */
@@ -3083,7 +3084,7 @@ private fun PanelTile(
                         else -> "--"
                     }
                     val alert = idealRangeAlert(panel, payloads)
-                    SensorTileDerived(value, alert, isPresenceField, isPresent)
+                    SensorTileDerived(value, alert, isPresenceField, isPresent, isOrphanedTopic(app, panel.brokerId, panel.topic))
                 }
             }
             SensorTile(
@@ -3099,7 +3100,8 @@ private fun PanelTile(
                 onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") },
                 editable = panel.editable || TemperatureAlertManager.isTemperatureAlertPanel(panel) ||
                     isTankLevelPanel(panel) || panel.tankCapacity != null,
-                onEditValue = { onEditSensorValue(panel) }
+                onEditValue = { onEditSensorValue(panel) },
+                orphaned = derived.orphaned
             )
         }
 
@@ -3116,6 +3118,12 @@ private fun PanelTile(
                     resolvedState != null && resolvedState.equals(expectedOnValue, ignoreCase = true)
                 }
             }
+            val orphaned by remember(panel) {
+                derivedStateOf {
+                    payloadsState.value
+                    isOrphanedTopic(app, panel.brokerId, panel.stateTopic.ifBlank { panel.commandTopic.removeSuffix("/set") })
+                }
+            }
             ToggleTile(
                 modifier = modifier,
                 icon = panel.icon,
@@ -3129,21 +3137,46 @@ private fun PanelTile(
                     )
                 },
                 scale = tileScale,
-                onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") }
+                onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") },
+                orphaned = orphaned
             )
         }
 
         is Panel.Button -> {
+            // A button has no state topic of its own - Zigbee2MQTT devices report on the topic
+            // their "/set" command hangs off, so that's what shows whether anything's still there.
+            val orphaned by remember(panel) {
+                derivedStateOf {
+                    payloadsState.value
+                    isOrphanedTopic(app, panel.brokerId, panel.commandTopic.removeSuffix("/set"))
+                }
+            }
             ButtonTile(
                 modifier = modifier,
                 icon = panel.icon,
                 label = panel.label,
                 onPress = { app.connectionManager.publish(panel.brokerId, panel.commandTopic, panel.payload) },
                 scale = tileScale,
-                onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") }
+                onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") },
+                orphaned = orphaned
             )
         }
     }
+}
+
+/**
+ * Whether [topic] sits outside every base topic its broker is set to read and nothing has arrived
+ * on it this session - the tile's own explicit subscription would still deliver it, so a quiet
+ * one is most likely left over from a base topic since removed from the broker (e.g. a retired
+ * Zigbee2MQTT instance). Live topics outside the base topics (another integration) aren't flagged.
+ * Reads the config's current value rather than collecting it - callers recompute on every payload
+ * change, which is when the answer can flip anyway.
+ */
+private fun isOrphanedTopic(app: Z2mDashApplication, brokerId: String, topic: String): Boolean {
+    if (topic.isBlank()) return false
+    val broker = app.configRepository.config.value.brokers.find { it.id == brokerId } ?: return false
+    if (PermitJoin.parseBaseTopics(broker.baseTopic).any { topic == it || topic.startsWith("$it/") }) return false
+    return !app.connectionManager.isLive("$brokerId|$topic")
 }
 
 /** Builds and stores the panels for a newly-accepted pending device, then clears it from the pending list. */
