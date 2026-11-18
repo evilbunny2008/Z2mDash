@@ -1,0 +1,1 @@
+- Removing a base topic from a broker now stops listening to it, and its devices no longer linger in Discover or get offered as new devices.

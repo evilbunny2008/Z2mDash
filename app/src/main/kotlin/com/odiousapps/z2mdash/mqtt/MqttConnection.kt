@@ -152,6 +152,21 @@ class MqttConnection(private val broker: Broker) {
         }
     }
 
+    /**
+     * Stops watching [topic] (an exact filter previously passed to [subscribe]) - e.g. a base
+     * topic's "<base>/#" once it's removed from the broker's settings. Without the UNSUBSCRIBE, the
+     * broker keeps delivering it for the rest of this session, and with a persistent session
+     * (cleanSession off) even beyond.
+     */
+    fun unsubscribe(topic: String) {
+        if (subscribedTopics.remove(topic) && _connectionState.value == ConnectionState.CONNECTED) {
+            client?.unsubscribeWith()?.topicFilter(topic)?.send()
+        }
+    }
+
+    /** Snapshot of every topic filter currently subscribed (or queued until connected). */
+    fun currentSubscriptions(): Set<String> = subscribedTopics.toSet()
+
     private fun doSubscribe(topic: String) {
         client?.subscribeWith()
             ?.topicFilter(topic)

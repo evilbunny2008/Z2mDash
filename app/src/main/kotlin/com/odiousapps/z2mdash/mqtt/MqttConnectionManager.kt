@@ -53,6 +53,12 @@ class MqttConnectionManager(
 
     private val connections = mutableMapOf<String, MqttConnection>()
     private val brokerById = mutableMapOf<String, Broker>()
+    // The "<base>/#" filters each broker was last subscribed to by applyConfig, so a base topic
+    // removed from the broker's settings can be unsubscribed rather than left delivering forever.
+    private val wildcardsByBrokerId = mutableMapOf<String, List<String>>()
+    // Set once applyConfig has run - pruning before then would wipe the whole on-disk cache, since
+    // nothing is subscribed yet.
+    @Volatile private var configApplied = false
 
     private val _latestPayloads = MutableStateFlow<Map<String, String>>(emptyMap())
     val latestPayloads: StateFlow<Map<String, String>> = _latestPayloads
@@ -87,6 +93,9 @@ class MqttConnectionManager(
             if (cached.isNotEmpty()) {
                 _latestPayloads.update { it + cached.mapValues { entry -> entry.value.payload } }
                 _latestPayloadTimestamps.update { it + cached.mapValues { entry -> entry.value.timestamp } }
+                // The cache can finish loading after applyConfig already pruned - prune its
+                // contents too, or a removed base topic's devices would come straight back.
+                if (configApplied) scope.launch(Dispatchers.Main) { pruneUnwatchedPayloads() }
             }
         }
     }
@@ -116,6 +125,7 @@ class MqttConnectionManager(
         connections.keys.filterNot { it in brokerIds }.toList().forEach { id ->
             connections.remove(id)?.disconnect()
             brokerById.remove(id)
+            wildcardsByBrokerId.remove(id)
         }
 
         config.brokers.forEach { broker ->
@@ -125,7 +135,10 @@ class MqttConnectionManager(
             // Subscribed continuously, not just while Discover is open, so new "<topic>/app"
             // devices are detected in the background. Scoped to the broker's base topic(s), not
             // "#", since most people only want their Zigbee2MQTT namespace(s) on a shared broker.
-            wildcardTopicsFor(broker).forEach { conn.subscribe(it) }
+            val wildcards = wildcardTopicsFor(broker)
+            wildcardsByBrokerId[broker.id].orEmpty().filterNot { it in wildcards }.forEach { conn.unsubscribe(it) }
+            wildcardsByBrokerId[broker.id] = wildcards
+            wildcards.forEach { conn.subscribe(it) }
         }
 
         config.groups.flatMap { it.panels }.forEach { panel ->
@@ -152,6 +165,31 @@ class MqttConnectionManager(
             connections[device.brokerId]?.subscribe(device.appConfigTopic)
             connections[device.brokerId]?.subscribe(device.sensorTopic)
         }
+
+        configApplied = true
+        pruneUnwatchedPayloads()
+    }
+
+    /**
+     * Drops every cached payload of a configured broker that none of its current subscriptions
+     * cover - e.g. one under a base topic since removed from the broker's settings. Nothing would
+     * ever refresh or clear those again, yet Discover and new-device detection kept treating them
+     * as live devices. Payloads of brokers without a connection are left alone: applyConfig also
+     * runs at startup before the saved config has loaded (no brokers yet), and pruning against
+     * that would wipe the whole cache.
+     */
+    private fun pruneUnwatchedPayloads() {
+        val filtersByBrokerId = connections.mapValues { (_, conn) -> conn.currentSubscriptions() }
+        fun isWatched(key: String): Boolean {
+            val filters = filtersByBrokerId[key.substringBefore('|')] ?: return true
+            val topic = key.substringAfter('|')
+            return filters.any { topicMatchesFilter(topic, it) }
+        }
+        val stale = _latestPayloads.value.keys.filterNot(::isWatched).toSet()
+        if (stale.isEmpty()) return
+        _latestPayloads.update { it - stale }
+        _latestPayloadTimestamps.update { it - stale }
+        schedulePersist()
     }
 
     /**
@@ -330,4 +368,16 @@ class MqttConnectionManager(
     fun disconnectAll() {
         connections.values.forEach { it.disconnect() }
     }
+}
+
+/** Standard MQTT topic filter matching - "+" matches one level, a trailing "#" any number (even none). */
+internal fun topicMatchesFilter(topic: String, filter: String): Boolean {
+    val topicLevels = topic.split('/')
+    val filterLevels = filter.split('/')
+    filterLevels.forEachIndexed { i, level ->
+        if (level == "#") return true
+        val topicLevel = topicLevels.getOrNull(i) ?: return false
+        if (level != "+" && level != topicLevel) return false
+    }
+    return topicLevels.size == filterLevels.size
 }
