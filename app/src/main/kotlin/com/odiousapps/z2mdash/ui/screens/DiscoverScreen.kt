@@ -56,7 +56,7 @@ import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.withClusterId
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
-import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
+import com.odiousapps.z2mdash.ui.tv.nameKeyboardOptions
 import java.util.UUID
 
 private const val NEW_GROUP_ID = "__new_group__"
@@ -309,7 +309,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                     value = newGroupName,
                     onValueChange = { newGroupName = it },
                     label = { Text(stringResource(R.string.discover_new_group_name)) },
-                    keyboardOptions = tvAwareKeyboardOptions(),
+                    keyboardOptions = nameKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
             }

@@ -7,6 +7,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.border
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -316,3 +317,11 @@ fun Modifier.tvFocusIndicator(shape: Shape = RoundedCornerShape(12.dp)): Modifie
             }
         )
 }
+
+/**
+ * Keyboard options for a group/cluster/panel name field - starts every word with a capital, the
+ * way names are shown on the dashboard, instead of the keyboard's all-lowercase default.
+ */
+@Composable
+fun nameKeyboardOptions(): KeyboardOptions =
+    tvAwareKeyboardOptions(KeyboardOptions(capitalization = KeyboardCapitalization.Words))

@@ -30,7 +30,7 @@ import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
 import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
-import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
+import com.odiousapps.z2mdash.ui.tv.nameKeyboardOptions
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,7 +57,7 @@ fun AddGroupScreen(navController: NavController) {
                 value = name,
                 onValueChange = { name = it },
                 label = { Text(stringResource(R.string.add_group_name)) },
-                keyboardOptions = tvAwareKeyboardOptions(),
+                keyboardOptions = nameKeyboardOptions(),
                 modifier = Modifier.fillMaxWidth().clearFocusOnBack()
             )
             Spacer(Modifier.height(16.dp))

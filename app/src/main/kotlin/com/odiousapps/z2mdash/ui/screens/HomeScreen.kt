@@ -162,6 +162,7 @@ import com.odiousapps.z2mdash.ui.tv.TvScrollbarWidth
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.onDpadSelect
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
+import com.odiousapps.z2mdash.ui.tv.nameKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.tvFocusIndicator
 import kotlinx.coroutines.CancellationException
@@ -1895,7 +1896,7 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         value = renameText,
                         onValueChange = { renameText = it },
                         label = { Text(stringResource(R.string.broker_name)) },
-                        keyboardOptions = tvAwareKeyboardOptions(),
+                        keyboardOptions = nameKeyboardOptions(),
                         modifier = Modifier.clearFocusOnBack()
                     )
                     Spacer(Modifier.height(16.dp))
@@ -2071,7 +2072,8 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
                         value = duplicateClusterNameText,
                         onValueChange = { duplicateClusterNameText = it },
                         label = { Text(stringResource(R.string.home_cluster_name)) },
-                        singleLine = true
+                        singleLine = true,
+                        keyboardOptions = nameKeyboardOptions()
                     )
                 }
             },

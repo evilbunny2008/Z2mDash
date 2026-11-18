@@ -63,6 +63,7 @@ import com.odiousapps.z2mdash.ui.components.iconFor
 import com.odiousapps.z2mdash.data.pushPanelDetailsIfAutoConfigured
 import com.odiousapps.z2mdash.data.pushPanelRemovalIfAutoConfigured
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
+import com.odiousapps.z2mdash.ui.tv.nameKeyboardOptions
 import com.odiousapps.z2mdash.ui.tv.tvAwareKeyboardOptions
 import java.util.UUID
 
@@ -348,7 +349,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     value = label,
                     onValueChange = { label = it },
                     label = { Text(stringResource(R.string.panel_label)) },
-                    keyboardOptions = tvAwareKeyboardOptions(),
+                    keyboardOptions = nameKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 
@@ -358,7 +359,7 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                     onValueChange = { clusterName = it },
                     label = { Text(stringResource(R.string.panel_cluster)) },
                     placeholder = { Text(stringResource(R.string.panel_cluster_hint)) },
-                    keyboardOptions = tvAwareKeyboardOptions(),
+                    keyboardOptions = nameKeyboardOptions(),
                     modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                 )
 

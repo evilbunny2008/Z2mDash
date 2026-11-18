@@ -1,0 +1,2 @@
+- Temperature alerts are much less chatty: each one fires at most once every 8 hours, and needs the reading to come back a full degree before it can fire again.
+- Group, cluster and panel name fields now start each word with a capital letter.

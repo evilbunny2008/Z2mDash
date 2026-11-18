@@ -32,7 +32,9 @@ import kotlinx.coroutines.launch
  * side fires once on the
  * crossing, then re-arms only after the reading has come back by at least [HYSTERESIS] (clearing
  * that notification at the same time), so a reading hovering right on the limit doesn't
- * re-notify on every small wobble.
+ * re-notify on every small wobble. Even once re-armed, a side stays quiet for [COOLDOWN_MILLIS]
+ * after it last notified: a 0.5° margin alone still let an afternoon hovering around the limit
+ * notify roughly hourly, when the point is one heads-up per hot day or cold night.
  *
  * Follows WateringAlertManager's lead on everything that made that one fire spuriously: readings
  * are ignored until the panel's own broker is actually connected (the payloads map is pre-seeded
@@ -56,6 +58,9 @@ class TemperatureAlertManager(
     // run. Doubles as the first-observation marker, the same way WateringAlertManager.lastMidpoint
     // does (see the class doc).
     private val lastLimits = mutableMapOf<String, TemperatureAlertLimits>()
+
+    // When each notification key (see highKey/lowKey) last actually notified - see COOLDOWN_MILLIS.
+    private val lastNotifiedAt = mutableMapOf<String, Long>()
 
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
@@ -101,6 +106,11 @@ class TemperatureAlertManager(
             val low = limits.low
 
             if (lastLimits[panel.id] != limits) {
+                // Fresh limits get a fresh cooldown - the user is asking to be told about these.
+                if (lastLimits[panel.id] != null) {
+                    lastNotifiedAt.remove(highKey(panel.id))
+                    lastNotifiedAt.remove(lowKey(panel.id))
+                }
                 lastLimits[panel.id] = limits
                 resync(panel.id, high != null && currentValue >= high, panelsAboveHigh, highKey(panel.id))
                 resync(panel.id, low != null && currentValue <= low, panelsBelowLow, lowKey(panel.id))
@@ -111,7 +121,7 @@ class TemperatureAlertManager(
             if (high != null) {
                 if (panel.id !in panelsAboveHigh && currentValue >= high) {
                     panelsAboveHigh.add(panel.id)
-                    if (config.temperatureAlertsEnabled) {
+                    if (config.temperatureAlertsEnabled && isOffCooldown(highKey(panel.id))) {
                         notifyTemperature(
                             highKey(panel.id),
                             title = context.getString(R.string.temperature_notif_high_title, name, format(panel, currentValue)),
@@ -126,7 +136,7 @@ class TemperatureAlertManager(
             if (low != null) {
                 if (panel.id !in panelsBelowLow && currentValue <= low) {
                     panelsBelowLow.add(panel.id)
-                    if (config.temperatureAlertsEnabled) {
+                    if (config.temperatureAlertsEnabled && isOffCooldown(lowKey(panel.id))) {
                         notifyTemperature(
                             lowKey(panel.id),
                             title = context.getString(R.string.temperature_notif_low_title, name, format(panel, currentValue)),
@@ -139,6 +149,14 @@ class TemperatureAlertManager(
                 }
             }
         }
+    }
+
+    /** Whether [key] may notify again, recording now as its latest notification if so. */
+    private fun isOffCooldown(key: String): Boolean {
+        val now = System.currentTimeMillis()
+        if (now - (lastNotifiedAt[key] ?: 0L) < COOLDOWN_MILLIS) return false
+        lastNotifiedAt[key] = now
+        return true
     }
 
     /** Silently records which side of one limit [panelId] is on - see the class doc's resync paragraph. */
@@ -209,7 +227,9 @@ class TemperatureAlertManager(
         private const val CHANNEL_ID = "temperature_alert"
         private const val TEST_ALERT_KEY = "test|Z2mDash temperature test alert"
         // In the sensor's own units (normally °C).
-        private const val HYSTERESIS = 0.5
+        private const val HYSTERESIS = 1.0
+        // Long enough to cover a whole hot afternoon or cold night with a single notification.
+        private const val COOLDOWN_MILLIS = 8 * 60 * 60 * 1000L
 
         /**
          * Whether tapping [panel]'s reading opens the temperature limits dialog - a live
