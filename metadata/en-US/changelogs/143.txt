@@ -1,0 +1,1 @@
+- Discover: devices are listed alphabetically, devices that haven't reported since the app started listening now show up straight away, and leftover entries for renamed or removed devices are hidden.

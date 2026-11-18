@@ -8,6 +8,7 @@ import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.add
 import kotlinx.serialization.json.addJsonObject
+import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.doubleOrNull
@@ -24,7 +25,9 @@ import kotlinx.serialization.json.putJsonArray
  */
 object SensorDiscovery {
 
-    data class DiscoveredField(val key: String, val sampleValue: Double)
+    // [sampleValue] is null for a field only known from the device's "bridge/devices" exposes -
+    // it hasn't published a reading since this phone started listening.
+    data class DiscoveredField(val key: String, val sampleValue: Double?)
 
     data class DiscoveredSensor(
         val topic: String,
@@ -151,17 +154,93 @@ object SensorDiscovery {
     private val ignoredSuffixes = listOf("/set", "/get", "/availability", "/ideal", "/app", "/config")
     private val ignoredSubstrings = listOf("/bridge/")
 
+    /**
+     * Every sensor-like topic on a broker, alphabetically. Built from two sources: state payloads
+     * actually received, and each Zigbee2MQTT network's retained "bridge/devices" list. The latter
+     * matters because Zigbee2MQTT doesn't retain device state by default, so a device that reports
+     * rarely (e.g. a tank level sensor) would otherwise never show up until it next happened to
+     * publish while this screen was open; its numeric exposes stand in for fields until then. The
+     * device list also identifies leftover IEEE-address topics (cached from before a device was
+     * renamed, or after it was removed) so they're hidden rather than listed alongside the real one.
+     */
     fun discoverSensors(payloadsForBroker: Map<String, String>): List<DiscoveredSensor> {
         val allTopics = payloadsForBroker.keys
-        return payloadsForBroker.mapNotNull { (topic, payload) ->
-            if (isIgnorable(topic)) return@mapNotNull null
+        val exposedFieldsByTopic = zigbeeDeviceFieldsOf(payloadsForBroker)
+        val friendlyTopics = exposedFieldsByTopic.keys
+        val listedBaseTopics = payloadsForBroker.keys
+            .filter { it.endsWith(BRIDGE_DEVICES_SUFFIX) }
+            .map { it.removeSuffix(BRIDGE_DEVICES_SUFFIX) }
+
+        fun isStaleDeviceTopic(topic: String): Boolean = topic !in friendlyTopics && listedBaseTopics.any { base ->
+            topic.startsWith("$base/") && IEEE_ADDRESS.matches(topic.removePrefix("$base/"))
+        }
+
+        fun sensorFor(topic: String, fields: List<DiscoveredField>) = DiscoveredSensor(
+            topic, fields, "$topic/ideal".takeIf { it in allTopics }, "$topic/app".takeIf { it in allTopics }
+        )
+
+        val fromPayloads = payloadsForBroker.mapNotNull { (topic, payload) ->
+            if (isIgnorable(topic) || isStaleDeviceTopic(topic)) return@mapNotNull null
             val fields = numericFieldsOf(payload)
-            if (fields.isEmpty()) return@mapNotNull null
-            val idealTopic = "$topic/ideal".takeIf { it in allTopics }
-            val appTopic = "$topic/app".takeIf { it in allTopics }
-            DiscoveredSensor(topic, fields, idealTopic, appTopic)
-        }.sortedWith(compareByDescending<DiscoveredSensor> { it.appConfigTopic != null }.thenBy { it.topic })
+            // Exposed fields the latest payload happened to leave out are still offered.
+            val unseen = exposedFieldsByTopic[topic].orEmpty()
+                .filter { key -> fields.none { it.key == key } }
+                .map { DiscoveredField(it, null) }
+            if (fields.isEmpty() && unseen.isEmpty()) return@mapNotNull null
+            sensorFor(topic, fields + unseen)
+        }
+        val seenTopics = fromPayloads.map { it.topic }.toSet()
+        val fromDeviceLists = exposedFieldsByTopic.mapNotNull { (topic, keys) ->
+            if (topic in seenTopics || keys.isEmpty()) null else sensorFor(topic, keys.map { DiscoveredField(it, null) })
+        }
+        return (fromPayloads + fromDeviceLists).sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.topic })
     }
+
+    private const val BRIDGE_DEVICES_SUFFIX = "/bridge/devices"
+    // Zigbee2MQTT's default friendly name for a device that's never been renamed.
+    private val IEEE_ADDRESS = Regex("0x[0-9a-fA-F]{16}")
+
+    /**
+     * "<base>/<friendly name>" -> numeric state fields, for every non-coordinator, enabled device in
+     * each "<base>/bridge/devices" list among [payloads]. A field counts when it's a numeric expose
+     * Zigbee2MQTT publishes in state (access bit 1), found either at the top level or one level
+     * down inside a specific type (light, climate, ...) - never inside a "composite", whose
+     * property is a nested object rather than a top-level payload field.
+     */
+    private fun zigbeeDeviceFieldsOf(payloads: Map<String, String>): Map<String, List<String>> {
+        val result = mutableMapOf<String, List<String>>()
+        payloads.filterKeys { it.endsWith(BRIDGE_DEVICES_SUFFIX) }.forEach { (devicesTopic, payload) ->
+            val base = devicesTopic.removeSuffix(BRIDGE_DEVICES_SUFFIX)
+            val devices = try {
+                Json.parseToJsonElement(payload) as? JsonArray
+            } catch (_: Exception) {
+                null
+            } ?: return@forEach
+            devices.forEach { element ->
+                val device = element as? JsonObject ?: return@forEach
+                if ((device["type"] as? JsonPrimitive)?.contentOrNull == "Coordinator") return@forEach
+                if ((device["disabled"] as? JsonPrimitive)?.booleanOrNull == true) return@forEach
+                val name = (device["friendly_name"] as? JsonPrimitive)?.contentOrNull ?: return@forEach
+                val exposes = ((device["definition"] as? JsonObject)?.get("exposes") as? JsonArray).orEmpty()
+                result["$base/$name"] = numericExposedProperties(exposes, depth = 0).distinct()
+            }
+        }
+        return result
+    }
+
+    private fun numericExposedProperties(exposes: List<JsonElement>, depth: Int): List<String> =
+        exposes.flatMap { element ->
+            val expose = element as? JsonObject ?: return@flatMap emptyList()
+            val type = (expose["type"] as? JsonPrimitive)?.contentOrNull
+            val property = (expose["property"] as? JsonPrimitive)?.contentOrNull
+            val access = (expose["access"] as? JsonPrimitive)?.intOrNull ?: 0
+            when {
+                type == "numeric" && property != null && access and 1 != 0 -> listOf(property)
+                type != "composite" && depth == 0 ->
+                    numericExposedProperties((expose["features"] as? JsonArray).orEmpty(), depth + 1)
+                else -> emptyList()
+            }
+        }
 
     /**
      * Rewrites a device's "/app" payload with updated ordering - panel_order for sensor fields,

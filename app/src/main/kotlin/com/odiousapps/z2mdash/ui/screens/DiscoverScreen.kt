@@ -407,7 +407,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                                 Column(Modifier.weight(1f)) {
                                     Text(stringResource(R.string.discover_field, SensorDiscovery.suggestedLabel(field.key), field.key))
                                     Text(
-                                        stringResource(R.string.discover_sample, field.sampleValue.toString()),
+                                        stringResource(R.string.discover_sample, field.sampleValue?.toString() ?: "--"),
                                         style = MaterialTheme.typography.bodySmall
                                     )
                                 }
