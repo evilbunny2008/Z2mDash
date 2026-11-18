@@ -1,0 +1,1 @@
+- Discover: every device with tiles on the dashboard is now marked "Already on the dashboard", not just ones whose /app config is on the broker.

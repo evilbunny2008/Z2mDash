@@ -105,6 +105,20 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
     fun isAutoConfigured(sensor: SensorDiscovery.DiscoveredSensor): Boolean = config.autoConfiguredDevices.any {
         it.brokerId == selectedBrokerId && it.appConfigTopic == sensor.appConfigTopic
     }
+    // Wider than isAutoConfigured, which only matches while the device's "/app" topic is on the
+    // broker - any tile reading or controlling this topic counts, however it was added.
+    val dashboardTopics = remember(config, selectedBrokerId) {
+        config.autoConfiguredDevices.filter { it.brokerId == selectedBrokerId }.map { it.sensorTopic }.toSet() +
+            config.groups.asSequence().flatMap { it.panels }.filter { it.brokerId == selectedBrokerId }.flatMap { panel ->
+                when (panel) {
+                    is Panel.Sensor -> listOf(panel.topic)
+                    is Panel.Toggle -> listOf(panel.stateTopic, panel.commandTopic.removeSuffix("/set"))
+                    is Panel.Button -> listOf(panel.commandTopic.removeSuffix("/set"))
+                }
+            }.toSet()
+    }
+    fun isOnDashboard(sensor: SensorDiscovery.DiscoveredSensor): Boolean =
+        sensor.topic in dashboardTopics || isAutoConfigured(sensor)
     val configurableSensors = discovered.filterNot { isAutoConfigured(it) }
     val selectedCount = selections.values.count { it }
 
@@ -340,7 +354,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                     ) {
                         Column(Modifier.weight(1f)) {
                             Text(sensor.topic, style = MaterialTheme.typography.titleSmall)
-                            if (isAutoConfigured(sensor)) {
+                            if (isOnDashboard(sensor)) {
                                 Text(
                                     stringResource(R.string.discover_already_configured),
                                     style = MaterialTheme.typography.bodySmall,
