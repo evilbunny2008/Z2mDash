@@ -164,6 +164,17 @@ class MqttConnection(private val broker: Broker) {
         }
     }
 
+    /**
+     * Sends SUBSCRIBE for [topic] again even if it's already tracked, so the broker redelivers
+     * every matching retained message - the deliberate version of what [subscribe] avoids, for a
+     * user-requested rescan.
+     */
+    fun resubscribe(topic: String) {
+        if (topic.isBlank()) return
+        subscribedTopics.add(topic)
+        if (_connectionState.value == ConnectionState.CONNECTED) doSubscribe(topic)
+    }
+
     /** Snapshot of every topic filter currently subscribed (or queued until connected). */
     fun currentSubscriptions(): Set<String> = subscribedTopics.toSet()
 

@@ -202,6 +202,19 @@ class MqttConnectionManager(
         wildcardTopicsFor(broker).forEach { connections[brokerId]?.subscribe(it) }
     }
 
+    /**
+     * Discover's refresh button: drops payloads nothing watches any more, then re-sends SUBSCRIBE
+     * for the broker's base topics so the broker replays every retained message under them (a
+     * plain [discoverAll] is a no-op once subscribed). Connects first if the broker isn't.
+     */
+    fun rescan(brokerId: String) {
+        val broker = brokerById[brokerId] ?: return
+        val conn = connections[brokerId] ?: return
+        pruneUnwatchedPayloads()
+        if (conn.connectionState.value != ConnectionState.CONNECTED) conn.connect()
+        wildcardTopicsFor(broker).forEach { conn.resubscribe(it) }
+    }
+
     /** Backstop: keeps the cache fresh during long, quiet steady-state periods. */
     fun startPersistingCache() {
         scope.launch(Dispatchers.Default) {

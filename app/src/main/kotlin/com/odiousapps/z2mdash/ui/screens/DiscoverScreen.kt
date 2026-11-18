@@ -25,6 +25,7 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -53,11 +54,13 @@ import com.odiousapps.z2mdash.data.AutoConfiguredDevice
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.PanelCluster
 import com.odiousapps.z2mdash.data.PanelGroup
+import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
 import com.odiousapps.z2mdash.data.withClusterId
 import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.nameKeyboardOptions
 import java.util.UUID
+import kotlinx.coroutines.delay
 
 private const val NEW_GROUP_ID = "__new_group__"
 
@@ -94,9 +97,25 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
         if (selectedBrokerId.isNotBlank()) app.connectionManager.discoverAll(selectedBrokerId)
     }
 
-    val brokerPayloads = remember(allPayloads, selectedBrokerId) {
+    // Only topics under the broker's current base topic(s) - a tile or autoconfigured device still
+    // pointing at a base topic since removed from the broker keeps that one topic subscribed (and
+    // cached), which otherwise listed it here as if the old namespace were still in use.
+    val baseTopics = remember(config, selectedBrokerId) {
+        config.brokers.find { it.id == selectedBrokerId }?.let { PermitJoin.parseBaseTopics(it.baseTopic) }.orEmpty()
+    }
+    val brokerPayloads = remember(allPayloads, selectedBrokerId, baseTopics) {
         val prefix = "$selectedBrokerId|"
         allPayloads.filterKeys { it.startsWith(prefix) }.mapKeys { it.key.removePrefix(prefix) }
+            .filterKeys { topic -> baseTopics.any { topic == it || topic.startsWith("$it/") } }
+    }
+    // Brief progress bar after tapping refresh - retained messages replay in well under this, and
+    // without it the tap looked like it did nothing whenever the list didn't change.
+    var rescanning by remember { mutableStateOf(false) }
+    LaunchedEffect(rescanning) {
+        if (rescanning) {
+            delay(1500)
+            rescanning = false
+        }
     }
     val discovered = remember(brokerPayloads) { SensorDiscovery.discoverSensors(brokerPayloads) }
     // Already-autoconfigured devices are still listed (hiding them made a device that was on the
@@ -200,8 +219,11 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
                         }
                     }
                     IconButton(onClick = {
-                        if (selectedBrokerId.isNotBlank()) app.connectionManager.discoverAll(selectedBrokerId)
-                    }) {
+                        if (selectedBrokerId.isNotBlank()) {
+                            app.connectionManager.rescan(selectedBrokerId)
+                            rescanning = true
+                        }
+                    }, enabled = !rescanning) {
                         Icon(Icons.Default.Refresh, contentDescription = stringResource(R.string.discover_rescan))
                     }
                 }
@@ -246,6 +268,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
             }
         }
     ) { padding ->
+        if (rescanning) LinearProgressIndicator(Modifier.padding(padding).fillMaxWidth())
         Column(modifier = Modifier.padding(padding).verticalScroll(rememberScrollState()).padding(16.dp)) {
             if (config.brokers.isEmpty()) {
                 Text(stringResource(R.string.discover_no_broker))

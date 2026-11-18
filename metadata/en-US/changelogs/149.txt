@@ -1,0 +1,2 @@
+Discover only lists devices under the broker's current base topics - entries from removed base topics no longer linger.
+Discover's refresh button now really rescans (the broker replays its retained messages) and shows a progress bar while it does.
