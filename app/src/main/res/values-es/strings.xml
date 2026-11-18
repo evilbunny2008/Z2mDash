@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">No había clústeres en ‘%1$s’ con ese tema</string>
 	<string name="home_search_clusters">Buscar clústeres</string>
 	<string name="home_stale_description">Los datos tienen más de una hora</string>
+	<string name="home_tank_capacity">Capacidad total</string>
+	<string name="home_tank_capacity_hint" formatted="false">El mosaico de volumen muestra el nivel % × esta capacidad.</string>
+	<string name="home_tank_capacity_title">Capacidad del depósito de ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Avisar al subir a</string>
 	<string name="home_temperature_limit_low">Avisar al bajar a</string>
 	<string name="home_temperature_limits_hint">Deja un límite en blanco para desactivarlo</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">p.ej. estado</string>
 	<string name="panel_state_topic">Tema estatal (opcional)</string>
 	<string name="panel_state_topic_hint">p.ej. zigbee2mqtt/Enchufe Cocina</string>
+	<string name="panel_tank_capacity">Capacidad del depósito</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Muestra la lectura (un %) como esa parte de un depósito lleno. En blanco para una lectura normal</string>
 	<string name="panel_topic">Tema</string>
 	<string name="panel_topic_hint">p.ej. zigbee2mqtt/Sensor de suelo 1</string>
 	<string name="panel_type_button">Botón</string>

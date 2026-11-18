@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ içinde bu konuyla ilgili hiçbir küme yoktu</string>
 	<string name="home_search_clusters">Kümeleri arayın</string>
 	<string name="home_stale_description">Veriler bir saatten daha eski</string>
+	<string name="home_tank_capacity">Tam kapasite</string>
+	<string name="home_tank_capacity_hint" formatted="false">Hacim kutucuğu seviye % × bu kapasiteyi gösterir.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ için depo kapasitesi</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Hacim</string>
 	<string name="home_temperature_limit_high">Şu değere yükselince bildir</string>
 	<string name="home_temperature_limit_low">Şu değere düşünce bildir</string>
 	<string name="home_temperature_limits_hint">Kapatmak için bir sınırı boş bırakın</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">örneğin durum</string>
 	<string name="panel_state_topic">Konuyu belirtin (isteğe bağlı)</string>
 	<string name="panel_state_topic_hint">örneğin zigbee2mqtt/Mutfak Fişi</string>
+	<string name="panel_tank_capacity">Depo kapasitesi</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Okumayı (%) dolu deponun o payı olarak gösterir. Normal okuma için boş bırakın</string>
 	<string name="panel_topic">Başlık</string>
 	<string name="panel_topic_hint">örneğin zigbee2mqtt/Toprak Sensörü 1</string>
 	<string name="panel_type_button">Düğme</string>

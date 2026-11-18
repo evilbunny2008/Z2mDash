@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ এর কোনো ক্লাস্টার সেই বিষয়ে ছিল না</string>
 	<string name="home_search_clusters">অনুসন্ধান ক্লাস্টার</string>
 	<string name="home_stale_description">ডেটা এক ঘণ্টারও বেশি পুরনো৷</string>
+	<string name="home_tank_capacity">পূর্ণ ধারণক্ষমতা</string>
+	<string name="home_tank_capacity_hint" formatted="false">আয়তন টাইলটি স্তর % × এই ধারণক্ষমতা দেখায়।</string>
+	<string name="home_tank_capacity_title">‘%1$s’-এর ট্যাঙ্কের ধারণক্ষমতা</string>
+	<string name="home_tank_capacity_unit">লি</string>
+	<string name="home_tank_volume_label">আয়তন</string>
 	<string name="home_temperature_limit_high">এতে উঠলে জানান</string>
 	<string name="home_temperature_limit_low">এতে নামলে জানান</string>
 	<string name="home_temperature_limits_hint">সীমা বন্ধ করতে এটি ফাঁকা রাখুন</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">যেমন রাষ্ট্র</string>
 	<string name="panel_state_topic">রাজ্য বিষয় (ঐচ্ছিক)</string>
 	<string name="panel_state_topic_hint">যেমন zigbee2mqtt/কিচেন প্লাগ</string>
+	<string name="panel_tank_capacity">ট্যাঙ্কের ধারণক্ষমতা</string>
+	<string name="panel_tank_capacity_hint" formatted="false">রিডিংটি (%) পূর্ণ ট্যাঙ্কের অংশ হিসেবে দেখায়। সাধারণ রিডিংয়ের জন্য ফাঁকা রাখুন</string>
 	<string name="panel_topic">বিষয়</string>
 	<string name="panel_topic_hint">যেমন zigbee2mqtt/মাটি সেন্সর 1</string>
 	<string name="panel_type_button">বোতাম</string>

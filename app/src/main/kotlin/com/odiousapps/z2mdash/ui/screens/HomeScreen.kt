@@ -129,6 +129,7 @@ import com.odiousapps.z2mdash.data.PanelGroup
 import com.odiousapps.z2mdash.data.PendingAutoConfigDevice
 import com.odiousapps.z2mdash.data.PermitJoin
 import com.odiousapps.z2mdash.data.SensorDiscovery
+import com.odiousapps.z2mdash.data.StableIds
 import com.odiousapps.z2mdash.data.TemperatureAlertLimits
 import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.data.clearRetainedAppTopicsForOrphanedDevices
@@ -143,6 +144,7 @@ import com.odiousapps.z2mdash.data.pushClusterBatteryTypeForAutoConfiguredDevice
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
+import com.odiousapps.z2mdash.data.pushPanelDetailsIfAutoConfigured
 import com.odiousapps.z2mdash.data.retopicClusterAndPublish
 import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
 import com.odiousapps.z2mdash.mqtt.LowBatteryAlertManager
@@ -271,13 +273,23 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
     var pendingTemperatureLimits by remember { mutableStateOf<Panel.Sensor?>(null) }
     var temperatureHighText by remember { mutableStateOf("") }
     var temperatureLowText by remember { mutableStateOf("") }
+    var pendingTankCapacity by remember { mutableStateOf<PendingTankCapacity?>(null) }
+    var tankCapacityText by remember { mutableStateOf("") }
     // Shared by every PanelTile (standalone or inside a ClusterCard) - reads the sensor's current
     // raw value fresh rather than trusting any composed/cached display string, so the dialog
     // prefills with what's actually retained right now. A live temperature reading's tap opens
     // its alert limits instead (see TemperatureAlertManager), prefilled from this phone's own
-    // config - there's no value of its own to edit.
+    // config - there's no value of its own to edit. A tank level or volume tile's tap opens the
+    // tank's capacity instead - see PendingTankCapacity.
     val onEditSensorValue: (Panel.Sensor) -> Unit = { sensorPanel ->
-        if (TemperatureAlertManager.isTemperatureAlertPanel(sensorPanel)) {
+        val group = app.configRepository.config.value.groups.find { g -> g.panels.any { it.id == sensorPanel.id } }
+        if (group != null && (sensorPanel.tankCapacity != null || isTankLevelPanel(sensorPanel))) {
+            val volumePanel = if (sensorPanel.tankCapacity != null) sensorPanel else group.panels
+                .filterIsInstance<Panel.Sensor>()
+                .find { it.tankCapacity != null && it.brokerId == sensorPanel.brokerId && it.topic == sensorPanel.topic && it.jsonPath == sensorPanel.jsonPath }
+            tankCapacityText = volumePanel?.tankCapacity?.let(::formatLimit).orEmpty()
+            pendingTankCapacity = PendingTankCapacity(group.id, sensorPanel, volumePanel)
+        } else if (TemperatureAlertManager.isTemperatureAlertPanel(sensorPanel)) {
             val limits = app.configRepository.config.value.temperatureAlertLimits[sensorPanel.id]
             temperatureHighText = limits?.high?.let(::formatLimit).orEmpty()
             temperatureLowText = limits?.low?.let(::formatLimit).orEmpty()
@@ -2279,9 +2291,88 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             dismissButton = { TextButton(onClick = { pendingTemperatureLimits = null }) { Text(stringResource(R.string.common_cancel)) } }
         )
     }
+
+    pendingTankCapacity?.let { pending ->
+        val panel = pending.tappedPanel
+        val capacity = parseLimit(tankCapacityText)?.takeIf { it > 0 }
+        val capacityValid = tankCapacityText.isBlank() || capacity != null
+        AlertDialog(
+            onDismissRequest = { pendingTankCapacity = null },
+            title = { Text(stringResource(R.string.home_tank_capacity_title, config.clusterNameOf(panel).ifBlank { panel.label })) },
+            text = {
+                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedTextField(
+                        value = tankCapacityText,
+                        onValueChange = { tankCapacityText = it },
+                        label = { Text(stringResource(R.string.home_tank_capacity)) },
+                        suffix = { Text(stringResource(R.string.home_tank_capacity_unit)) },
+                        isError = !capacityValid,
+                        singleLine = true,
+                        keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number))
+                    )
+                    Text(
+                        stringResource(R.string.home_tank_capacity_hint),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        val volumePanel = pending.volumePanel
+                        if (volumePanel != null) {
+                            val updated = volumePanel.copy(tankCapacity = capacity)
+                            app.configRepository.updatePanel(pending.groupId, updated)
+                            pushPanelDetailsIfAutoConfigured(app, volumePanel, updated)
+                        } else {
+                            // Reads the same field as the level tile, so it always tracks it -
+                            // just shown as litres rather than a percentage, and right after it.
+                            app.configRepository.addPanelToGroup(
+                                pending.groupId,
+                                panel.copy(
+                                    id = StableIds.newId(),
+                                    label = app.getString(R.string.home_tank_volume_label),
+                                    unit = app.getString(R.string.home_tank_capacity_unit),
+                                    icon = TileIcon.TANK,
+                                    decimals = 0,
+                                    idealRangeTopic = "",
+                                    tankCapacity = capacity
+                                )
+                            )
+                            if (panel.clusterId.isNotBlank()) {
+                                publishAppTopicForClusterIfMissing(app, pending.groupId, panel.clusterId)
+                            }
+                        }
+                        pendingTankCapacity = null
+                    },
+                    enabled = capacity != null
+                ) { Text(stringResource(if (pending.volumePanel != null) R.string.common_save else R.string.common_add)) }
+            },
+            dismissButton = { TextButton(onClick = { pendingTankCapacity = null }) { Text(stringResource(R.string.common_cancel)) } }
+        )
+    }
 }
 
-/** A temperature limit typed into the limits dialog - either decimal separator accepted. */
+/**
+ * Whether [panel] is a live water tank level (a percentage) - its tap opens the tank capacity
+ * dialog, which adds (or edits) its companion volume tile.
+ */
+private fun isTankLevelPanel(panel: Panel.Sensor): Boolean =
+    panel.icon == TileIcon.TANK && panel.tankCapacity == null && !panel.editable && panel.topic.isNotBlank()
+
+/**
+ * The tank capacity dialog, opened from either a tank level tile or its volume tile.
+ * [volumePanel] is the volume tile being edited, or null when the level tile has none yet - the
+ * dialog then adds one alongside [tappedPanel].
+ */
+private data class PendingTankCapacity(
+    val groupId: String,
+    val tappedPanel: Panel.Sensor,
+    val volumePanel: Panel.Sensor?
+)
+
+/** A temperature limit (or tank capacity) typed into its dialog - either decimal separator accepted. */
 private fun parseLimit(text: String): Double? = text.trim().replace(',', '.').toDoubleOrNull()
 
 /** A stored limit as prefilled back into the dialog - "28", not "28.0". */
@@ -2972,6 +3063,9 @@ private fun PanelTile(
                     // "true"/"false", with the icon itself carrying the detected state.
                     val value = when {
                         isPresenceField -> if (extracted != null) app.getString(if (isPresent) R.string.tile_presence_detected else R.string.tile_presence_clear) else "--"
+                        // A tank volume tile's reading is the fill percentage - see Panel.Sensor.tankCapacity.
+                        extracted != null && panel.tankCapacity != null -> extracted.toDoubleOrNull()
+                            ?.let { percent -> "%,.${panel.decimals}f".format(percent / 100.0 * panel.tankCapacity) } ?: extracted
                         extracted != null -> extracted.toDoubleOrNull()?.let { num -> "%.${panel.decimals}f".format(num) } ?: extracted
                         else -> "--"
                     }
@@ -2990,7 +3084,8 @@ private fun PanelTile(
                 iconTint = if (derived.isPresenceField && derived.isPresent) MaterialTheme.colorScheme.primary else null,
                 scale = tileScale,
                 onEdit = { navController.navigate("group/$groupId/panel/${panel.id}") },
-                editable = panel.editable || TemperatureAlertManager.isTemperatureAlertPanel(panel),
+                editable = panel.editable || TemperatureAlertManager.isTemperatureAlertPanel(panel) ||
+                    isTankLevelPanel(panel) || panel.tankCapacity != null,
                 onEditValue = { onEditSensorValue(panel) }
             )
         }

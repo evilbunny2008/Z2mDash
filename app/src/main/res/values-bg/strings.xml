@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Нито един клъстер в „%1$s“ не беше в тази тема</string>
 	<string name="home_search_clusters">Търсене на клъстери</string>
 	<string name="home_stale_description">Данните са по-стари от един час</string>
+	<string name="home_tank_capacity">Пълен капацитет</string>
+	<string name="home_tank_capacity_hint" formatted="false">Плочката за обем показва нивото % × този капацитет.</string>
+	<string name="home_tank_capacity_title">Капацитет на резервоара за ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_volume_label">Обем</string>
 	<string name="home_temperature_limit_high">Известяване при покачване до</string>
 	<string name="home_temperature_limit_low">Известяване при спадане до</string>
 	<string name="home_temperature_limits_hint">Оставете граница празна, за да я изключите</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">напр. state</string>
 	<string name="panel_state_topic">Тема за състояние (по избор)</string>
 	<string name="panel_state_topic_hint">напр. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Капацитет на резервоара</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Показва показанието (%) като дял от пълен резервоар. Празно за обикновено показание</string>
 	<string name="panel_topic">Тема</string>
 	<string name="panel_topic_hint">напр. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Бутон</string>

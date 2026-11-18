@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Nessun cluster in ‘%1$s’ si trovava su quel topic</string>
 	<string name="home_search_clusters">Cerca cluster</string>
 	<string name="home_stale_description">I dati risalgono a più di un’ora fa</string>
+	<string name="home_tank_capacity">Capacità totale</string>
+	<string name="home_tank_capacity_hint" formatted="false">Il riquadro del volume mostra il livello % × questa capacità.</string>
+	<string name="home_tank_capacity_title">Capacità del serbatoio per ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Avvisa salendo a</string>
 	<string name="home_temperature_limit_low">Avvisa scendendo a</string>
 	<string name="home_temperature_limits_hint">Lascia vuoto un limite per disattivarlo</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">es. state</string>
 	<string name="panel_state_topic">Topic dello stato (facoltativo)</string>
 	<string name="panel_state_topic_hint">es. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Capacità del serbatoio</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Mostra la lettura (in %) come quota di un serbatoio pieno. Vuoto per una lettura normale</string>
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">es. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Pulsante</string>

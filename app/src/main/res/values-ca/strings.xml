@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Cap clúster de ‘%1$s’ era en aquest tema</string>
 	<string name="home_search_clusters">Cerca clústers</string>
 	<string name="home_stale_description">Les dades tenen més d’una hora</string>
+	<string name="home_tank_capacity">Capacitat total</string>
+	<string name="home_tank_capacity_hint" formatted="false">La rajola de volum mostra el nivell % × aquesta capacitat.</string>
+	<string name="home_tank_capacity_title">Capacitat del dipòsit per a ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volum</string>
 	<string name="home_temperature_limit_high">Avisa en pujar a</string>
 	<string name="home_temperature_limit_low">Avisa en baixar a</string>
 	<string name="home_temperature_limits_hint">Deixa un límit en blanc per desactivar-lo</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">p. ex. state</string>
 	<string name="panel_state_topic">Tema d’estat (opcional)</string>
 	<string name="panel_state_topic_hint">p. ex. zigbee2mqtt/Endoll cuina</string>
+	<string name="panel_tank_capacity">Capacitat del dipòsit</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Mostra la lectura (un %) com a part d’un dipòsit ple. En blanc per a una lectura normal</string>
 	<string name="panel_topic">Tema</string>
 	<string name="panel_topic_hint">p. ex. zigbee2mqtt/Sensor de terra 1</string>
 	<string name="panel_type_button">Botó</string>

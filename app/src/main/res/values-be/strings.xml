@@ -252,6 +252,11 @@
 	<string name="home_retopic_none">У ‘%1$s’ няма кластараў з гэтай тэмай</string>
 	<string name="home_search_clusters">Пошук кластараў</string>
 	<string name="home_stale_description">Даныя старэйшыя за гадзіну</string>
+	<string name="home_tank_capacity">Поўная ёмістасць</string>
+	<string name="home_tank_capacity_hint" formatted="false">Плітка аб’ёму паказвае ўзровень % × гэтую ёмістасць.</string>
+	<string name="home_tank_capacity_title">Ёмістасць бака для ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_volume_label">Аб’ём</string>
 	<string name="home_temperature_limit_high">Апавяшчаць пры павышэнні да</string>
 	<string name="home_temperature_limit_low">Апавяшчаць пры паніжэнні да</string>
 	<string name="home_temperature_limits_hint">Пакіньце ліміт пустым, каб адключыць яго</string>
@@ -328,6 +333,8 @@
 	<string name="panel_state_field_hint">напр. state</string>
 	<string name="panel_state_topic">Тэма стану (неабавязкова)</string>
 	<string name="panel_state_topic_hint">напр. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Ёмістасць бака</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Паказвае паказанне (%) як долю поўнага бака. Пуста — звычайнае паказанне</string>
 	<string name="panel_topic">Тэма</string>
 	<string name="panel_topic_hint">напр. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Кнопка</string>

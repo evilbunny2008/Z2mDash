@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Engir klasar í ‘%1$s’ voru á því efni</string>
 	<string name="home_search_clusters">Leita í klösum</string>
 	<string name="home_stale_description">Gögnin eru meira en klukkustundar gömul</string>
+	<string name="home_tank_capacity">Full rýmd</string>
+	<string name="home_tank_capacity_hint" formatted="false">Magnflísin sýnir stöðu % × þessa rýmd.</string>
+	<string name="home_tank_capacity_title">Rýmd tanks fyrir ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Magn</string>
 	<string name="home_temperature_limit_high">Láta vita við hækkun í</string>
 	<string name="home_temperature_limit_low">Láta vita við lækkun í</string>
 	<string name="home_temperature_limits_hint">Hafðu mörk auð til að slökkva á þeim</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">t.d. state</string>
 	<string name="panel_state_topic">Stöðuefni (valfrjálst)</string>
 	<string name="panel_state_topic_hint">t.d. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Rýmd tanks</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Sýnir mælinguna (%) sem hlut af fullum tanki. Autt fyrir venjulega mælingu</string>
 	<string name="panel_topic">Efni</string>
 	<string name="panel_topic_hint">t.d. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Hnappur</string>

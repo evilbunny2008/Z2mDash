@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">Tiada kluster dalam ‘%1$s’ berada pada topik itu</string>
 	<string name="home_search_clusters">Cari kluster</string>
 	<string name="home_stale_description">Data berusia lebih daripada sejam</string>
+	<string name="home_tank_capacity">Kapasiti penuh</string>
+	<string name="home_tank_capacity_hint" formatted="false">Jubin isi padu menunjukkan paras % × kapasiti ini.</string>
+	<string name="home_tank_capacity_title">Kapasiti tangki untuk ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Isi padu</string>
 	<string name="home_temperature_limit_high">Maklumkan apabila naik ke</string>
 	<string name="home_temperature_limit_low">Maklumkan apabila turun ke</string>
 	<string name="home_temperature_limits_hint">Biarkan had kosong untuk mematikannya</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">cth. state</string>
 	<string name="panel_state_topic">Topik keadaan (pilihan)</string>
 	<string name="panel_state_topic_hint">cth. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Kapasiti tangki</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Menunjukkan bacaan (%) sebagai bahagian tangki penuh. Kosongkan untuk bacaan biasa</string>
 	<string name="panel_topic">Topik</string>
 	<string name="panel_topic_hint">cth. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Butang</string>

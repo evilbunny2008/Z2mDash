@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Ниеден кластер во ‘%1$s’ не беше на таа тема</string>
 	<string name="home_search_clusters">Пребарај кластери</string>
 	<string name="home_stale_description">Податоците се постари од еден час</string>
+	<string name="home_tank_capacity">Полн капацитет</string>
+	<string name="home_tank_capacity_hint" formatted="false">Плочката за волумен го прикажува нивото % × овој капацитет.</string>
+	<string name="home_tank_capacity_title">Капацитет на резервоарот за ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_volume_label">Волумен</string>
 	<string name="home_temperature_limit_high">Извести при пораст до</string>
 	<string name="home_temperature_limit_low">Извести при пад до</string>
 	<string name="home_temperature_limits_hint">Оставете граница празна за да ја исклучите</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">на пр. state</string>
 	<string name="panel_state_topic">Тема за состојба (изборно)</string>
 	<string name="panel_state_topic_hint">на пр. zigbee2mqtt/Кујнски приклучок</string>
+	<string name="panel_tank_capacity">Капацитет на резервоарот</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Го прикажува отчитувањето (%) како дел од полн резервоар. Празно за обично отчитување</string>
 	<string name="panel_topic">Тема</string>
 	<string name="panel_topic_hint">на пр. zigbee2mqtt/Сензор за почва 1</string>
 	<string name="panel_type_button">Копче</string>

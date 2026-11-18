@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Geen clusters in ‘%1$s’ stonden op dat topic</string>
 	<string name="home_search_clusters">Clusters zoeken</string>
 	<string name="home_stale_description">Gegevens zijn meer dan een uur oud</string>
+	<string name="home_tank_capacity">Volledige inhoud</string>
+	<string name="home_tank_capacity_hint" formatted="false">De volumetegel toont het niveau % × deze inhoud.</string>
+	<string name="home_tank_capacity_title">Tankinhoud voor ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Melden bij stijgen tot</string>
 	<string name="home_temperature_limit_low">Melden bij dalen tot</string>
 	<string name="home_temperature_limits_hint">Laat een grens leeg om deze uit te zetten</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">bijv. state</string>
 	<string name="panel_state_topic">Statustopic (optioneel)</string>
 	<string name="panel_state_topic_hint">bijv. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Tankinhoud</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Toont de meting (in %) als dat deel van een volle tank. Leeg voor een gewone meting</string>
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">bijv. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Knop</string>

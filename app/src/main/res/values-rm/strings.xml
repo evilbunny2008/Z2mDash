@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Nagins clusters en ‘%1$s’ n’eran sin quel tema</string>
 	<string name="home_search_clusters">Tschertgar clusters</string>
 	<string name="home_stale_description">Las datas èn pli veglias ch’in’ura</string>
+	<string name="home_tank_capacity">Capacitad totala</string>
+	<string name="home_tank_capacity_hint" formatted="false">La plattetta da volumen mussa il nivel % × questa capacitad.</string>
+	<string name="home_tank_capacity_title">Capacitad dal reservuar per ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Avisar cun auzar sin</string>
 	<string name="home_temperature_limit_low">Avisar cun sbassar sin</string>
 	<string name="home_temperature_limits_hint">Laschar in limit vid per al deactivar</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">p.ex. state</string>
 	<string name="panel_state_topic">Tema dal stadi (facultativ)</string>
 	<string name="panel_state_topic_hint">p.ex. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Capacitad dal reservuar</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Mussa la mesira (en %) sco part d’in reservuar plain. Vid per ina mesira normala</string>
 	<string name="panel_topic">Tema</string>
 	<string name="panel_topic_hint">p.ex. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Buttun</string>

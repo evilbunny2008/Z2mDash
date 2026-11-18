@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">「%1$s」中没有关于该主题的集群</string>
 	<string name="home_search_clusters">搜索集群</string>
 	<string name="home_stale_description">数据已存在一个多小时了</string>
+	<string name="home_tank_capacity">满容量</string>
+	<string name="home_tank_capacity_hint" formatted="false">水量磁贴显示水位 % × 此容量。</string>
+	<string name="home_tank_capacity_title">‘%1$s’的水箱容量</string>
+	<string name="home_tank_capacity_unit">升</string>
+	<string name="home_tank_volume_label">水量</string>
 	<string name="home_temperature_limit_high">上升到此温度时通知</string>
 	<string name="home_temperature_limit_low">下降到此温度时通知</string>
 	<string name="home_temperature_limits_hint">留空即可关闭该限值</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">例如状态</string>
 	<string name="panel_state_topic">陈述主题（可选）</string>
 	<string name="panel_state_topic_hint">例如zigbee2mqtt/厨房插头</string>
+	<string name="panel_tank_capacity">水箱容量</string>
+	<string name="panel_tank_capacity_hint" formatted="false">将读数（%）显示为满箱的相应水量。留空则为普通读数</string>
 	<string name="panel_topic">话题</string>
 	<string name="panel_topic_hint">例如zigbee2mqtt/土壤传感器1</string>
 	<string name="panel_type_button">按钮</string>

@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ میں کوئی کلسٹر اس ٹاپک پر نہیں تھا</string>
 	<string name="home_search_clusters">کلسٹرز تلاش کریں</string>
 	<string name="home_stale_description">ڈیٹا ایک گھنٹے سے زیادہ پرانا ہے</string>
+	<string name="home_tank_capacity">مکمل گنجائش</string>
+	<string name="home_tank_capacity_hint" formatted="false">حجم ٹائل سطح % × یہ گنجائش دکھاتی ہے۔</string>
+	<string name="home_tank_capacity_title">‘%1$s’ کے ٹینک کی گنجائش</string>
+	<string name="home_tank_capacity_unit">لیٹر</string>
+	<string name="home_tank_volume_label">حجم</string>
 	<string name="home_temperature_limit_high">اتنا بڑھنے پر مطلع کریں</string>
 	<string name="home_temperature_limit_low">اتنا گھٹنے پر مطلع کریں</string>
 	<string name="home_temperature_limits_hint">کسی حد کو بند کرنے کے لیے اسے خالی چھوڑیں</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">مثلاً state</string>
 	<string name="panel_state_topic">حالت ٹاپک (اختیاری)</string>
 	<string name="panel_state_topic_hint">مثلاً zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ٹینک کی گنجائش</string>
+	<string name="panel_tank_capacity_hint" formatted="false">ریڈنگ (%) کو بھرے ٹینک کے حصے کے طور پر دکھاتا ہے۔ عام ریڈنگ کے لیے خالی چھوڑیں</string>
 	<string name="panel_topic">ٹاپک</string>
 	<string name="panel_topic_hint">مثلاً zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">بٹن</string>

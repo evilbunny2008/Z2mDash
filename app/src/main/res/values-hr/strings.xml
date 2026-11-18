@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Nijedan klaster u ‘%1$s’ nije bio na toj temi</string>
 	<string name="home_search_clusters">Pretraži klastere</string>
 	<string name="home_stale_description">Podaci su stariji od sat vremena</string>
+	<string name="home_tank_capacity">Puni kapacitet</string>
+	<string name="home_tank_capacity_hint" formatted="false">Pločica volumena prikazuje razinu % × ovaj kapacitet.</string>
+	<string name="home_tank_capacity_title">Kapacitet spremnika za ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Obavijesti pri porastu na</string>
 	<string name="home_temperature_limit_low">Obavijesti pri padu na</string>
 	<string name="home_temperature_limits_hint">Ostavite granicu praznom da biste je isključili</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">npr. state</string>
 	<string name="panel_state_topic">Tema stanja (neobavezno)</string>
 	<string name="panel_state_topic_hint">npr. zigbee2mqtt/Kuhinjska utičnica</string>
+	<string name="panel_tank_capacity">Kapacitet spremnika</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Prikazuje očitanje (u %) kao udio punog spremnika. Prazno za obično očitanje</string>
 	<string name="panel_topic">Tema</string>
 	<string name="panel_topic_hint">npr. zigbee2mqtt/Senzor tla 1</string>
 	<string name="panel_type_button">Gumb</string>

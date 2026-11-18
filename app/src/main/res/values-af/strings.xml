@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Geen klusters in ‘%1$s’ was op daardie onderwerp nie</string>
 	<string name="home_search_clusters">Soek klusters</string>
 	<string name="home_stale_description">Data is meer as ’n uur oud</string>
+	<string name="home_tank_capacity">Volle kapasiteit</string>
+	<string name="home_tank_capacity_hint" formatted="false">Die volumeteël wys die vlak % × hierdie kapasiteit.</string>
+	<string name="home_tank_capacity_title">Tenkkapasiteit vir ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Stel in kennis wanneer dit styg tot</string>
 	<string name="home_temperature_limit_low">Stel in kennis wanneer dit daal tot</string>
 	<string name="home_temperature_limits_hint">Laat ’n limiet leeg om dit af te skakel</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">bv. state</string>
 	<string name="panel_state_topic">Toestandonderwerp (opsioneel)</string>
 	<string name="panel_state_topic_hint">bv. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Tenkkapasiteit</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Wys die lesing (’n %) as daardie deel van ’n vol tenk. Leeg vir ’n gewone lesing</string>
 	<string name="panel_topic">Onderwerp</string>
 	<string name="panel_topic_hint">bv. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Knoppie</string>

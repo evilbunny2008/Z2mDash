@@ -1,0 +1,1 @@
+- Water tank support: tap a level tile with the new "Tank" icon, enter the tank's full capacity, and a separate tile shows the estimated litres, tracking the level as it changes.

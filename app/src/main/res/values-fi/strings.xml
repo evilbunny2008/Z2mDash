@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Yksikään ryhmän ‘%1$s’ klusteri ei ollut tuossa aiheessa</string>
 	<string name="home_search_clusters">Hae klustereita</string>
 	<string name="home_stale_description">Tiedot ovat yli tunnin vanhoja</string>
+	<string name="home_tank_capacity">Täysi tilavuus</string>
+	<string name="home_tank_capacity_hint" formatted="false">Määräruutu näyttää pinnankorkeuden % × tämän tilavuuden.</string>
+	<string name="home_tank_capacity_title">Säiliön tilavuus: ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_volume_label">Määrä</string>
 	<string name="home_temperature_limit_high">Ilmoita noustessa arvoon</string>
 	<string name="home_temperature_limit_low">Ilmoita laskiessa arvoon</string>
 	<string name="home_temperature_limits_hint">Jätä raja tyhjäksi poistaaksesi sen käytöstä</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">esim. state</string>
 	<string name="panel_state_topic">Tila–aihe (valinnainen)</string>
 	<string name="panel_state_topic_hint">esim. zigbee2mqtt/Keittiön pistorasia</string>
+	<string name="panel_tank_capacity">Säiliön tilavuus</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Näyttää lukeman (%) osuutena täydestä säiliöstä. Tyhjä tavalliselle lukemalle</string>
 	<string name="panel_topic">Aihe</string>
 	<string name="panel_topic_hint">esim. zigbee2mqtt/Maa–anturi 1</string>
 	<string name="panel_type_button">Painike</string>

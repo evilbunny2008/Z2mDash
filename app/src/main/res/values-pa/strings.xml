@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ ਵਿੱਚ ਕੋਈ ਵੀ ਕਲੱਸਟਰ ਉਸ ਵਿਸ਼ੇ ’ਤੇ ਨਹੀਂ ਸੀ</string>
 	<string name="home_search_clusters">ਕਲੱਸਟਰ ਖੋਜੋ</string>
 	<string name="home_stale_description">ਡਾਟਾ ਇੱਕ ਘੰਟੇ ਤੋਂ ਵੱਧ ਪੁਰਾਣਾ ਹੈ</string>
+	<string name="home_tank_capacity">ਪੂਰੀ ਸਮਰੱਥਾ</string>
+	<string name="home_tank_capacity_hint" formatted="false">ਮਾਤਰਾ ਟਾਈਲ ਪੱਧਰ % × ਇਹ ਸਮਰੱਥਾ ਦਿਖਾਉਂਦੀ ਹੈ।</string>
+	<string name="home_tank_capacity_title">‘%1$s’ ਲਈ ਟੈਂਕ ਸਮਰੱਥਾ</string>
+	<string name="home_tank_capacity_unit">ਲੀ</string>
+	<string name="home_tank_volume_label">ਮਾਤਰਾ</string>
 	<string name="home_temperature_limit_high">ਇੰਨਾ ਵਧਣ ’ਤੇ ਸੂਚਿਤ ਕਰੋ</string>
 	<string name="home_temperature_limit_low">ਇੰਨਾ ਘਟਣ ’ਤੇ ਸੂਚਿਤ ਕਰੋ</string>
 	<string name="home_temperature_limits_hint">ਕਿਸੇ ਸੀਮਾ ਨੂੰ ਬੰਦ ਕਰਨ ਲਈ ਇਸਨੂੰ ਖਾਲੀ ਛੱਡੋ</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">ਜਿਵੇਂ ਕਿ state</string>
 	<string name="panel_state_topic">ਸਥਿਤੀ ਵਿਸ਼ਾ (ਵਿਕਲਪਿਕ)</string>
 	<string name="panel_state_topic_hint">ਜਿਵੇਂ ਕਿ zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ਟੈਂਕ ਸਮਰੱਥਾ</string>
+	<string name="panel_tank_capacity_hint" formatted="false">ਰੀਡਿੰਗ (%) ਨੂੰ ਭਰੇ ਟੈਂਕ ਦੇ ਹਿੱਸੇ ਵਜੋਂ ਦਿਖਾਉਂਦਾ ਹੈ। ਆਮ ਰੀਡਿੰਗ ਲਈ ਖਾਲੀ ਛੱਡੋ</string>
 	<string name="panel_topic">ਵਿਸ਼ਾ</string>
 	<string name="panel_topic_hint">ਜਿਵੇਂ ਕਿ zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ਬਟਨ</string>

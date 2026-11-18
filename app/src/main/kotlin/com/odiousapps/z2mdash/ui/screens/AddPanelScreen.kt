@@ -142,6 +142,10 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
     var decimalsText by remember(existing) {
         mutableStateOf(((existing as? Panel.Sensor)?.decimals ?: 0).toString())
     }
+    // Blank = an ordinary reading; see Panel.Sensor.tankCapacity.
+    var tankCapacityText by remember(existing) {
+        mutableStateOf((existing as? Panel.Sensor)?.tankCapacity?.let { if (it % 1.0 == 0.0) it.toLong().toString() else it.toString() } ?: "")
+    }
     var idealRangeTopic by remember(existing) {
         mutableStateOf((existing as? Panel.Sensor)?.idealRangeTopic ?: "")
     }
@@ -219,7 +223,8 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                                 editable = editableValue && retargetedTopic == null,
                                 clusterId = clusterId,
                                 displayOrder = displayOrderValue,
-                                decimals = decimalsText.toIntOrNull() ?: 0
+                                decimals = decimalsText.toIntOrNull() ?: 0,
+                                tankCapacity = tankCapacityText.trim().replace(',', '.').toDoubleOrNull()?.takeIf { it > 0 }
                             )
                             "Toggle" -> Panel.Toggle(
                                 id = existing?.id ?: UUID.randomUUID().toString(),
@@ -439,6 +444,15 @@ fun AddPanelScreen(navController: NavController, groupId: String, panelId: Strin
                             onValueChange = { decimalsText = it.filter { c -> c.isDigit() } },
                             label = { Text(stringResource(R.string.panel_decimals)) },
                             placeholder = { Text(stringResource(R.string.panel_decimals_hint)) },
+                            keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
+                            modifier = Modifier.fillMaxWidth().clearFocusOnBack()
+                        )
+                        Spacer(Modifier.height(16.dp))
+                        OutlinedTextField(
+                            value = tankCapacityText,
+                            onValueChange = { tankCapacityText = it },
+                            label = { Text(stringResource(R.string.panel_tank_capacity)) },
+                            placeholder = { Text(stringResource(R.string.panel_tank_capacity_hint)) },
                             keyboardOptions = tvAwareKeyboardOptions(KeyboardOptions(keyboardType = KeyboardType.Number)),
                             modifier = Modifier.fillMaxWidth().clearFocusOnBack()
                         )

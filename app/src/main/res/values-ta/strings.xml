@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">அந்த தலைப்பில் ‘%1$s’ இல் எந்த கிளஸ்டர்களும் இல்லை</string>
 	<string name="home_search_clusters">தேடல் கொத்துகள்</string>
 	<string name="home_stale_description">தரவு ஒரு மணி நேரத்திற்கும் மேலாக உள்ளது</string>
+	<string name="home_tank_capacity">முழு கொள்ளளவு</string>
+	<string name="home_tank_capacity_hint" formatted="false">அளவு ஓடு நிலை % × இந்தக் கொள்ளளவைக் காட்டுகிறது.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ தொட்டியின் கொள்ளளவு</string>
+	<string name="home_tank_capacity_unit">லி</string>
+	<string name="home_tank_volume_label">அளவு</string>
 	<string name="home_temperature_limit_high">இதற்கு உயரும்போது தெரிவி</string>
 	<string name="home_temperature_limit_low">இதற்குக் குறையும்போது தெரிவி</string>
 	<string name="home_temperature_limits_hint">ஒரு வரம்பை முடக்க அதைக் காலியாக விடவும்</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">எ.கா. மாநில</string>
 	<string name="panel_state_topic">மாநில தலைப்பு (விரும்பினால்)</string>
 	<string name="panel_state_topic_hint">எ.கா. zigbee2mqtt/கிச்சன் பிளக்</string>
+	<string name="panel_tank_capacity">தொட்டி கொள்ளளவு</string>
+	<string name="panel_tank_capacity_hint" formatted="false">அளவீட்டை (%) நிரம்பிய தொட்டியின் பங்காகக் காட்டுகிறது. சாதாரண அளவீட்டுக்கு காலியாக விடவும்</string>
 	<string name="panel_topic">தலைப்பு</string>
 	<string name="panel_topic_hint">எ.கா. zigbee2mqtt/மண் சென்சார் 1</string>
 	<string name="panel_type_button">பொத்தான்</string>

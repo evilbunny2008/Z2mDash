@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ ішіндегі бірде–бір кластер ол тақырыпта болмады</string>
 	<string name="home_search_clusters">Кластерлерді іздеу</string>
 	<string name="home_stale_description">Деректер бір сағаттан ескі</string>
+	<string name="home_tank_capacity">Толық сыйымдылық</string>
+	<string name="home_tank_capacity_hint" formatted="false">Көлем тақтасы деңгей % × осы сыйымдылықты көрсетеді.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ резервуарының сыйымдылығы</string>
+	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_volume_label">Көлем</string>
 	<string name="home_temperature_limit_high">Осыған дейін көтерілгенде хабарлау</string>
 	<string name="home_temperature_limit_low">Осыған дейін төмендегенде хабарлау</string>
 	<string name="home_temperature_limits_hint">Шекті өшіру үшін оны бос қалдырыңыз</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">мысалы, state</string>
 	<string name="panel_state_topic">Күй тақырыбы (міндетті емес)</string>
 	<string name="panel_state_topic_hint">мысалы, zigbee2mqtt/Ас үй розеткасы</string>
+	<string name="panel_tank_capacity">Резервуар сыйымдылығы</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Көрсеткішті (%) толық резервуардың үлесі ретінде көрсетеді. Қарапайым көрсеткіш үшін бос қалдырыңыз</string>
 	<string name="panel_topic">Тақырып</string>
 	<string name="panel_topic_hint">мысалы, zigbee2mqtt/Топырақ датчигі 1</string>
 	<string name="panel_type_button">Түйме</string>

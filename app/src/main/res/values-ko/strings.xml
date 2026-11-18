@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">‘%1$s’에 해당 토픽을 사용하는 클러스터가 없습니다</string>
 	<string name="home_search_clusters">클러스터 검색</string>
 	<string name="home_stale_description">데이터가 1시간 이상 지났습니다</string>
+	<string name="home_tank_capacity">최대 용량</string>
+	<string name="home_tank_capacity_hint" formatted="false">수량 타일은 수위 % × 이 용량을 표시합니다.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ 탱크 용량</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">수량</string>
 	<string name="home_temperature_limit_high">이 온도까지 오르면 알림</string>
 	<string name="home_temperature_limit_low">이 온도까지 내려가면 알림</string>
 	<string name="home_temperature_limits_hint">한도를 비워 두면 꺼집니다</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">예: state</string>
 	<string name="panel_state_topic">상태 토픽(선택사항)</string>
 	<string name="panel_state_topic_hint">예: zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">탱크 용량</string>
+	<string name="panel_tank_capacity_hint" formatted="false">측정값(%)을 가득 찬 탱크 대비 양으로 표시합니다. 일반 측정값은 비워 두세요</string>
 	<string name="panel_topic">토픽</string>
 	<string name="panel_topic_hint">예: zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">버튼</string>

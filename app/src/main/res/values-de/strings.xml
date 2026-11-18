@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Zu diesem Thema gab es keine Cluster in ‘%1$s’</string>
 	<string name="home_search_clusters">Suchcluster</string>
 	<string name="home_stale_description">Die Daten sind mehr als eine Stunde alt</string>
+	<string name="home_tank_capacity">Volle Kapazität</string>
+	<string name="home_tank_capacity_hint" formatted="false">Die Volumen-Kachel zeigt den Füllstand % × diese Kapazität.</string>
+	<string name="home_tank_capacity_title">Tankkapazität für ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Benachrichtigen beim Anstieg auf</string>
 	<string name="home_temperature_limit_low">Benachrichtigen beim Abfall auf</string>
 	<string name="home_temperature_limits_hint">Lassen Sie eine Grenze leer, um sie auszuschalten</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">z.B. Zustand</string>
 	<string name="panel_state_topic">Staatsthema (optional)</string>
 	<string name="panel_state_topic_hint">z.B. zigbee2mqtt/Küchenstecker</string>
+	<string name="panel_tank_capacity">Tankkapazität</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Zeigt den Messwert (in %) als Anteil eines vollen Tanks. Leer für einen normalen Messwert</string>
 	<string name="panel_topic">Thema</string>
 	<string name="panel_topic_hint">z.B. zigbee2mqtt/Bodensensor 1</string>
 	<string name="panel_type_button">Schaltfläche</string>

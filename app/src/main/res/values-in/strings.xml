@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">Tidak ada cluster di ‘%1$s’ yang membahas topik tersebut</string>
 	<string name="home_search_clusters">Cluster pencarian</string>
 	<string name="home_stale_description">Data berumur lebih dari satu jam</string>
+	<string name="home_tank_capacity">Kapasitas penuh</string>
+	<string name="home_tank_capacity_hint" formatted="false">Ubin volume menampilkan level % × kapasitas ini.</string>
+	<string name="home_tank_capacity_title">Kapasitas tangki untuk ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Beri tahu saat naik ke</string>
 	<string name="home_temperature_limit_low">Beri tahu saat turun ke</string>
 	<string name="home_temperature_limits_hint">Biarkan batas kosong untuk menonaktifkannya</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">misalnya negara</string>
 	<string name="panel_state_topic">Sebutkan topik (opsional)</string>
 	<string name="panel_state_topic_hint">misalnya zigbee2mqtt/Steker Dapur</string>
+	<string name="panel_tank_capacity">Kapasitas tangki</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Menampilkan bacaan (%) sebagai bagian dari tangki penuh. Kosongkan untuk bacaan biasa</string>
 	<string name="panel_topic">Topik</string>
 	<string name="panel_topic_hint">misalnya zigbee2mqtt/Sensor Tanah 1</string>
 	<string name="panel_type_button">Tombol</string>

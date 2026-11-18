@@ -266,6 +266,11 @@
 	<string name="home_retopic_none">لم تكن هناك مجموعات في ‘%1$s’ حول هذا الموضوع</string>
 	<string name="home_search_clusters">مجموعات البحث</string>
 	<string name="home_stale_description">البيانات عمرها أكثر من ساعة</string>
+	<string name="home_tank_capacity">السعة الكاملة</string>
+	<string name="home_tank_capacity_hint" formatted="false">يعرض مربع الحجم نسبة المستوى % × هذه السعة.</string>
+	<string name="home_tank_capacity_title">سعة الخزان لـ ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">لتر</string>
+	<string name="home_tank_volume_label">الحجم</string>
 	<string name="home_temperature_limit_high">الإشعار عند الارتفاع إلى</string>
 	<string name="home_temperature_limit_low">الإشعار عند الانخفاض إلى</string>
 	<string name="home_temperature_limits_hint">اترك الحد فارغًا لإيقافه</string>
@@ -344,6 +349,8 @@
 	<string name="panel_state_field_hint">على سبيل المثال ولاية</string>
 	<string name="panel_state_topic">موضوع الدولة (اختياري)</string>
 	<string name="panel_state_topic_hint">على سبيل المثال زيجبي2mqtt/قابس المطبخ</string>
+	<string name="panel_tank_capacity">سعة الخزان</string>
+	<string name="panel_tank_capacity_hint" formatted="false">يعرض القراءة (نسبة %) كجزء من خزان ممتلئ. اتركه فارغًا لقراءة عادية</string>
 	<string name="panel_topic">عنوان</string>
 	<string name="panel_topic_hint">على سبيل المثال زيجبي 2mqtt/مستشعر التربة 1</string>
 	<string name="panel_type_button">زر</string>

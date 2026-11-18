@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Walang cluster sa ‘%1$s’ na nasa topic na iyon</string>
 	<string name="home_search_clusters">Maghanap ng cluster</string>
 	<string name="home_stale_description">Mahigit isang oras na ang data</string>
+	<string name="home_tank_capacity">Buong kapasidad</string>
+	<string name="home_tank_capacity_hint" formatted="false">Ipinapakita ng tile ng dami ang antas % × kapasidad na ito.</string>
+	<string name="home_tank_capacity_title">Kapasidad ng tangke para sa ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Dami</string>
 	<string name="home_temperature_limit_high">Mag-abiso kapag tumaas sa</string>
 	<string name="home_temperature_limit_low">Mag-abiso kapag bumaba sa</string>
 	<string name="home_temperature_limits_hint">Iwanang blangko ang limitasyon para i-off ito</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">hal. state</string>
 	<string name="panel_state_topic">State topic (opsyonal)</string>
 	<string name="panel_state_topic_hint">hal. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Kapasidad ng tangke</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Ipinapakita ang reading (%) bilang bahagi ng punong tangke. Iwanang blangko para sa karaniwang reading</string>
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">hal. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Button</string>

@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">אף אשכול ב–‘%1$s’ לא היה בנושא הזה</string>
 	<string name="home_search_clusters">חיפוש אשכולות</string>
 	<string name="home_stale_description">הנתונים ישנים מיותר משעה</string>
+	<string name="home_tank_capacity">קיבולת מלאה</string>
+	<string name="home_tank_capacity_hint" formatted="false">אריח הנפח מציג את המפלס % × קיבולת זו.</string>
+	<string name="home_tank_capacity_title">קיבולת המכל עבור ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">ל׳</string>
+	<string name="home_tank_volume_label">נפח</string>
 	<string name="home_temperature_limit_high">הודעה בעלייה אל</string>
 	<string name="home_temperature_limit_low">הודעה בירידה אל</string>
 	<string name="home_temperature_limits_hint">השאירו גבול ריק כדי לכבות אותו</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">למשל state</string>
 	<string name="panel_state_topic">נושא המצב (אופציונלי)</string>
 	<string name="panel_state_topic_hint">למשל zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">קיבולת המכל</string>
+	<string name="panel_tank_capacity_hint" formatted="false">מציג את הקריאה (%) כחלק ממכל מלא. ריק לקריאה רגילה</string>
 	<string name="panel_topic">נושא</string>
 	<string name="panel_topic_hint">למשל zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">כפתור</string>

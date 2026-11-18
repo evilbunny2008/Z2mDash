@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ मा कुनै पनि क्लस्टर त्यो टपिकमा थिएन</string>
 	<string name="home_search_clusters">क्लस्टरहरू खोज्नुहोस्</string>
 	<string name="home_stale_description">डेटा एक घण्टाभन्दा पुरानो छ</string>
+	<string name="home_tank_capacity">पूर्ण क्षमता</string>
+	<string name="home_tank_capacity_hint" formatted="false">परिमाण टाइलले स्तर % × यो क्षमता देखाउँछ।</string>
+	<string name="home_tank_capacity_title">‘%1$s’ को ट्याङ्की क्षमता</string>
+	<string name="home_tank_capacity_unit">ली</string>
+	<string name="home_tank_volume_label">परिमाण</string>
 	<string name="home_temperature_limit_high">यति बढ्दा सूचित गर्नुहोस्</string>
 	<string name="home_temperature_limit_low">यति घट्दा सूचित गर्नुहोस्</string>
 	<string name="home_temperature_limits_hint">सीमा बन्द गर्न यसलाई खाली छोड्नुहोस्</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">जस्तै state</string>
 	<string name="panel_state_topic">अवस्था टपिक (वैकल्पिक)</string>
 	<string name="panel_state_topic_hint">जस्तै zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ट्याङ्की क्षमता</string>
+	<string name="panel_tank_capacity_hint" formatted="false">रिडिङ (%) लाई भरिएको ट्याङ्कीको अंशका रूपमा देखाउँछ। सामान्य रिडिङका लागि खाली छोड्नुहोस्</string>
 	<string name="panel_topic">टपिक</string>
 	<string name="panel_topic_hint">जस्तै zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">बटन</string>

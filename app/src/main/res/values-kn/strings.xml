@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ ನಲ್ಲಿ ಯಾವುದೇ ಕ್ಲಸ್ಟರ್ ಆ ಟಾಪಿಕ್‌ನಲ್ಲಿ ಇರಲಿಲ್ಲ</string>
 	<string name="home_search_clusters">ಕ್ಲಸ್ಟರ್‌ಗಳನ್ನು ಹುಡುಕಿ</string>
 	<string name="home_stale_description">ಡೇಟಾ ಒಂದು ಗಂಟೆಗಿಂತ ಹಳೆಯದು</string>
+	<string name="home_tank_capacity">ಪೂರ್ಣ ಸಾಮರ್ಥ್ಯ</string>
+	<string name="home_tank_capacity_hint" formatted="false">ಪರಿಮಾಣ ಟೈಲ್ ಮಟ್ಟ % × ಈ ಸಾಮರ್ಥ್ಯವನ್ನು ತೋರಿಸುತ್ತದೆ.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ ಗಾಗಿ ಟ್ಯಾಂಕ್ ಸಾಮರ್ಥ್ಯ</string>
+	<string name="home_tank_capacity_unit">ಲೀ</string>
+	<string name="home_tank_volume_label">ಪರಿಮಾಣ</string>
 	<string name="home_temperature_limit_high">ಇದಕ್ಕೆ ಏರಿದಾಗ ಸೂಚಿಸಿ</string>
 	<string name="home_temperature_limit_low">ಇದಕ್ಕೆ ಇಳಿದಾಗ ಸೂಚಿಸಿ</string>
 	<string name="home_temperature_limits_hint">ಮಿತಿಯನ್ನು ಆಫ್ ಮಾಡಲು ಅದನ್ನು ಖಾಲಿ ಬಿಡಿ</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">ಉದಾ. state</string>
 	<string name="panel_state_topic">ಸ್ಥಿತಿ ಟಾಪಿಕ್ (ಐಚ್ಛಿಕ)</string>
 	<string name="panel_state_topic_hint">ಉದಾ. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ಟ್ಯಾಂಕ್ ಸಾಮರ್ಥ್ಯ</string>
+	<string name="panel_tank_capacity_hint" formatted="false">ರೀಡಿಂಗ್ (%) ಅನ್ನು ತುಂಬಿದ ಟ್ಯಾಂಕ್‌ನ ಪಾಲಾಗಿ ತೋರಿಸುತ್ತದೆ. ಸಾಮಾನ್ಯ ರೀಡಿಂಗ್‌ಗೆ ಖಾಲಿ ಬಿಡಿ</string>
 	<string name="panel_topic">ಟಾಪಿಕ್</string>
 	<string name="panel_topic_hint">ಉದಾ. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ಬಟನ್</string>

@@ -252,6 +252,11 @@
 	<string name="home_retopic_none">Žádný cluster v „%1$s“ nebyl na tomto tématu</string>
 	<string name="home_search_clusters">Hledat clustery</string>
 	<string name="home_stale_description">Data jsou starší než hodinu</string>
+	<string name="home_tank_capacity">Plná kapacita</string>
+	<string name="home_tank_capacity_hint" formatted="false">Dlaždice objemu zobrazuje hladinu % × tuto kapacitu.</string>
+	<string name="home_tank_capacity_title">Kapacita nádrže pro ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_volume_label">Objem</string>
 	<string name="home_temperature_limit_high">Upozornit při vzestupu na</string>
 	<string name="home_temperature_limit_low">Upozornit při poklesu na</string>
 	<string name="home_temperature_limits_hint">Ponechte mez prázdnou, chcete-li ji vypnout</string>
@@ -328,6 +333,8 @@
 	<string name="panel_state_field_hint">např. state</string>
 	<string name="panel_state_topic">Téma stavu (volitelné)</string>
 	<string name="panel_state_topic_hint">např. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Kapacita nádrže</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Zobrazí hodnotu (v %) jako podíl plné nádrže. Prázdné pro běžnou hodnotu</string>
 	<string name="panel_topic">Téma</string>
 	<string name="panel_topic_hint">např. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Tlačítko</string>

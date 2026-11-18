@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Ниједан кластер у ‘%1$s’ није био на тој теми</string>
 	<string name="home_search_clusters">Претражи кластере</string>
 	<string name="home_stale_description">Подаци су старији од сат времена</string>
+	<string name="home_tank_capacity">Пун капацитет</string>
+	<string name="home_tank_capacity_hint" formatted="false">Плочица запремине приказује ниво % × овај капацитет.</string>
+	<string name="home_tank_capacity_title">Капацитет резервоара за ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_volume_label">Запремина</string>
 	<string name="home_temperature_limit_high">Обавести при порасту на</string>
 	<string name="home_temperature_limit_low">Обавести при паду на</string>
 	<string name="home_temperature_limits_hint">Оставите границу празном да бисте је искључили</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">нпр. state</string>
 	<string name="panel_state_topic">Тема стања (опционално)</string>
 	<string name="panel_state_topic_hint">нпр. zigbee2mqtt/Кухињска утичница</string>
+	<string name="panel_tank_capacity">Капацитет резервоара</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Приказује очитавање (%) као део пуног резервоара. Празно за обично очитавање</string>
 	<string name="panel_topic">Тема</string>
 	<string name="panel_topic_hint">нпр. zigbee2mqtt/Сензор земљишта 1</string>
 	<string name="panel_type_button">Дугме</string>

@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ taldeko klusterrik ez zegoen gai horretan</string>
 	<string name="home_search_clusters">Bilatu klusterrak</string>
 	<string name="home_stale_description">Datuek ordubete baino gehiago dute</string>
+	<string name="home_tank_capacity">Edukiera osoa</string>
+	<string name="home_tank_capacity_hint" formatted="false">Bolumen-lauzak maila % × edukiera hau erakusten du.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ deposituaren edukiera</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Bolumena</string>
 	<string name="home_temperature_limit_high">Jakinarazi hona igotzean</string>
 	<string name="home_temperature_limit_low">Jakinarazi hona jaistean</string>
 	<string name="home_temperature_limits_hint">Utzi muga bat hutsik desaktibatzeko</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">adib. state</string>
 	<string name="panel_state_topic">Egoera gaia (aukerakoa)</string>
 	<string name="panel_state_topic_hint">adib. zigbee2mqtt/Sukaldeko entxufea</string>
+	<string name="panel_tank_capacity">Deposituaren edukiera</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Irakurketa (%) depositu beteko zati gisa erakusten du. Hutsik irakurketa arrunterako</string>
 	<string name="panel_topic">Gaia</string>
 	<string name="panel_topic_hint">adib. zigbee2mqtt/Lurzoru sentsorea 1</string>
 	<string name="panel_type_button">Botoia</string>

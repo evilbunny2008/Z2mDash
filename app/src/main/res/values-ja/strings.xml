@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">‘%1$s’ にはそのトピックに関するクラスターはありませんでした</string>
 	<string name="home_search_clusters">クラスターの検索</string>
 	<string name="home_stale_description">データは 1 時間以上古い</string>
+	<string name="home_tank_capacity">満水容量</string>
+	<string name="home_tank_capacity_hint" formatted="false">水量タイルは水位 % × この容量を表示します。</string>
+	<string name="home_tank_capacity_title">‘%1$s’のタンク容量</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">水量</string>
 	<string name="home_temperature_limit_high">この温度まで上昇したら通知</string>
 	<string name="home_temperature_limit_low">この温度まで下降したら通知</string>
 	<string name="home_temperature_limits_hint">空欄にするとその制限はオフになります</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">例えば州</string>
 	<string name="panel_state_topic">状態トピック (オプション)</string>
 	<string name="panel_state_topic_hint">例えばzigbee2mqtt/キッチンプラグ</string>
+	<string name="panel_tank_capacity">タンク容量</string>
+	<string name="panel_tank_capacity_hint" formatted="false">読み取り値（%）を満水時に対する量として表示します。通常の値は空欄</string>
 	<string name="panel_topic">トピック</string>
 	<string name="panel_topic_hint">例えばzigbee2mqtt/土壌センサー 1</string>
 	<string name="panel_type_button">ボタン</string>

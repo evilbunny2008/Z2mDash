@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Hakuna clusters katika ‘%1$s’ zilizokuwa kwenye topic hiyo</string>
 	<string name="home_search_clusters">Tafuta clusters</string>
 	<string name="home_stale_description">Data ina zaidi ya saa moja</string>
+	<string name="home_tank_capacity">Ujazo kamili</string>
+	<string name="home_tank_capacity_hint" formatted="false">Kigae cha kiasi huonyesha kiwango % × ujazo huu.</string>
+	<string name="home_tank_capacity_title">Ujazo wa tangi la ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Kiasi</string>
 	<string name="home_temperature_limit_high">Arifu inapopanda hadi</string>
 	<string name="home_temperature_limit_low">Arifu inaposhuka hadi</string>
 	<string name="home_temperature_limits_hint">Acha kikomo kitupu ili kukizima</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">k.m. state</string>
 	<string name="panel_state_topic">Topic ya hali (si lazima)</string>
 	<string name="panel_state_topic_hint">k.m. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Ujazo wa tangi</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Huonyesha usomaji (%) kama sehemu ya tangi lililojaa. Acha wazi kwa usomaji wa kawaida</string>
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">k.m. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Kitufe</string>

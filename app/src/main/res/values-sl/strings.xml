@@ -252,6 +252,11 @@
 	<string name="home_retopic_none">Noben grozd v ‘%1$s’ ni bil na tej temi</string>
 	<string name="home_search_clusters">Išči grozde</string>
 	<string name="home_stale_description">Podatki so starejši od ene ure</string>
+	<string name="home_tank_capacity">Polna prostornina</string>
+	<string name="home_tank_capacity_hint" formatted="false">Ploščica količine prikazuje nivo % × to prostornino.</string>
+	<string name="home_tank_capacity_title">Prostornina rezervoarja za ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Količina</string>
 	<string name="home_temperature_limit_high">Obvesti ob dvigu na</string>
 	<string name="home_temperature_limit_low">Obvesti ob padcu na</string>
 	<string name="home_temperature_limits_hint">Pustite mejo prazno, da jo izklopite</string>
@@ -328,6 +333,8 @@
 	<string name="panel_state_field_hint">npr. state</string>
 	<string name="panel_state_topic">Tema stanja (izbirno)</string>
 	<string name="panel_state_topic_hint">npr. zigbee2mqtt/Kuhinjska vtičnica</string>
+	<string name="panel_tank_capacity">Prostornina rezervoarja</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Prikaže odčitek (v %) kot delež polnega rezervoarja. Prazno za običajen odčitek</string>
 	<string name="panel_topic">Tema</string>
 	<string name="panel_topic_hint">npr. zigbee2mqtt/Senzor tal 1</string>
 	<string name="panel_type_button">Gumb</string>

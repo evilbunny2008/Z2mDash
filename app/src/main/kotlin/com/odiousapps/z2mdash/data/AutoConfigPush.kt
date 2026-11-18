@@ -205,12 +205,13 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
             val unitUpdate = diffMap(index, old.unit, newPanel.unit)
             val iconUpdate = diffMap(index, old.icon.name, newPanel.icon.name)
             val decimalUpdate = diffMap(index, old.decimals, newPanel.decimals)
+            val tankCapacityUpdate = diffMap(index, old.tankCapacity, newPanel.tankCapacity)
             val topicUpdate = diffMap(index, old.topic, newPanel.topic)
             val idealTopicUpdate = diffMap(index, old.idealRangeTopic, newPanel.idealRangeTopic)
             val idealMinUpdate = diffMap(index, old.idealMinPath, newPanel.idealMinPath)
             val idealMaxUpdate = diffMap(index, old.idealMaxPath, newPanel.idealMaxPath)
             if (jsonPathUpdate.isEmpty() && unitUpdate.isEmpty() && iconUpdate.isEmpty() && decimalUpdate.isEmpty() &&
-                topicUpdate.isEmpty() && idealTopicUpdate.isEmpty() && idealMinUpdate.isEmpty() && idealMaxUpdate.isEmpty()
+                tankCapacityUpdate.isEmpty() && topicUpdate.isEmpty() && idealTopicUpdate.isEmpty() && idealMinUpdate.isEmpty() && idealMaxUpdate.isEmpty()
             ) {
                 return
             }
@@ -220,6 +221,7 @@ fun pushPanelDetailsIfAutoConfigured(app: Z2mDashApplication, oldPanel: Panel, n
                 fieldUnitUpdates = unitUpdate,
                 fieldIconUpdates = iconUpdate,
                 fieldDecimalUpdates = decimalUpdate,
+                fieldTankCapacityUpdates = tankCapacityUpdate,
                 fieldTopicUpdates = topicUpdate,
                 fieldIdealTopicUpdates = idealTopicUpdate,
                 fieldIdealMinPathUpdates = idealMinUpdate,

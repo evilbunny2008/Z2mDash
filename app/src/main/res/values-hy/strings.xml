@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’–ում ոչ մի կլաստեր այդ թեմայում չէր</string>
 	<string name="home_search_clusters">Որոնել կլաստերներ</string>
 	<string name="home_stale_description">Տվյալները մեկ ժամից ավելի հին են</string>
+	<string name="home_tank_capacity">Լրիվ տարողություն</string>
+	<string name="home_tank_capacity_hint" formatted="false">Ծավալի սալիկը ցույց է տալիս մակարդակը % × այս տարողությունը։</string>
+	<string name="home_tank_capacity_title">Բաքի տարողությունը ‘%1$s’-ի համար</string>
+	<string name="home_tank_capacity_unit">լ</string>
+	<string name="home_tank_volume_label">Ծավալ</string>
 	<string name="home_temperature_limit_high">Ծանուցել բարձրանալիս մինչև</string>
 	<string name="home_temperature_limit_low">Ծանուցել իջնելիս մինչև</string>
 	<string name="home_temperature_limits_hint">Սահմանն անջատելու համար թողեք այն դատարկ</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">օր.՝ state</string>
 	<string name="panel_state_topic">Վիճակի թեմա (ըստ ցանկության)</string>
 	<string name="panel_state_topic_hint">օր.՝ zigbee2mqtt/Խոհանոցի վարդակ</string>
+	<string name="panel_tank_capacity">Բաքի տարողություն</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Ցույց է տալիս ցուցմունքը (%) որպես լիքը բաքի մաս։ Դատարկ՝ սովորական ցուցմունքի համար</string>
 	<string name="panel_topic">Թեմա</string>
 	<string name="panel_topic_hint">օր.՝ zigbee2mqtt/Հողի սենսոր 1</string>
 	<string name="panel_type_button">Կոճակ</string>

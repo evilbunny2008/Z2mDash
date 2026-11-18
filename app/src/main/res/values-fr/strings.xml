@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Aucun cluster dans ‘ %1$s ’ n’était sur ce sujet</string>
 	<string name="home_search_clusters">Rechercher des clusters</string>
 	<string name="home_stale_description">Les données datent de plus d’une heure</string>
+	<string name="home_tank_capacity">Capacité totale</string>
+	<string name="home_tank_capacity_hint" formatted="false">La tuile de volume affiche le niveau % × cette capacité.</string>
+	<string name="home_tank_capacity_title">Capacité du réservoir pour ‘ %1$s ’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Avertir en montant à</string>
 	<string name="home_temperature_limit_low">Avertir en descendant à</string>
 	<string name="home_temperature_limits_hint">Laissez une limite vide pour la désactiver</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">par ex. État</string>
 	<string name="panel_state_topic">Sujet d’état (facultatif)</string>
 	<string name="panel_state_topic_hint">par ex. zigbee2mqtt/prise de cuisine</string>
+	<string name="panel_tank_capacity">Capacité du réservoir</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Affiche la mesure (en %) comme part d’un réservoir plein. Vide pour une mesure normale</string>
 	<string name="panel_topic">Sujet</string>
 	<string name="panel_topic_hint">par ex. zigbee2mqtt/Capteur de sol 1</string>
 	<string name="panel_type_button">Bouton</string>

@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">ไม่มีคลัสเตอร์ใน ‘%1$s’ ที่อยู่บนหัวข้อนั้น</string>
 	<string name="home_search_clusters">ค้นหาคลัสเตอร์</string>
 	<string name="home_stale_description">ข้อมูลเก่ากว่าหนึ่งชั่วโมง</string>
+	<string name="home_tank_capacity">ความจุเต็ม</string>
+	<string name="home_tank_capacity_hint" formatted="false">ไทล์ปริมาตรแสดงระดับ % × ความจุนี้</string>
+	<string name="home_tank_capacity_title">ความจุถังของ ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">ลิตร</string>
+	<string name="home_tank_volume_label">ปริมาตร</string>
 	<string name="home_temperature_limit_high">แจ้งเตือนเมื่อขึ้นถึง</string>
 	<string name="home_temperature_limit_low">แจ้งเตือนเมื่อลงถึง</string>
 	<string name="home_temperature_limits_hint">เว้นขีดจำกัดว่างไว้เพื่อปิด</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">เช่น state</string>
 	<string name="panel_state_topic">หัวข้อสถานะ (ไม่บังคับ)</string>
 	<string name="panel_state_topic_hint">เช่น zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ความจุถัง</string>
+	<string name="panel_tank_capacity_hint" formatted="false">แสดงค่าที่อ่านได้ (%) เป็นสัดส่วนของถังเต็ม เว้นว่างสำหรับค่าปกติ</string>
 	<string name="panel_topic">หัวข้อ</string>
 	<string name="panel_topic_hint">เช่น zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ปุ่ม</string>

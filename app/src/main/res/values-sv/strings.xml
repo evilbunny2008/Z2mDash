@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Inga kluster i ”%1$s” låg på det ämnet</string>
 	<string name="home_search_clusters">Sök kluster</string>
 	<string name="home_stale_description">Data är mer än en timme gammal</string>
+	<string name="home_tank_capacity">Full kapacitet</string>
+	<string name="home_tank_capacity_hint" formatted="false">Volymrutan visar nivån % × denna kapacitet.</string>
+	<string name="home_tank_capacity_title">Tankkapacitet för ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volym</string>
 	<string name="home_temperature_limit_high">Meddela vid stigning till</string>
 	<string name="home_temperature_limit_low">Meddela vid sjunkning till</string>
 	<string name="home_temperature_limits_hint">Lämna en gräns tom för att stänga av den</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">t.ex. state</string>
 	<string name="panel_state_topic">Statusämne (valfritt)</string>
 	<string name="panel_state_topic_hint">t.ex. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Tankkapacitet</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Visar mätvärdet (i %) som den andelen av en full tank. Tomt för ett vanligt mätvärde</string>
 	<string name="panel_topic">Ämne</string>
 	<string name="panel_topic_hint">t.ex. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Knapp</string>

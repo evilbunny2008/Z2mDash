@@ -47,7 +47,7 @@ data class Broker(
 enum class TileIcon {
     HUMIDITY, MOISTURE, TEMPERATURE, SIGNAL, POWER, GAUGE, BATTERY, LIGHT, PRESENCE,
     CONTACT, LOCK, WATER_LEAK, SMOKE, GAS, VIBRATION, AIR_QUALITY, SIREN, WARNING,
-    BUTTON, OUTLET, ENERGY, COLOR, COVER, CLIMATE, FAN, ROUTER, VALVE, DOORBELL, TAP, COUNTDOWN, SEEDLING
+    BUTTON, OUTLET, ENERGY, COLOR, COVER, CLIMATE, FAN, ROUTER, VALVE, DOORBELL, TAP, COUNTDOWN, SEEDLING, TANK
 }
 
 @Serializable
@@ -90,6 +90,12 @@ sealed class Panel {
         // Off by default: flipping it on for a genuine sensor reading would just get overwritten
         // by the next real update, so it's an opt-in per panel via AddPanelScreen.
         val editable: Boolean = false,
+        // When set, this tile is a water tank's estimated volume rather than its raw reading: the
+        // value at topic/jsonPath is taken as a fill percentage and shown as that share of this
+        // full capacity (in the tile's own unit, normally litres). Typically a companion to a
+        // plain percentage tile reading the same field - see HomeScreen's tank capacity dialog.
+        // Shared via the "/app" payload's "panel_tank_capacities".
+        val tankCapacity: Double? = null,
         override val clusterId: String = "",
         override val displayOrder: Int = Int.MAX_VALUE
     ) : Panel()
@@ -208,7 +214,8 @@ val Panel.clusterKey: String get() = clusterId.ifBlank { "__single__$id" }
  */
 val Panel.sourceKey: String
     get() = when (this) {
-        is Panel.Sensor -> "$brokerId|sensor|$topic|$jsonPath"
+        // A tank volume tile reads the same field as its percentage tile, yet shows different data.
+        is Panel.Sensor -> "$brokerId|sensor|$topic|$jsonPath" + if (tankCapacity != null) "|volume" else ""
         is Panel.Toggle -> "$brokerId|toggle|$commandTopic|$stateJsonPath"
         is Panel.Button -> "$brokerId|button|$commandTopic"
     }

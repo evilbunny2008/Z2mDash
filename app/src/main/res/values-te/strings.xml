@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">ఆ అంశంపై ‘%1$s’లో క్లస్టర్‌లు లేవు</string>
 	<string name="home_search_clusters">శోధన సమూహాలు</string>
 	<string name="home_stale_description">డేటా ఒక గంట కంటే పాతది</string>
+	<string name="home_tank_capacity">పూర్తి సామర్థ్యం</string>
+	<string name="home_tank_capacity_hint" formatted="false">పరిమాణ టైల్ స్థాయి % × ఈ సామర్థ్యాన్ని చూపుతుంది.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ ట్యాంక్ సామర్థ్యం</string>
+	<string name="home_tank_capacity_unit">లీ</string>
+	<string name="home_tank_volume_label">పరిమాణం</string>
 	<string name="home_temperature_limit_high">ఇంతకు పెరిగినప్పుడు తెలియజేయి</string>
 	<string name="home_temperature_limit_low">ఇంతకు తగ్గినప్పుడు తెలియజేయి</string>
 	<string name="home_temperature_limits_hint">పరిమితిని ఆఫ్ చేయడానికి దాన్ని ఖాళీగా వదలండి</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">ఉదా రాష్ట్రం</string>
 	<string name="panel_state_topic">రాష్ట్ర అంశం (ఐచ్ఛికం)</string>
 	<string name="panel_state_topic_hint">ఉదా zigbee2mqtt/కిచెన్ ప్లగ్</string>
+	<string name="panel_tank_capacity">ట్యాంక్ సామర్థ్యం</string>
+	<string name="panel_tank_capacity_hint" formatted="false">రీడింగ్‌ను (%) నిండిన ట్యాంక్ వాటాగా చూపుతుంది. సాధారణ రీడింగ్ కోసం ఖాళీగా ఉంచండి</string>
 	<string name="panel_topic">అంశం</string>
 	<string name="panel_topic_hint">ఉదా zigbee2mqtt/మట్టి సెన్సార్ 1</string>
 	<string name="panel_type_button">బటన్</string>

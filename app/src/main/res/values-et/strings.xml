@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Ükski grupi ‘%1$s’ klaster polnud selles teemas</string>
 	<string name="home_search_clusters">Otsi klastreid</string>
 	<string name="home_stale_description">Andmed on üle tunni vanad</string>
+	<string name="home_tank_capacity">Täismaht</string>
+	<string name="home_tank_capacity_hint" formatted="false">Mahu paan näitab taset % × see maht.</string>
+	<string name="home_tank_capacity_title">Paagi maht: ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Maht</string>
 	<string name="home_temperature_limit_high">Teavita tõustes tasemeni</string>
 	<string name="home_temperature_limit_low">Teavita langedes tasemeni</string>
 	<string name="home_temperature_limits_hint">Piiri väljalülitamiseks jäta see tühjaks</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">nt state</string>
 	<string name="panel_state_topic">Oleku teema (valikuline)</string>
 	<string name="panel_state_topic_hint">nt zigbee2mqtt/Köögi pistik</string>
+	<string name="panel_tank_capacity">Paagi maht</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Näitab näitu (%) täispaagi osana. Tavalise näidu jaoks jätke tühjaks</string>
 	<string name="panel_topic">Teema</string>
 	<string name="panel_topic_hint">nt zigbee2mqtt/Mullaandur 1</string>
 	<string name="panel_type_button">Nupp</string>

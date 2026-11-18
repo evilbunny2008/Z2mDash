@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ дотор тэр сэдэв дээр кластер байгаагүй</string>
 	<string name="home_search_clusters">Кластер хайх</string>
 	<string name="home_stale_description">Өгөгдөл нэг цагаас илүү хуучин</string>
+	<string name="home_tank_capacity">Бүрэн багтаамж</string>
+	<string name="home_tank_capacity_hint" formatted="false">Эзэлхүүний хавтан түвшин % × энэ багтаамжийг харуулна.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ савны багтаамж</string>
+	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_volume_label">Эзэлхүүн</string>
 	<string name="home_temperature_limit_high">Энэ хүртэл өсөхөд мэдэгдэх</string>
 	<string name="home_temperature_limit_low">Энэ хүртэл буурахад мэдэгдэх</string>
 	<string name="home_temperature_limits_hint">Хязгаарыг унтраахын тулд хоосон үлдээнэ үү</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">ж. нь state</string>
 	<string name="panel_state_topic">Төлвийн сэдэв (заавал биш)</string>
 	<string name="panel_state_topic_hint">ж. нь zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Савны багтаамж</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Заалтыг (%) дүүрэн савны хувь болгон харуулна. Энгийн заалтад хоосон үлдээнэ үү</string>
 	<string name="panel_topic">Сэдэв</string>
 	<string name="panel_topic_hint">ж. нь zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Товчлуур</string>

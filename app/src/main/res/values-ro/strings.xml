@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Niciun cluster din „%1$s” nu era pe acel topic</string>
 	<string name="home_search_clusters">Caută clustere</string>
 	<string name="home_stale_description">Datele sunt mai vechi de o oră</string>
+	<string name="home_tank_capacity">Capacitate totală</string>
+	<string name="home_tank_capacity_hint" formatted="false">Dala de volum arată nivelul % × această capacitate.</string>
+	<string name="home_tank_capacity_title">Capacitatea rezervorului pentru ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volum</string>
 	<string name="home_temperature_limit_high">Notifică la urcarea la</string>
 	<string name="home_temperature_limit_low">Notifică la coborârea la</string>
 	<string name="home_temperature_limits_hint">Lasă o limită goală pentru a o dezactiva</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">de ex. state</string>
 	<string name="panel_state_topic">Topic de stare (opțional)</string>
 	<string name="panel_state_topic_hint">de ex. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Capacitatea rezervorului</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Afișează citirea (în %) ca parte dintr-un rezervor plin. Gol pentru o citire obișnuită</string>
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">de ex. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Buton</string>

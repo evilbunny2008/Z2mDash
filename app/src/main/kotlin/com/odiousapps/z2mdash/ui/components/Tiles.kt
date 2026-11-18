@@ -48,6 +48,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.Water
 import androidx.compose.material.icons.filled.WaterDamage
 import androidx.compose.material.icons.filled.WaterDrop
+import androidx.compose.material.icons.filled.Waves
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
@@ -130,6 +131,7 @@ internal fun iconFor(tileIcon: TileIcon): ImageVector = when (tileIcon) {
     TileIcon.TAP -> Icons.Default.Water
     TileIcon.COUNTDOWN -> Icons.Default.Timer
     TileIcon.SEEDLING -> Seedling
+    TileIcon.TANK -> Icons.Default.Waves
 }
 
 @Composable
@@ -152,7 +154,8 @@ fun SensorTile(
     scale: Float = 1f,
     onEdit: () -> Unit = {},
     // See Panel.Sensor's editable doc - also set for a live temperature reading, whose value tap
-    // opens its alert limits (see TemperatureAlertManager). When true, the icon becomes the
+    // opens its alert limits (see TemperatureAlertManager), and a tank level or volume, whose tap
+    // opens its capacity. When true, the icon becomes the
     // config-edit affordance (matching ToggleTile/ButtonTile's own icon-is-edit convention) and
     // the rest of the tile opens onEditValue instead - any other tile is unaffected, keeping its
     // whole Surface as the config-edit click target exactly as before.

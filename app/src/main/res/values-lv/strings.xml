@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Neviens grupas ‘%1$s’ klasteris nebija šajā tēmā</string>
 	<string name="home_search_clusters">Meklēt klasterus</string>
 	<string name="home_stale_description">Dati ir vecāki par stundu</string>
+	<string name="home_tank_capacity">Pilna ietilpība</string>
+	<string name="home_tank_capacity_hint" formatted="false">Tilpuma flīze rāda līmeni % × šo ietilpību.</string>
+	<string name="home_tank_capacity_title">Tvertnes ietilpība: ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_volume_label">Tilpums</string>
 	<string name="home_temperature_limit_high">Paziņot, paceļoties līdz</string>
 	<string name="home_temperature_limit_low">Paziņot, nokrītot līdz</string>
 	<string name="home_temperature_limits_hint">Atstājiet robežu tukšu, lai to izslēgtu</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">piem., state</string>
 	<string name="panel_state_topic">Stāvokļa tēma (neobligāta)</string>
 	<string name="panel_state_topic_hint">piem., zigbee2mqtt/Virtuves kontaktligzda</string>
+	<string name="panel_tank_capacity">Tvertnes ietilpība</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Rāda rādījumu (%) kā pilnas tvertnes daļu. Tukšs parastam rādījumam</string>
 	<string name="panel_topic">Tēma</string>
 	<string name="panel_topic_hint">piem., zigbee2mqtt/Augsnes sensors 1</string>
 	<string name="panel_type_button">Poga</string>

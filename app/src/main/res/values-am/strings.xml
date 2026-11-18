@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">በ‘%1$s’ ውስጥ በዚያ ርዕስ ላይ የነበረ ክላስተር የለም</string>
 	<string name="home_search_clusters">ክላስተሮችን ፈልግ</string>
 	<string name="home_stale_description">ውሂቡ ከአንድ ሰዓት በላይ ያረጀ ነው</string>
+	<string name="home_tank_capacity">ሙሉ አቅም</string>
+	<string name="home_tank_capacity_hint" formatted="false">የመጠን ሰሌዳው ደረጃ % × ይህን አቅም ያሳያል።</string>
+	<string name="home_tank_capacity_title">የ‘%1$s’ ታንክ አቅም</string>
+	<string name="home_tank_capacity_unit">ሊ</string>
+	<string name="home_tank_volume_label">መጠን</string>
 	<string name="home_temperature_limit_high">ወደዚህ ሲጨምር አሳውቅ</string>
 	<string name="home_temperature_limit_low">ወደዚህ ሲቀንስ አሳውቅ</string>
 	<string name="home_temperature_limits_hint">ገደብን ለማጥፋት ባዶ ይተዉት</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">ለምሳሌ state</string>
 	<string name="panel_state_topic">የሁኔታ ርዕስ (አማራጭ)</string>
 	<string name="panel_state_topic_hint">ለምሳሌ zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">የታንክ አቅም</string>
+	<string name="panel_tank_capacity_hint" formatted="false">ንባቡን (%) እንደ ሙሉ ታንክ ድርሻ ያሳያል። ለተራ ንባብ ባዶ ይተዉት</string>
 	<string name="panel_topic">ርዕስ</string>
 	<string name="panel_topic_hint">ለምሳሌ zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">አዝራር</string>

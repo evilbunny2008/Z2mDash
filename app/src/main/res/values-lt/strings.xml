@@ -252,6 +252,11 @@
 	<string name="home_retopic_none">Nė vienas ‘%1$s’ klasteris nebuvo toje temoje</string>
 	<string name="home_search_clusters">Ieškoti klasterių</string>
 	<string name="home_stale_description">Duomenys senesni nei valanda</string>
+	<string name="home_tank_capacity">Pilna talpa</string>
+	<string name="home_tank_capacity_hint" formatted="false">Tūrio plytelė rodo lygį % × šią talpą.</string>
+	<string name="home_tank_capacity_title">Talpos tūris: ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_volume_label">Tūris</string>
 	<string name="home_temperature_limit_high">Pranešti pakilus iki</string>
 	<string name="home_temperature_limit_low">Pranešti nukritus iki</string>
 	<string name="home_temperature_limits_hint">Palikite ribą tuščią, kad ją išjungtumėte</string>
@@ -328,6 +333,8 @@
 	<string name="panel_state_field_hint">pvz., state</string>
 	<string name="panel_state_topic">Būsenos tema (neprivaloma)</string>
 	<string name="panel_state_topic_hint">pvz., zigbee2mqtt/Virtuvės kištukas</string>
+	<string name="panel_tank_capacity">Talpos tūris</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Rodo rodmenį (%) kaip pilnos talpos dalį. Tuščia – įprastas rodmuo</string>
 	<string name="panel_topic">Tema</string>
 	<string name="panel_topic_hint">pvz., zigbee2mqtt/Dirvožemio jutiklis 1</string>
 	<string name="panel_type_button">Mygtukas</string>

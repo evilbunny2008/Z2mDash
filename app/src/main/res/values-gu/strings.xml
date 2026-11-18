@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’માં કોઈ ક્લસ્ટર તે ટૉપિક પર નહોતું</string>
 	<string name="home_search_clusters">ક્લસ્ટર શોધો</string>
 	<string name="home_stale_description">ડેટા એક કલાકથી વધુ જૂનો છે</string>
+	<string name="home_tank_capacity">પૂર્ણ ક્ષમતા</string>
+	<string name="home_tank_capacity_hint" formatted="false">જથ્થાની ટાઇલ સ્તર % × આ ક્ષમતા બતાવે છે.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ માટે ટાંકીની ક્ષમતા</string>
+	<string name="home_tank_capacity_unit">લિ</string>
+	<string name="home_tank_volume_label">જથ્થો</string>
 	<string name="home_temperature_limit_high">આટલું વધે ત્યારે સૂચિત કરો</string>
 	<string name="home_temperature_limit_low">આટલું ઘટે ત્યારે સૂચિત કરો</string>
 	<string name="home_temperature_limits_hint">મર્યાદા બંધ કરવા તેને ખાલી છોડો</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">દા.ત. state</string>
 	<string name="panel_state_topic">સ્થિતિ ટૉપિક (વૈકલ્પિક)</string>
 	<string name="panel_state_topic_hint">દા.ત. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ટાંકીની ક્ષમતા</string>
+	<string name="panel_tank_capacity_hint" formatted="false">રીડિંગ (%) ને ભરેલી ટાંકીના હિસ્સા તરીકે બતાવે છે. સામાન્ય રીડિંગ માટે ખાલી છોડો</string>
 	<string name="panel_topic">ટૉપિક</string>
 	<string name="panel_topic_hint">દા.ત. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">બટન</string>

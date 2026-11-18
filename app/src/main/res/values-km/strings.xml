@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">គ្មានចង្កោមក្នុង ‘%1$s’ នៅលើប្រធានបទនោះទេ</string>
 	<string name="home_search_clusters">ស្វែងរកចង្កោម</string>
 	<string name="home_stale_description">ទិន្នន័យចាស់ជាងមួយម៉ោង</string>
+	<string name="home_tank_capacity">ចំណុះពេញ</string>
+	<string name="home_tank_capacity_hint" formatted="false">ក្រឡាបរិមាណបង្ហាញកម្រិត % × ចំណុះនេះ។</string>
+	<string name="home_tank_capacity_title">ចំណុះធុងសម្រាប់ ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">បរិមាណ</string>
 	<string name="home_temperature_limit_high">ជូនដំណឹងពេលឡើងដល់</string>
 	<string name="home_temperature_limit_low">ជូនដំណឹងពេលចុះដល់</string>
 	<string name="home_temperature_limits_hint">ទុកកម្រិតឱ្យទទេ ដើម្បីបិទវា</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">ឧ. state</string>
 	<string name="panel_state_topic">ប្រធានបទស្ថានភាព (ស្រេចចិត្ត)</string>
 	<string name="panel_state_topic_hint">ឧ. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ចំណុះធុង</string>
+	<string name="panel_tank_capacity_hint" formatted="false">បង្ហាញការអាន (%) ជាចំណែកនៃធុងពេញ។ ទុកទទេសម្រាប់ការអានធម្មតា</string>
 	<string name="panel_topic">ប្រធានបទ</string>
 	<string name="panel_topic_hint">ឧ. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ប៊ូតុង</string>

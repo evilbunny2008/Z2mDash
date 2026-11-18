@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Alikho iqoqo ku–‘%1$s’ ebelikuleso sihloko</string>
 	<string name="home_search_clusters">Sesha amaqoqo</string>
 	<string name="home_stale_description">Idatha indala kunehora</string>
+	<string name="home_tank_capacity">Umthamo ogcwele</string>
+	<string name="home_tank_capacity_hint" formatted="false">Ithayela levolumu libonisa izinga % × lo mthamo.</string>
+	<string name="home_tank_capacity_title">Umthamo wethangi we-‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Ivolumu</string>
 	<string name="home_temperature_limit_high">Yazisa uma inyuka ifike ku-</string>
 	<string name="home_temperature_limit_low">Yazisa uma yehla ifike ku-</string>
 	<string name="home_temperature_limits_hint">Shiya umkhawulo ungenalutho ukuze uwuvale</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">isib. state</string>
 	<string name="panel_state_topic">Isihloko sesimo (uyazikhethela)</string>
 	<string name="panel_state_topic_hint">isib. zigbee2mqtt/Isokhethi lasekhishini</string>
+	<string name="panel_tank_capacity">Umthamo wethangi</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Libonisa ukufunda (%) njengengxenye yethangi eligcwele. Shiya kungenalutho ukuze kube ukufunda okujwayelekile</string>
 	<string name="panel_topic">Isihloko</string>
 	<string name="panel_topic_hint">isib. zigbee2mqtt/Inzwa yomhlabathi 1</string>
 	<string name="panel_type_button">Inkinobho</string>

@@ -245,6 +245,11 @@
 	<string name="home_retopic_none">Nenhum cluster em ‘%1$s’ estava nesse tópico</string>
 	<string name="home_search_clusters">Clusters de pesquisa</string>
 	<string name="home_stale_description">Os dados têm mais de uma hora</string>
+	<string name="home_tank_capacity">Capacidade total</string>
+	<string name="home_tank_capacity_hint" formatted="false">O bloco de volume mostra o nível % × esta capacidade.</string>
+	<string name="home_tank_capacity_title">Capacidade do reservatório de ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Notificar ao subir para</string>
 	<string name="home_temperature_limit_low">Notificar ao descer para</string>
 	<string name="home_temperature_limits_hint">Deixe um limite em branco para desativá-lo</string>
@@ -320,6 +325,8 @@
 	<string name="panel_state_field_hint">por exemplo estado</string>
 	<string name="panel_state_topic">Tópico estadual (opcional)</string>
 	<string name="panel_state_topic_hint">por exemplo zigbee2mqtt/tomada de cozinha</string>
+	<string name="panel_tank_capacity">Capacidade do reservatório</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Mostra a leitura (em %) como essa parte de um reservatório cheio. Em branco para uma leitura normal</string>
 	<string name="panel_topic">Tópico</string>
 	<string name="panel_topic_hint">por exemplo zigbee2mqtt/Sensor de Solo 1</string>
 	<string name="panel_type_button">Botão</string>

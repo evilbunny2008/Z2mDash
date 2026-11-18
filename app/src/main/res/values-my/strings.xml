@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">‘%1$s’ ရှိ မည်သည့် cluster မျှ ထို topic ပေါ်တွင် မရှိပါ</string>
 	<string name="home_search_clusters">cluster များ ရှာရန်</string>
 	<string name="home_stale_description">ဒေတာသည် တစ်နာရီထက် ပိုဟောင်းနေသည်</string>
+	<string name="home_tank_capacity">အပြည့်ဆံ့နိုင်မှု</string>
+	<string name="home_tank_capacity_hint" formatted="false">ပမာဏအကွက်သည် အဆင့် % × ဤဆံ့နိုင်မှုကို ပြသည်။</string>
+	<string name="home_tank_capacity_title">‘%1$s’ အတွက် ကန်ဆံ့နိုင်မှု</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">ပမာဏ</string>
 	<string name="home_temperature_limit_high">ဤအထိ တက်သောအခါ အသိပေးရန်</string>
 	<string name="home_temperature_limit_low">ဤအထိ ကျသောအခါ အသိပေးရန်</string>
 	<string name="home_temperature_limits_hint">ကန့်သတ်ချက်ကို ပိတ်ရန် ကွက်လပ်ထားပါ</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">ဥပမာ state</string>
 	<string name="panel_state_topic">State topic (ရွေးချယ်နိုင်)</string>
 	<string name="panel_state_topic_hint">ဥပမာ zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ကန်ဆံ့နိုင်မှု</string>
+	<string name="panel_tank_capacity_hint" formatted="false">ဖတ်ရှုချက် (%) ကို ကန်အပြည့်၏ အစိတ်အပိုင်းအဖြစ် ပြသည်။ ပုံမှန်ဖတ်ရှုချက်အတွက် ကွက်လပ်ထားပါ</string>
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">ဥပမာ zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ခလုတ်</string>

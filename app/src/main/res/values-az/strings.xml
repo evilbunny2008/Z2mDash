@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ daxilində heç bir klaster həmin mövzuda deyildi</string>
 	<string name="home_search_clusters">Klasterləri axtar</string>
 	<string name="home_stale_description">Məlumatlar bir saatdan köhnədir</string>
+	<string name="home_tank_capacity">Tam tutum</string>
+	<string name="home_tank_capacity_hint" formatted="false">Həcm plitəsi səviyyə % × bu tutumu göstərir.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ üçün çən tutumu</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Həcm</string>
 	<string name="home_temperature_limit_high">Bu dəyərə qalxdıqda bildir</string>
 	<string name="home_temperature_limit_low">Bu dəyərə düşdükdə bildir</string>
 	<string name="home_temperature_limits_hint">Həddi söndürmək üçün boş buraxın</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">məs. state</string>
 	<string name="panel_state_topic">Vəziyyət mövzusu (isteğe bağlı)</string>
 	<string name="panel_state_topic_hint">məs. zigbee2mqtt/Mətbəx rozetkası</string>
+	<string name="panel_tank_capacity">Çən tutumu</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Oxunuşu (%) dolu çənin həmin payı kimi göstərir. Adi oxunuş üçün boş buraxın</string>
 	<string name="panel_topic">Mövzu</string>
 	<string name="panel_topic_hint">məs. zigbee2mqtt/Torpaq sensoru 1</string>
 	<string name="panel_type_button">Düymə</string>

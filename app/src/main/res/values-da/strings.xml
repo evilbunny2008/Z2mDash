@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Ingen klynger i ‘%1$s’ var på det emne</string>
 	<string name="home_search_clusters">Søg i klynger</string>
 	<string name="home_stale_description">Data er mere end en time gamle</string>
+	<string name="home_tank_capacity">Fuld kapacitet</string>
+	<string name="home_tank_capacity_hint" formatted="false">Volumenfeltet viser niveauet % × denne kapacitet.</string>
+	<string name="home_tank_capacity_title">Tankkapacitet for ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volumen</string>
 	<string name="home_temperature_limit_high">Giv besked ved stigning til</string>
 	<string name="home_temperature_limit_low">Giv besked ved fald til</string>
 	<string name="home_temperature_limits_hint">Lad en grænse stå tom for at slå den fra</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">f.eks. state</string>
 	<string name="panel_state_topic">Tilstandsemne (valgfrit)</string>
 	<string name="panel_state_topic_hint">f.eks. zigbee2mqtt/Køkkenstik</string>
+	<string name="panel_tank_capacity">Tankkapacitet</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Viser aflæsningen (en %) som den andel af en fuld tank. Tom for en almindelig aflæsning</string>
 	<string name="panel_topic">Emne</string>
 	<string name="panel_topic_hint">f.eks. zigbee2mqtt/Jordsensor 1</string>
 	<string name="panel_type_button">Knap</string>

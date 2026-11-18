@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ ичиндеги бир да кластер ал темада болгон жок</string>
 	<string name="home_search_clusters">Кластерлерди издөө</string>
 	<string name="home_stale_description">Маалыматтар бир сааттан эски</string>
+	<string name="home_tank_capacity">Толук сыйымдуулук</string>
+	<string name="home_tank_capacity_hint" formatted="false">Көлөм плиткасы деңгээл % × бул сыйымдуулукту көрсөтөт.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ резервуарынын сыйымдуулугу</string>
+	<string name="home_tank_capacity_unit">л</string>
+	<string name="home_tank_volume_label">Көлөм</string>
 	<string name="home_temperature_limit_high">Ушуга чейин көтөрүлгөндө билдирүү</string>
 	<string name="home_temperature_limit_low">Ушуга чейин төмөндөгөндө билдирүү</string>
 	<string name="home_temperature_limits_hint">Чекти өчүрүү үчүн аны бош калтырыңыз</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">мисалы, state</string>
 	<string name="panel_state_topic">Абал темасы (милдеттүү эмес)</string>
 	<string name="panel_state_topic_hint">мисалы, zigbee2mqtt/Ашкана розеткасы</string>
+	<string name="panel_tank_capacity">Резервуардын сыйымдуулугу</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Көрсөткүчтү (%) толук резервуардын үлүшү катары көрсөтөт. Кадимки көрсөткүч үчүн бош калтырыңыз</string>
 	<string name="panel_topic">Тема</string>
 	<string name="panel_topic_hint">мисалы, zigbee2mqtt/Топурак сенсору 1</string>
 	<string name="panel_type_button">Баскыч</string>

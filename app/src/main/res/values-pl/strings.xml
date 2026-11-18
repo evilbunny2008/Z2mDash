@@ -252,6 +252,11 @@
 	<string name="home_retopic_none">Żaden klaster w „%1$s” nie był w tym temacie</string>
 	<string name="home_search_clusters">Szukaj klastrów</string>
 	<string name="home_stale_description">Dane są starsze niż godzina</string>
+	<string name="home_tank_capacity">Pełna pojemność</string>
+	<string name="home_tank_capacity_hint" formatted="false">Kafelek objętości pokazuje poziom % × tę pojemność.</string>
+	<string name="home_tank_capacity_title">Pojemność zbiornika dla ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_volume_label">Objętość</string>
 	<string name="home_temperature_limit_high">Powiadom przy wzroście do</string>
 	<string name="home_temperature_limit_low">Powiadom przy spadku do</string>
 	<string name="home_temperature_limits_hint">Pozostaw limit pusty, aby go wyłączyć</string>
@@ -328,6 +333,8 @@
 	<string name="panel_state_field_hint">np. state</string>
 	<string name="panel_state_topic">Temat stanu (opcjonalnie)</string>
 	<string name="panel_state_topic_hint">np. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Pojemność zbiornika</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Pokazuje odczyt (w %) jako część pełnego zbiornika. Puste dla zwykłego odczytu</string>
 	<string name="panel_topic">Temat</string>
 	<string name="panel_topic_hint">np. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Przycisk</string>

@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ मधील कोणतेही क्लस्टर त्या विषयावर नव्हते</string>
 	<string name="home_search_clusters">क्लस्टर शोधा</string>
 	<string name="home_stale_description">डेटा एक तासापेक्षा जास्त जुना आहे</string>
+	<string name="home_tank_capacity">पूर्ण क्षमता</string>
+	<string name="home_tank_capacity_hint" formatted="false">प्रमाण टाइल पातळी % × ही क्षमता दाखवते.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ साठी टाकीची क्षमता</string>
+	<string name="home_tank_capacity_unit">ली</string>
+	<string name="home_tank_volume_label">प्रमाण</string>
 	<string name="home_temperature_limit_high">इतके वाढल्यावर सूचित करा</string>
 	<string name="home_temperature_limit_low">इतके घटल्यावर सूचित करा</string>
 	<string name="home_temperature_limits_hint">मर्यादा बंद करण्यासाठी ती रिकामी ठेवा</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">उदा. state</string>
 	<string name="panel_state_topic">स्टेट विषय (पर्यायी)</string>
 	<string name="panel_state_topic_hint">उदा. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">टाकीची क्षमता</string>
+	<string name="panel_tank_capacity_hint" formatted="false">रीडिंग (%) भरलेल्या टाकीचा वाटा म्हणून दाखवते. सामान्य रीडिंगसाठी रिकामे सोडा</string>
 	<string name="panel_topic">विषय</string>
 	<string name="panel_topic_hint">उदा. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">बटण</string>

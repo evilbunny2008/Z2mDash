@@ -82,6 +82,9 @@ object SensorDiscovery {
         // Optional, parallel to panelFields - decimal places for the displayed value, else
         // Panel.Sensor's default (1).
         val panelDecimals: List<Int?> = emptyList(),
+        // Optional, parallel to panelFields - a tank volume tile's full capacity (see
+        // Panel.Sensor.tankCapacity), null/missing for an ordinary reading.
+        val panelTankCapacities: List<Double?> = emptyList(),
         // Optional, parallel to panelFields - unit override, else suggestedUnit(field).
         val panelUnits: List<String> = emptyList(),
         // Optional, parallel to panelFields - icon override (TileIcon name, case-insensitive),
@@ -264,7 +267,8 @@ object SensorDiscovery {
     // later, without a matching addition being forgotten there.
     private val sensorFieldParallelArrayKeys = listOf(
         "labels", "panel_clusters", "panel_cluster_ids", "panel_ids", "panel_order", "panel_decimals", "panel_topics",
-        "panel_units", "panel_icons", "panel_ideal_topics", "panel_ideal_min_paths", "panel_ideal_max_paths"
+        "panel_units", "panel_icons", "panel_ideal_topics", "panel_ideal_min_paths", "panel_ideal_max_paths",
+        "panel_tank_capacities"
     )
 
     /**
@@ -365,6 +369,8 @@ object SensorDiscovery {
         fieldUnitUpdates: Map<Int, String> = emptyMap(),
         fieldIconUpdates: Map<Int, String> = emptyMap(),
         fieldDecimalUpdates: Map<Int, Int> = emptyMap(),
+        // A null value clears that field's capacity (back to an ordinary reading).
+        fieldTankCapacityUpdates: Map<Int, Double?> = emptyMap(),
         fieldTopicUpdates: Map<Int, String> = emptyMap(),
         fieldIdealTopicUpdates: Map<Int, String> = emptyMap(),
         fieldIdealMinPathUpdates: Map<Int, String> = emptyMap(),
@@ -419,6 +425,18 @@ object SensorDiscovery {
                 val existing = (obj["panel_decimals"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.intOrNull }
                 val merged = (0 until fieldCount).map { i -> fieldDecimalUpdates[i] ?: existing?.getOrNull(i) }
                 mutableFields["panel_decimals"] = JsonArray(merged.map { if (it != null) JsonPrimitive(it) else JsonNull })
+            }
+
+            if (fieldTankCapacityUpdates.isNotEmpty()) {
+                val existing = (obj["panel_tank_capacities"] as? JsonArray)?.map { (it as? JsonPrimitive)?.doubleOrNull }
+                val merged = (0 until fieldCount).map { i ->
+                    if (i in fieldTankCapacityUpdates) fieldTankCapacityUpdates[i] else existing?.getOrNull(i)
+                }
+                if (merged.all { it == null }) {
+                    mutableFields.remove("panel_tank_capacities")
+                } else {
+                    mutableFields["panel_tank_capacities"] = JsonArray(merged.map { if (it != null) JsonPrimitive(it) else JsonNull })
+                }
             }
 
             // Every control-object key update funnels through one map-of-maps (controlIndex ->
@@ -571,6 +589,8 @@ object SensorDiscovery {
             val panelOrders = panelOrdersArray?.map { (it as? JsonPrimitive)?.intOrNull } ?: emptyList()
             val panelDecimalsArray = obj["panel_decimals"] as? JsonArray
             val panelDecimals = panelDecimalsArray?.map { (it as? JsonPrimitive)?.intOrNull } ?: emptyList()
+            val panelTankCapacities = (obj["panel_tank_capacities"] as? JsonArray)
+                ?.map { (it as? JsonPrimitive)?.doubleOrNull?.takeIf { capacity -> capacity > 0 } } ?: emptyList()
             fun stringArray(key: String) =
                 (obj[key] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.contentOrNull } ?: emptyList()
             val panelUnits = stringArray("panel_units")
@@ -609,6 +629,7 @@ object SensorDiscovery {
                 panelIds = panelIds,
                 panelOrders = panelOrders,
                 panelDecimals = panelDecimals,
+                panelTankCapacities = panelTankCapacities,
                 panelUnits = panelUnits,
                 panelIcons = panelIcons,
                 panelTopics = panelTopics,
@@ -808,6 +829,7 @@ object SensorDiscovery {
                 clusterId = clusterId,
                 displayOrder = composedDisplayOrder(deviceConfig.groupOrder, deviceConfig.panelOrders.getOrNull(index), index),
                 decimals = deviceConfig.panelDecimals.getOrNull(index) ?: suggestedDecimals(field),
+                tankCapacity = deviceConfig.panelTankCapacities.getOrNull(index),
                 // A "<base>_min"/"<base>_max" field IS the threshold itself (e.g. moisture_min),
                 // not a live hardware reading - editing it is its entire purpose, so it defaults
                 // to editable rather than requiring the user to flip that on manually every time.
@@ -951,6 +973,7 @@ object SensorDiscovery {
 
     fun suggestedIcon(key: String): TileIcon = when {
         key.contains("fertility", ignoreCase = true) -> TileIcon.SEEDLING
+        key.contains("liquid_level", ignoreCase = true) -> TileIcon.TANK
         key.contains("moisture", ignoreCase = true) -> TileIcon.MOISTURE
         key.contains("humidity", ignoreCase = true) -> TileIcon.HUMIDITY
         key.contains("temperature", ignoreCase = true) -> TileIcon.TEMPERATURE
@@ -983,6 +1006,7 @@ object SensorDiscovery {
         key.contains("temperature", ignoreCase = true) -> "\u00b0C"
         key.contains("humidity", ignoreCase = true) -> "%"
         key.contains("moisture", ignoreCase = true) -> "%"
+        key.contains("liquid_level", ignoreCase = true) -> "%"
         key.contains("battery", ignoreCase = true) -> "%"
         key.contains("illuminance", ignoreCase = true) -> "lx"
         key.contains("fertility", ignoreCase = true) -> "\u00b5S/cm"
@@ -1111,6 +1135,9 @@ object SensorDiscovery {
             putJsonArray("panel_ids") { sensors.forEach { add(it.id) } }
             putJsonArray("labels") { sensors.forEach { add(it.label) } }
             putJsonArray("panel_decimals") { sensors.forEach { add(it.decimals) } }
+            if (sensors.any { it.tankCapacity != null }) {
+                putJsonArray("panel_tank_capacities") { sensors.forEach { add(it.tankCapacity) } }
+            }
             putJsonArray("panel_topics") { sensors.forEach { add(it.topic) } }
             putJsonArray("panel_units") { sensors.forEach { add(it.unit) } }
             putJsonArray("panel_icons") { sensors.forEach { add(it.icon.name) } }

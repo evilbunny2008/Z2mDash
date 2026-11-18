@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’-ലെ ഒരു ക്ലസ്റ്ററും ആ ടോപ്പിക്കിൽ ഉണ്ടായിരുന്നില്ല</string>
 	<string name="home_search_clusters">ക്ലസ്റ്ററുകൾ തിരയുക</string>
 	<string name="home_stale_description">ഡാറ്റയ്ക്ക് ഒരു മണിക്കൂറിലധികം പഴക്കമുണ്ട്</string>
+	<string name="home_tank_capacity">പൂർണ്ണ ശേഷി</string>
+	<string name="home_tank_capacity_hint" formatted="false">അളവ് ടൈൽ നില % × ഈ ശേഷി കാണിക്കുന്നു.</string>
+	<string name="home_tank_capacity_title">‘%1$s’ ടാങ്ക് ശേഷി</string>
+	<string name="home_tank_capacity_unit">ലി</string>
+	<string name="home_tank_volume_label">അളവ്</string>
 	<string name="home_temperature_limit_high">ഇതിലേക്ക് ഉയരുമ്പോൾ അറിയിക്കുക</string>
 	<string name="home_temperature_limit_low">ഇതിലേക്ക് താഴുമ്പോൾ അറിയിക്കുക</string>
 	<string name="home_temperature_limits_hint">ഒരു പരിധി ഓഫാക്കാൻ അത് ശൂന്യമായി വിടുക</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">ഉദാ. state</string>
 	<string name="panel_state_topic">സ്റ്റേറ്റ് ടോപ്പിക് (ഓപ്ഷണൽ)</string>
 	<string name="panel_state_topic_hint">ഉദാ. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ടാങ്ക് ശേഷി</string>
+	<string name="panel_tank_capacity_hint" formatted="false">റീഡിംഗ് (%) നിറഞ്ഞ ടാങ്കിന്റെ ഭാഗമായി കാണിക്കുന്നു. സാധാരണ റീഡിംഗിന് ശൂന്യമായി വിടുക</string>
 	<string name="panel_topic">ടോപ്പിക്</string>
 	<string name="panel_topic_hint">ഉദാ. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ബട്ടൺ</string>

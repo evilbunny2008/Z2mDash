@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">هیچ خوشه‌ای در «%1$s» روی آن تاپیک نبود</string>
 	<string name="home_search_clusters">جستجوی خوشه‌ها</string>
 	<string name="home_stale_description">داده‌ها بیش از یک ساعت قدیمی هستند</string>
+	<string name="home_tank_capacity">ظرفیت کامل</string>
+	<string name="home_tank_capacity_hint" formatted="false">کاشی حجم، سطح ٪ × این ظرفیت را نشان می‌دهد.</string>
+	<string name="home_tank_capacity_title">ظرفیت مخزن برای ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">لیتر</string>
+	<string name="home_tank_volume_label">حجم</string>
 	<string name="home_temperature_limit_high">اطلاع هنگام افزایش به</string>
 	<string name="home_temperature_limit_low">اطلاع هنگام کاهش به</string>
 	<string name="home_temperature_limits_hint">برای خاموش کردن یک حد، آن را خالی بگذارید</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">مثلاً state</string>
 	<string name="panel_state_topic">تاپیک وضعیت (اختیاری)</string>
 	<string name="panel_state_topic_hint">مثلاً zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ظرفیت مخزن</string>
+	<string name="panel_tank_capacity_hint" formatted="false">خوانش (٪) را به‌عنوان سهمی از مخزن پر نشان می‌دهد. برای خوانش معمولی خالی بگذارید</string>
 	<string name="panel_topic">تاپیک</string>
 	<string name="panel_topic_hint">مثلاً zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">دکمه</string>

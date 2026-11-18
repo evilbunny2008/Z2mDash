@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">„%1$s“-ში არცერთი კლასტერი არ იყო ამ თემაზე</string>
 	<string name="home_search_clusters">კლასტერების ძიება</string>
 	<string name="home_stale_description">მონაცემები ერთ საათზე ძველია</string>
+	<string name="home_tank_capacity">სრული მოცულობა</string>
+	<string name="home_tank_capacity_hint" formatted="false">მოცულობის ფილა აჩვენებს დონეს % × ეს მოცულობა.</string>
+	<string name="home_tank_capacity_title">ავზის მოცულობა: ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">ლ</string>
+	<string name="home_tank_volume_label">მოცულობა</string>
 	<string name="home_temperature_limit_high">შეტყობინება აწევისას</string>
 	<string name="home_temperature_limit_low">შეტყობინება დაწევისას</string>
 	<string name="home_temperature_limits_hint">ზღვრის გამოსართავად დატოვეთ ის ცარიელი</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">მაგ. state</string>
 	<string name="panel_state_topic">მდგომარეობის თემა (არასავალდებულო)</string>
 	<string name="panel_state_topic_hint">მაგ. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ავზის მოცულობა</string>
+	<string name="panel_tank_capacity_hint" formatted="false">აჩვენებს ჩვენებას (%) სავსე ავზის წილად. ჩვეულებრივი ჩვენებისთვის დატოვეთ ცარიელი</string>
 	<string name="panel_topic">თემა</string>
 	<string name="panel_topic_hint">მაგ. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ღილაკი</string>

@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Κανένα cluster στο «%1$s» δεν ήταν σε αυτό το θέμα</string>
 	<string name="home_search_clusters">Αναζήτηση clusters</string>
 	<string name="home_stale_description">Τα δεδομένα είναι παλαιότερα από μία ώρα</string>
+	<string name="home_tank_capacity">Πλήρης χωρητικότητα</string>
+	<string name="home_tank_capacity_hint" formatted="false">Το πλακίδιο όγκου δείχνει τη στάθμη % × αυτή τη χωρητικότητα.</string>
+	<string name="home_tank_capacity_title">Χωρητικότητα δεξαμενής για ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Όγκος</string>
 	<string name="home_temperature_limit_high">Ειδοποίηση όταν ανέβει στους</string>
 	<string name="home_temperature_limit_low">Ειδοποίηση όταν πέσει στους</string>
 	<string name="home_temperature_limits_hint">Αφήστε ένα όριο κενό για να το απενεργοποιήσετε</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">π.χ. state</string>
 	<string name="panel_state_topic">Θέμα κατάστασης (προαιρετικό)</string>
 	<string name="panel_state_topic_hint">π.χ. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Χωρητικότητα δεξαμενής</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Δείχνει την ένδειξη (%) ως μερίδιο γεμάτης δεξαμενής. Κενό για κανονική ένδειξη</string>
 	<string name="panel_topic">Θέμα</string>
 	<string name="panel_topic_hint">π.χ. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Κουμπί</string>

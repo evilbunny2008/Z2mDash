@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">‘%1$s’ में कोई भी क्लस्टर उस विषय पर नहीं था</string>
 	<string name="home_search_clusters">क्लस्टर खोजें</string>
 	<string name="home_stale_description">डेटा एक घंटे से अधिक पुराना है</string>
+	<string name="home_tank_capacity">पूर्ण क्षमता</string>
+	<string name="home_tank_capacity_hint" formatted="false">मात्रा टाइल स्तर % × यह क्षमता दिखाती है।</string>
+	<string name="home_tank_capacity_title">‘%1$s’ के लिए टैंक क्षमता</string>
+	<string name="home_tank_capacity_unit">ली</string>
+	<string name="home_tank_volume_label">मात्रा</string>
 	<string name="home_temperature_limit_high">इतना बढ़ने पर सूचित करें</string>
 	<string name="home_temperature_limit_low">इतना घटने पर सूचित करें</string>
 	<string name="home_temperature_limits_hint">किसी सीमा को बंद करने के लिए उसे खाली छोड़ें</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">जैसे राज्य</string>
 	<string name="panel_state_topic">राज्य विषय (वैकल्पिक)</string>
 	<string name="panel_state_topic_hint">जैसे zigbee2mqtt/किचन प्लग</string>
+	<string name="panel_tank_capacity">टैंक क्षमता</string>
+	<string name="panel_tank_capacity_hint" formatted="false">रीडिंग (%) को भरे टैंक के हिस्से के रूप में दिखाता है। सामान्य रीडिंग के लिए खाली छोड़ें</string>
 	<string name="panel_topic">विषय</string>
 	<string name="panel_topic_hint">जैसे zigbee2mqtt/मृदा सेंसर 1</string>
 	<string name="panel_type_button">बटन</string>

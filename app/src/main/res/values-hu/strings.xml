@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">A(z) „%1$s” egyik klasztere sem volt ezen a témakörön</string>
 	<string name="home_search_clusters">Klaszterek keresése</string>
 	<string name="home_stale_description">Az adatok egy óránál régebbiek</string>
+	<string name="home_tank_capacity">Teljes űrtartalom</string>
+	<string name="home_tank_capacity_hint" formatted="false">A mennyiség csempe a szint % × ezt az űrtartalmat mutatja.</string>
+	<string name="home_tank_capacity_title">Tartály űrtartalma: ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_volume_label">Mennyiség</string>
 	<string name="home_temperature_limit_high">Értesítés emelkedéskor erre</string>
 	<string name="home_temperature_limit_low">Értesítés csökkenéskor erre</string>
 	<string name="home_temperature_limits_hint">Hagyja üresen a határt a kikapcsolásához</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">pl. state</string>
 	<string name="panel_state_topic">Állapot témakör (nem kötelező)</string>
 	<string name="panel_state_topic_hint">pl. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Tartály űrtartalma</string>
+	<string name="panel_tank_capacity_hint" formatted="false">A mért értéket (%) a teli tartály ekkora részeként mutatja. Üresen hagyva szokásos érték</string>
 	<string name="panel_topic">Témakör</string>
 	<string name="panel_topic_hint">pl. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Gomb</string>

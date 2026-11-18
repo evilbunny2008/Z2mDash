@@ -242,6 +242,11 @@
 	<string name="home_retopic_none">No clusters in ‘%1$s’ were on that topic</string>
 	<string name="home_search_clusters">Search clusters</string>
 	<string name="home_stale_description">Data is more than an hour old</string>
+	<string name="home_tank_capacity">Full capacity</string>
+	<string name="home_tank_capacity_hint" formatted="false">The volume tile shows the level % × this capacity.</string>
+	<string name="home_tank_capacity_title">Tank capacity for ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Volume</string>
 	<string name="home_temperature_limit_high">Notify when rising to</string>
 	<string name="home_temperature_limit_low">Notify when dropping to</string>
 	<string name="home_temperature_limits_hint">Leave a limit blank to turn it off</string>
@@ -316,6 +321,8 @@
 	<string name="panel_state_field_hint">e.g. state</string>
 	<string name="panel_state_topic">State topic (optional)</string>
 	<string name="panel_state_topic_hint">e.g. zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">Tank capacity</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Treats the reading as a fill % and shows that share of this capacity. Blank for an ordinary reading</string>
 	<string name="panel_topic">Topic</string>
 	<string name="panel_topic_hint">e.g. zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">Button</string>

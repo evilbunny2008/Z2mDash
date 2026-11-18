@@ -231,6 +231,11 @@
 	<string name="home_retopic_none">ບໍ່ມີກຸ່ມຍ່ອຍໃນ ‘%1$s’ ຢູ່ໃນຫົວຂໍ້ນັ້ນ</string>
 	<string name="home_search_clusters">ຄົ້ນຫາກຸ່ມຍ່ອຍ</string>
 	<string name="home_stale_description">ຂໍ້ມູນເກົ່າກວ່າໜຶ່ງຊົ່ວໂມງ</string>
+	<string name="home_tank_capacity">ຄວາມຈຸເຕັມ</string>
+	<string name="home_tank_capacity_hint" formatted="false">ແຜ່ນປະລິມານສະແດງລະດັບ % × ຄວາມຈຸນີ້.</string>
+	<string name="home_tank_capacity_title">ຄວາມຈຸຖັງສຳລັບ ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">ປະລິມານ</string>
 	<string name="home_temperature_limit_high">ແຈ້ງເຕືອນເມື່ອຂຶ້ນຮອດ</string>
 	<string name="home_temperature_limit_low">ແຈ້ງເຕືອນເມື່ອລົງຮອດ</string>
 	<string name="home_temperature_limits_hint">ປະຂີດຈຳກັດໃຫ້ຫວ່າງເພື່ອປິດມັນ</string>
@@ -304,6 +309,8 @@
 	<string name="panel_state_field_hint">ເຊັ່ນ state</string>
 	<string name="panel_state_topic">ຫົວຂໍ້ສະຖານະ (ທາງເລືອກ)</string>
 	<string name="panel_state_topic_hint">ເຊັ່ນ zigbee2mqtt/Kitchen Plug</string>
+	<string name="panel_tank_capacity">ຄວາມຈຸຖັງ</string>
+	<string name="panel_tank_capacity_hint" formatted="false">ສະແດງຄ່າທີ່ອ່ານ (%) ເປັນສ່ວນຂອງຖັງເຕັມ. ປ່ອຍຫວ່າງສຳລັບຄ່າປົກກະຕິ</string>
 	<string name="panel_topic">ຫົວຂໍ້</string>
 	<string name="panel_topic_hint">ເຊັ່ນ zigbee2mqtt/Soil Sensor 1</string>
 	<string name="panel_type_button">ປຸ່ມ</string>

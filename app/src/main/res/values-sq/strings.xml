@@ -238,6 +238,11 @@
 	<string name="home_retopic_none">Asnjë klaster në ‘%1$s’ nuk ishte në atë temë</string>
 	<string name="home_search_clusters">Kërko klasterë</string>
 	<string name="home_stale_description">Të dhënat janë më të vjetra se një orë</string>
+	<string name="home_tank_capacity">Kapaciteti i plotë</string>
+	<string name="home_tank_capacity_hint" formatted="false">Pllaka e vëllimit tregon nivelin % × këtë kapacitet.</string>
+	<string name="home_tank_capacity_title">Kapaciteti i depozitës për ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">L</string>
+	<string name="home_tank_volume_label">Vëllimi</string>
 	<string name="home_temperature_limit_high">Njofto kur rritet në</string>
 	<string name="home_temperature_limit_low">Njofto kur ulet në</string>
 	<string name="home_temperature_limits_hint">Lëre një kufi bosh për ta çaktivizuar</string>
@@ -312,6 +317,8 @@
 	<string name="panel_state_field_hint">p.sh. state</string>
 	<string name="panel_state_topic">Tema e gjendjes (opsionale)</string>
 	<string name="panel_state_topic_hint">p.sh. zigbee2mqtt/Priza e kuzhinës</string>
+	<string name="panel_tank_capacity">Kapaciteti i depozitës</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Tregon leximin (%) si pjesë të një depozite të plotë. Bosh për lexim të zakonshëm</string>
 	<string name="panel_topic">Tema</string>
 	<string name="panel_topic_hint">p.sh. zigbee2mqtt/Sensori i tokës 1</string>
 	<string name="panel_type_button">Buton</string>

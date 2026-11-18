@@ -252,6 +252,11 @@
 	<string name="home_retopic_none">Žiadne klastre v ‘%1$s’ neboli na tejto téme</string>
 	<string name="home_search_clusters">Hľadať klastre</string>
 	<string name="home_stale_description">Údaje sú staršie ako hodina</string>
+	<string name="home_tank_capacity">Plná kapacita</string>
+	<string name="home_tank_capacity_hint" formatted="false">Dlaždica objemu zobrazuje hladinu % × túto kapacitu.</string>
+	<string name="home_tank_capacity_title">Kapacita nádrže pre ‘%1$s’</string>
+	<string name="home_tank_capacity_unit">l</string>
+	<string name="home_tank_volume_label">Objem</string>
 	<string name="home_temperature_limit_high">Upozorniť pri vzostupe na</string>
 	<string name="home_temperature_limit_low">Upozorniť pri poklese na</string>
 	<string name="home_temperature_limits_hint">Ak chcete hranicu vypnúť, nechajte ju prázdnu</string>
@@ -328,6 +333,8 @@
 	<string name="panel_state_field_hint">napr. state</string>
 	<string name="panel_state_topic">Téma stavu (voliteľné)</string>
 	<string name="panel_state_topic_hint">napr. zigbee2mqtt/Kuchynská zásuvka</string>
+	<string name="panel_tank_capacity">Kapacita nádrže</string>
+	<string name="panel_tank_capacity_hint" formatted="false">Zobrazí hodnotu (v %) ako podiel plnej nádrže. Prázdne pre bežnú hodnotu</string>
 	<string name="panel_topic">Téma</string>
 	<string name="panel_topic_hint">napr. zigbee2mqtt/Pôdny snímač 1</string>
 	<string name="panel_type_button">Tlačidlo</string>
