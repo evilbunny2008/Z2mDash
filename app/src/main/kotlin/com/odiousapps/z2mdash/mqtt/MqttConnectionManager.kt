@@ -179,7 +179,12 @@ class MqttConnectionManager(
      * that would wipe the whole cache.
      */
     private fun pruneUnwatchedPayloads() {
-        val filtersByBrokerId = connections.mapValues { (_, conn) -> conn.currentSubscriptions() }
+        // A connection not currently subscribed to its own base topics is between disconnectAll()
+        // (backgrounded) and the next applyConfig - its empty subscription set means "not running",
+        // not "watching nothing", so its payloads are left alone like an unconnected broker's.
+        val filtersByBrokerId = connections
+            .mapValues { (_, conn) -> conn.currentSubscriptions() }
+            .filter { (id, filters) -> wildcardsByBrokerId[id].orEmpty().all { it in filters } && filters.isNotEmpty() }
         fun isWatched(key: String): Boolean {
             val filters = filtersByBrokerId[key.substringBefore('|')] ?: return true
             val topic = key.substringAfter('|')

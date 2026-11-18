@@ -144,6 +144,7 @@ import com.odiousapps.z2mdash.data.pushClusterBatteryTypeForAutoConfiguredDevice
 import com.odiousapps.z2mdash.data.pushGroupMoveForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushGroupRenameForAutoConfiguredDevices
 import com.odiousapps.z2mdash.data.pushPanelClusterOverrideIfAutoConfigured
+import com.odiousapps.z2mdash.data.lastKnownAppPayload
 import com.odiousapps.z2mdash.data.pushPanelDetailsIfAutoConfigured
 import com.odiousapps.z2mdash.data.retopicClusterAndPublish
 import com.odiousapps.z2mdash.data.retopicGroupTopicPrefix
@@ -2218,7 +2219,11 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
             confirmButton = {
                 TextButton(
                     onClick = {
+                        // Falls back to the device's last applied config when its "/app" topic is
+                        // gone from the broker - otherwise this published a lone {"min": ...} that
+                        // replaced the device's whole config.
                         val currentPayload = app.connectionManager.latestPayloads.value["${panel.brokerId}|${panel.topic}"]
+                            ?: if (panel.topic.endsWith("/app")) lastKnownAppPayload(app, panel.brokerId, panel.topic) else null
                         val updatedPayload = JsonPath.withValueAt(currentPayload, panel.jsonPath, valueEditText)
                         app.connectionManager.publish(panel.brokerId, panel.topic, updatedPayload, retain = true)
                         // An editable panel's own topic is often an auto-configured device's own

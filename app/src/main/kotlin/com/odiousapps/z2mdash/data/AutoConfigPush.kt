@@ -651,6 +651,18 @@ fun forceRepublishAllGroupsAppTopics(app: Z2mDashApplication): Int {
     return groupIds.size
 }
 
+/**
+ * [appTopic]'s current retained payload, or failing that the last one this phone applied for it -
+ * a "/app" topic wiped from the broker (e.g. its whole base topic deleted in an MQTT client) takes
+ * its embedded values, such as moisture min/max thresholds, with it, and without this fallback
+ * Force Upload skipped every such cluster as having no known value to seed, leaving them blank
+ * for good.
+ */
+fun lastKnownAppPayload(app: Z2mDashApplication, brokerId: String, appTopic: String): String? =
+    app.connectionManager.latestPayloads.value["$brokerId|$appTopic"]
+        ?: app.configRepository.config.value.autoConfiguredDevices
+            .find { it.brokerId == brokerId && it.appConfigTopic == appTopic }?.lastAppliedPayload
+
 fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
     val config = app.configRepository.config.value
     val group = config.groups.find { it.id == groupId } ?: return
@@ -672,7 +684,7 @@ fun forceRepublishGroupAppTopics(app: Z2mDashApplication, groupId: String) {
         val appTopic = "$topic/app"
         val groupOrder = orderedClusterKeys.indexOf(clusterKey).takeIf { it >= 0 }?.plus(1)
 
-        val currentPayload = app.connectionManager.latestPayloads.value["$brokerId|$appTopic"]
+        val currentPayload = lastKnownAppPayload(app, brokerId, appTopic)
         val appTopicEmbeddedFields = panels.filterIsInstance<Panel.Sensor>().filter { it.topic == appTopic }
         val seedValuesByPanelId = appTopicEmbeddedFields
             .mapNotNull { panel ->

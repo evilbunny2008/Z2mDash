@@ -1,0 +1,2 @@
+Force Upload now restores devices whose config was wiped from the broker (e.g. moisture Min/Max showing --), using the last config this phone applied.
+Editing a Min/Max value for such a device no longer replaces its whole config with just that one value.
