@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">အကြောင်းကြားချက်များ ပိတ်ထားသည်</string>
 	<string name="alerts_notifications_off_detail">%1$s ကို အကြောင်းကြားချက်များ ပို့ခွင့်မပြုမချင်း သတိပေးချက်များကို ပြသ၍မရပါ</string>
 	<string name="alerts_open_settings">ဆက်တင်များ</string>
+	<string name="alerts_retain_off">အာရုံခံကိရိယာအချို့ကို ထိန်းသိမ်းမထားပါ</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT သည် %1$s ကို ထိန်းသိမ်းမထားသောကြောင့် အက်ပ်ပိတ်ထားစဉ် ၎င်းတို့၏ အပူချိန်သတိပေးချက်များကို စစ်ဆေး၍မရပါ – Zigbee2MQTT တွင် ၎င်းတို့အတွက် retain ကို ဖွင့်ပါ</string>
 	<string name="alerts_smoke">မီးခိုး သတိပေးချက်များ</string>
 	<string name="alerts_smoke_detail">မည်သည့်စက်ပစ္စည်းမဆို မီးခိုးတွေ့ရှိကြောင်း ပြသပါက အကြောင်းကြားရန်</string>
 	<string name="alerts_smoke_test_detail">အမှန်တကယ် မီးခိုးသတိပေးချက်နှင့် တူညီသော နည်းလမ်းအတိုင်း အကြောင်းကြားချက်အစစ်တစ်ခု (အထက်တွင် ဖွင့်ထားပါက အသံပါ) ပို့ပေးသည် – လိုအပ်လာချိန်မတိုင်မီ သင့်အာရုံကို တကယ်ဆွဲနိုင်ကြောင်း စစ်ဆေးရန် ကောင်းသောနည်းလမ်းဖြစ်သည်</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">နောက်ထပ် မပြပါနှင့်</string>
+	<string name="retain_warning_text">Zigbee2MQTT သည် ဤအာရုံခံကိရိယာများကို ထိန်းသိမ်းမထားသောကြောင့် အက်ပ်ပိတ်ထားစဉ် ၎င်းတို့၏ အပူချိန်သတိပေးချက်များကို စစ်ဆေး၍မရပါ-\n\n%1$s\n\nZigbee2MQTT တွင် ၎င်းတို့အတွက် retain ကို ဖွင့်ပါ သို့မဟုတ် ဆက်တင်များတွင် %2$s ကို ဖွင့်ပါ။</string>
+	<string name="retain_warning_title">Retain ပိတ်ထားသည်</string>
 	<string name="settings_about">အကြောင်း</string>
 	<string name="settings_about_tagline">%1$s – cloud မလို၊ အကောင့်မလို၊ ချုပ်နှောင်မှုမရှိ</string>
 	<string name="settings_alerts_detail">မီးခိုးနှင့် ရေလောင်း သတိပေးချက်များ၊ အသံနှင့် စမ်းသပ် အကြောင်းကြားချက်များ</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">panel %1$d ခုကို ဖယ်ရှားပြီးပါပြီ</item>
 	</plurals>
+	<string name="settings_periodic_checks">အချိန်အပိုင်းအခြားအလိုက် စစ်ဆေးမှုများ</string>
+	<string name="settings_periodic_checks_detail">%1$s ပိတ်ထားစဉ် အပူချိန်သတိပေးချက်များကို ၁၅ မိနစ်ခန့်တိုင်း စစ်ဆေးပါ – Zigbee2MQTT တွင် retain ဖွင့်ထားရန် လိုအပ်သည်</string>
 	<string name="settings_tile_width">Tile နှင့် Cluster အကျယ်</string>
 	<string name="settings_tile_width_detail">tile များ (ထို့ကြောင့် tile ၃ ခုစာ ကျယ်သော cluster ကတ်များ) မျက်နှာပြင်အပြည့်အထိ မည်မျှ ကျယ်နိုင်သည် – လက်ရှိ %1$ddp</string>
 	<string name="settings_lock_layout">အပြင်အဆင်ကို လော့ခ်ချရန်</string>

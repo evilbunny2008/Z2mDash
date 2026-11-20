@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Le notifiche sono disattivate</string>
 	<string name="alerts_notifications_off_detail">Gli avvisi non possono essere mostrati finché %1$s non è autorizzata a inviare notifiche</string>
 	<string name="alerts_open_settings">Impostazioni</string>
+	<string name="alerts_retain_off">Alcuni sensori non vengono conservati</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT non conserva %1$s, quindi i loro avvisi di temperatura non possono essere controllati ad app chiusa – attiva retain per loro in Zigbee2MQTT</string>
 	<string name="alerts_smoke">Avvisi fumo</string>
 	<string name="alerts_smoke_detail">Notifica se un dispositivo segnala la rilevazione di fumo</string>
 	<string name="alerts_smoke_test_detail">Invia una notifica reale (con suono, se attivato sopra) usando esattamente la stessa logica di un vero avviso fumo – un buon modo per verificare che attiri davvero la tua attenzione prima che ti serva</string>
@@ -351,6 +353,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Non mostrare più</string>
+	<string name="retain_warning_text">Zigbee2MQTT non conserva questi sensori, quindi i loro avvisi di temperatura non possono essere controllati ad app chiusa:\n\n%1$s\n\nAttiva retain per loro in Zigbee2MQTT, oppure attiva %2$s nelle Impostazioni.</string>
+	<string name="retain_warning_title">Retain è disattivato</string>
 	<string name="settings_about">Informazioni</string>
 	<string name="settings_about_tagline">%1$s – niente cloud, niente account, nessun vincolo</string>
 	<string name="settings_alerts_detail">Avvisi fumo e irrigazione, suono e notifiche di prova</string>
@@ -392,6 +397,8 @@
 		<item quantity="many">%1$d pannelli rimossi</item>
 		<item quantity="other">%1$d pannelli rimossi</item>
 	</plurals>
+	<string name="settings_periodic_checks">Controlli periodici</string>
+	<string name="settings_periodic_checks_detail">Mentre %1$s è disattivato, controlla gli avvisi di temperatura circa ogni 15 minuti – richiede retain attivo in Zigbee2MQTT</string>
 	<string name="settings_tile_width">Larghezza riquadri e cluster</string>
 	<string name="settings_tile_width_detail">Quanto possono allargarsi i riquadri (e quindi le schede dei cluster, larghe 3 riquadri), fino a riempire lo schermo – attualmente %1$ddp</string>
 	<string name="settings_lock_layout">Blocca layout</string>

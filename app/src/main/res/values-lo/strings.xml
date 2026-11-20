@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">ການແຈ້ງເຕືອນຖືກປິດຢູ່</string>
 	<string name="alerts_notifications_off_detail">ບໍ່ສາມາດສະແດງການແຈ້ງເຕືອນໄດ້ ຈົນກວ່າ %1$s ຈະໄດ້ຮັບອະນຸຍາດໃຫ້ໂພສການແຈ້ງເຕືອນ</string>
 	<string name="alerts_open_settings">ການຕັ້ງຄ່າ</string>
+	<string name="alerts_retain_off">ບາງເຊັນເຊີບໍ່ໄດ້ຖືກເກັບຮັກສາໄວ້</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ບໍ່ໄດ້ເກັບຮັກສາ %1$s ໄວ້, ດັ່ງນັ້ນຈຶ່ງບໍ່ສາມາດກວດສອບການແຈ້ງເຕືອນອຸນຫະພູມຂອງພວກມັນໄດ້ໃນຂະນະທີ່ແອັບປິດຢູ່ – ເປີດ retain ສຳລັບພວກມັນໃນ Zigbee2MQTT</string>
 	<string name="alerts_smoke">ການແຈ້ງເຕືອນຄວັນ</string>
 	<string name="alerts_smoke_detail">ແຈ້ງເຕືອນຖ້າອຸປະກອນໃດໜຶ່ງລາຍງານວ່າກວດພົບຄວັນ</string>
 	<string name="alerts_smoke_test_detail">ສົ່ງການແຈ້ງເຕືອນແທ້ (ມີສຽງ ຖ້າເປີດໄວ້ດ້ານເທິງ) ໂດຍໃຊ້ຕັກກະດຽວກັນທຸກຢ່າງກັບການແຈ້ງເຕືອນຄວັນແທ້ – ເປັນວິທີທີ່ດີໃນການຢືນຢັນວ່າມັນຈະດຶງດູດຄວາມສົນໃຈຂອງທ່ານແທ້ ກ່ອນທີ່ທ່ານຈະຕ້ອງການມັນ</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">ບໍ່ຕ້ອງສະແດງອີກ</string>
+	<string name="retain_warning_text">Zigbee2MQTT ບໍ່ໄດ້ເກັບຮັກສາເຊັນເຊີເຫຼົ່ານີ້ໄວ້, ດັ່ງນັ້ນຈຶ່ງບໍ່ສາມາດກວດສອບການແຈ້ງເຕືອນອຸນຫະພູມຂອງພວກມັນໄດ້ໃນຂະນະທີ່ແອັບປິດຢູ່:\n\n%1$s\n\nເປີດ retain ສຳລັບພວກມັນໃນ Zigbee2MQTT, ຫຼື ເປີດ %2$s ໃນການຕັ້ງຄ່າ.</string>
+	<string name="retain_warning_title">Retain ປິດຢູ່</string>
 	<string name="settings_about">ກ່ຽວກັບ</string>
 	<string name="settings_about_tagline">%1$s – ບໍ່ມີຄລາວ, ບໍ່ມີບັນຊີ, ບໍ່ມີການຜູກມັດ</string>
 	<string name="settings_alerts_detail">ການແຈ້ງເຕືອນຄວັນ ແລະ ຫົດນ້ຳ, ສຽງ ແລະ ການແຈ້ງເຕືອນທົດສອບ</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">ລຶບ %1$d ແຜງແລ້ວ</item>
 	</plurals>
+	<string name="settings_periodic_checks">ການກວດສອບເປັນໄລຍະ</string>
+	<string name="settings_periodic_checks_detail">ໃນຂະນະທີ່ %1$s ປິດຢູ່, ກວດສອບການແຈ້ງເຕືອນອຸນຫະພູມປະມານທຸກໆ 15 ນາທີ – ຕ້ອງເປີດ retain ໃນ Zigbee2MQTT</string>
 	<string name="settings_tile_width">ຄວາມກວ້າງແຜ່ນ &amp; ກຸ່ມຍ່ອຍ</string>
 	<string name="settings_tile_width_detail">ແຜ່ນ (ແລະ ບັດກຸ່ມຍ່ອຍ ກວ້າງ 3 ແຜ່ນ) ສາມາດຂະຫຍາຍໄດ້ກວ້າງເທົ່າໃດ ຈົນເຕັມໜ້າຈໍ – ປັດຈຸບັນ %1$ddp</string>
 	<string name="settings_lock_layout">ລັອກໂຄງຮ່າງ</string>

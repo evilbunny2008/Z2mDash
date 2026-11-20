@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Notifikationer er slået fra</string>
 	<string name="alerts_notifications_off_detail">Advarsler kan ikke vises, før %1$s får lov til at sende notifikationer</string>
 	<string name="alerts_open_settings">Indstillinger</string>
+	<string name="alerts_retain_off">Nogle sensorer bevares ikke</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT bevarer ikke %1$s, så deres temperaturadvarsler kan ikke tjekkes, mens appen er lukket – slå retain til for dem i Zigbee2MQTT</string>
 	<string name="alerts_smoke">Røgalarmer</string>
 	<string name="alerts_smoke_detail">Giv besked, hvis en enhed registrerer røg</string>
 	<string name="alerts_smoke_test_detail">Sender en rigtig notifikation (med lyd, hvis det er slået til ovenfor) med præcis samme logik som en ægte røgalarm – en god måde at sikre sig, at den faktisk fanger din opmærksomhed, før du får brug for den</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Vis ikke igen</string>
+	<string name="retain_warning_text">Zigbee2MQTT bevarer ikke disse sensorer, så deres temperaturadvarsler kan ikke tjekkes, mens appen er lukket:\n\n%1$s\n\nSlå retain til for dem i Zigbee2MQTT, eller slå %2$s til i Indstillinger.</string>
+	<string name="retain_warning_title">Retain er slået fra</string>
 	<string name="settings_about">Om</string>
 	<string name="settings_about_tagline">%1$s – ingen sky, ingen konto, ingen indlåsning</string>
 	<string name="settings_alerts_detail">Røg– og vandingsadvarsler, lyd og testnotifikationer</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Fjernede %1$d panel</item>
 		<item quantity="other">Fjernede %1$d paneler</item>
 	</plurals>
+	<string name="settings_periodic_checks">Periodiske tjek</string>
+	<string name="settings_periodic_checks_detail">Mens %1$s er slået fra, tjek temperaturadvarsler cirka hvert 15. minut – kræver at retain er slået til i Zigbee2MQTT</string>
 	<string name="settings_tile_width">Bredde på fliser og klynger</string>
 	<string name="settings_tile_width_detail">Hvor brede fliser (og dermed klyngekort, 3 fliser brede) må blive, op til hele skærmen – i øjeblikket %1$ddp</string>
 	<string name="settings_lock_layout">Lås layout</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">বিজ্ঞপ্তি বন্ধ আছে</string>
 	<string name="alerts_notifications_off_detail">%1$s কে বিজ্ঞপ্তি পোস্ট করার অনুমতি না দেওয়া পর্যন্ত সতর্কতা দেখানো যাবে না</string>
 	<string name="alerts_open_settings">সেটিংস</string>
+	<string name="alerts_retain_off">কিছু সেন্সর ধরে রাখা হচ্ছে না</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s ধরে রাখছে না, তাই অ্যাপ বন্ধ থাকাকালীন এদের তাপমাত্রা সতর্কতা পরীক্ষা করা যাবে না – Zigbee2MQTT-এ এদের জন্য retain চালু করুন</string>
 	<string name="alerts_smoke">ধোঁয়া সতর্কতা</string>
 	<string name="alerts_smoke_detail">কোনো ডিভাইসে ধোঁয়া ধরা পড়লে তা জানান</string>
 	<string name="alerts_smoke_test_detail">প্রকৃত ধোঁয়া সতর্কতার মতো একই যুক্তি ব্যবহার করে একটি বাস্তব বিজ্ঞপ্তি (শব্দ সহ, যদি উপরে সক্ষম করা থাকে) ফায়ার করে – এটি নিশ্চিত করার একটি ভাল উপায় যে এটি আপনার প্রয়োজনের আগে আপনার মনোযোগ আকর্ষণ করবে।</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – ট্রান্সমিশন কন্ট্রোল প্রোটোকল</string>
 	<string name="protocol_ws">WS – ওয়েব সকেট</string>
 	<string name="protocol_wss">WSS – ওয়েব সকেট নিরাপদ</string>
+	<string name="retain_warning_dont_show">আর দেখাবেন না</string>
+	<string name="retain_warning_text">Zigbee2MQTT এই সেন্সরগুলো ধরে রাখছে না, তাই অ্যাপ বন্ধ থাকাকালীন এদের তাপমাত্রা সতর্কতা পরীক্ষা করা যাবে না:\n\n%1$s\n\nZigbee2MQTT-এ এদের জন্য retain চালু করুন, অথবা সেটিংসে %2$s চালু করুন।</string>
+	<string name="retain_warning_title">Retain বন্ধ আছে</string>
 	<string name="settings_about">সম্পর্কে</string>
 	<string name="settings_about_tagline">%1$s – কোনো ক্লাউড নেই, কোনো অ্যাকাউন্ট নেই, কোনো লক–ইন নেই৷</string>
 	<string name="settings_alerts_detail">ধোঁয়া এবং জলের সতর্কতা, শব্দ এবং পরীক্ষার বিজ্ঞপ্তি</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d প্যানেল সরানো হয়েছে</item>
 		<item quantity="other">%1$dটি প্যানেল সরানো হয়েছে৷</item>
 	</plurals>
+	<string name="settings_periodic_checks">পর্যায়ক্রমিক পরীক্ষা</string>
+	<string name="settings_periodic_checks_detail">%1$s বন্ধ থাকাকালীন, প্রায় প্রতি ১৫ মিনিটে তাপমাত্রা সতর্কতা পরীক্ষা করুন – Zigbee2MQTT-এ retain চালু থাকা প্রয়োজন</string>
 	<string name="settings_tile_width">টাইল ও ক্লাস্টারের প্রস্থ</string>
 	<string name="settings_tile_width_detail">কতটা চওড়া টাইলস (এবং ক্লাস্টার কার্ড, ৩টি টাইল চওড়া) স্ক্রীন ফিলিং পর্যন্ত বাড়তে পারে – বর্তমানে %1$ddp</string>
 	<string name="settings_lock_layout">লেআউট লক করুন</string>

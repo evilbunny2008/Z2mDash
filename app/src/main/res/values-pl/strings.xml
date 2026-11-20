@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Powiadomienia są wyłączone</string>
 	<string name="alerts_notifications_off_detail">Alerty nie mogą być wyświetlane, dopóki aplikacja %1$s nie otrzyma zgody na wysyłanie powiadomień</string>
 	<string name="alerts_open_settings">Ustawienia</string>
+	<string name="alerts_retain_off">Niektóre czujniki nie są zachowywane</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT nie zachowuje %1$s, więc ich alertów temperatury nie można sprawdzać, gdy aplikacja jest zamknięta – włącz dla nich retain w Zigbee2MQTT</string>
 	<string name="alerts_smoke">Alerty o dymie</string>
 	<string name="alerts_smoke_detail">Powiadamiaj, gdy dowolne urządzenie zgłosi wykrycie dymu</string>
 	<string name="alerts_smoke_test_detail">Wysyła prawdziwe powiadomienie (z dźwiękiem, jeśli włączono powyżej) przy użyciu dokładnie tej samej logiki co prawdziwy alert o dymie – dobry sposób, by upewnić się, że naprawdę zwróci Twoją uwagę, zanim będzie potrzebny</string>
@@ -359,6 +361,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Nie pokazuj ponownie</string>
+	<string name="retain_warning_text">Zigbee2MQTT nie zachowuje tych czujników, więc ich alertów temperatury nie można sprawdzać, gdy aplikacja jest zamknięta:\n\n%1$s\n\nWłącz dla nich retain w Zigbee2MQTT lub włącz „%2$s” w Ustawieniach.</string>
+	<string name="retain_warning_title">Retain jest wyłączony</string>
 	<string name="settings_about">Informacje</string>
 	<string name="settings_about_tagline">%1$s – bez chmury, bez konta, bez uzależnienia</string>
 	<string name="settings_alerts_detail">Alerty o dymie i podlewaniu, dźwięk i powiadomienia testowe</string>
@@ -405,6 +410,8 @@
 		<item quantity="many">Usunięto %1$d paneli</item>
 		<item quantity="other">Usunięto %1$d panelu</item>
 	</plurals>
+	<string name="settings_periodic_checks">Okresowe sprawdzanie</string>
+	<string name="settings_periodic_checks_detail">Gdy „%1$s” jest wyłączone, sprawdzaj alerty temperatury mniej więcej co 15 minut – wymaga włączonego retain w Zigbee2MQTT</string>
 	<string name="settings_tile_width">Szerokość kafelków i klastrów</string>
 	<string name="settings_tile_width_detail">Jak szerokie mogą być kafelki (a więc i karty klastrów, szerokie na 3 kafelki), aż do wypełnienia ekranu – obecnie %1$ddp</string>
 	<string name="settings_lock_layout">Zablokuj układ</string>

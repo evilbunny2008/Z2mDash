@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">അറിയിപ്പുകൾ ഓഫാണ്</string>
 	<string name="alerts_notifications_off_detail">%1$s-ന് അറിയിപ്പുകൾ അയയ്ക്കാൻ അനുമതി നൽകുന്നത് വരെ മുന്നറിയിപ്പുകൾ കാണിക്കാനാകില്ല</string>
 	<string name="alerts_open_settings">ക്രമീകരണം</string>
+	<string name="alerts_retain_off">ചില സെൻസറുകൾ നിലനിർത്തുന്നില്ല</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s നിലനിർത്തുന്നില്ല, അതിനാൽ ആപ്പ് അടച്ചിരിക്കുമ്പോൾ അവയുടെ താപനില മുന്നറിയിപ്പുകൾ പരിശോധിക്കാനാവില്ല – Zigbee2MQTT-ൽ അവയ്ക്ക് retain ഓണാക്കുക</string>
 	<string name="alerts_smoke">പുക മുന്നറിയിപ്പുകൾ</string>
 	<string name="alerts_smoke_detail">ഏതെങ്കിലും ഉപകരണം പുക കണ്ടെത്തിയതായി റിപ്പോർട്ട് ചെയ്താൽ അറിയിക്കുക</string>
 	<string name="alerts_smoke_test_detail">യഥാർത്ഥ പുക മുന്നറിയിപ്പിന്റെ അതേ ലോജിക് ഉപയോഗിച്ച് ഒരു യഥാർത്ഥ അറിയിപ്പ് (മുകളിൽ പ്രവർത്തനക്ഷമമാക്കിയിട്ടുണ്ടെങ്കിൽ ശബ്ദത്തോടെ) അയയ്ക്കുന്നു – ആവശ്യം വരുന്നതിന് മുമ്പ് അത് ശരിക്കും നിങ്ങളുടെ ശ്രദ്ധ പിടിച്ചുപറ്റുമെന്ന് ഉറപ്പാക്കാനുള്ള നല്ല മാർഗം</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">വീണ്ടും കാണിക്കരുത്</string>
+	<string name="retain_warning_text">Zigbee2MQTT ഈ സെൻസറുകൾ നിലനിർത്തുന്നില്ല, അതിനാൽ ആപ്പ് അടച്ചിരിക്കുമ്പോൾ അവയുടെ താപനില മുന്നറിയിപ്പുകൾ പരിശോധിക്കാനാവില്ല:\n\n%1$s\n\nZigbee2MQTT-ൽ അവയ്ക്ക് retain ഓണാക്കുക, അല്ലെങ്കിൽ ക്രമീകരണങ്ങളിൽ %2$s ഓണാക്കുക.</string>
+	<string name="retain_warning_title">Retain ഓഫാണ്</string>
 	<string name="settings_about">വിവരം</string>
 	<string name="settings_about_tagline">%1$s – ക്ലൗഡ് ഇല്ല, അക്കൗണ്ട് ഇല്ല, ലോക്ക്–ഇൻ ഇല്ല</string>
 	<string name="settings_alerts_detail">പുക, നനയ്ക്കൽ മുന്നറിയിപ്പുകൾ, ശബ്ദം, പരീക്ഷണ അറിയിപ്പുകൾ</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d പാനൽ നീക്കം ചെയ്തു</item>
 		<item quantity="other">%1$d പാനലുകൾ നീക്കം ചെയ്തു</item>
 	</plurals>
+	<string name="settings_periodic_checks">ആനുകാലിക പരിശോധനകൾ</string>
+	<string name="settings_periodic_checks_detail">%1$s ഓഫായിരിക്കുമ്പോൾ, ഏകദേശം ഓരോ 15 മിനിറ്റിലും താപനില മുന്നറിയിപ്പുകൾ പരിശോധിക്കുക – Zigbee2MQTT-ൽ retain ഓണായിരിക്കണം</string>
 	<string name="settings_tile_width">ടൈൽ, ക്ലസ്റ്റർ വീതി</string>
 	<string name="settings_tile_width_detail">ടൈലുകൾക്ക് (അതിനാൽ 3 ടൈൽ വീതിയുള്ള ക്ലസ്റ്റർ കാർഡുകൾക്കും) സ്ക്രീൻ നിറയുന്നത് വരെ എത്ര വീതി കൂടാം – നിലവിൽ %1$ddp</string>
 	<string name="settings_lock_layout">ലേഔട്ട് ലോക്ക് ചെയ്യുക</string>

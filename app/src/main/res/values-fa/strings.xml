@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">اعلان‌ها خاموش است</string>
 	<string name="alerts_notifications_off_detail">تا زمانی که به %1$s اجازهٔ ارسال اعلان داده نشود، هشدارها نمایش داده نمی‌شوند</string>
 	<string name="alerts_open_settings">تنظیمات</string>
+	<string name="alerts_retain_off">برخی حسگرها نگه‌داری نمی‌شوند</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ‏%1$s را نگه‌داری نمی‌کند، بنابراین هشدارهای دمای آن‌ها وقتی برنامه بسته است بررسی نمی‌شوند – retain را برای آن‌ها در Zigbee2MQTT روشن کنید</string>
 	<string name="alerts_smoke">هشدارهای دود</string>
 	<string name="alerts_smoke_detail">اگر هر دستگاهی تشخیص دود را گزارش کند، اطلاع داده شود</string>
 	<string name="alerts_smoke_test_detail">یک اعلان واقعی (همراه با صدا، اگر در بالا فعال باشد) را با دقیقاً همان منطق هشدار واقعی دود ارسال می‌کند – راه خوبی برای اطمینان از اینکه پیش از نیاز واقعاً توجه شما را جلب می‌کند</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">دیگر نشان نده</string>
+	<string name="retain_warning_text">Zigbee2MQTT این حسگرها را نگه‌داری نمی‌کند، بنابراین هشدارهای دمای آن‌ها وقتی برنامه بسته است بررسی نمی‌شوند:\n\n%1$s\n\nretain را برای آن‌ها در Zigbee2MQTT روشن کنید، یا %2$s را در تنظیمات روشن کنید.</string>
+	<string name="retain_warning_title">retain خاموش است</string>
 	<string name="settings_about">درباره</string>
 	<string name="settings_about_tagline">%1$s – بدون ابر، بدون حساب، بدون وابستگی</string>
 	<string name="settings_alerts_detail">هشدارهای دود و آبیاری، صدا و اعلان‌های آزمایشی</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d پنل حذف شد</item>
 		<item quantity="other">%1$d پنل حذف شدند</item>
 	</plurals>
+	<string name="settings_periodic_checks">بررسی‌های دوره‌ای</string>
+	<string name="settings_periodic_checks_detail">وقتی %1$s خاموش است، هشدارهای دما را تقریباً هر ۱۵ دقیقه بررسی کن – نیاز به روشن بودن retain در Zigbee2MQTT دارد</string>
 	<string name="settings_tile_width">عرض کاشی و خوشه</string>
 	<string name="settings_tile_width_detail">میزان پهن شدن کاشی‌ها (و در نتیجه کارت‌های خوشه که ۳ کاشی عرض دارند)، تا پر شدن صفحه – در حال حاضر %1$ddp</string>
 	<string name="settings_lock_layout">قفل چیدمان</string>

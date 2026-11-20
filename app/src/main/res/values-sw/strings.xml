@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Arifa zimezimwa</string>
 	<string name="alerts_notifications_off_detail">Tahadhari haziwezi kuonyeshwa hadi %1$s iruhusiwe kutuma arifa</string>
 	<string name="alerts_open_settings">Mipangilio</string>
+	<string name="alerts_retain_off">Baadhi ya vihisi havihifadhiwi</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT haihifadhi %1$s, kwa hivyo arifa zao za halijoto haziwezi kukaguliwa programu ikiwa imefungwa – washa retain kwa ajili yao katika Zigbee2MQTT</string>
 	<string name="alerts_smoke">Tahadhari za Moshi</string>
 	<string name="alerts_smoke_detail">Arifu kifaa chochote kikiripoti kuwa kimegundua moshi</string>
 	<string name="alerts_smoke_test_detail">Hutuma arifa halisi (pamoja na sauti, ikiwa imewashwa hapo juu) kwa kutumia mantiki ile ile ya tahadhari halisi ya moshi – njia nzuri ya kuhakikisha kuwa itavuta umakini wako kabla hujaihitaji</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Usionyeshe tena</string>
+	<string name="retain_warning_text">Zigbee2MQTT haihifadhi vihisi hivi, kwa hivyo arifa zao za halijoto haziwezi kukaguliwa programu ikiwa imefungwa:\n\n%1$s\n\nWasha retain kwa ajili yao katika Zigbee2MQTT, au washa %2$s katika Mipangilio.</string>
+	<string name="retain_warning_title">Retain imezimwa</string>
 	<string name="settings_about">Kuhusu</string>
 	<string name="settings_about_tagline">%1$s – hakuna wingu, hakuna akaunti, hakuna kufungiwa</string>
 	<string name="settings_alerts_detail">Tahadhari za moshi na kumwagilia, sauti, na arifa za majaribio</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Panel %1$d imeondolewa</item>
 		<item quantity="other">Panels %1$d zimeondolewa</item>
 	</plurals>
+	<string name="settings_periodic_checks">Ukaguzi wa Mara kwa Mara</string>
+	<string name="settings_periodic_checks_detail">Wakati %1$s imezimwa, kagua arifa za halijoto takriban kila dakika 15 – inahitaji retain iwashwe katika Zigbee2MQTT</string>
 	<string name="settings_tile_width">Upana wa Tile na Cluster</string>
 	<string name="settings_tile_width_detail">Jinsi tiles (na hivyo kadi za cluster, zenye upana wa tiles 3) zinavyoweza kupanuka, hadi kujaza skrini – kwa sasa %1$ddp</string>
 	<string name="settings_lock_layout">Funga Mpangilio</string>

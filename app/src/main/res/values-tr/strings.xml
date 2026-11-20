@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Bildirimler kapalı</string>
 	<string name="alerts_notifications_off_detail">%1$s uygulamasının bildirim göndermesine izin verilene kadar uyarılar gösterilemez</string>
 	<string name="alerts_open_settings">Ayarlar</string>
+	<string name="alerts_retain_off">Bazı sensörler saklanmıyor</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s saklamıyor, bu yüzden uygulama kapalıyken sıcaklık uyarıları kontrol edilemiyor – Zigbee2MQTT’de bunlar için retain’i açın</string>
 	<string name="alerts_smoke">Duman Uyarıları</string>
 	<string name="alerts_smoke_detail">Herhangi bir cihaz duman algılandığını bildirdiğinde bildirimde bulunun</string>
 	<string name="alerts_smoke_test_detail">Gerçek bir duman alarmıyla tamamen aynı mantığı kullanarak gerçek bir bildirim (yukarıda etkinleştirildiyse sesli olarak) başlatır; bu, ihtiyaç duymadan önce gerçekten dikkatinizi çekeceğini doğrulamanın iyi bir yoludur</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – İletim Kontrol Protokolü</string>
 	<string name="protocol_ws">WS – Web Soketleri</string>
 	<string name="protocol_wss">WSS – Web Soketleri Güvenli</string>
+	<string name="retain_warning_dont_show">Bir daha gösterme</string>
+	<string name="retain_warning_text">Zigbee2MQTT bu sensörleri saklamıyor, bu yüzden uygulama kapalıyken sıcaklık uyarıları kontrol edilemiyor:\n\n%1$s\n\nZigbee2MQTT’de bunlar için retain’i açın veya Ayarlar’da %2$s seçeneğini açın.</string>
+	<string name="retain_warning_title">Retain kapalı</string>
 	<string name="settings_about">Hakkında</string>
 	<string name="settings_about_tagline">%1$s – bulut yok, hesap yok, bağlanma yok</string>
 	<string name="settings_alerts_detail">Duman ve sulanma uyarıları, ses ve test bildirimleri</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d panel kaldırıldı</item>
 		<item quantity="other">%1$d panel kaldırıldı</item>
 	</plurals>
+	<string name="settings_periodic_checks">Periyodik Kontroller</string>
+	<string name="settings_periodic_checks_detail">%1$s kapalıyken, sıcaklık uyarılarını yaklaşık her 15 dakikada bir kontrol et – Zigbee2MQTT’de retain’in açık olması gerekir</string>
 	<string name="settings_tile_width">Kutucuk ve Küme Genişliği</string>
 	<string name="settings_tile_width_detail">Ekranı dolduracak kadar geniş döşemeler (ve dolayısıyla 3 döşeme genişliğindeki küme kartları) ne kadar büyüyebilir – şu anda %1$ddp</string>
 	<string name="settings_lock_layout">Düzeni Kilitle</string>

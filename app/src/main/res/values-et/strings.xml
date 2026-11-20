@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Teatised on välja lülitatud</string>
 	<string name="alerts_notifications_off_detail">Hoiatusi ei saa kuvada enne, kui rakendusel %1$s on lubatud teatisi saata</string>
 	<string name="alerts_open_settings">Seaded</string>
+	<string name="alerts_retain_off">Mõnda andurit ei säilitata</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ei säilita %1$s, seega nende temperatuurihoiatusi ei saa kontrollida, kui rakendus on suletud – lülitage Zigbee2MQTT-s nende jaoks retain sisse</string>
 	<string name="alerts_smoke">Suitsuhoiatused</string>
 	<string name="alerts_smoke_detail">Teavita, kui mõni seade tuvastab suitsu</string>
 	<string name="alerts_smoke_test_detail">Saadab päris teatise (heliga, kui see on ülal lubatud) täpselt sama loogikaga nagu tõeline suitsuhoiatus – hea viis veenduda, et see tõesti su tähelepanu köidab, enne kui seda vaja läheb</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Ära enam näita</string>
+	<string name="retain_warning_text">Zigbee2MQTT ei säilita neid andureid, seega nende temperatuurihoiatusi ei saa kontrollida, kui rakendus on suletud:\n\n%1$s\n\nLülitage Zigbee2MQTT-s nende jaoks retain sisse või lülitage seadetes sisse %2$s.</string>
+	<string name="retain_warning_title">Retain on väljas</string>
 	<string name="settings_about">Teave</string>
 	<string name="settings_about_tagline">%1$s – ei pilve, ei kontot, ei lukustust</string>
 	<string name="settings_alerts_detail">Suitsu– ja kastmishoiatused, heli ning testteatised</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Eemaldati %1$d paneel</item>
 		<item quantity="other">Eemaldati %1$d paneeli</item>
 	</plurals>
+	<string name="settings_periodic_checks">Perioodilised kontrollid</string>
+	<string name="settings_periodic_checks_detail">Kui %1$s on väljas, kontrolli temperatuurihoiatusi umbes iga 15 minuti järel – vajab Zigbee2MQTT-s sisselülitatud retaini</string>
 	<string name="settings_tile_width">Paanide ja klastrite laius</string>
 	<string name="settings_tile_width_detail">Kui laiaks võivad paanid (ja seega klastrikaardid, 3 paani laiad) kasvada, kuni kogu ekraanini – praegu %1$ddp</string>
 	<string name="settings_lock_layout">Lukusta paigutus</string>

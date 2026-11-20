@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Jakinarazpenak desaktibatuta daude</string>
 	<string name="alerts_notifications_off_detail">Alertak ezin dira erakutsi %1$s aplikazioari jakinarazpenak argitaratzeko baimena eman arte</string>
 	<string name="alerts_open_settings">Ezarpenak</string>
+	<string name="alerts_retain_off">Sentsore batzuk ez dira gordetzen</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT-k ez ditu %1$s gordetzen, beraz haien tenperatura-alertak ezin dira egiaztatu aplikazioa itxita dagoen bitartean – aktibatu retain haientzat Zigbee2MQTT-n</string>
 	<string name="alerts_smoke">Ke alertak</string>
 	<string name="alerts_smoke_detail">Jakinarazi edozein gailuk kea detektatzen badu</string>
 	<string name="alerts_smoke_test_detail">Benetako jakinarazpen bat bidaltzen du (soinuarekin, goian gaituta badago) benetako ke alerta baten logika berbera erabiliz – behar baino lehen zure arreta benetan erakarriko duela egiaztatzeko modu ona</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Ez erakutsi berriro</string>
+	<string name="retain_warning_text">Zigbee2MQTT-k ez ditu sentsore hauek gordetzen, beraz haien tenperatura-alertak ezin dira egiaztatu aplikazioa itxita dagoen bitartean:\n\n%1$s\n\nAktibatu retain haientzat Zigbee2MQTT-n, edo aktibatu %2$s Ezarpenetan.</string>
+	<string name="retain_warning_title">Retain desaktibatuta dago</string>
 	<string name="settings_about">Honi buruz</string>
 	<string name="settings_about_tagline">%1$s – hodeirik ez, konturik ez, lotura derrigorrezkorik ez</string>
 	<string name="settings_alerts_detail">Ke eta ureztatze alertak, soinua eta proba jakinarazpenak</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Panel %1$d kendu da</item>
 		<item quantity="other">%1$d panel kendu dira</item>
 	</plurals>
+	<string name="settings_periodic_checks">Aldizkako egiaztapenak</string>
+	<string name="settings_periodic_checks_detail">%1$s desaktibatuta dagoen bitartean, egiaztatu tenperatura-alertak gutxi gorabehera 15 minuturo – retain aktibatuta behar da Zigbee2MQTT-n</string>
 	<string name="settings_tile_width">Lauzen eta klusterren zabalera</string>
 	<string name="settings_tile_width_detail">Zenbat hazi daitezkeen lauzak (eta, beraz, kluster txartelak, 3 lauzako zabalerakoak), pantaila osoa bete arte – une honetan %1$ddp</string>
 	<string name="settings_lock_layout">Blokeatu diseinua</string>

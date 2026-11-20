@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Обавештења су искључена</string>
 	<string name="alerts_notifications_off_detail">Упозорења не могу да се приказују док апликацији %1$s не буде дозвољено да шаље обавештења</string>
 	<string name="alerts_open_settings">Подешавања</string>
+	<string name="alerts_retain_off">Неки сензори се не задржавају</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT не задржава %1$s, па се њихова упозорења о температури не могу проверавати док је апликација затворена – укључите retain за њих у Zigbee2MQTT-у</string>
 	<string name="alerts_smoke">Упозорења о диму</string>
 	<string name="alerts_smoke_detail">Обавести ако било који уређај открије дим</string>
 	<string name="alerts_smoke_test_detail">Шаље право обавештење (са звуком, ако је укључен изнад) са потпуно истом логиком као право упозорење о диму – добар начин да проверите да ли ће вам заиста привући пажњу пре него што затреба</string>
@@ -351,6 +353,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Не приказуј поново</string>
+	<string name="retain_warning_text">Zigbee2MQTT не задржава ове сензоре, па се њихова упозорења о температури не могу проверавати док је апликација затворена:\n\n%1$s\n\nУкључите retain за њих у Zigbee2MQTT-у или укључите „%2$s“ у Подешавањима.</string>
+	<string name="retain_warning_title">Retain је искључен</string>
 	<string name="settings_about">О апликацији</string>
 	<string name="settings_about_tagline">%1$s – без облака, без налога, без закључавања</string>
 	<string name="settings_alerts_detail">Упозорења о диму и заливању, звук и пробна обавештења</string>
@@ -392,6 +397,8 @@
 		<item quantity="few">Уклоњена %1$d панела</item>
 		<item quantity="other">Уклоњено %1$d панела</item>
 	</plurals>
+	<string name="settings_periodic_checks">Периодичне провере</string>
+	<string name="settings_periodic_checks_detail">Док је „%1$s“ искључено, проверавај упозорења о температури отприлике на сваких 15 минута – потребан је укључен retain у Zigbee2MQTT-у</string>
 	<string name="settings_tile_width">Ширина плочица и кластера</string>
 	<string name="settings_tile_width_detail">Колико широке плочице (а тиме и картице кластера, широке 3 плочице) могу да порасту, све до попуњавања екрана – тренутно %1$ddp</string>
 	<string name="settings_lock_layout">Закључај распоред</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">As notificações estão desativadas</string>
 	<string name="alerts_notifications_off_detail">Os alertas não poderão ser exibidos até que %1$s tenha permissão para postar notificações</string>
 	<string name="alerts_open_settings">Configurações</string>
+	<string name="alerts_retain_off">Alguns sensores não estão a ser retidos</string>
+	<string name="alerts_retain_off_detail">O Zigbee2MQTT não retém %1$s, por isso os alertas de temperatura não podem ser verificados com a app fechada – ative o retain para eles no Zigbee2MQTT</string>
 	<string name="alerts_smoke">Alertas de fumaça</string>
 	<string name="alerts_smoke_detail">Notificar se algum dispositivo reportar fumaça detectada</string>
 	<string name="alerts_smoke_test_detail">Dispara uma notificação real (com som, se habilitado acima) usando exatamente a mesma lógica de um alerta de fumaça genuíno – uma boa maneira de confirmar que ele realmente chamará sua atenção antes que você precise dele</string>
@@ -351,6 +353,9 @@
 	<string name="protocol_tcp">TCP – Protocolo de Controle de Transmissão</string>
 	<string name="protocol_ws">WS – Soquetes da Web</string>
 	<string name="protocol_wss">WSS – Web Sockets Seguros</string>
+	<string name="retain_warning_dont_show">Não mostrar novamente</string>
+	<string name="retain_warning_text">O Zigbee2MQTT não retém estes sensores, por isso os alertas de temperatura não podem ser verificados com a app fechada:\n\n%1$s\n\nAtive o retain para eles no Zigbee2MQTT ou ative %2$s nas Definições.</string>
+	<string name="retain_warning_title">O retain está desativado</string>
 	<string name="settings_about">Sobre</string>
 	<string name="settings_about_tagline">%1$s – sem nuvem, sem conta, sem aprisionamento</string>
 	<string name="settings_alerts_detail">Alertas de fumaça e irrigação, som e notificações de teste</string>
@@ -392,6 +397,8 @@
 		<item quantity="one">Painel %1$d removido</item>
 		<item quantity="other">%1$d painéis removidos</item>
 	</plurals>
+	<string name="settings_periodic_checks">Verificações periódicas</string>
+	<string name="settings_periodic_checks_detail">Enquanto %1$s estiver desativado, verifica os alertas de temperatura aproximadamente a cada 15 minutos – requer o retain ativo no Zigbee2MQTT</string>
 	<string name="settings_tile_width">Largura do bloco e do cluster</string>
 	<string name="settings_tile_width_detail">Qual a largura dos blocos (e, portanto, as cartas de grupo, com 3 blocos de largura) podem crescer, até preencher a tela – atualmente %1$ddp</string>
 	<string name="settings_lock_layout">Bloquear layout</string>

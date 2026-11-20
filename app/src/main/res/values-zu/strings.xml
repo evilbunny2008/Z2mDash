@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Izaziso zivaliwe</string>
 	<string name="alerts_notifications_off_detail">Izexwayiso azikwazi ukuboniswa kuze kube yilapho i–%1$s ivunyelwa ukuthumela izaziso</string>
 	<string name="alerts_open_settings">Izilungiselelo</string>
+	<string name="alerts_retain_off">Ezinye izinzwa azigcinwa</string>
+	<string name="alerts_retain_off_detail">I-Zigbee2MQTT ayigcini %1$s, ngakho izexwayiso zazo zokushisa azikwazi ukuhlolwa ngenkathi uhlelo luvaliwe – vula i-retain yazo ku-Zigbee2MQTT</string>
 	<string name="alerts_smoke">Izexwayiso zentuthu</string>
 	<string name="alerts_smoke_detail">Yazisa uma noma iyiphi idivayisi ithola intuthu</string>
 	<string name="alerts_smoke_test_detail">Ithumela isaziso sangempela (esinomsindo, uma uvuliwe ngenhla) isebenzisa umqondo ofanayo ncamashi nesexwayiso sangempela sentuthu – indlela enhle yokuqinisekisa ukuthi sizokuheha ngempela ngaphambi kokuthi usidinge</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Ungabonisi futhi</string>
+	<string name="retain_warning_text">I-Zigbee2MQTT ayizigcini lezi zinzwa, ngakho izexwayiso zazo zokushisa azikwazi ukuhlolwa ngenkathi uhlelo luvaliwe:\n\n%1$s\n\nVula i-retain yazo ku-Zigbee2MQTT, noma vula i-%2$s kuzilungiselelo.</string>
+	<string name="retain_warning_title">I-retain ivaliwe</string>
 	<string name="settings_about">Mayelana</string>
 	<string name="settings_about_tagline">%1$s – akukho fu, akukho akhawunti, akukho ukuboshwa</string>
 	<string name="settings_alerts_detail">Izexwayiso zentuthu nezokunisela, umsindo, nezaziso zokuhlola</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Kususwe iphaneli engu–%1$d</item>
 		<item quantity="other">Kususwe amaphaneli angu–%1$d</item>
 	</plurals>
+	<string name="settings_periodic_checks">Ukuhlola Ngezikhathi Ezithile</string>
+	<string name="settings_periodic_checks_detail">Ngenkathi i-%1$s ivaliwe, hlola izexwayiso zokushisa cishe njalo ngemizuzu engu-15 – kudingeka i-retain ivulwe ku-Zigbee2MQTT</string>
 	<string name="settings_tile_width">Ububanzi bamathayela namaqoqo</string>
 	<string name="settings_tile_width_detail">Ukuthi amathayela (ngakho namakhadi amaqoqo, abanzi ngamathayela angu–3) angakhula abe banzi kangakanani, aze agcwalise isikrini – manje %1$ddp</string>
 	<string name="settings_lock_layout">Khiya Isakhiwo</string>

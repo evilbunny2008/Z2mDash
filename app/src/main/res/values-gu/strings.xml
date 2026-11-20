@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">નોટિફિકેશન બંધ છે</string>
 	<string name="alerts_notifications_off_detail">%1$sને નોટિફિકેશન મોકલવાની મંજૂરી ન મળે ત્યાં સુધી ચેતવણીઓ બતાવી શકાશે નહીં</string>
 	<string name="alerts_open_settings">સેટિંગ</string>
+	<string name="alerts_retain_off">કેટલાક સેન્સર જાળવી રખાતા નથી</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s ને જાળવી રાખતું નથી, તેથી એપ બંધ હોય ત્યારે તેમની તાપમાન ચેતવણીઓ તપાસી શકાતી નથી – Zigbee2MQTT માં તેમના માટે retain ચાલુ કરો</string>
 	<string name="alerts_smoke">ધુમાડાની ચેતવણીઓ</string>
 	<string name="alerts_smoke_detail">કોઈપણ ઉપકરણ ધુમાડો મળ્યાનું જણાવે તો સૂચિત કરો</string>
 	<string name="alerts_smoke_test_detail">વાસ્તવિક ધુમાડા ચેતવણી જેવા જ તર્કનો ઉપયોગ કરીને એક વાસ્તવિક નોટિફિકેશન (ઉપર ચાલુ હોય તો અવાજ સાથે) મોકલે છે – જરૂર પડે તે પહેલાં તે ખરેખર તમારું ધ્યાન ખેંચશે તેની ખાતરી કરવાની સારી રીત</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">ફરી બતાવશો નહીં</string>
+	<string name="retain_warning_text">Zigbee2MQTT આ સેન્સરને જાળવી રાખતું નથી, તેથી એપ બંધ હોય ત્યારે તેમની તાપમાન ચેતવણીઓ તપાસી શકાતી નથી:\n\n%1$s\n\nZigbee2MQTT માં તેમના માટે retain ચાલુ કરો, અથવા સેટિંગ્સમાં %2$s ચાલુ કરો.</string>
+	<string name="retain_warning_title">Retain બંધ છે</string>
 	<string name="settings_about">વિશે</string>
 	<string name="settings_about_tagline">%1$s – કોઈ ક્લાઉડ નહીં, કોઈ એકાઉન્ટ નહીં, કોઈ બંધન નહીં</string>
 	<string name="settings_alerts_detail">ધુમાડા અને પાણી આપવાની ચેતવણીઓ, અવાજ અને પરીક્ષણ નોટિફિકેશન</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d પૅનલ દૂર કરી</item>
 		<item quantity="other">%1$d પૅનલ દૂર કરી</item>
 	</plurals>
+	<string name="settings_periodic_checks">સમયાંતરે તપાસ</string>
+	<string name="settings_periodic_checks_detail">%1$s બંધ હોય ત્યારે, તાપમાન ચેતવણીઓ લગભગ દર 15 મિનિટે તપાસો – Zigbee2MQTT માં retain ચાલુ હોવું જરૂરી છે</string>
 	<string name="settings_tile_width">ટાઇલ અને ક્લસ્ટરની પહોળાઈ</string>
 	<string name="settings_tile_width_detail">ટાઇલ (અને તેથી 3 ટાઇલ પહોળા ક્લસ્ટર કાર્ડ) સ્ક્રીન ભરાય ત્યાં સુધી કેટલી પહોળી થઈ શકે – હાલમાં %1$ddp</string>
 	<string name="settings_lock_layout">લેઆઉટ લૉક કરો</string>

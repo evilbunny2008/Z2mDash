@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Las notificaziuns èn deactivadas</string>
 	<string name="alerts_notifications_off_detail">Avertiments na pon betg vegnir mussads, enfin che %1$s ha il permiss da publitgar notificaziuns</string>
 	<string name="alerts_open_settings">Parameters</string>
+	<string name="alerts_retain_off">Intgins sensurs na vegnan betg mantegnids</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT na mantegna betg %1$s, perquai na pon lur avertiments da temperatura betg vegnir controllads durant che l’app è serrada – activai retain per els en Zigbee2MQTT</string>
 	<string name="alerts_smoke">Avertiments da fim</string>
 	<string name="alerts_smoke_detail">Infurmar sch’in apparat annunzia ch’el ha percurschì fim</string>
 	<string name="alerts_smoke_test_detail">Tramet ina vaira notificaziun (cun tun, sche activà survart) cun exactamain la medema logica sco in vair avertiment da fim – ina buna moda da verifitgar ch’ella attira propi Vossa attenziun avant che Vus duvrais ella</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Betg pli mussar</string>
+	<string name="retain_warning_text">Zigbee2MQTT na mantegna betg quests sensurs, perquai na pon lur avertiments da temperatura betg vegnir controllads durant che l’app è serrada:\n\n%1$s\n\nActivai retain per els en Zigbee2MQTT u activai %2$s en las Configuraziuns.</string>
+	<string name="retain_warning_title">Retain è deactivà</string>
 	<string name="settings_about">Davart</string>
 	<string name="settings_about_tagline">%1$s – nagin cloud, nagin conto, nagina dependenza</string>
 	<string name="settings_alerts_detail">Avertiments da fim e d’adaquar, tun e notificaziuns da test</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d panel allontanà</item>
 		<item quantity="other">%1$d panels allontanads</item>
 	</plurals>
+	<string name="settings_periodic_checks">Controllas periodicas</string>
+	<string name="settings_periodic_checks_detail">Durant che %1$s è deactivà, controllar ils avertiments da temperatura var mintga 15 minutas – dovra retain activà en Zigbee2MQTT</string>
 	<string name="settings_tile_width">Ladezza da plattinas &amp; clusters</string>
 	<string name="settings_tile_width_detail">Quant ladas che las plattinas (e perquai las cartas da clusters, 3 plattinas ladas) pon daventar, enfin ch’ellas emplenan il visur – actualmain %1$ddp</string>
 	<string name="settings_lock_layout">Bloccar la disposiziun</string>

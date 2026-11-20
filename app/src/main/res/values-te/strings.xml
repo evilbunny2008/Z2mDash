@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">నోటిఫికేషన్‌లు ఆఫ్‌లో ఉన్నాయి</string>
 	<string name="alerts_notifications_off_detail">నోటిఫికేషన్‌లను పోస్ట్ చేయడానికి %1$s అనుమతించబడే వరకు హెచ్చరికలు చూపబడవు</string>
 	<string name="alerts_open_settings">సెట్టింగ్‌లు</string>
+	<string name="alerts_retain_off">కొన్ని సెన్సార్‌లు నిలుపుకోబడటం లేదు</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$sను నిలుపుకోవడం లేదు, కాబట్టి యాప్ మూసి ఉన్నప్పుడు వాటి ఉష్ణోగ్రత హెచ్చరికలను తనిఖీ చేయలేము – Zigbee2MQTTలో వాటికి retain ఆన్ చేయండి</string>
 	<string name="alerts_smoke">పొగ హెచ్చరికలు</string>
 	<string name="alerts_smoke_detail">ఏదైనా పరికరం పొగ గుర్తించినట్లు నివేదించినట్లయితే తెలియజేయండి</string>
 	<string name="alerts_smoke_test_detail">నిజమైన పొగ హెచ్చరిక వలె ఖచ్చితమైన లాజిక్‌ని ఉపయోగించి నిజమైన నోటిఫికేషన్‌ను (ధ్వనితో పాటు, పైన ప్రారంభించబడితే) ప్రదర్శిస్తుంది – ఇది మీకు అవసరమైన ముందు మీ దృష్టిని ఆకర్షిస్తుంది అని నిర్ధారించడానికి ఒక మంచి మార్గం</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – ట్రాన్స్మిషన్ కంట్రోల్ ప్రోటోకాల్</string>
 	<string name="protocol_ws">WS – వెబ్ సాకెట్లు</string>
 	<string name="protocol_wss">WSS – వెబ్ సాకెట్లు సురక్షితమైనవి</string>
+	<string name="retain_warning_dont_show">మళ్లీ చూపవద్దు</string>
+	<string name="retain_warning_text">Zigbee2MQTT ఈ సెన్సార్‌లను నిలుపుకోవడం లేదు, కాబట్టి యాప్ మూసి ఉన్నప్పుడు వాటి ఉష్ణోగ్రత హెచ్చరికలను తనిఖీ చేయలేము:\n\n%1$s\n\nZigbee2MQTTలో వాటికి retain ఆన్ చేయండి, లేదా సెట్టింగ్‌లలో %2$s ఆన్ చేయండి.</string>
+	<string name="retain_warning_title">Retain ఆఫ్‌లో ఉంది</string>
 	<string name="settings_about">గురించి</string>
 	<string name="settings_about_tagline">%1$s – క్లౌడ్ లేదు, ఖాతా లేదు, లాక్–ఇన్ లేదు</string>
 	<string name="settings_alerts_detail">పొగ మరియు నీటి హెచ్చరికలు, ధ్వని మరియు పరీక్ష నోటిఫికేషన్‌లు</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d ప్యానెల్ తీసివేయబడింది</item>
 		<item quantity="other">%1$d ప్యానెల్‌లు తీసివేయబడ్డాయి</item>
 	</plurals>
+	<string name="settings_periodic_checks">ఆవర్తన తనిఖీలు</string>
+	<string name="settings_periodic_checks_detail">%1$s ఆఫ్‌లో ఉన్నప్పుడు, సుమారు ప్రతి 15 నిమిషాలకు ఉష్ణోగ్రత హెచ్చరికలను తనిఖీ చేయి – Zigbee2MQTTలో retain ఆన్‌లో ఉండాలి</string>
 	<string name="settings_tile_width">టైల్ &amp; క్లస్టర్ వెడల్పు</string>
 	<string name="settings_tile_width_detail">స్క్రీన్‌ని నింపే వరకు ఎంత వెడల్పు టైల్స్ (మరియు క్లస్టర్ కార్డ్‌లు, 3 టైల్స్ వెడల్పు) పెరుగుతాయి – ప్రస్తుతం %1$ddp</string>
 	<string name="settings_lock_layout">లేఅవుట్‌ను లాక్ చేయండి</string>

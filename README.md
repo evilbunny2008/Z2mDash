@@ -47,6 +47,34 @@ their own Alarm/Alert screen (Settings), which also has a test button that
 fires a real notification (and sound, if enabled) so you can confirm it'll
 actually get your attention before you need it to.
 
+### Temperature alerts
+Tap a temperature tile's reading to set a high and/or low limit, and get a
+notification when the reading rises or drops to it - e.g. a sensor in a window,
+so it can be shut before the room heats up. Each limit notifies once per
+excursion, then stays quiet until the reading has come back by 1° (and for at
+least 8 hours).
+
+While the app is closed, these alerts keep working one of two ways:
+- **Background Work** (Settings) keeps a live broker connection open, so alerts
+  are instant - at the cost of a permanent notification and some battery
+- **Periodic Checks** (Settings, on by default) instead connects roughly every
+  15 minutes (Android can stretch this to hours overnight while the phone is
+  idle), reads each sensor's last reading, then disconnects again
+
+#### Periodic Checks need retain turned on in Zigbee2MQTT
+A periodic check only sees a reading the broker kept, which Zigbee2MQTT does
+only for devices with `retain` turned on - otherwise nothing arrives until the
+sensor next reports, long after the check has finished. The app detects sensors
+that aren't retained and warns about them (on the dashboard, and under Alerts
+in Settings). To turn it on in Zigbee2MQTT, either:
+- per device: Devices > (the sensor) > Settings > Retain, or
+- for every device, in `configuration.yaml`:
+
+  ```yaml
+  device_options:
+    retain: true
+  ```
+
 ### Terminal
 A live, filterable log of every MQTT message across all configured brokers -
 useful for debugging payloads and topic structures without a separate MQTT

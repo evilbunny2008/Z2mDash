@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">As notificacións están desactivadas</string>
 	<string name="alerts_notifications_off_detail">Non se poden mostrar alertas ata que se permita a %1$s publicar notificacións</string>
 	<string name="alerts_open_settings">Configuración</string>
+	<string name="alerts_retain_off">Algúns sensores non se reteñen</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT non retén %1$s, así que as súas alertas de temperatura non se poden comprobar coa app pechada – activa retain para eles en Zigbee2MQTT</string>
 	<string name="alerts_smoke">Alertas de fume</string>
 	<string name="alerts_smoke_detail">Avisar se algún dispositivo detecta fume</string>
 	<string name="alerts_smoke_test_detail">Envía unha notificación real (con son, se está activado enriba) usando exactamente a mesma lóxica que unha alerta de fume auténtica – unha boa forma de confirmar que de verdade chamará a túa atención antes de que a necesites</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Non mostrar de novo</string>
+	<string name="retain_warning_text">Zigbee2MQTT non retén estes sensores, así que as súas alertas de temperatura non se poden comprobar coa app pechada:\n\n%1$s\n\nActiva retain para eles en Zigbee2MQTT, ou activa %2$s en Configuración.</string>
+	<string name="retain_warning_title">Retain está desactivado</string>
 	<string name="settings_about">Acerca de</string>
 	<string name="settings_about_tagline">%1$s – sen nube, sen conta, sen dependencias</string>
 	<string name="settings_alerts_detail">Alertas de fume e rego, son e notificacións de proba</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Eliminouse %1$d panel</item>
 		<item quantity="other">Elimináronse %1$d paneis</item>
 	</plurals>
+	<string name="settings_periodic_checks">Comprobacións periódicas</string>
+	<string name="settings_periodic_checks_detail">Mentres %1$s estea desactivado, comproba as alertas de temperatura aproximadamente cada 15 minutos – require retain activado en Zigbee2MQTT</string>
 	<string name="settings_tile_width">Largura de mosaicos e clústeres</string>
 	<string name="settings_tile_width_detail">Canto poden medrar os mosaicos (e polo tanto as tarxetas de clúster, de 3 mosaicos de largo), ata encher a pantalla – actualmente %1$ddp</string>
 	<string name="settings_lock_layout">Bloquear deseño</string>

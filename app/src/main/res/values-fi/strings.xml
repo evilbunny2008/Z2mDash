@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Ilmoitukset ovat pois päältä</string>
 	<string name="alerts_notifications_off_detail">Hälytyksiä ei voi näyttää ennen kuin %1$s saa luvan lähettää ilmoituksia</string>
 	<string name="alerts_open_settings">Asetukset</string>
+	<string name="alerts_retain_off">Joitakin antureita ei säilytetä</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ei säilytä kohteita %1$s, joten niiden lämpötilahälytyksiä ei voi tarkistaa sovelluksen ollessa suljettuna – ota retain käyttöön niille Zigbee2MQTT:ssä</string>
 	<string name="alerts_smoke">Savuhälytykset</string>
 	<string name="alerts_smoke_detail">Ilmoita, jos jokin laite havaitsee savua</string>
 	<string name="alerts_smoke_test_detail">Lähettää oikean ilmoituksen (äänen kanssa, jos se on otettu käyttöön yllä) täsmälleen samalla logiikalla kuin aito savuhälytys – hyvä tapa varmistaa, että se todella herättää huomiosi ennen kuin sitä tarvitaan</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Älä näytä uudelleen</string>
+	<string name="retain_warning_text">Zigbee2MQTT ei säilytä näitä antureita, joten niiden lämpötilahälytyksiä ei voi tarkistaa sovelluksen ollessa suljettuna:\n\n%1$s\n\nOta retain käyttöön niille Zigbee2MQTT:ssä tai ota %2$s käyttöön asetuksissa.</string>
+	<string name="retain_warning_title">Retain on pois päältä</string>
 	<string name="settings_about">Tietoja</string>
 	<string name="settings_about_tagline">%1$s – ei pilveä, ei tiliä, ei sitoutumista</string>
 	<string name="settings_alerts_detail">Savu– ja kastelumuistutukset, ääni ja testi–ilmoitukset</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d paneeli poistettu</item>
 		<item quantity="other">%1$d paneelia poistettu</item>
 	</plurals>
+	<string name="settings_periodic_checks">Säännölliset tarkistukset</string>
+	<string name="settings_periodic_checks_detail">Kun %1$s on pois päältä, tarkista lämpötilahälytykset noin 15 minuutin välein – vaatii retainin käyttöön Zigbee2MQTT:ssä</string>
 	<string name="settings_tile_width">Ruutujen ja klustereiden leveys</string>
 	<string name="settings_tile_width_detail">Kuinka leveiksi ruudut (ja siten klusterikortit, 3 ruutua leveitä) voivat kasvaa, koko näytön levyiseksi asti – nyt %1$ddp</string>
 	<string name="settings_lock_layout">Lukitse asettelu</string>

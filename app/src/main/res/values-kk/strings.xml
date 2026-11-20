@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Хабарландырулар өшірулі</string>
 	<string name="alerts_notifications_off_detail">%1$s қолданбасына хабарландыру жіберуге рұқсат берілмейінше ескертулер көрсетілмейді</string>
 	<string name="alerts_open_settings">Параметрлер</string>
+	<string name="alerts_retain_off">Кейбір датчиктер сақталмайды</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s сақтамайды, сондықтан қолданба жабық кезде олардың температура ескертулерін тексеру мүмкін емес – Zigbee2MQTT ішінде олар үшін retain қосыңыз</string>
 	<string name="alerts_smoke">Түтін ескертулері</string>
 	<string name="alerts_smoke_detail">Кез келген құрылғы түтін анықтаса, ескерту</string>
 	<string name="alerts_smoke_test_detail">Нақты түтін ескертуімен дәл бірдей логикамен шынайы хабарландыру жібереді (жоғарыда қосылған болса, дыбыспен) – қажет болмай тұрып оның назарыңызды шынымен аударатынын тексерудің жақсы жолы</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Қайта көрсетпеу</string>
+	<string name="retain_warning_text">Zigbee2MQTT бұл датчиктерді сақтамайды, сондықтан қолданба жабық кезде олардың температура ескертулерін тексеру мүмкін емес:\n\n%1$s\n\nZigbee2MQTT ішінде олар үшін retain қосыңыз немесе Параметрлерде «%2$s» қосыңыз.</string>
+	<string name="retain_warning_title">Retain өшірулі</string>
 	<string name="settings_about">Қолданба туралы</string>
 	<string name="settings_about_tagline">%1$s – бұлтсыз, аккаунтсыз, тәуелділіксіз</string>
 	<string name="settings_alerts_detail">Түтін және суару ескертулері, дыбыс және сынақ хабарландырулары</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d панель жойылды</item>
 		<item quantity="other">%1$d панель жойылды</item>
 	</plurals>
+	<string name="settings_periodic_checks">Мерзімді тексерулер</string>
+	<string name="settings_periodic_checks_detail">«%1$s» өшірулі кезде, температура ескертулерін шамамен әр 15 минут сайын тексеру – Zigbee2MQTT ішінде retain қосулы болуы керек</string>
 	<string name="settings_tile_width">Тақтайша және кластер ені</string>
 	<string name="settings_tile_width_detail">Тақтайшалар (демек, 3 тақтайша енді кластер карталары) экранды толтырғанға дейін қаншалықты кеңеюі мүмкін – қазір %1$ddp</string>
 	<string name="settings_lock_layout">Орналасуды құлыптау</string>

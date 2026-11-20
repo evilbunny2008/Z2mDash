@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">การแจ้งเตือนปิดอยู่</string>
 	<string name="alerts_notifications_off_detail">จะแสดงการเตือนไม่ได้จนกว่าจะอนุญาตให้ %1$s ส่งการแจ้งเตือน</string>
 	<string name="alerts_open_settings">การตั้งค่า</string>
+	<string name="alerts_retain_off">เซ็นเซอร์บางตัวไม่ได้ถูกเก็บไว้</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ไม่ได้เก็บ %1$s ไว้ จึงตรวจสอบการแจ้งเตือนอุณหภูมิของเซ็นเซอร์เหล่านี้ไม่ได้ขณะที่แอปปิดอยู่ – เปิด retain ให้เซ็นเซอร์เหล่านี้ใน Zigbee2MQTT</string>
 	<string name="alerts_smoke">การเตือนควัน</string>
 	<string name="alerts_smoke_detail">แจ้งเตือนหากอุปกรณ์ใดรายงานว่าตรวจพบควัน</string>
 	<string name="alerts_smoke_test_detail">ส่งการแจ้งเตือนจริง (พร้อมเสียง หากเปิดไว้ด้านบน) โดยใช้ตรรกะเดียวกับการเตือนควันจริงทุกประการ – เป็นวิธีที่ดีในการยืนยันว่ามันจะดึงความสนใจของคุณได้จริงก่อนที่คุณจะต้องใช้</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">ไม่ต้องแสดงอีก</string>
+	<string name="retain_warning_text">Zigbee2MQTT ไม่ได้เก็บเซ็นเซอร์เหล่านี้ไว้ จึงตรวจสอบการแจ้งเตือนอุณหภูมิไม่ได้ขณะที่แอปปิดอยู่:\n\n%1$s\n\nเปิด retain ให้เซ็นเซอร์เหล่านี้ใน Zigbee2MQTT หรือเปิด %2$s ในการตั้งค่า</string>
+	<string name="retain_warning_title">Retain ปิดอยู่</string>
 	<string name="settings_about">เกี่ยวกับ</string>
 	<string name="settings_about_tagline">%1$s – ไม่มีคลาวด์ ไม่มีบัญชี ไม่มีการผูกมัด</string>
 	<string name="settings_alerts_detail">การเตือนควันและการรดน้ำ เสียง และการแจ้งเตือนทดสอบ</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">ลบ %1$d พาเนลแล้ว</item>
 	</plurals>
+	<string name="settings_periodic_checks">การตรวจสอบเป็นระยะ</string>
+	<string name="settings_periodic_checks_detail">ขณะที่ %1$s ปิดอยู่ ตรวจสอบการแจ้งเตือนอุณหภูมิประมาณทุก 15 นาที – ต้องเปิด retain ใน Zigbee2MQTT</string>
 	<string name="settings_tile_width">ความกว้างของไทล์และคลัสเตอร์</string>
 	<string name="settings_tile_width_detail">ไทล์ (และการ์ดคลัสเตอร์ที่กว้าง 3 ไทล์) ขยายได้กว้างแค่ไหน จนเต็มหน้าจอ – ปัจจุบัน %1$ddp</string>
 	<string name="settings_lock_layout">ล็อกเลย์เอาต์</string>

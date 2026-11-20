@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Мэдэгдэл унтарсан байна</string>
 	<string name="alerts_notifications_off_detail">%1$s–д мэдэгдэл нийтлэх зөвшөөрөл олгох хүртэл сануулга харуулах боломжгүй</string>
 	<string name="alerts_open_settings">Тохиргоо</string>
+	<string name="alerts_retain_off">Зарим мэдрэгч хадгалагдаагүй байна</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s-г хадгалахгүй байгаа тул апп хаалттай үед тэдгээрийн температурын сануулгыг шалгах боломжгүй – Zigbee2MQTT дээр тэдгээрт retain-г асаана уу</string>
 	<string name="alerts_smoke">Утааны сануулга</string>
 	<string name="alerts_smoke_detail">Аль нэг төхөөрөмж утаа илрүүлсэн тухай мэдээлбэл мэдэгдэх</string>
 	<string name="alerts_smoke_test_detail">Жинхэнэ утааны сануулгатай яг ижил логикоор жинхэнэ мэдэгдэл (дээр идэвхжүүлсэн бол дуутай) илгээнэ – хэрэг болохоос өмнө таны анхаарлыг үнэхээр татах эсэхийг шалгах сайн арга</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Дахин бүү харуул</string>
+	<string name="retain_warning_text">Zigbee2MQTT эдгээр мэдрэгчийг хадгалахгүй байгаа тул апп хаалттай үед тэдгээрийн температурын сануулгыг шалгах боломжгүй:\n\n%1$s\n\nZigbee2MQTT дээр тэдгээрт retain-г асаах эсвэл Тохиргоонд %2$s-г асаана уу.</string>
+	<string name="retain_warning_title">Retain унтраалттай</string>
 	<string name="settings_about">Тухай</string>
 	<string name="settings_about_tagline">%1$s – үүлгүй, бүртгэлгүй, түгжээгүй</string>
 	<string name="settings_alerts_detail">Утаа болон усалгааны сануулга, дуу, туршилтын мэдэгдэл</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d самбарыг устгасан</item>
 		<item quantity="other">%1$d самбарыг устгасан</item>
 	</plurals>
+	<string name="settings_periodic_checks">Үечилсэн шалгалт</string>
+	<string name="settings_periodic_checks_detail">%1$s унтраалттай үед температурын сануулгыг ойролцоогоор 15 минут тутамд шалгана – Zigbee2MQTT дээр retain асаалттай байх шаардлагатай</string>
 	<string name="settings_tile_width">Хавтан &amp; кластерын өргөн</string>
 	<string name="settings_tile_width_detail">Хавтангууд (тиймээс 3 хавтангийн өргөнтэй кластерын картууд) хэр өргөн болж болох, дэлгэцийг дүүргэх хүртэл – одоо %1$ddp</string>
 	<string name="settings_lock_layout">Байршлыг түгжих</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Meldingen staan uit</string>
 	<string name="alerts_notifications_off_detail">Waarschuwingen kunnen pas worden getoond als %1$s meldingen mag plaatsen</string>
 	<string name="alerts_open_settings">Instellingen</string>
+	<string name="alerts_retain_off">Sommige sensoren worden niet bewaard</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT bewaart %1$s niet, dus hun temperatuurmeldingen kunnen niet worden gecontroleerd terwijl de app gesloten is – zet retain voor ze aan in Zigbee2MQTT</string>
 	<string name="alerts_smoke">Rookmeldingen</string>
 	<string name="alerts_smoke_detail">Melden als een apparaat rook detecteert</string>
 	<string name="alerts_smoke_test_detail">Stuurt een echte melding (met geluid, indien hierboven ingeschakeld) met precies dezelfde logica als een echte rookmelding – een goede manier om te controleren dat hij echt je aandacht trekt voordat je hem nodig hebt</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Niet meer tonen</string>
+	<string name="retain_warning_text">Zigbee2MQTT bewaart deze sensoren niet, dus hun temperatuurmeldingen kunnen niet worden gecontroleerd terwijl de app gesloten is:\n\n%1$s\n\nZet retain voor ze aan in Zigbee2MQTT, of zet %2$s aan in Instellingen.</string>
+	<string name="retain_warning_title">Retain staat uit</string>
 	<string name="settings_about">Over</string>
 	<string name="settings_about_tagline">%1$s – geen cloud, geen account, geen lock–in</string>
 	<string name="settings_alerts_detail">Rook– en water geven–meldingen, geluid en testmeldingen</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d paneel verwijderd</item>
 		<item quantity="other">%1$d panelen verwijderd</item>
 	</plurals>
+	<string name="settings_periodic_checks">Periodieke controles</string>
+	<string name="settings_periodic_checks_detail">Zolang %1$s uit staat, temperatuurmeldingen ongeveer elke 15 minuten controleren – vereist dat retain aan staat in Zigbee2MQTT</string>
 	<string name="settings_tile_width">Tegel– &amp; clusterbreedte</string>
 	<string name="settings_tile_width_detail">Hoe breed tegels (en dus clusterkaarten, 3 tegels breed) mogen worden, tot het hele scherm – nu %1$ddp</string>
 	<string name="settings_lock_layout">Indeling vergrendelen</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Slökkt er á tilkynningum</string>
 	<string name="alerts_notifications_off_detail">Ekki er hægt að birta viðvaranir fyrr en %1$s fær leyfi til að birta tilkynningar</string>
 	<string name="alerts_open_settings">Stillingar</string>
+	<string name="alerts_retain_off">Sumir skynjarar eru ekki geymdir</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT geymir ekki %1$s, svo ekki er hægt að athuga hitaviðvaranir þeirra meðan appið er lokað – kveiktu á retain fyrir þá í Zigbee2MQTT</string>
 	<string name="alerts_smoke">Reykviðvaranir</string>
 	<string name="alerts_smoke_detail">Láta vita ef eitthvert tæki greinir reyk</string>
 	<string name="alerts_smoke_test_detail">Sendir raunverulega tilkynningu (með hljóði, ef kveikt er á því hér að ofan) sem notar nákvæmlega sömu rökfræði og ósvikin reykviðvörun – góð leið til að staðfesta að hún nái í raun athygli þinni áður en þú þarft á henni að halda</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Ekki sýna aftur</string>
+	<string name="retain_warning_text">Zigbee2MQTT geymir ekki þessa skynjara, svo ekki er hægt að athuga hitaviðvaranir þeirra meðan appið er lokað:\n\n%1$s\n\nKveiktu á retain fyrir þá í Zigbee2MQTT, eða kveiktu á %2$s í Stillingum.</string>
+	<string name="retain_warning_title">Slökkt er á retain</string>
 	<string name="settings_about">Um forritið</string>
 	<string name="settings_about_tagline">%1$s – ekkert ský, enginn reikningur, engin binding</string>
 	<string name="settings_alerts_detail">Reyk– og vökvunarviðvaranir, hljóð og prófunartilkynningar</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d spjald fjarlægt</item>
 		<item quantity="other">%1$d spjöld fjarlægð</item>
 	</plurals>
+	<string name="settings_periodic_checks">Reglulegar athuganir</string>
+	<string name="settings_periodic_checks_detail">Meðan slökkt er á %1$s, athuga hitaviðvaranir um það bil á 15 mínútna fresti – krefst þess að kveikt sé á retain í Zigbee2MQTT</string>
 	<string name="settings_tile_width">Breidd flísa &amp; klasa</string>
 	<string name="settings_tile_width_detail">Hversu breiðar flísar (og þar með klasaspjöld, 3 flísar á breidd) geta orðið, allt að því að fylla skjáinn – nú %1$ddp</string>
 	<string name="settings_lock_layout">Læsa útliti</string>

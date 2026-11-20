@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Benachrichtigungen sind deaktiviert</string>
 	<string name="alerts_notifications_off_detail">Benachrichtigungen können erst angezeigt werden, wenn %1$s berechtigt ist, Benachrichtigungen zu posten</string>
 	<string name="alerts_open_settings">Einstellungen</string>
+	<string name="alerts_retain_off">Einige Sensoren werden nicht gespeichert</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT speichert %1$s nicht (retain), daher können ihre Temperaturwarnungen bei geschlossener App nicht geprüft werden – aktiviere retain für sie in Zigbee2MQTT</string>
 	<string name="alerts_smoke">Rauchwarnungen</string>
 	<string name="alerts_smoke_detail">Benachrichtigen Sie, wenn ein Gerät Rauch meldet</string>
 	<string name="alerts_smoke_test_detail">Löst eine echte Benachrichtigung aus (mit Ton, sofern oben aktiviert) und verwendet dabei genau die gleiche Logik wie ein echter Rauchalarm – eine gute Möglichkeit, zu bestätigen, dass er tatsächlich Ihre Aufmerksamkeit erregt, bevor Sie es brauchen</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web–Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Nicht mehr anzeigen</string>
+	<string name="retain_warning_text">Zigbee2MQTT speichert diese Sensoren nicht (retain), daher können ihre Temperaturwarnungen bei geschlossener App nicht geprüft werden:\n\n%1$s\n\nAktiviere retain für sie in Zigbee2MQTT oder schalte %2$s in den Einstellungen ein.</string>
+	<string name="retain_warning_title">Retain ist aus</string>
 	<string name="settings_about">Um</string>
 	<string name="settings_about_tagline">%1$s – keine Cloud, kein Konto, keine Bindung</string>
 	<string name="settings_alerts_detail">Rauch– und Wasserwarnungen, Ton und Testbenachrichtigungen</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d Panel entfernt</item>
 		<item quantity="other">%1$d Panels entfernt</item>
 	</plurals>
+	<string name="settings_periodic_checks">Regelmäßige Prüfungen</string>
+	<string name="settings_periodic_checks_detail">Solange %1$s aus ist, Temperaturwarnungen etwa alle 15 Minuten prüfen – erfordert aktiviertes retain in Zigbee2MQTT</string>
 	<string name="settings_tile_width">Kachel– und Clusterbreite</string>
 	<string name="settings_tile_width_detail">Wie breit Kacheln (und damit Clusterkarten, 3 Kacheln breit) werden können, bis sie den Bildschirm ausfüllen – derzeit %1$ddp</string>
 	<string name="settings_lock_layout">Layout sperren</string>

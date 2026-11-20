@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Pranešimai išjungti</string>
 	<string name="alerts_notifications_off_detail">Įspėjimų negalima rodyti, kol %1$s neleidžiama siųsti pranešimų</string>
 	<string name="alerts_open_settings">Nustatymai</string>
+	<string name="alerts_retain_off">Kai kurie jutikliai nėra išsaugomi</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT neišsaugo %1$s, todėl jų temperatūros įspėjimų negalima patikrinti, kol programa uždaryta – įjunkite jiems retain Zigbee2MQTT nustatymuose</string>
 	<string name="alerts_smoke">Įspėjimai apie dūmus</string>
 	<string name="alerts_smoke_detail">Pranešti, jei kuris nors įrenginys aptinka dūmus</string>
 	<string name="alerts_smoke_test_detail">Išsiunčia tikrą pranešimą (su garsu, jei jis įjungtas aukščiau) naudodamas lygiai tą pačią logiką kaip tikras įspėjimas apie dūmus – geras būdas įsitikinti, kad jis tikrai patrauks jūsų dėmesį, kol jo dar neprireikė</string>
@@ -359,6 +361,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Daugiau nerodyti</string>
+	<string name="retain_warning_text">Zigbee2MQTT neišsaugo šių jutiklių, todėl jų temperatūros įspėjimų negalima patikrinti, kol programa uždaryta:\n\n%1$s\n\nĮjunkite jiems retain Zigbee2MQTT nustatymuose arba įjunkite „%2$s“ Nustatymuose.</string>
+	<string name="retain_warning_title">Retain išjungtas</string>
 	<string name="settings_about">Apie</string>
 	<string name="settings_about_tagline">%1$s – jokio debesies, jokios paskyros, jokio susaistymo</string>
 	<string name="settings_alerts_detail">Dūmų ir laistymo įspėjimai, garsas ir bandomieji pranešimai</string>
@@ -405,6 +410,8 @@
 		<item quantity="many">Pašalinta %1$d skydelio</item>
 		<item quantity="other">Pašalinta %1$d skydelių</item>
 	</plurals>
+	<string name="settings_periodic_checks">Periodiniai patikrinimai</string>
+	<string name="settings_periodic_checks_detail">Kol „%1$s“ išjungta, tikrinti temperatūros įspėjimus maždaug kas 15 minučių – reikia įjungto retain Zigbee2MQTT</string>
 	<string name="settings_tile_width">Plytelių ir klasterių plotis</string>
 	<string name="settings_tile_width_detail">Kiek gali išplatėti plytelės (taigi ir klasterių kortelės, 3 plytelių pločio), iki viso ekrano – šiuo metu %1$ddp</string>
 	<string name="settings_lock_layout">Užrakinti išdėstymą</string>

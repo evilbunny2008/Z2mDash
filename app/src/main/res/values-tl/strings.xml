@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Naka-off ang mga notification</string>
 	<string name="alerts_notifications_off_detail">Hindi maipapakita ang mga alerto hangga’t hindi pinapayagan ang %1$s na magpadala ng mga notification</string>
 	<string name="alerts_open_settings">Mga Setting</string>
+	<string name="alerts_retain_off">May mga sensor na hindi pinapanatili</string>
+	<string name="alerts_retain_off_detail">Hindi pinapanatili ng Zigbee2MQTT ang %1$s, kaya hindi masusuri ang kanilang mga alerto sa temperatura habang nakasara ang app – i-on ang retain para sa kanila sa Zigbee2MQTT</string>
 	<string name="alerts_smoke">Mga Alerto sa Usok</string>
 	<string name="alerts_smoke_detail">Mag-abiso kapag may device na nag-ulat na may natukoy na usok</string>
 	<string name="alerts_smoke_test_detail">Nagpapadala ng totoong notification (may tunog, kung naka-on sa itaas) gamit ang eksaktong parehong lohika ng tunay na alerto sa usok – magandang paraan para matiyak na talagang makukuha nito ang iyong pansin bago mo ito kailanganin</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Huwag nang ipakita</string>
+	<string name="retain_warning_text">Hindi pinapanatili ng Zigbee2MQTT ang mga sensor na ito, kaya hindi masusuri ang kanilang mga alerto sa temperatura habang nakasara ang app:\n\n%1$s\n\nI-on ang retain para sa kanila sa Zigbee2MQTT, o i-on ang %2$s sa Mga Setting.</string>
+	<string name="retain_warning_title">Naka-off ang retain</string>
 	<string name="settings_about">Tungkol sa</string>
 	<string name="settings_about_tagline">%1$s – walang cloud, walang account, walang lock–in</string>
 	<string name="settings_alerts_detail">Mga alerto sa usok at pagdidilig, tunog, at mga test notification</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Inalis ang %1$d panel</item>
 		<item quantity="other">Inalis ang %1$d na panel</item>
 	</plurals>
+	<string name="settings_periodic_checks">Pana-panahong Pagsusuri</string>
+	<string name="settings_periodic_checks_detail">Habang naka-off ang %1$s, suriin ang mga alerto sa temperatura humigit-kumulang bawat 15 minuto – kailangang naka-on ang retain sa Zigbee2MQTT</string>
 	<string name="settings_tile_width">Lapad ng Tile at Cluster</string>
 	<string name="settings_tile_width_detail">Gaano kalapad ang puwedeng ilaki ng mga tile (at ng mga cluster card, na 3 tile ang lapad), hanggang mapuno ang screen – kasalukuyang %1$ddp</string>
 	<string name="settings_lock_layout">I-lock ang Layout</string>

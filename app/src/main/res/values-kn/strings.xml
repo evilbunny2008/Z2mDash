@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">ಅಧಿಸೂಚನೆಗಳು ಆಫ್ ಆಗಿವೆ</string>
 	<string name="alerts_notifications_off_detail">%1$s ಗೆ ಅಧಿಸೂಚನೆಗಳನ್ನು ಕಳುಹಿಸಲು ಅನುಮತಿ ನೀಡುವವರೆಗೆ ಎಚ್ಚರಿಕೆಗಳನ್ನು ತೋರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ</string>
 	<string name="alerts_open_settings">ಸೆಟ್ಟಿಂಗ್‌ಗಳು</string>
+	<string name="alerts_retain_off">ಕೆಲವು ಸೆನ್ಸರ್‌ಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳಲಾಗುತ್ತಿಲ್ಲ</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s ಅನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತಿಲ್ಲ, ಆದ್ದರಿಂದ ಆ್ಯಪ್ ಮುಚ್ಚಿರುವಾಗ ಅವುಗಳ ತಾಪಮಾನ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುವುದಿಲ್ಲ – Zigbee2MQTT ನಲ್ಲಿ ಅವುಗಳಿಗೆ retain ಆನ್ ಮಾಡಿ</string>
 	<string name="alerts_smoke">ಹೊಗೆ ಎಚ್ಚರಿಕೆಗಳು</string>
 	<string name="alerts_smoke_detail">ಯಾವುದೇ ಸಾಧನವು ಹೊಗೆ ಪತ್ತೆಯಾಗಿದೆ ಎಂದು ವರದಿ ಮಾಡಿದರೆ ತಿಳಿಸಿ</string>
 	<string name="alerts_smoke_test_detail">ನಿಜವಾದ ಹೊಗೆ ಎಚ್ಚರಿಕೆಯ ಅದೇ ತರ್ಕವನ್ನು ಬಳಸಿ ನಿಜವಾದ ಅಧಿಸೂಚನೆಯನ್ನು (ಮೇಲೆ ಸಕ್ರಿಯಗೊಳಿಸಿದ್ದರೆ ಧ್ವನಿಯೊಂದಿಗೆ) ಕಳುಹಿಸುತ್ತದೆ – ನಿಮಗೆ ಅಗತ್ಯವಾಗುವ ಮೊದಲೇ ಅದು ನಿಜವಾಗಿಯೂ ನಿಮ್ಮ ಗಮನ ಸೆಳೆಯುತ್ತದೆ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಉತ್ತಮ ಮಾರ್ಗ</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">ಮತ್ತೆ ತೋರಿಸಬೇಡಿ</string>
+	<string name="retain_warning_text">Zigbee2MQTT ಈ ಸೆನ್ಸರ್‌ಗಳನ್ನು ಉಳಿಸಿಕೊಳ್ಳುತ್ತಿಲ್ಲ, ಆದ್ದರಿಂದ ಆ್ಯಪ್ ಮುಚ್ಚಿರುವಾಗ ಅವುಗಳ ತಾಪಮಾನ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುವುದಿಲ್ಲ:\n\n%1$s\n\nZigbee2MQTT ನಲ್ಲಿ ಅವುಗಳಿಗೆ retain ಆನ್ ಮಾಡಿ, ಅಥವಾ ಸೆಟ್ಟಿಂಗ್‌ಗಳಲ್ಲಿ %2$s ಆನ್ ಮಾಡಿ.</string>
+	<string name="retain_warning_title">Retain ಆಫ್ ಆಗಿದೆ</string>
 	<string name="settings_about">ಕುರಿತು</string>
 	<string name="settings_about_tagline">%1$s – ಕ್ಲೌಡ್ ಇಲ್ಲ, ಖಾತೆ ಇಲ್ಲ, ಲಾಕ್–ಇನ್ ಇಲ್ಲ</string>
 	<string name="settings_alerts_detail">ಹೊಗೆ ಮತ್ತು ನೀರುಣಿಸುವ ಎಚ್ಚರಿಕೆಗಳು, ಧ್ವನಿ ಮತ್ತು ಪರೀಕ್ಷಾ ಅಧಿಸೂಚನೆಗಳು</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d ಪ್ಯಾನೆಲ್ ತೆಗೆದುಹಾಕಲಾಗಿದೆ</item>
 		<item quantity="other">%1$d ಪ್ಯಾನೆಲ್‌ಗಳನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ</item>
 	</plurals>
+	<string name="settings_periodic_checks">ನಿಯತಕಾಲಿಕ ಪರಿಶೀಲನೆಗಳು</string>
+	<string name="settings_periodic_checks_detail">%1$s ಆಫ್ ಆಗಿರುವಾಗ, ಸುಮಾರು ಪ್ರತಿ 15 ನಿಮಿಷಕ್ಕೊಮ್ಮೆ ತಾಪಮಾನ ಎಚ್ಚರಿಕೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ – Zigbee2MQTT ನಲ್ಲಿ retain ಆನ್ ಆಗಿರಬೇಕು</string>
 	<string name="settings_tile_width">ಟೈಲ್ ಮತ್ತು ಕ್ಲಸ್ಟರ್ ಅಗಲ</string>
 	<string name="settings_tile_width_detail">ಟೈಲ್‌ಗಳು (ಮತ್ತು ಆದ್ದರಿಂದ 3 ಟೈಲ್ ಅಗಲದ ಕ್ಲಸ್ಟರ್ ಕಾರ್ಡ್‌ಗಳು) ಪರದೆ ತುಂಬುವವರೆಗೆ ಎಷ್ಟು ಅಗಲವಾಗಬಹುದು – ಪ್ರಸ್ತುತ %1$ddp</string>
 	<string name="settings_lock_layout">ಲೇಔಟ್ ಲಾಕ್ ಮಾಡಿ</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">الإخطارات معطلة</string>
 	<string name="alerts_notifications_off_detail">لا يمكن عرض التنبيهات إلا بعد السماح لـ %1$s بنشر الإشعارات</string>
 	<string name="alerts_open_settings">إعدادات</string>
+	<string name="alerts_retain_off">بعض المستشعرات غير محتفَظ بها</string>
+	<string name="alerts_retain_off_detail">لا يحتفظ Zigbee2MQTT بـ %1$s، لذا لا يمكن فحص تنبيهات الحرارة الخاصة بها أثناء إغلاق التطبيق – فعّل retain لها في Zigbee2MQTT</string>
 	<string name="alerts_smoke">تنبيهات الدخان</string>
 	<string name="alerts_smoke_detail">قم بإبلاغ ما إذا كان أي جهاز قد أبلغ عن اكتشاف دخان</string>
 	<string name="alerts_smoke_test_detail">يطلق إشعارًا حقيقيًا (بصوت، إذا تم تمكينه أعلاه) باستخدام نفس المنطق تمامًا مثل تنبيه الدخان الحقيقي – وهي طريقة جيدة للتأكد من أنه سيجذب انتباهك بالفعل قبل أن تحتاج إليه</string>
@@ -375,6 +377,9 @@
 	<string name="protocol_tcp">TCP – بروتوكول التحكم في الإرسال</string>
 	<string name="protocol_ws">WS – مآخذ الويب</string>
 	<string name="protocol_wss">WSS – مقابس الويب الآمنة</string>
+	<string name="retain_warning_dont_show">عدم الإظهار مجددًا</string>
+	<string name="retain_warning_text">لا يحتفظ Zigbee2MQTT بهذه المستشعرات، لذا لا يمكن فحص تنبيهات الحرارة الخاصة بها أثناء إغلاق التطبيق:\n\n%1$s\n\nفعّل retain لها في Zigbee2MQTT، أو فعّل %2$s في الإعدادات.</string>
+	<string name="retain_warning_title">خيار retain متوقف</string>
 	<string name="settings_about">عن</string>
 	<string name="settings_about_tagline">%1$s – لا توجد سحابة، ولا حساب، ولا قفل</string>
 	<string name="settings_alerts_detail">تنبيهات الدخان والسقي والإشعارات الصوتية والاختبارية</string>
@@ -431,6 +436,8 @@
 		<item quantity="two">تمت إزالة %1$d من اللوحات</item>
 		<item quantity="zero">تمت إزالة %1$d من اللوحات</item>
 	</plurals>
+	<string name="settings_periodic_checks">فحوصات دورية</string>
+	<string name="settings_periodic_checks_detail">أثناء إيقاف %1$s، افحص تنبيهات الحرارة كل 15 دقيقة تقريبًا – يتطلب تفعيل retain في Zigbee2MQTT</string>
 	<string name="settings_tile_width">عرض المربعات والكتل</string>
 	<string name="settings_tile_width_detail">مدى عرض المربعات (وبالتالي البطاقات العنقودية، التي يبلغ عرضها 3 مربعات) يمكن أن تنمو، حتى ملء الشاشة – حاليًا %1$ddp</string>
 	<string name="settings_lock_layout">قفل التخطيط</string>

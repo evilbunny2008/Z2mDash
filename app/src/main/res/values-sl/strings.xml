@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Obvestila so izklopljena</string>
 	<string name="alerts_notifications_off_detail">Opozoril ni mogoče prikazati, dokler aplikacija %1$s nima dovoljenja za objavljanje obvestil</string>
 	<string name="alerts_open_settings">Nastavitve</string>
+	<string name="alerts_retain_off">Nekateri senzorji se ne ohranjajo</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ne ohranja %1$s, zato njihovih temperaturnih opozoril ni mogoče preverjati, ko je aplikacija zaprta – vklopite retain zanje v Zigbee2MQTT</string>
 	<string name="alerts_smoke">Opozorila o dimu</string>
 	<string name="alerts_smoke_detail">Obvesti, če katera koli naprava zazna dim</string>
 	<string name="alerts_smoke_test_detail">Pošlje pravo obvestilo (z zvokom, če je zgoraj omogočen) z natanko enako logiko kot pravo opozorilo o dimu – dober način, da preverite, ali bo res pritegnilo vašo pozornost, preden ga boste potrebovali</string>
@@ -359,6 +361,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Ne prikaži več</string>
+	<string name="retain_warning_text">Zigbee2MQTT ne ohranja teh senzorjev, zato njihovih temperaturnih opozoril ni mogoče preverjati, ko je aplikacija zaprta:\n\n%1$s\n\nVklopite retain zanje v Zigbee2MQTT ali vklopite »%2$s« v Nastavitvah.</string>
+	<string name="retain_warning_title">Retain je izklopljen</string>
 	<string name="settings_about">O aplikaciji</string>
 	<string name="settings_about_tagline">%1$s – brez oblaka, brez računa, brez zaklepanja</string>
 	<string name="settings_alerts_detail">Opozorila o dimu in zalivanju, zvok in preizkusna obvestila</string>
@@ -405,6 +410,8 @@
 		<item quantity="few">Odstranjene %1$d plošče</item>
 		<item quantity="other">Odstranjenih %1$d plošč</item>
 	</plurals>
+	<string name="settings_periodic_checks">Redna preverjanja</string>
+	<string name="settings_periodic_checks_detail">Ko je »%1$s« izklopljeno, preverjaj temperaturna opozorila približno vsakih 15 minut – zahteva vklopljen retain v Zigbee2MQTT</string>
 	<string name="settings_tile_width">Širina ploščic in grozdov</string>
 	<string name="settings_tile_width_detail">Kako široke lahko postanejo ploščice (in s tem kartice grozdov, široke 3 ploščice), vse do zapolnitve zaslona – trenutno %1$ddp</string>
 	<string name="settings_lock_layout">Zakleni postavitev</string>

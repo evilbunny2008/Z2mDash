@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Aviseringar är avstängda</string>
 	<string name="alerts_notifications_off_detail">Varningar kan inte visas förrän %1$s får tillåtelse att skicka aviseringar</string>
 	<string name="alerts_open_settings">Inställningar</string>
+	<string name="alerts_retain_off">Vissa sensorer behålls inte</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT behåller inte %1$s, så deras temperaturvarningar kan inte kontrolleras medan appen är stängd – slå på retain för dem i Zigbee2MQTT</string>
 	<string name="alerts_smoke">Rökvarningar</string>
 	<string name="alerts_smoke_detail">Meddela om någon enhet rapporterar att rök har upptäckts</string>
 	<string name="alerts_smoke_test_detail">Skickar en riktig avisering (med ljud, om det är aktiverat ovan) med exakt samma logik som en äkta rökvarning – ett bra sätt att bekräfta att den verkligen fångar din uppmärksamhet innan du behöver den</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Visa inte igen</string>
+	<string name="retain_warning_text">Zigbee2MQTT behåller inte dessa sensorer, så deras temperaturvarningar kan inte kontrolleras medan appen är stängd:\n\n%1$s\n\nSlå på retain för dem i Zigbee2MQTT, eller slå på %2$s i Inställningar.</string>
+	<string name="retain_warning_title">Retain är av</string>
 	<string name="settings_about">Om</string>
 	<string name="settings_about_tagline">%1$s – inget moln, inget konto, ingen inlåsning</string>
 	<string name="settings_alerts_detail">Rök– och vattningsvarningar, ljud och testaviseringar</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Tog bort %1$d panel</item>
 		<item quantity="other">Tog bort %1$d paneler</item>
 	</plurals>
+	<string name="settings_periodic_checks">Regelbundna kontroller</string>
+	<string name="settings_periodic_checks_detail">Medan %1$s är av, kontrollera temperaturvarningar ungefär var 15:e minut – kräver att retain är på i Zigbee2MQTT</string>
 	<string name="settings_tile_width">Bredd på rutor &amp; kluster</string>
 	<string name="settings_tile_width_detail">Hur breda rutor (och därmed klusterkort, 3 rutor breda) kan bli, upp till att fylla skärmen – för närvarande %1$ddp</string>
 	<string name="settings_lock_layout">Lås layout</string>

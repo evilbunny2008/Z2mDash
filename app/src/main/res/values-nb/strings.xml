@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Varsler er slått av</string>
 	<string name="alerts_notifications_off_detail">Varsler kan ikke vises før %1$s får lov til å sende varsler</string>
 	<string name="alerts_open_settings">Innstillinger</string>
+	<string name="alerts_retain_off">Noen sensorer beholdes ikke</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT beholder ikke %1$s, så temperaturvarslene deres kan ikke sjekkes mens appen er lukket – slå på retain for dem i Zigbee2MQTT</string>
 	<string name="alerts_smoke">Røykvarsler</string>
 	<string name="alerts_smoke_detail">Varsle hvis en enhet oppdager røyk</string>
 	<string name="alerts_smoke_test_detail">Sender et ekte varsel (med lyd, hvis det er slått på ovenfor) med nøyaktig samme logikk som et ekte røykvarsel – en god måte å bekrefte at det faktisk fanger oppmerksomheten din før du trenger det</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Ikke vis igjen</string>
+	<string name="retain_warning_text">Zigbee2MQTT beholder ikke disse sensorene, så temperaturvarslene deres kan ikke sjekkes mens appen er lukket:\n\n%1$s\n\nSlå på retain for dem i Zigbee2MQTT, eller slå på %2$s i Innstillinger.</string>
+	<string name="retain_warning_title">Retain er av</string>
 	<string name="settings_about">Om</string>
 	<string name="settings_about_tagline">%1$s – ingen sky, ingen konto, ingen innlåsing</string>
 	<string name="settings_alerts_detail">Røyk– og vanningsvarsler, lyd og testvarsler</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Fjernet %1$d panel</item>
 		<item quantity="other">Fjernet %1$d paneler</item>
 	</plurals>
+	<string name="settings_periodic_checks">Periodiske sjekker</string>
+	<string name="settings_periodic_checks_detail">Mens %1$s er av, sjekk temperaturvarsler omtrent hvert 15. minutt – krever at retain er slått på i Zigbee2MQTT</string>
 	<string name="settings_tile_width">Bredde på fliser og klynger</string>
 	<string name="settings_tile_width_detail">Hvor brede fliser (og dermed klyngekort, 3 fliser brede) kan bli, helt opp til hele skjermen – for øyeblikket %1$ddp</string>
 	<string name="settings_lock_layout">Lås oppsett</string>

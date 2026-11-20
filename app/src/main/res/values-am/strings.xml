@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">ማሳወቂያዎች ጠፍተዋል</string>
 	<string name="alerts_notifications_off_detail">%1$s ማሳወቂያዎችን እንዲለጥፍ እስኪፈቀድለት ድረስ ማንቂያዎች ሊታዩ አይችሉም</string>
 	<string name="alerts_open_settings">ቅንብሮች</string>
+	<string name="alerts_retain_off">አንዳንድ ዳሳሾች አልተያዙም</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$sን እየያዘ አይደለም፣ ስለዚህ መተግበሪያው ሲዘጋ የሙቀት ማንቂያዎቻቸው ሊፈተሹ አይችሉም – በZigbee2MQTT ውስጥ retainን ያብሩላቸው</string>
 	<string name="alerts_smoke">የጭስ ማንቂያዎች</string>
 	<string name="alerts_smoke_detail">ማንኛውም መሣሪያ ጭስ መገኘቱን ከዘገበ አሳውቅ</string>
 	<string name="alerts_smoke_test_detail">ከእውነተኛ የጭስ ማንቂያ ጋር ተመሳሳይ አመክንዮ በመጠቀም እውነተኛ ማሳወቂያ (ከላይ ከነቃ ከድምፅ ጋር) ይልካል – ከመፈለግዎ በፊት በእርግጥ ትኩረትዎን እንደሚስብ ለማረጋገጥ ጥሩ መንገድ ነው</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">ዳግም አታሳይ</string>
+	<string name="retain_warning_text">Zigbee2MQTT እነዚህን ዳሳሾች እየያዘ አይደለም፣ ስለዚህ መተግበሪያው ሲዘጋ የሙቀት ማንቂያዎቻቸው ሊፈተሹ አይችሉም፦\n\n%1$s\n\nበZigbee2MQTT ውስጥ retainን ያብሩላቸው፣ ወይም በቅንብሮች ውስጥ %2$sን ያብሩ።</string>
+	<string name="retain_warning_title">Retain ጠፍቷል</string>
 	<string name="settings_about">ስለ</string>
 	<string name="settings_about_tagline">%1$s – ደመና የለም፣ መለያ የለም፣ መቆለፊያ የለም</string>
 	<string name="settings_alerts_detail">የጭስ እና የውሃ ማጠጣት ማንቂያዎች፣ ድምፅ እና የሙከራ ማሳወቂያዎች</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d ፓነል ተወግዷል</item>
 		<item quantity="other">%1$d ፓነሎች ተወግደዋል</item>
 	</plurals>
+	<string name="settings_periodic_checks">ወቅታዊ ፍተሻዎች</string>
+	<string name="settings_periodic_checks_detail">%1$s ሲጠፋ፣ የሙቀት ማንቂያዎችን በግምት በየ15 ደቂቃው ፈትሽ – በZigbee2MQTT ውስጥ retain መብራት አለበት</string>
 	<string name="settings_tile_width">የሰቅ &amp; የክላስተር ስፋት</string>
 	<string name="settings_tile_width_detail">ሰቆች (እና ስለዚህ የክላስተር ካርዶች፣ 3 ሰቆች ስፋት) ምን ያህል ሊሰፉ እንደሚችሉ፣ ማያ ገጹን እስኪሞሉ ድረስ – አሁን %1$ddp</string>
 	<string name="settings_lock_layout">አቀማመጥን ቆልፍ</string>

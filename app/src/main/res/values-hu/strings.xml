@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Az értesítések ki vannak kapcsolva</string>
 	<string name="alerts_notifications_off_detail">A riasztások nem jeleníthetők meg, amíg a(z) %1$s nem kap engedélyt értesítések küldésére</string>
 	<string name="alerts_open_settings">Beállítások</string>
+	<string name="alerts_retain_off">Néhány érzékelő nincs megőrizve</string>
+	<string name="alerts_retain_off_detail">A Zigbee2MQTT nem őrzi meg ezeket: %1$s, így hőmérséklet-riasztásaik nem ellenőrizhetők, amíg az alkalmazás be van zárva – kapcsolja be számukra a retaint a Zigbee2MQTT-ben</string>
 	<string name="alerts_smoke">Füstriasztások</string>
 	<string name="alerts_smoke_detail">Értesítés, ha bármely eszköz füstöt észlel</string>
 	<string name="alerts_smoke_test_detail">Valódi értesítést küld (hanggal, ha fent engedélyezve van) pontosan ugyanazzal a logikával, mint egy valódi füstriasztás – jó módja annak, hogy meggyőződj róla, tényleg felhívja a figyelmedet, mielőtt szükség lenne rá</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Ne jelenjen meg újra</string>
+	<string name="retain_warning_text">A Zigbee2MQTT nem őrzi meg ezeket az érzékelőket, így hőmérséklet-riasztásaik nem ellenőrizhetők, amíg az alkalmazás be van zárva:\n\n%1$s\n\nKapcsolja be számukra a retaint a Zigbee2MQTT-ben, vagy kapcsolja be a(z) %2$s opciót a Beállításokban.</string>
+	<string name="retain_warning_title">A retain ki van kapcsolva</string>
 	<string name="settings_about">Névjegy</string>
 	<string name="settings_about_tagline">%1$s – nincs felhő, nincs fiók, nincs bezártság</string>
 	<string name="settings_alerts_detail">Füst– és öntözési riasztások, hang és tesztértesítések</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d panel eltávolítva</item>
 		<item quantity="other">%1$d panel eltávolítva</item>
 	</plurals>
+	<string name="settings_periodic_checks">Rendszeres ellenőrzések</string>
+	<string name="settings_periodic_checks_detail">Amíg a(z) %1$s ki van kapcsolva, a hőmérséklet-riasztások ellenőrzése nagyjából 15 percenként – a Zigbee2MQTT-ben bekapcsolt retain szükséges</string>
 	<string name="settings_tile_width">Csempe– és klaszterszélesség</string>
 	<string name="settings_tile_width_detail">Milyen szélesre nőhetnek a csempék (és így a 3 csempe széles klaszterkártyák), egészen a képernyő kitöltéséig – jelenleg %1$ddp</string>
 	<string name="settings_lock_layout">Elrendezés zárolása</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Ծանուցումներն անջատված են</string>
 	<string name="alerts_notifications_off_detail">Զգուշացումները չեն կարող ցուցադրվել, քանի դեռ %1$s հավելվածին թույլատրված չէ ծանուցումներ ուղարկել</string>
 	<string name="alerts_open_settings">Կարգավորումներ</string>
+	<string name="alerts_retain_off">Որոշ սենսորներ չեն պահպանվում</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT-ն չի պահպանում %1$s-ը, ուստի դրանց ջերմաստիճանի ծանուցումները հնարավոր չէ ստուգել, երբ հավելվածը փակ է – միացրեք retain-ը դրանց համար Zigbee2MQTT-ում</string>
 	<string name="alerts_smoke">Ծխի զգուշացումներ</string>
 	<string name="alerts_smoke_detail">Ծանուցել, եթե որևէ սարք ծուխ է հայտնաբերում</string>
 	<string name="alerts_smoke_test_detail">Ուղարկում է իրական ծանուցում (ձայնով, եթե վերևում միացված է)՝ օգտագործելով նույն տրամաբանությունը, ինչ ծխի իրական զգուշացումը – լավ միջոց համոզվելու, որ այն իսկապես կգրավի ձեր ուշադրությունը, նախքան դրա կարիքը կունենաք</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Այլևս ցույց չտալ</string>
+	<string name="retain_warning_text">Zigbee2MQTT-ն չի պահպանում այս սենսորները, ուստի դրանց ջերմաստիճանի ծանուցումները հնարավոր չէ ստուգել, երբ հավելվածը փակ է՝\n\n%1$s\n\nՄիացրեք retain-ը դրանց համար Zigbee2MQTT-ում կամ միացրեք %2$s-ը Կարգավորումներում։</string>
+	<string name="retain_warning_title">Retain-ն անջատված է</string>
 	<string name="settings_about">Հավելվածի մասին</string>
 	<string name="settings_about_tagline">%1$s – առանց ամպի, առանց հաշվի, առանց կախվածության</string>
 	<string name="settings_alerts_detail">Ծխի և ջրելու զգուշացումներ, ձայն և փորձնական ծանուցումներ</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Հեռացվեց %1$d վահանակ</item>
 		<item quantity="other">Հեռացվեց %1$d վահանակ</item>
 	</plurals>
+	<string name="settings_periodic_checks">Պարբերական ստուգումներ</string>
+	<string name="settings_periodic_checks_detail">Երբ %1$s-ն անջատված է, ստուգել ջերմաստիճանի ծանուցումները մոտավորապես 15 րոպեն մեկ – պահանջվում է միացված retain Zigbee2MQTT-ում</string>
 	<string name="settings_tile_width">Սալիկների և կլաստերների լայնություն</string>
 	<string name="settings_tile_width_detail">Որքան լայն կարող են դառնալ սալիկները (և հետևաբար կլաստերների քարտերը՝ 3 սալիկ լայնությամբ), մինչև էկրանը լրացնելը – այժմ %1$ddp</string>
 	<string name="settings_lock_layout">Կողպել դասավորությունը</string>

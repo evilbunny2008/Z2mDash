@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">შეტყობინებები გამორთულია</string>
 	<string name="alerts_notifications_off_detail">გაფრთხილებები ვერ გამოჩნდება, სანამ %1$s-ს არ მიეცემა შეტყობინებების გამოქვეყნების ნებართვა</string>
 	<string name="alerts_open_settings">პარამეტრები</string>
+	<string name="alerts_retain_off">ზოგიერთი სენსორი არ ინახება</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT არ ინახავს %1$s-ს, ამიტომ მათი ტემპერატურის გაფრთხილებების შემოწმება შეუძლებელია, სანამ აპი დახურულია – ჩართეთ მათთვის retain Zigbee2MQTT-ში</string>
 	<string name="alerts_smoke">კვამლის გაფრთხილებები</string>
 	<string name="alerts_smoke_detail">შეტყობინება, თუ რომელიმე მოწყობილობა კვამლს აღმოაჩენს</string>
 	<string name="alerts_smoke_test_detail">აგზავნის რეალურ შეტყობინებას (ხმით, თუ ზემოთ ჩართულია) ზუსტად იმავე ლოგიკით, როგორც ნამდვილი კვამლის გაფრთხილება – კარგი გზაა იმის დასადასტურებლად, რომ ის ნამდვილად მიიპყრობს თქვენს ყურადღებას, სანამ დაგჭირდებათ</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">აღარ აჩვენო</string>
+	<string name="retain_warning_text">Zigbee2MQTT არ ინახავს ამ სენსორებს, ამიტომ მათი ტემპერატურის გაფრთხილებების შემოწმება შეუძლებელია, სანამ აპი დახურულია:\n\n%1$s\n\nჩართეთ მათთვის retain Zigbee2MQTT-ში ან ჩართეთ %2$s პარამეტრებში.</string>
+	<string name="retain_warning_title">Retain გამორთულია</string>
 	<string name="settings_about">შესახებ</string>
 	<string name="settings_about_tagline">%1$s – არც ღრუბელი, არც ანგარიში, არც მიბმულობა</string>
 	<string name="settings_alerts_detail">კვამლისა და მორწყვის გაფრთხილებები, ხმა და სატესტო შეტყობინებები</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">წაიშალა %1$d პანელი</item>
 		<item quantity="other">წაიშალა %1$d პანელი</item>
 	</plurals>
+	<string name="settings_periodic_checks">პერიოდული შემოწმებები</string>
+	<string name="settings_periodic_checks_detail">სანამ %1$s გამორთულია, შეამოწმე ტემპერატურის გაფრთხილებები დაახლოებით ყოველ 15 წუთში – საჭიროა Zigbee2MQTT-ში ჩართული retain</string>
 	<string name="settings_tile_width">ფილისა &amp; კლასტერის სიგანე</string>
 	<string name="settings_tile_width_detail">რამდენად ფართო შეიძლება გახდეს ფილები (და შესაბამისად 3 ფილის სიგანის კლასტერის ბარათები), ეკრანის შევსებამდე – ამჟამად %1$ddp</string>
 	<string name="settings_lock_layout">განლაგების ჩაკეტვა</string>

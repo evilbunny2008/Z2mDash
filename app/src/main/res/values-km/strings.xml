@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">ការជូនដំណឹងត្រូវបានបិទ</string>
 	<string name="alerts_notifications_off_detail">មិនអាចបង្ហាញការជូនដំណឹងបានទេ រហូតដល់ %1$s ត្រូវបានអនុញ្ញាតឱ្យបង្ហោះការជូនដំណឹង</string>
 	<string name="alerts_open_settings">ការកំណត់</string>
+	<string name="alerts_retain_off">ឧបករណ៍ចាប់សញ្ញាមួយចំនួនមិនត្រូវបានរក្សាទុកទេ</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT មិនរក្សាទុក %1$s ទេ ដូច្នេះការជូនដំណឹងសីតុណ្ហភាពរបស់វាមិនអាចពិនិត្យបានពេលកម្មវិធីបិទ – បើក retain សម្រាប់វានៅក្នុង Zigbee2MQTT</string>
 	<string name="alerts_smoke">ការជូនដំណឹងផ្សែង</string>
 	<string name="alerts_smoke_detail">ជូនដំណឹងប្រសិនបើឧបករណ៍ណាមួយរាយការណ៍ថារកឃើញផ្សែង</string>
 	<string name="alerts_smoke_test_detail">ផ្ញើការជូនដំណឹងពិតប្រាកដ (មានសំឡេង ប្រសិនបើបានបើកខាងលើ) ដោយប្រើតក្កវិជ្ជាដូចគ្នាទាំងស្រុងនឹងការជូនដំណឹងផ្សែងពិត – ជាវិធីល្អដើម្បីបញ្ជាក់ថាវាពិតជានឹងទាក់ទាញការយកចិត្តទុកដាក់របស់អ្នក មុនពេលអ្នកត្រូវការវា</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">កុំបង្ហាញម្ដងទៀត</string>
+	<string name="retain_warning_text">Zigbee2MQTT មិនរក្សាទុកឧបករណ៍ចាប់សញ្ញាទាំងនេះទេ ដូច្នេះការជូនដំណឹងសីតុណ្ហភាពរបស់វាមិនអាចពិនិត្យបានពេលកម្មវិធីបិទ៖\n\n%1$s\n\nបើក retain សម្រាប់វានៅក្នុង Zigbee2MQTT ឬបើក %2$s នៅក្នុងការកំណត់។</string>
+	<string name="retain_warning_title">Retain ត្រូវបានបិទ</string>
 	<string name="settings_about">អំពី</string>
 	<string name="settings_about_tagline">%1$s – គ្មានពពក គ្មានគណនី គ្មានការចាក់សោ</string>
 	<string name="settings_alerts_detail">ការជូនដំណឹងផ្សែង និងស្រោចទឹក សំឡេង និងការជូនដំណឹងសាកល្បង</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">បានលុបផ្ទាំង %1$d</item>
 	</plurals>
+	<string name="settings_periodic_checks">ការពិនិត្យតាមកាលកំណត់</string>
+	<string name="settings_periodic_checks_detail">ពេល %1$s បិទ ពិនិត្យការជូនដំណឹងសីតុណ្ហភាពប្រហែលរៀងរាល់ 15 នាទី – ត្រូវការបើក retain នៅក្នុង Zigbee2MQTT</string>
 	<string name="settings_tile_width">ទទឹងប្រឡោះ &amp; ចង្កោម</string>
 	<string name="settings_tile_width_detail">ប្រឡោះ (និងកាតចង្កោម ទទឹង 3 ប្រឡោះ) អាចរីកធំបានប៉ុណ្ណា រហូតដល់ពេញអេក្រង់ – បច្ចុប្បន្ន %1$ddp</string>
 	<string name="settings_lock_layout">ចាក់សោប្លង់</string>

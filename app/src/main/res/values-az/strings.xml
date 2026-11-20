@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Bildirişlər deaktivdir</string>
 	<string name="alerts_notifications_off_detail">%1$s tətbiqinə bildiriş göndərməyə icazə verilməyənə qədər xəbərdarlıqlar göstərilə bilməz</string>
 	<string name="alerts_open_settings">Ayarlar</string>
+	<string name="alerts_retain_off">Bəzi sensorlar saxlanılmır</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s saxlamır, ona görə də tətbiq bağlı olanda onların temperatur xəbərdarlıqları yoxlanıla bilməz – Zigbee2MQTT-də onlar üçün retain-i aktiv edin</string>
 	<string name="alerts_smoke">Tüstü xəbərdarlıqları</string>
 	<string name="alerts_smoke_detail">Hər hansı cihaz tüstü aşkar etsə, xəbər ver</string>
 	<string name="alerts_smoke_test_detail">Həqiqi tüstü xəbərdarlığı ilə eyni məntiqdən istifadə edərək real bildiriş göndərir (yuxarıda aktivdirsə, səslə) – ehtiyac yaranmazdan əvvəl onun diqqətinizi həqiqətən cəlb edəcəyini yoxlamağın yaxşı yolu</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Bir daha göstərmə</string>
+	<string name="retain_warning_text">Zigbee2MQTT bu sensorları saxlamır, ona görə də tətbiq bağlı olanda onların temperatur xəbərdarlıqları yoxlanıla bilməz:\n\n%1$s\n\nZigbee2MQTT-də onlar üçün retain-i aktiv edin və ya Ayarlarda %2$s funksiyasını aktiv edin.</string>
+	<string name="retain_warning_title">Retain söndürülüb</string>
 	<string name="settings_about">Haqqında</string>
 	<string name="settings_about_tagline">%1$s – buludsuz, hesabsız, asılılıqsız</string>
 	<string name="settings_alerts_detail">Tüstü və suvarma xəbərdarlıqları, səs və sınaq bildirişləri</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d panel silindi</item>
 		<item quantity="other">%1$d panel silindi</item>
 	</plurals>
+	<string name="settings_periodic_checks">Dövri Yoxlamalar</string>
+	<string name="settings_periodic_checks_detail">%1$s söndürülü olduqda, temperatur xəbərdarlıqlarını təxminən hər 15 dəqiqədən bir yoxla – Zigbee2MQTT-də retain aktiv olmalıdır</string>
 	<string name="settings_tile_width">Plitka və klaster eni</string>
 	<string name="settings_tile_width_detail">Plitkaların (və beləliklə 3 plitka enində olan klaster kartlarının) ekranı doldurana qədər nə qədər genişlənə biləcəyi – hazırda %1$ddp</string>
 	<string name="settings_lock_layout">Düzeni kilidlə</string>

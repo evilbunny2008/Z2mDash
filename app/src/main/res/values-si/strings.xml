@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">දැනුම්දීම් අක්‍රියයි</string>
 	<string name="alerts_notifications_off_detail">%1$s හට දැනුම්දීම් පළ කිරීමට ඉඩ දෙන තුරු ඇඟවීම් පෙන්විය නොහැක</string>
 	<string name="alerts_open_settings">සැකසීම්</string>
+	<string name="alerts_retain_off">සමහර සංවේදක රඳවා නොගනී</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s රඳවා නොගන්නා බැවින්, යෙදුම වසා ඇති විට ඒවායේ උෂ්ණත්ව ඇඟවීම් පරීක්ෂා කළ නොහැක – Zigbee2MQTT තුළ ඒවා සඳහා retain සක්‍රිය කරන්න</string>
 	<string name="alerts_smoke">දුම් ඇඟවීම්</string>
 	<string name="alerts_smoke_detail">ඕනෑම උපාංගයක් දුම් අනාවරණය වූ බව වාර්තා කළහොත් දැනුම් දෙන්න</string>
 	<string name="alerts_smoke_test_detail">සැබෑ දුම් ඇඟවීමකට සමාන තර්කනයම භාවිතයෙන් සැබෑ දැනුම්දීමක් (ඉහත සක්‍රිය කර ඇත්නම් ශබ්දය සමඟ) යවයි – ඔබට එය අවශ්‍ය වීමට පෙර එය සැබවින්ම ඔබේ අවධානය ලබා ගන්නා බව තහවුරු කිරීමට හොඳ ක්‍රමයකි</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">නැවත නොපෙන්වන්න</string>
+	<string name="retain_warning_text">Zigbee2MQTT මෙම සංවේදක රඳවා නොගන්නා බැවින්, යෙදුම වසා ඇති විට ඒවායේ උෂ්ණත්ව ඇඟවීම් පරීක්ෂා කළ නොහැක:\n\n%1$s\n\nZigbee2MQTT තුළ ඒවා සඳහා retain සක්‍රිය කරන්න, නැතහොත් සැකසීම් තුළ %2$s සක්‍රිය කරන්න.</string>
+	<string name="retain_warning_title">Retain අක්‍රියයි</string>
 	<string name="settings_about">පිළිබඳව</string>
 	<string name="settings_about_tagline">%1$s – වලාකුළක් නැත, ගිණුමක් නැත, බැඳීමක් නැත</string>
 	<string name="settings_alerts_detail">දුම් සහ ජලය දැමීමේ ඇඟවීම්, ශබ්දය, සහ පරීක්ෂණ දැනුම්දීම්</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">පුවරු %1$d ක් ඉවත් කළා</item>
 		<item quantity="other">පුවරු %1$d ක් ඉවත් කළා</item>
 	</plurals>
+	<string name="settings_periodic_checks">කාලානුරූප පරීක්ෂා</string>
+	<string name="settings_periodic_checks_detail">%1$s අක්‍රිය විට, දළ වශයෙන් සෑම මිනිත්තු 15කට වරක් උෂ්ණත්ව ඇඟවීම් පරීක්ෂා කරන්න – Zigbee2MQTT තුළ retain සක්‍රිය විය යුතුය</string>
 	<string name="settings_tile_width">ටයිල් &amp; පොකුරු පළල</string>
 	<string name="settings_tile_width_detail">ටයිල් (එබැවින් ටයිල් 3 ක් පළල පොකුරු කාඩ්පත්) කොතරම් පළල් විය හැකිද, තිරය පිරෙන තෙක් – දැනට %1$ddp</string>
 	<string name="settings_lock_layout">පිරිසැලසුම අගුළු දමන්න</string>

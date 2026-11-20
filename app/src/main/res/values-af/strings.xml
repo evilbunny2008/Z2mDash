@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Kennisgewings is af</string>
 	<string name="alerts_notifications_off_detail">Waarskuwings kan nie gewys word totdat %1$s toegelaat word om kennisgewings te plaas nie</string>
 	<string name="alerts_open_settings">Instellings</string>
+	<string name="alerts_retain_off">Sommige sensors word nie behou nie</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT behou nie %1$s nie, so hul temperatuurwaarskuwings kan nie nagegaan word terwyl die app gesluit is nie – skakel retain vir hulle aan in Zigbee2MQTT</string>
 	<string name="alerts_smoke">Rookwaarskuwings</string>
 	<string name="alerts_smoke_detail">Stel in kennis as enige toestel rook bespeur</string>
 	<string name="alerts_smoke_test_detail">Stuur ’n regte kennisgewing (met klank, indien hierbo geaktiveer) met presies dieselfde logika as ’n egte rookwaarskuwing – ’n goeie manier om te bevestig dat dit werklik jou aandag sal trek voordat jy dit nodig het</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Moenie weer wys nie</string>
+	<string name="retain_warning_text">Zigbee2MQTT behou nie hierdie sensors nie, so hul temperatuurwaarskuwings kan nie nagegaan word terwyl die app gesluit is nie:\n\n%1$s\n\nSkakel retain vir hulle aan in Zigbee2MQTT, of skakel %2$s aan in Instellings.</string>
+	<string name="retain_warning_title">Retain is af</string>
 	<string name="settings_about">Meer oor</string>
 	<string name="settings_about_tagline">%1$s – geen wolk, geen rekening, geen inperking nie</string>
 	<string name="settings_alerts_detail">Rook– en natgooiwaarskuwings, klank en toetskennisgewings</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d paneel verwyder</item>
 		<item quantity="other">%1$d panele verwyder</item>
 	</plurals>
+	<string name="settings_periodic_checks">Periodieke Kontroles</string>
+	<string name="settings_periodic_checks_detail">Terwyl %1$s af is, gaan temperatuurwaarskuwings ongeveer elke 15 minute na – vereis dat retain in Zigbee2MQTT aan is</string>
 	<string name="settings_tile_width">Teël– &amp; klusterwydte</string>
 	<string name="settings_tile_width_detail">Hoe wyd teëls (en dus klusterkaarte, 3 teëls wyd) kan groei, tot die skerm vol is – tans %1$ddp</string>
 	<string name="settings_lock_layout">Sluit uitleg</string>

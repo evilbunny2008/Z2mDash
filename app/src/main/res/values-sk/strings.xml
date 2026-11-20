@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Upozornenia sú vypnuté</string>
 	<string name="alerts_notifications_off_detail">Upozornenia sa nedajú zobraziť, kým aplikácia %1$s nebude mať povolené posielať upozornenia</string>
 	<string name="alerts_open_settings">Nastavenia</string>
+	<string name="alerts_retain_off">Niektoré snímače sa neuchovávajú</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT neuchováva %1$s, takže ich teplotné upozornenia nemožno kontrolovať, keď je aplikácia zatvorená – zapnite pre ne retain v Zigbee2MQTT</string>
 	<string name="alerts_smoke">Upozornenia na dym</string>
 	<string name="alerts_smoke_detail">Upozorniť, ak ktorékoľvek zariadenie zistí dym</string>
 	<string name="alerts_smoke_test_detail">Odošle skutočné upozornenie (so zvukom, ak je vyššie zapnutý) s presne rovnakou logikou ako skutočný poplach dymu – dobrý spôsob, ako si overiť, že vás naozaj upozorní skôr, než to budete potrebovať</string>
@@ -359,6 +361,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Znova nezobrazovať</string>
+	<string name="retain_warning_text">Zigbee2MQTT neuchováva tieto snímače, takže ich teplotné upozornenia nemožno kontrolovať, keď je aplikácia zatvorená:\n\n%1$s\n\nZapnite pre ne retain v Zigbee2MQTT alebo zapnite „%2$s“ v Nastaveniach.</string>
+	<string name="retain_warning_title">Retain je vypnutý</string>
 	<string name="settings_about">O aplikácii</string>
 	<string name="settings_about_tagline">%1$s – žiadny cloud, žiadny účet, žiadne uzamknutie</string>
 	<string name="settings_alerts_detail">Upozornenia na dym a zalievanie, zvuk a testovacie upozornenia</string>
@@ -405,6 +410,8 @@
 		<item quantity="many">Odstráneného %1$d panela</item>
 		<item quantity="other">Odstránených %1$d panelov</item>
 	</plurals>
+	<string name="settings_periodic_checks">Pravidelné kontroly</string>
+	<string name="settings_periodic_checks_detail">Keď je „%1$s“ vypnuté, kontrolovať teplotné upozornenia približne každých 15 minút – vyžaduje zapnutý retain v Zigbee2MQTT</string>
 	<string name="settings_tile_width">Šírka dlaždíc a klastrov</string>
 	<string name="settings_tile_width_detail">Ako široké môžu dlaždice (a teda karty klastrov, široké 3 dlaždice) narásť, až po vyplnenie obrazovky – momentálne %1$ddp</string>
 	<string name="settings_lock_layout">Uzamknúť rozloženie</string>

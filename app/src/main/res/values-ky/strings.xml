@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Билдирмелер өчүк</string>
 	<string name="alerts_notifications_off_detail">%1$s колдонмосуна билдирме жөнөтүүгө уруксат берилмейинче эскертүүлөр көрсөтүлбөйт</string>
 	<string name="alerts_open_settings">Жөндөөлөр</string>
+	<string name="alerts_retain_off">Айрым датчиктер сакталбайт</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT %1$s сактабайт, ошондуктан колдонмо жабык турганда алардын температура эскертүүлөрүн текшерүү мүмкүн эмес – Zigbee2MQTT ичинде алар үчүн retain күйгүзүңүз</string>
 	<string name="alerts_smoke">Түтүн эскертүүлөрү</string>
 	<string name="alerts_smoke_detail">Кайсы бир түзмөк түтүн аныктаса, эскертүү</string>
 	<string name="alerts_smoke_test_detail">Чыныгы түтүн эскертүүсү менен так ошол эле логика аркылуу чыныгы билдирме жөнөтөт (жогоруда күйгүзүлгөн болсо, үн менен) – керек боло электе анын көңүлүңүздү чындап бура турганын текшерүүнүн жакшы жолу</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Кайра көрсөтпөө</string>
+	<string name="retain_warning_text">Zigbee2MQTT бул датчиктерди сактабайт, ошондуктан колдонмо жабык турганда алардын температура эскертүүлөрүн текшерүү мүмкүн эмес:\n\n%1$s\n\nZigbee2MQTT ичинде алар үчүн retain күйгүзүңүз же Жөндөөлөрдөн «%2$s» күйгүзүңүз.</string>
+	<string name="retain_warning_title">Retain өчүк</string>
 	<string name="settings_about">Колдонмо жөнүндө</string>
 	<string name="settings_about_tagline">%1$s – булутсуз, аккаунтсуз, көз карандылыксыз</string>
 	<string name="settings_alerts_detail">Түтүн жана сугаруу эскертүүлөрү, үн жана сыноо билдирмелери</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d панель өчүрүлдү</item>
 		<item quantity="other">%1$d панель өчүрүлдү</item>
 	</plurals>
+	<string name="settings_periodic_checks">Мезгилдүү текшерүүлөр</string>
+	<string name="settings_periodic_checks_detail">«%1$s» өчүк турганда, температура эскертүүлөрүн болжол менен ар 15 мүнөттө текшерүү – Zigbee2MQTT ичинде retain күйүк болушу керек</string>
 	<string name="settings_tile_width">Плитка жана кластердин туурасы</string>
 	<string name="settings_tile_width_detail">Плиткалар (демек, 3 плитка туурасындагы кластер карталары) экранды толтурганга чейин канчалык кеңейе алат – азыр %1$ddp</string>
 	<string name="settings_lock_layout">Жайгашууну кулпулоо</string>

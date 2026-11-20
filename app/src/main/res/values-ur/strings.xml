@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">اطلاعات بند ہیں</string>
 	<string name="alerts_notifications_off_detail">جب تک %1$s کو اطلاعات بھیجنے کی اجازت نہیں دی جاتی، الرٹس نہیں دکھائے جا سکتے</string>
 	<string name="alerts_open_settings">ترتیبات</string>
+	<string name="alerts_retain_off">کچھ سینسرز برقرار نہیں رکھے جا رہے</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ‏%1$s کو برقرار نہیں رکھ رہا، اس لیے ایپ بند ہونے پر ان کے درجہ حرارت کے الرٹس چیک نہیں ہو سکتے – Zigbee2MQTT میں ان کے لیے retain آن کریں</string>
 	<string name="alerts_smoke">دھوئیں کے الرٹس</string>
 	<string name="alerts_smoke_detail">اگر کوئی بھی آلہ دھواں پائے جانے کی اطلاع دے تو مطلع کریں</string>
 	<string name="alerts_smoke_test_detail">اصل دھوئیں کے الرٹ والی بالکل وہی منطق استعمال کرتے ہوئے ایک حقیقی اطلاع (آواز کے ساتھ، اگر اوپر فعال ہو) بھیجتا ہے – ضرورت پڑنے سے پہلے یہ تصدیق کرنے کا اچھا طریقہ کہ یہ واقعی آپ کی توجہ حاصل کرے گا</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">دوبارہ نہ دکھائیں</string>
+	<string name="retain_warning_text">Zigbee2MQTT ان سینسرز کو برقرار نہیں رکھ رہا، اس لیے ایپ بند ہونے پر ان کے درجہ حرارت کے الرٹس چیک نہیں ہو سکتے:\n\n%1$s\n\nZigbee2MQTT میں ان کے لیے retain آن کریں، یا ترتیبات میں %2$s آن کریں۔</string>
+	<string name="retain_warning_title">Retain بند ہے</string>
 	<string name="settings_about">بارے میں</string>
 	<string name="settings_about_tagline">%1$s – کوئی کلاؤڈ نہیں، کوئی اکاؤنٹ نہیں، کوئی پابندی نہیں</string>
 	<string name="settings_alerts_detail">دھوئیں اور پانی دینے کے الرٹس، آواز، اور ٹیسٹ اطلاعات</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">%1$d پینل ہٹا دیا گیا</item>
 		<item quantity="other">%1$d پینلز ہٹا دیے گئے</item>
 	</plurals>
+	<string name="settings_periodic_checks">وقتاً فوقتاً جانچ</string>
+	<string name="settings_periodic_checks_detail">جب %1$s بند ہو، تقریباً ہر 15 منٹ بعد درجہ حرارت کے الرٹس چیک کریں – Zigbee2MQTT میں retain آن ہونا ضروری ہے</string>
 	<string name="settings_tile_width">ٹائل اور کلسٹر کی چوڑائی</string>
 	<string name="settings_tile_width_detail">ٹائلز (اور اس لیے 3 ٹائل چوڑے کلسٹر کارڈز) اسکرین بھرنے تک کتنے چوڑے ہو سکتے ہیں – فی الحال %1$ddp</string>
 	<string name="settings_lock_layout">لے آؤٹ لاک کریں</string>

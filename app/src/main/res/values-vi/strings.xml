@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Thông báo đã tắt</string>
 	<string name="alerts_notifications_off_detail">Không thể hiển thị cảnh báo cho đến khi %1$s được phép đăng thông báo</string>
 	<string name="alerts_open_settings">Cài đặt</string>
+	<string name="alerts_retain_off">Một số cảm biến không được giữ lại</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT không giữ lại %1$s, nên không thể kiểm tra cảnh báo nhiệt độ của chúng khi ứng dụng đóng – hãy bật retain cho chúng trong Zigbee2MQTT</string>
 	<string name="alerts_smoke">Cảnh báo khói</string>
 	<string name="alerts_smoke_detail">Thông báo nếu có thiết bị báo cáo phát hiện khói</string>
 	<string name="alerts_smoke_test_detail">Kích hoạt thông báo thực (có âm thanh, nếu được bật ở trên) bằng cách sử dụng logic chính xác giống như cảnh báo khói thực sự – một cách hay để xác nhận rằng thông báo đó sẽ thực sự thu hút sự chú ý của bạn trước khi bạn cần</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – Giao thức điều khiển truyền dẫn</string>
 	<string name="protocol_ws">WS – Ổ cắm web</string>
 	<string name="protocol_wss">WSS – Ổ cắm web an toàn</string>
+	<string name="retain_warning_dont_show">Không hiển thị lại</string>
+	<string name="retain_warning_text">Zigbee2MQTT không giữ lại các cảm biến này, nên không thể kiểm tra cảnh báo nhiệt độ của chúng khi ứng dụng đóng:\n\n%1$s\n\nHãy bật retain cho chúng trong Zigbee2MQTT, hoặc bật %2$s trong Cài đặt.</string>
+	<string name="retain_warning_title">Retain đang tắt</string>
 	<string name="settings_about">Về</string>
 	<string name="settings_about_tagline">%1$s – không có đám mây, không có tài khoản, không bị khóa</string>
 	<string name="settings_alerts_detail">Cảnh báo khói và tưới nước, âm thanh và thông báo kiểm tra</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">Đã xóa bảng %1$d</item>
 	</plurals>
+	<string name="settings_periodic_checks">Kiểm tra định kỳ</string>
+	<string name="settings_periodic_checks_detail">Khi %1$s tắt, kiểm tra cảnh báo nhiệt độ khoảng mỗi 15 phút – cần bật retain trong Zigbee2MQTT</string>
 	<string name="settings_tile_width">Chiều rộng ô &amp; cụm</string>
 	<string name="settings_tile_width_detail">Chiều rộng của các ô (và cả thẻ cụm, chiều rộng 3 ô) có thể phát triển đến mức lấp đầy màn hình – hiện tại là %1$ddp</string>
 	<string name="settings_lock_layout">Khóa bố cục</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">通知はオフになっています</string>
 	<string name="alerts_notifications_off_detail">%1$s が通知の投稿を許可されるまで、アラートは表示できません</string>
 	<string name="alerts_open_settings">設定</string>
+	<string name="alerts_retain_off">一部のセンサーが保持されていません</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT が %1$s を保持していないため、アプリを閉じている間は温度アラートを確認できません – Zigbee2MQTT でこれらの retain をオンにしてください</string>
 	<string name="alerts_smoke">煙警報</string>
 	<string name="alerts_smoke_detail">いずれかのデバイスが煙の検出を報告した場合に通知します</string>
 	<string name="alerts_smoke_test_detail">本物の煙警報とまったく同じロジックを使用して、実際の通知 (上記で有効になっている場合は音付き) を発火します。これは、必要な前に実際に注意を引くかどうかを確認する良い方法です。</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – 伝送制御プロトコル</string>
 	<string name="protocol_ws">WS – ウェブソケット</string>
 	<string name="protocol_wss">WSS – 安全な Web ソケット</string>
+	<string name="retain_warning_dont_show">今後表示しない</string>
+	<string name="retain_warning_text">Zigbee2MQTT がこれらのセンサーを保持していないため、アプリを閉じている間は温度アラートを確認できません:\n\n%1$s\n\nZigbee2MQTT でこれらの retain をオンにするか、設定で「%2$s」をオンにしてください。</string>
+	<string name="retain_warning_title">retain がオフです</string>
 	<string name="settings_about">について</string>
 	<string name="settings_about_tagline">%1$s – クラウド、アカウント、ロックインなし</string>
 	<string name="settings_alerts_detail">煙と散水の警報、音、テスト通知</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">%1$d 個のパネルを削除しました</item>
 	</plurals>
+	<string name="settings_periodic_checks">定期チェック</string>
+	<string name="settings_periodic_checks_detail">「%1$s」がオフの間、約 15 分ごとに温度アラートを確認します – Zigbee2MQTT で retain をオンにする必要があります</string>
 	<string name="settings_tile_width">タイルとクラスターの幅</string>
 	<string name="settings_tile_width_detail">タイル (およびクラスター カード、つまり 3 タイル幅) の幅を画面いっぱいまで拡大できる範囲 – 現在 %1$ddp</string>
 	<string name="settings_lock_layout">レイアウトをロック</string>

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Уведомления отключены</string>
 	<string name="alerts_notifications_off_detail">Оповещения не могут отображаться до тех пор, пока %1$s не разрешит публиковать уведомления</string>
 	<string name="alerts_open_settings">Настройки</string>
+	<string name="alerts_retain_off">Некоторые датчики не сохраняются</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT не сохраняет %1$s, поэтому их температурные оповещения нельзя проверить, пока приложение закрыто – включите для них retain в Zigbee2MQTT</string>
 	<string name="alerts_smoke">Оповещения о дыме</string>
 	<string name="alerts_smoke_detail">Уведомлять, если какое–либо устройство сообщает об обнаружении дыма</string>
 	<string name="alerts_smoke_test_detail">Выдает настоящее уведомление (со звуком, если оно включено выше), используя ту же логику, что и настоящее оповещение о дыме — хороший способ убедиться, что оно действительно привлечет ваше внимание до того, как оно вам понадобится</string>
@@ -359,6 +361,9 @@
 	<string name="protocol_tcp">TCP — протокол управления передачей</string>
 	<string name="protocol_ws">WS — веб–сокеты</string>
 	<string name="protocol_wss">WSS — безопасность веб–сокетов</string>
+	<string name="retain_warning_dont_show">Больше не показывать</string>
+	<string name="retain_warning_text">Zigbee2MQTT не сохраняет эти датчики, поэтому их температурные оповещения нельзя проверить, пока приложение закрыто:\n\n%1$s\n\nВключите для них retain в Zigbee2MQTT или включите «%2$s» в Настройках.</string>
+	<string name="retain_warning_title">Retain выключен</string>
 	<string name="settings_about">О</string>
 	<string name="settings_about_tagline">%1$s – без облака, без учетной записи, без блокировки</string>
 	<string name="settings_alerts_detail">Оповещения о дыме и поливе, звуковые уведомления и уведомления о тестировании</string>
@@ -405,6 +410,8 @@
 		<item quantity="one">Удалена панель %1$d</item>
 		<item quantity="other">Удалены панели %1$d</item>
 	</plurals>
+	<string name="settings_periodic_checks">Периодические проверки</string>
+	<string name="settings_periodic_checks_detail">Пока «%1$s» выключена, проверять температурные оповещения примерно каждые 15 минут – требуется включённый retain в Zigbee2MQTT</string>
 	<string name="settings_tile_width">Ширина плитки и кластера</string>
 	<string name="settings_tile_width_detail">Насколько широкие тайлы (и, следовательно, кластерные карты шириной в 3 тайла) могут увеличиваться до заполнения экрана — в настоящее время %1$ddp</string>
 	<string name="settings_lock_layout">Заблокировать макет</string>

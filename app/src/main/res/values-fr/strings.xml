@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Les notifications sont désactivées</string>
 	<string name="alerts_notifications_off_detail">Les alertes ne peuvent pas être affichées tant que %1$s n’est pas autorisé à publier des notifications</string>
 	<string name="alerts_open_settings">Paramètres</string>
+	<string name="alerts_retain_off">Certains capteurs ne sont pas conservés</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT ne conserve pas %1$s, donc leurs alertes de température ne peuvent pas être vérifiées quand l’appli est fermée – activez retain pour eux dans Zigbee2MQTT</string>
 	<string name="alerts_smoke">Alertes à la fumée</string>
 	<string name="alerts_smoke_detail">Avertir si un appareil signale de la fumée détectée</string>
 	<string name="alerts_smoke_test_detail">Déclenche une véritable notification (avec son, si activé ci–dessus) en utilisant exactement la même logique qu’une véritable alerte à la fumée – un bon moyen de confirmer qu’elle attirera réellement votre attention avant que vous en ayez besoin</string>
@@ -351,6 +353,9 @@
 	<string name="protocol_tcp">TCP – Protocole de contrôle de transmission</string>
 	<string name="protocol_ws">WS – Sockets Web</string>
 	<string name="protocol_wss">WSS – Web Sockets sécurisé</string>
+	<string name="retain_warning_dont_show">Ne plus afficher</string>
+	<string name="retain_warning_text">Zigbee2MQTT ne conserve pas ces capteurs, donc leurs alertes de température ne peuvent pas être vérifiées quand l’appli est fermée :\n\n%1$s\n\nActivez retain pour eux dans Zigbee2MQTT, ou activez %2$s dans les Paramètres.</string>
+	<string name="retain_warning_title">Retain est désactivé</string>
 	<string name="settings_about">À propos</string>
 	<string name="settings_about_tagline">%1$s – pas de cloud, pas de compte, pas de verrouillage</string>
 	<string name="settings_alerts_detail">Alertes de fumée et d’arrosage, notifications sonores et de test</string>
@@ -392,6 +397,8 @@
 		<item quantity="one">Panneau %1$d supprimé</item>
 		<item quantity="other">%1$d panneaux supprimés</item>
 	</plurals>
+	<string name="settings_periodic_checks">Vérifications périodiques</string>
+	<string name="settings_periodic_checks_detail">Tant que %1$s est désactivé, vérifier les alertes de température environ toutes les 15 minutes – nécessite retain activé dans Zigbee2MQTT</string>
 	<string name="settings_tile_width">Largeur des tuiles et des clusters</string>
 	<string name="settings_tile_width_detail">Quelle largeur les tuiles (et donc les cartes de cluster, 3 tuiles de large) peuvent croître, jusqu’à remplir l’écran – actuellement %1$ddp</string>
 	<string name="settings_lock_layout">Verrouiller la disposition</string>

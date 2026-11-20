@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">通知已關閉</string>
 	<string name="alerts_notifications_off_detail">在允許 %1$s 發布通知之前，無法顯示警報</string>
 	<string name="alerts_open_settings">設定</string>
+	<string name="alerts_retain_off">部分感測器未被保留</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT 沒有保留 %1$s，因此應用程式關閉時無法檢查其溫度提醒 – 請在 Zigbee2MQTT 中為它們開啟 retain</string>
 	<string name="alerts_smoke">煙霧警報</string>
 	<string name="alerts_smoke_detail">如果有任何裝置報告偵測到煙霧，則通知</string>
 	<string name="alerts_smoke_test_detail">使用與真正的煙霧警報完全相同的邏輯觸發真正的通知（帶有聲音，如果上面啟用）——這是確認它確實會在您需要之前引起您注意的好方法。</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – 傳輸控制協定</string>
 	<string name="protocol_ws">WS – Web 套接字</string>
 	<string name="protocol_wss">WSS – Web 套接字安全</string>
+	<string name="retain_warning_dont_show">不再顯示</string>
+	<string name="retain_warning_text">Zigbee2MQTT 沒有保留這些感測器，因此應用程式關閉時無法檢查其溫度提醒：\n\n%1$s\n\n請在 Zigbee2MQTT 中為它們開啟 retain，或在設定中開啟「%2$s」。</string>
+	<string name="retain_warning_title">retain 已關閉</string>
 	<string name="settings_about">關於</string>
 	<string name="settings_about_tagline">%1$s – 無雲端、無帳號、無鎖定</string>
 	<string name="settings_alerts_detail">煙霧和澆水警報、聲音和測試通知</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">已刪除 %1$d 個面板​​。</item>
 	</plurals>
+	<string name="settings_periodic_checks">定期檢查</string>
+	<string name="settings_periodic_checks_detail">當「%1$s」關閉時，大約每 15 分鐘檢查一次溫度提醒 – 需要在 Zigbee2MQTT 中開啟 retain</string>
 	<string name="settings_tile_width">圖塊與叢集寬度</string>
 	<string name="settings_tile_width_detail">圖塊（以及簇卡，3 個圖塊寬）可以增長多寬，直至填滿螢幕 – 目前為 %1$ddp</string>
 	<string name="settings_lock_layout">鎖定版面配置</string>

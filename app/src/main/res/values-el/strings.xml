@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Οι ειδοποιήσεις είναι απενεργοποιημένες</string>
 	<string name="alerts_notifications_off_detail">Οι ειδοποιήσεις δεν μπορούν να εμφανιστούν μέχρι να επιτραπεί στο %1$s να δημοσιεύει ειδοποιήσεις</string>
 	<string name="alerts_open_settings">Ρυθμίσεις</string>
+	<string name="alerts_retain_off">Ορισμένοι αισθητήρες δεν διατηρούνται</string>
+	<string name="alerts_retain_off_detail">Το Zigbee2MQTT δεν διατηρεί τα %1$s, οπότε οι ειδοποιήσεις θερμοκρασίας τους δεν μπορούν να ελεγχθούν όταν η εφαρμογή είναι κλειστή – ενεργοποιήστε το retain για αυτά στο Zigbee2MQTT</string>
 	<string name="alerts_smoke">Ειδοποιήσεις καπνού</string>
 	<string name="alerts_smoke_detail">Ειδοποίηση αν οποιαδήποτε συσκευή αναφέρει ανίχνευση καπνού</string>
 	<string name="alerts_smoke_test_detail">Στέλνει μια πραγματική ειδοποίηση (με ήχο, αν είναι ενεργοποιημένος παραπάνω) με ακριβώς την ίδια λογική με μια πραγματική ειδοποίηση καπνού – καλός τρόπος να βεβαιωθείτε ότι θα τραβήξει πράγματι την προσοχή σας πριν τη χρειαστείτε</string>
@@ -343,6 +345,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Να μην εμφανιστεί ξανά</string>
+	<string name="retain_warning_text">Το Zigbee2MQTT δεν διατηρεί αυτούς τους αισθητήρες, οπότε οι ειδοποιήσεις θερμοκρασίας τους δεν μπορούν να ελεγχθούν όταν η εφαρμογή είναι κλειστή:\n\n%1$s\n\nΕνεργοποιήστε το retain για αυτούς στο Zigbee2MQTT ή ενεργοποιήστε το «%2$s» στις Ρυθμίσεις.</string>
+	<string name="retain_warning_title">Το retain είναι απενεργοποιημένο</string>
 	<string name="settings_about">Σχετικά</string>
 	<string name="settings_about_tagline">%1$s – χωρίς cloud, χωρίς λογαριασμό, χωρίς δέσμευση</string>
 	<string name="settings_alerts_detail">Ειδοποιήσεις καπνού και ποτίσματος, ήχος και δοκιμαστικές ειδοποιήσεις</string>
@@ -379,6 +384,8 @@
 		<item quantity="one">Αφαιρέθηκε %1$d πάνελ</item>
 		<item quantity="other">Αφαιρέθηκαν %1$d πάνελ</item>
 	</plurals>
+	<string name="settings_periodic_checks">Περιοδικοί έλεγχοι</string>
+	<string name="settings_periodic_checks_detail">Όσο το «%1$s» είναι απενεργοποιημένο, έλεγχος ειδοποιήσεων θερμοκρασίας περίπου κάθε 15 λεπτά – απαιτεί ενεργό retain στο Zigbee2MQTT</string>
 	<string name="settings_tile_width">Πλάτος πλακιδίων &amp; clusters</string>
 	<string name="settings_tile_width_detail">Πόσο φαρδιά μπορούν να γίνουν τα πλακίδια (άρα και οι κάρτες cluster, πλάτους 3 πλακιδίων), μέχρι να γεμίσουν την οθόνη – τώρα %1$ddp</string>
 	<string name="settings_lock_layout">Κλείδωμα διάταξης</string>

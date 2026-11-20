@@ -1,0 +1,3 @@
+New Periodic Checks setting: with Background Work off, temperature alerts are now checked roughly every 15 minutes while the app is closed.
+Periodic checks need retain turned on in Zigbee2MQTT - the app now warns about temperature sensors that aren't retained.
+A temperature limit crossed while the app was closed now still notifies, and restarting the app no longer resets alert cooldowns.

@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Pemberitahuan dimatikan</string>
 	<string name="alerts_notifications_off_detail">Amaran tidak boleh dipaparkan sehingga %1$s dibenarkan menyiarkan pemberitahuan</string>
 	<string name="alerts_open_settings">Tetapan</string>
+	<string name="alerts_retain_off">Sesetengah penderia tidak dikekalkan</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT tidak mengekalkan %1$s, jadi amaran suhunya tidak boleh disemak semasa apl ditutup – hidupkan retain untuknya dalam Zigbee2MQTT</string>
 	<string name="alerts_smoke">Amaran Asap</string>
 	<string name="alerts_smoke_detail">Maklumkan jika mana–mana peranti melaporkan asap dikesan</string>
 	<string name="alerts_smoke_test_detail">Menghantar pemberitahuan sebenar (dengan bunyi, jika didayakan di atas) menggunakan logik yang sama seperti amaran asap yang tulen – cara yang baik untuk memastikan ia benar–benar menarik perhatian anda sebelum anda memerlukannya</string>
@@ -335,6 +337,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Jangan tunjukkan lagi</string>
+	<string name="retain_warning_text">Zigbee2MQTT tidak mengekalkan penderia ini, jadi amaran suhunya tidak boleh disemak semasa apl ditutup:\n\n%1$s\n\nHidupkan retain untuknya dalam Zigbee2MQTT, atau hidupkan %2$s dalam Tetapan.</string>
+	<string name="retain_warning_title">Retain dimatikan</string>
 	<string name="settings_about">Perihal</string>
 	<string name="settings_about_tagline">%1$s – tiada awan, tiada akaun, tiada kuncian</string>
 	<string name="settings_alerts_detail">Amaran asap dan penyiraman, bunyi, dan pemberitahuan ujian</string>
@@ -366,6 +371,8 @@
 	<plurals name="settings_orphans_removed">
 		<item quantity="other">%1$d panel dialih keluar</item>
 	</plurals>
+	<string name="settings_periodic_checks">Semakan Berkala</string>
+	<string name="settings_periodic_checks_detail">Semasa %1$s dimatikan, semak amaran suhu lebih kurang setiap 15 minit – memerlukan retain dihidupkan dalam Zigbee2MQTT</string>
 	<string name="settings_tile_width">Lebar Jubin &amp; Kluster</string>
 	<string name="settings_tile_width_detail">Seberapa lebar jubin (dan oleh itu kad kluster, 3 jubin lebar) boleh berkembang, sehingga memenuhi skrin – kini %1$ddp</string>
 	<string name="settings_lock_layout">Kunci Susun Atur</string>

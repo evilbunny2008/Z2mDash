@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">ההתראות כבויות</string>
 	<string name="alerts_notifications_off_detail">לא ניתן להציג התראות עד שתינתן ל–%1$s הרשאה לפרסם התראות</string>
 	<string name="alerts_open_settings">הגדרות</string>
+	<string name="alerts_retain_off">חלק מהחיישנים לא נשמרים</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT לא שומר את %1$s, ולכן לא ניתן לבדוק את התראות הטמפרטורה שלהם כשהאפליקציה סגורה – הפעילו עבורם retain ב־Zigbee2MQTT</string>
 	<string name="alerts_smoke">התראות עשן</string>
 	<string name="alerts_smoke_detail">התראה אם מכשיר כלשהו מדווח על זיהוי עשן</string>
 	<string name="alerts_smoke_test_detail">שולח התראה אמיתית (עם צליל, אם הופעל למעלה) באמצעות אותו היגיון בדיוק כמו התראת עשן אמיתית – דרך טובה לוודא שהיא באמת תמשוך את תשומת לבך לפני שתזדקק לה</string>
@@ -351,6 +353,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">אל תציג שוב</string>
+	<string name="retain_warning_text">Zigbee2MQTT לא שומר את החיישנים האלה, ולכן לא ניתן לבדוק את התראות הטמפרטורה שלהם כשהאפליקציה סגורה:\n\n%1$s\n\nהפעילו עבורם retain ב־Zigbee2MQTT, או הפעילו את %2$s בהגדרות.</string>
+	<string name="retain_warning_title">retain כבוי</string>
 	<string name="settings_about">מידע על האפליקציה</string>
 	<string name="settings_about_tagline">%1$s – בלי ענן, בלי חשבון, בלי נעילה</string>
 	<string name="settings_alerts_detail">התראות עשן והשקיה, צליל והתראות בדיקה</string>
@@ -392,6 +397,8 @@
 		<item quantity="other">הוסרו %1$d לוחות</item>
 		<item quantity="two">הוסרו %1$d לוחות</item>
 	</plurals>
+	<string name="settings_periodic_checks">בדיקות תקופתיות</string>
+	<string name="settings_periodic_checks_detail">כש־%1$s כבוי, לבדוק התראות טמפרטורה בערך כל 15 דקות – נדרש retain מופעל ב־Zigbee2MQTT</string>
 	<string name="settings_tile_width">רוחב אריחים &amp; אשכולות</string>
 	<string name="settings_tile_width_detail">עד כמה אריחים (ולכן גם כרטיסי אשכול, ברוחב 3 אריחים) יכולים להתרחב, עד למילוי המסך – כרגע %1$ddp</string>
 	<string name="settings_lock_layout">נעילת הפריסה</string>

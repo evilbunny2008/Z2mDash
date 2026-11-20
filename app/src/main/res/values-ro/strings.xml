@@ -10,6 +10,8 @@
 	<string name="alerts_notifications_off">Notificările sunt dezactivate</string>
 	<string name="alerts_notifications_off_detail">Alertele nu pot fi afișate până când %1$s nu are permisiunea de a posta notificări</string>
 	<string name="alerts_open_settings">Setări</string>
+	<string name="alerts_retain_off">Unii senzori nu sunt reținuți</string>
+	<string name="alerts_retain_off_detail">Zigbee2MQTT nu reține %1$s, așa că alertele lor de temperatură nu pot fi verificate cât timp aplicația este închisă – activează retain pentru ei în Zigbee2MQTT</string>
 	<string name="alerts_smoke">Alerte de fum</string>
 	<string name="alerts_smoke_detail">Anunță dacă un dispozitiv raportează fum detectat</string>
 	<string name="alerts_smoke_test_detail">Trimite o notificare reală (cu sunet, dacă este activat mai sus) folosind exact aceeași logică precum o alertă reală de fum – o metodă bună de a confirma că îți va atrage cu adevărat atenția înainte să ai nevoie de ea</string>
@@ -351,6 +353,9 @@
 	<string name="protocol_tcp">TCP – Transmission Control Protocol</string>
 	<string name="protocol_ws">WS – Web Sockets</string>
 	<string name="protocol_wss">WSS – Web Sockets Secure</string>
+	<string name="retain_warning_dont_show">Nu mai afișa</string>
+	<string name="retain_warning_text">Zigbee2MQTT nu reține acești senzori, așa că alertele lor de temperatură nu pot fi verificate cât timp aplicația este închisă:\n\n%1$s\n\nActivează retain pentru ei în Zigbee2MQTT sau activează %2$s în Setări.</string>
+	<string name="retain_warning_title">Retain este dezactivat</string>
 	<string name="settings_about">Despre</string>
 	<string name="settings_about_tagline">%1$s – fără cloud, fără cont, fără dependență</string>
 	<string name="settings_alerts_detail">Alerte de fum și udare, sunet și notificări de test</string>
@@ -392,6 +397,8 @@
 		<item quantity="few">%1$d panouri eliminate</item>
 		<item quantity="other">%1$d de panouri eliminate</item>
 	</plurals>
+	<string name="settings_periodic_checks">Verificări periodice</string>
+	<string name="settings_periodic_checks_detail">Cât timp %1$s este dezactivat, verifică alertele de temperatură aproximativ la fiecare 15 minute – necesită retain activat în Zigbee2MQTT</string>
 	<string name="settings_tile_width">Lățimea dalelor și clusterelor</string>
 	<string name="settings_tile_width_detail">Cât de late pot deveni dalele (și deci cardurile de cluster, late de 3 dale), până la umplerea ecranului – acum %1$ddp</string>
 	<string name="settings_lock_layout">Blochează aspectul</string>
