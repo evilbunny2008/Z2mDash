@@ -317,11 +317,18 @@ data class AppConfig(
     // regardless of background running, so a persistent foreground connection is opt-in, not
     // required for correct data.
     val backgroundWorkEnabled: Boolean = false,
+    // While backgroundWorkEnabled is off, checks temperature limits roughly every 15 minutes
+    // against each sensor's retained reading (see TemperatureCheckWorker). On by default, since
+    // it's only ever scheduled while a tile actually has limits set.
+    val periodicChecksEnabled: Boolean = true,
     val autoConfiguredDevices: List<AutoConfiguredDevice> = emptyList(),
     val pendingAutoConfigDevices: List<PendingAutoConfigDevice> = emptyList(),
     // "brokerId|appConfigTopic" keys the user has dismissed, so a declined device isn't
     // re-prompted on every scan.
     val ignoredAppConfigTopics: List<String> = emptyList(),
+    // "brokerId|topic" keys whose "retain is off" warning (see MqttConnectionManager.watchRetain)
+    // the user chose not to see again.
+    val dismissedRetainWarnings: List<String> = emptyList(),
     // Watches every incoming payload, any topic, for a JSON "smoke": true field - not scoped to
     // a configured panel, so nothing is missed just because a detector wasn't added. On by default.
     val smokeAlertsEnabled: Boolean = true,

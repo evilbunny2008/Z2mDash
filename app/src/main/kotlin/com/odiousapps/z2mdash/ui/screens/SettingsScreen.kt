@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.Backup
 import androidx.compose.material.icons.filled.CleaningServices
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Storage
 import androidx.compose.material.icons.filled.Straighten
 import androidx.compose.material.icons.filled.Sync
@@ -92,6 +93,22 @@ fun SettingsScreen(navController: NavController) {
                     modifier = Modifier.toggleableRow(config.backgroundWorkEnabled) { enabled ->
                         if (enabled) notificationPermission.request()
                         app.configRepository.update { it.copy(backgroundWorkEnabled = enabled) }
+                    }
+                )
+            }
+            item {
+                // Pointless alongside Background Work's live connection, so greyed out while that's on.
+                val checksActive = config.periodicChecksEnabled && !config.backgroundWorkEnabled
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.settings_periodic_checks)) },
+                    supportingContent = { Text(stringResource(R.string.settings_periodic_checks_detail, stringResource(R.string.settings_background))) },
+                    leadingContent = { Icon(Icons.Default.Schedule, contentDescription = null) },
+                    trailingContent = {
+                        Switch(checked = checksActive, onCheckedChange = null, enabled = !config.backgroundWorkEnabled)
+                    },
+                    modifier = Modifier.toggleableRow(checksActive, enabled = !config.backgroundWorkEnabled) { enabled ->
+                        if (enabled) notificationPermission.request()
+                        app.configRepository.update { it.copy(periodicChecksEnabled = enabled) }
                     }
                 )
             }

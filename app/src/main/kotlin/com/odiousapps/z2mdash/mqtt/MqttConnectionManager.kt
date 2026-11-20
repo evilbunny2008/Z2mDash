@@ -14,13 +14,18 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.concurrent.ConcurrentHashMap
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Duration.Companion.seconds
 
 /** Cap on how many recent messages the Terminal tab keeps around, oldest dropped first. */
 internal const val MAX_LOGGED_MESSAGES = 300
 
 /** See createConnection()'s own comment on why incoming messages are batched at all. */
 private val BATCH_INTERVAL_MS = 200.milliseconds
+
+/** How long [MqttConnectionManager.watchRetain]'s probe waits for the broker's retained copy. */
+private val RETAIN_PROBE_TIMEOUT = 10.seconds
 
 /** One entry in the Terminal tab's rolling message log. */
 // Hands out LoggedMessage.id - process-wide, so ids never repeat across brokers either.
@@ -82,6 +87,16 @@ class MqttConnectionManager(
      */
     fun isLive(key: String): Boolean = (_latestPayloadTimestamps.value[key] ?: 0L) >= sessionStartMillis
 
+    // When disconnectAll last ran - see isFromCurrentConnection.
+    @Volatile private var disconnectedAllAtMillis = 0L
+
+    /**
+     * Like [isLive], but also excludes payloads from before the last [disconnectAll] - i.e. whether
+     * [key] has arrived since its broker was last (re)connected, not just at some point this run.
+     */
+    fun isFromCurrentConnection(key: String): Boolean =
+        (_latestPayloadTimestamps.value[key] ?: 0L) >= maxOf(sessionStartMillis, disconnectedAllAtMillis)
+
     init {
         // Seeded from disk so the dashboard shows correct "updated N ago" data before any MQTT
         // traffic arrives this session, instead of blank. Loaded on a background dispatcher, not
@@ -96,6 +111,44 @@ class MqttConnectionManager(
                 // The cache can finish loading after applyConfig already pruned - prune its
                 // contents too, or a removed base topic's devices would come straight back.
                 if (configApplied) scope.launch(Dispatchers.Main) { pruneUnwatchedPayloads() }
+            }
+        }
+    }
+
+    // See watchRetain. probePayloads holds each key's latest live payload while its probe runs.
+    @Volatile private var retainWatchKeys: Set<String> = emptySet()
+    private val probedKeys = ConcurrentHashMap.newKeySet<String>()
+    private val probePayloads = ConcurrentHashMap<String, String>()
+    private val _unretainedKeys = MutableStateFlow<Set<String>>(emptySet())
+    /** Keys passed to [watchRetain] whose broker turned out not to keep their latest message. */
+    val unretainedKeys: StateFlow<Set<String>> = _unretainedKeys
+
+    /**
+     * Checks whether each of [keys] ("brokerId|topic") is retained on its broker - periodic
+     * background checks (see TemperatureCheckWorker) only ever see a reading the broker kept.
+     * Probed once per key per app run, on its first live message: its exact topic is resubscribed,
+     * and a broker replays a stored message on every SUBSCRIBE with the RETAIN flag set. A replay
+     * matching that live payload proves it's retained; none within [RETAIN_PROBE_TIMEOUT], or a
+     * different (stale, left over from back when retain was on) one, proves it isn't. Waiting for
+     * a live message rather than judging from the connect-time replay alone avoids flagging a
+     * sensor that simply hasn't reported since the broker or Zigbee2MQTT last restarted.
+     */
+    fun watchRetain(keys: Set<String>) {
+        retainWatchKeys = keys
+        _unretainedKeys.update { it intersect keys }
+    }
+
+    private fun onRetainProbeMessage(conn: MqttConnection, key: String, msg: IncomingMessage) {
+        if (msg.retained) {
+            val livePayload = probePayloads.remove(key) ?: return
+            val retained = msg.payload == livePayload
+            _unretainedKeys.update { if (retained) it - key else it + key }
+        } else if (probePayloads.replace(key, msg.payload) == null && key in retainWatchKeys && probedKeys.add(key)) {
+            probePayloads[key] = msg.payload
+            scope.launch(Dispatchers.Main) {
+                conn.resubscribe(msg.topic)
+                delay(RETAIN_PROBE_TIMEOUT)
+                if (probePayloads.remove(key) != null) _unretainedKeys.update { it + key }
             }
         }
     }
@@ -324,6 +377,7 @@ class MqttConnectionManager(
                     pendingTimestamps[key] = now
                 }
                 pendingLogEntries += LoggedMessage(broker.id, msg.topic, msg.payload, now)
+                onRetainProbeMessage(conn, key, msg)
 
                 if (flushJob?.isActive != true) {
                     flushJob = scope.launch(messageProcessingDispatcher) {
@@ -384,6 +438,7 @@ class MqttConnectionManager(
      * [com.odiousapps.z2mdash.Z2mDashApplication.onCreate] would run as long as the process survives.
      */
     fun disconnectAll() {
+        disconnectedAllAtMillis = System.currentTimeMillis()
         connections.values.forEach { it.disconnect() }
     }
 }

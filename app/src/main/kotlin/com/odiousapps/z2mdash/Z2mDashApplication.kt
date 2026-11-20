@@ -12,8 +12,12 @@ import com.odiousapps.z2mdash.mqtt.MqttConnectionManager
 import com.odiousapps.z2mdash.mqtt.SmokeAlertManager
 import com.odiousapps.z2mdash.mqtt.TemperatureAlertManager
 import com.odiousapps.z2mdash.mqtt.WateringAlertManager
+import com.odiousapps.z2mdash.service.TemperatureCheckWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class Z2mDashApplication : Application() {
@@ -57,6 +61,14 @@ class Z2mDashApplication : Application() {
             configRepository.config.collect { config ->
                 connectionManager.applyConfig(config)
             }
+        }
+        // Only once loaded - the still-loading default config would cancel the periodic check.
+        appScope.launch {
+            configRepository.isLoaded.first { it }
+            configRepository.config
+                .map { TemperatureCheckWorker.shouldSchedule(it) }
+                .distinctUntilChanged()
+                .collect { TemperatureCheckWorker.sync(this@Z2mDashApplication, configRepository.config.value) }
         }
 
         // MainActivity finishing doesn't stop this Application-scoped singleton, so without an

@@ -1872,6 +1872,31 @@ fun HomeScreen(navController: NavController, backStackEntry: NavBackStackEntry) 
         )
     }
 
+    // Raised by TemperatureAlertManager's retain probing - "OK" only hides it for this screen visit.
+    val unretainedKeys by app.connectionManager.unretainedKeys.collectAsState()
+    var hiddenRetainWarnings by remember { mutableStateOf(emptySet<String>()) }
+    val retainWarningPanels = remember(config, unretainedKeys, hiddenRetainWarnings) {
+        TemperatureAlertManager.unretainedAlertPanels(config, unretainedKeys)
+            .filter { "${it.brokerId}|${it.topic}" !in config.dismissedRetainWarnings + hiddenRetainWarnings }
+    }
+    if (retainWarningPanels.isNotEmpty()) {
+        val keys = retainWarningPanels.map { "${it.brokerId}|${it.topic}" }.toSet()
+        val names = retainWarningPanels.map { config.clusterNameOf(it).ifBlank { it.label } }.distinct()
+        AlertDialog(
+            onDismissRequest = { hiddenRetainWarnings = hiddenRetainWarnings + keys },
+            title = { Text(stringResource(R.string.retain_warning_title)) },
+            text = { Text(stringResource(R.string.retain_warning_text, names.joinToString("\n"), stringResource(R.string.settings_background))) },
+            confirmButton = {
+                TextButton(onClick = { hiddenRetainWarnings = hiddenRetainWarnings + keys }) { Text(stringResource(R.string.common_ok)) }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    app.configRepository.update { it.copy(dismissedRetainWarnings = (it.dismissedRetainWarnings + keys).distinct()) }
+                }) { Text(stringResource(R.string.retain_warning_dont_show)) }
+            }
+        )
+    }
+
     pendingGroupDelete?.let { groupId ->
         AlertDialog(
             onDismissRequest = { pendingGroupDelete = null },

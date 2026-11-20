@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.odiousapps.z2mdash.R
 import com.odiousapps.z2mdash.Z2mDashApplication
+import com.odiousapps.z2mdash.data.clusterNameOf
+import com.odiousapps.z2mdash.mqtt.TemperatureAlertManager
 import com.odiousapps.z2mdash.ui.components.rememberNotificationPermissionState
 import com.odiousapps.z2mdash.ui.tv.toggleableRow
 
@@ -47,6 +49,10 @@ import com.odiousapps.z2mdash.ui.tv.toggleableRow
 fun AlertSettingsScreen(navController: NavController) {
     val app = LocalContext.current.applicationContext as Z2mDashApplication
     val config by app.configRepository.config.collectAsState()
+    val unretainedKeys by app.connectionManager.unretainedKeys.collectAsState()
+    val unretainedNames = TemperatureAlertManager.unretainedAlertPanels(config, unretainedKeys)
+        .map { config.clusterNameOf(it).ifBlank { it.label } }
+        .distinct()
     val notificationPermission = rememberNotificationPermissionState()
     val anyAlertEnabled = config.smokeAlertsEnabled || config.wateringAlertsEnabled || config.lowBatteryAlertsEnabled ||
         config.temperatureAlertsEnabled
@@ -183,6 +189,16 @@ fun AlertSettingsScreen(navController: NavController) {
                     stringResource(R.string.alerts_battery_test_detail),
                     style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Center
+                )
+            }
+            // Shown even once its Home screen pop-up has been dismissed for good.
+            if (unretainedNames.isNotEmpty()) {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.alerts_retain_off)) },
+                    supportingContent = { Text(stringResource(R.string.alerts_retain_off_detail, unretainedNames.joinToString(", "))) },
+                    leadingContent = {
+                        Icon(Icons.Default.Warning, contentDescription = null, tint = MaterialTheme.colorScheme.error)
+                    }
                 )
             }
             ListItem(

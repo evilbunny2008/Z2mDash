@@ -21,7 +21,9 @@ private const val TAG = "MqttConnection"
 
 enum class ConnectionState { DISCONNECTED, CONNECTING, CONNECTED, FAILED }
 
-data class IncomingMessage(val topic: String, val payload: String)
+// retained: the broker's RETAIN flag - set only on a stored message replayed by a SUBSCRIBE, never on
+// one forwarded live to an existing subscription, even if its publisher asked for it to be retained.
+data class IncomingMessage(val topic: String, val payload: String, val retained: Boolean)
 
 /**
  * Wraps a single broker connection using the HiveMQ MQTT client.
@@ -112,7 +114,7 @@ class MqttConnection(private val broker: Broker) {
         // is needed and resubscribing after a reconnect "just works".
         builtClient.publishes(MqttGlobalPublishFilter.SUBSCRIBED) { publish ->
             val payload = String(publish.payloadAsBytes, StandardCharsets.UTF_8)
-            _messages.tryEmit(IncomingMessage(publish.topic.toString(), payload))
+            _messages.tryEmit(IncomingMessage(publish.topic.toString(), payload, publish.isRetain))
         }
 
         builtClient.connectWith()

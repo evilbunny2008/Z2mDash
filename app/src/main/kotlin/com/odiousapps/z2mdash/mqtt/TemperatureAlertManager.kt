@@ -11,10 +11,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import com.odiousapps.z2mdash.R
+import com.odiousapps.z2mdash.data.AppConfig
 import com.odiousapps.z2mdash.data.ConfigRepository
 import com.odiousapps.z2mdash.data.JsonPath
 import com.odiousapps.z2mdash.data.Panel
 import com.odiousapps.z2mdash.data.TemperatureAlertLimits
+import com.odiousapps.z2mdash.data.TemperatureAlertState
+import com.odiousapps.z2mdash.data.TemperatureAlertStateRepository
 import com.odiousapps.z2mdash.data.TileIcon
 import com.odiousapps.z2mdash.data.clusterNameOf
 import kotlinx.coroutines.CoroutineScope
@@ -38,17 +41,22 @@ import kotlinx.coroutines.launch
  *
  * Follows WateringAlertManager's lead on everything that made that one fire spuriously: readings
  * are ignored until the panel's own broker is actually connected (the payloads map is pre-seeded
- * from the on-disk cache before any connection starts), and a panel's first observation each app
- * run - or its first after its limits are edited - only silently resyncs which side of each limit
- * it's on rather than counting as a crossing. Without the latter, a window already past its limit
- * would re-notify on every app restart, and saving a new limit the reading already sits beyond
- * would fire the instant the dialog closed, while the user is looking right at it.
+ * from the on-disk cache before any connection starts), and a panel's first observation - or its
+ * first after its limits are edited - only silently resyncs which side of each limit it's on
+ * rather than counting as a crossing. Without the latter, saving a new limit the reading already
+ * sits beyond would fire the instant the dialog closed, while the user is looking right at it.
+ * That state survives restarts (see TemperatureAlertStateRepository), so a window already past its
+ * limit doesn't re-notify on every app restart, yet one that crossed while the app was closed
+ * still does on the next reading.
  */
 class TemperatureAlertManager(
     private val context: Context,
     private val configRepository: ConfigRepository,
     private val connectionManager: MqttConnectionManager
 ) {
+    private val stateRepository = TemperatureAlertStateRepository(context)
+    private var savedState = TemperatureAlertState()
+
     // Panel ids currently at/beyond their high or low limit - present from the crossing until the
     // reading has come back by HYSTERESIS, so each limit notifies once per excursion.
     private val panelsAboveHigh = mutableSetOf<String>()
@@ -64,6 +72,7 @@ class TemperatureAlertManager(
 
     fun start(scope: CoroutineScope) {
         scope.launch(Dispatchers.Default) {
+            restoreState()
             // Config too, not just payloads, so editing or clearing a limit resyncs (and clears a
             // now-stale notification) straight away rather than on that sensor's next message.
             combine(connectionManager.latestPayloads, configRepository.config) { payloads, _ -> payloads }
@@ -77,6 +86,21 @@ class TemperatureAlertManager(
             text = context.getString(R.string.temperature_notif_test_text))
     }
 
+    private fun restoreState() {
+        savedState = stateRepository.load()
+        panelsAboveHigh += savedState.aboveHigh
+        panelsBelowLow += savedState.belowLow
+        lastLimits += savedState.limits
+        lastNotifiedAt += savedState.lastNotifiedAt
+    }
+
+    private fun persistStateIfChanged() {
+        val state = TemperatureAlertState(panelsAboveHigh.toSet(), panelsBelowLow.toSet(), lastLimits.toMap(), lastNotifiedAt.toMap())
+        if (state == savedState) return
+        savedState = state
+        stateRepository.save(state)
+    }
+
     private fun checkTemperaturePanels(payloads: Map<String, String>) {
         val config = configRepository.config.value
         val panels = config.groups.asSequence()
@@ -84,10 +108,15 @@ class TemperatureAlertManager(
             .filterIsInstance<Panel.Sensor>()
             .filter { isTemperatureAlertPanel(it) }
             .toList()
+        // Before the config has loaded there are no panels yet, which would read as every limit
+        // having been cleared and wipe the restored state.
+        if (!configRepository.isLoaded.value) return
 
         // Limits cleared, or the panel itself deleted - forget it and take down anything it left
         // showing, rather than leaving a "too warm" notification up for a limit that's gone.
-        val activeIds = panels.filter { config.temperatureAlertLimits[it.id] != null }.map { it.id }.toSet()
+        val activePanels = panels.filter { config.temperatureAlertLimits[it.id] != null }
+        val activeIds = activePanels.map { it.id }.toSet()
+        connectionManager.watchRetain(activePanels.map { "${it.brokerId}|${it.topic}" }.toSet())
         (lastLimits.keys - activeIds).forEach { panelId ->
             lastLimits.remove(panelId)
             panelsAboveHigh.remove(panelId)
@@ -149,6 +178,7 @@ class TemperatureAlertManager(
                 }
             }
         }
+        persistStateIfChanged()
     }
 
     /** Whether [key] may notify again, recording now as its latest notification if so. */
@@ -238,5 +268,20 @@ class TemperatureAlertManager(
          */
         fun isTemperatureAlertPanel(panel: Panel.Sensor): Boolean =
             panel.icon == TileIcon.TEMPERATURE && !panel.editable && panel.topic.isNotBlank()
+
+        /**
+         * Temperature tiles with limits set whose sensor isn't retained on its broker (see
+         * MqttConnectionManager.watchRetain), so their alerts can't be checked while the app is
+         * closed unless Background Work keeps a live connection. Empty while it does.
+         */
+        fun unretainedAlertPanels(config: AppConfig, unretainedKeys: Set<String>): List<Panel.Sensor> {
+            if (config.backgroundWorkEnabled || !config.temperatureAlertsEnabled) return emptyList()
+            return config.groups.asSequence()
+                .flatMap { it.panels }
+                .filterIsInstance<Panel.Sensor>()
+                .filter { isTemperatureAlertPanel(it) && config.temperatureAlertLimits[it.id] != null }
+                .filter { "${it.brokerId}|${it.topic}" in unretainedKeys }
+                .toList()
+        }
     }
 }
