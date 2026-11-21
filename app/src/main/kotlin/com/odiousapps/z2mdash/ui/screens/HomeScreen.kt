@@ -3205,8 +3205,7 @@ private fun PanelTile(
 private fun isOrphanedTopic(app: Z2mDashApplication, brokerId: String, topic: String): Boolean {
     if (topic.isBlank()) return false
     val broker = app.configRepository.config.value.brokers.find { it.id == brokerId } ?: return false
-    if (PermitJoin.parseBaseTopics(broker.baseTopic).any { topic == it || topic.startsWith("$it/") }) return false
-    return !app.connectionManager.isLive("$brokerId|$topic")
+    return !PermitJoin.parseBaseTopics(broker.baseTopic).any { topic == it || topic.startsWith("$it/") } && !app.connectionManager.isLive("$brokerId|$topic")
 }
 
 /** Builds and stores the panels for a newly-accepted pending device, then clears it from the pending list. */

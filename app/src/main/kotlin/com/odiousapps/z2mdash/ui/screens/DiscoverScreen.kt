@@ -61,6 +61,7 @@ import com.odiousapps.z2mdash.ui.tv.clearFocusOnBack
 import com.odiousapps.z2mdash.ui.tv.nameKeyboardOptions
 import java.util.UUID
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 private const val NEW_GROUP_ID = "__new_group__"
 
@@ -113,7 +114,7 @@ fun DiscoverScreen(navController: NavController, initialBrokerId: String? = null
     var rescanning by remember { mutableStateOf(false) }
     LaunchedEffect(rescanning) {
         if (rescanning) {
-            delay(1500)
+            delay(1500.milliseconds)
             rescanning = false
         }
     }
