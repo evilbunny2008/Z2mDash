@@ -256,6 +256,7 @@ object SensorDiscovery {
         return result
     }
 
+    @Suppress("KotlinConstantConditions")
     private fun numericExposedProperties(exposes: List<JsonElement>, depth: Int): List<String> =
         exposes.flatMap { element ->
             val expose = element as? JsonObject ?: return@flatMap emptyList()
