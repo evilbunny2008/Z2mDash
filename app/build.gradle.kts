@@ -40,8 +40,8 @@ android {
         applicationId = "com.odiousapps.z2mdash"
         minSdk = 26
         targetSdk = 37
-        versionCode = 152
-        versionName = "0.0.152"
+        versionCode = 153
+        versionName = "0.0.153"
     }
 
     // Generates android:localeConfig from the values-*/ folders, so

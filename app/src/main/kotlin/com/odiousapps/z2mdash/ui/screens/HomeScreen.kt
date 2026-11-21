@@ -2930,9 +2930,11 @@ private fun ClusterCard(
                 }
                 Spacer(Modifier.height(8.dp))
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                // fillMaxWidth so the whole caption bar is a drag touch target, not just the
+            // The name gets its own full-width line above the age/status/action icon row - a
+            // long name truncated to share a line with the icons hid more useful information
+            // than the extra line of height costs.
+            Column(
+                // fillMaxWidth so the whole caption area is a drag touch target, not just the
                 // name/age text width - otherwise a long-press elsewhere along the row (where
                 // someone would naturally try "holding the cluster") misses the gesture detector.
                 modifier = captionRowModifier.fillMaxWidth()
@@ -2956,109 +2958,118 @@ private fun ClusterCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     softWrap = false,
-                    // Measured last, so a long name truncates rather than squeezing the buttons
-                    // after it out of the row.
-                    modifier = Modifier.weight(1f, fill = false)
+                    modifier = Modifier.fillMaxWidth()
                 )
-                if (ageText != null) {
-                    val ageTextStyle = MaterialTheme.typography.labelSmall.copy(
-                        fontSize = MaterialTheme.typography.labelSmall.fontSize * captionScale,
-                        lineHeight = MaterialTheme.typography.labelSmall.lineHeight * captionScale,
-                        fontWeight = if (isStale) FontWeight.Bold else MaterialTheme.typography.labelSmall.fontWeight
-                    )
-                    Text(
-                        stringResource(R.string.home_age, ageText),
-                        style = ageTextStyle,
-                        color = staleIndicatorColor
-                    )
-                    if (isStale) {
-                        Spacer(Modifier.width(4.dp))
-                        Icon(
-                            Icons.Default.Warning,
-                            contentDescription = stringResource(R.string.home_stale_description),
-                            tint = staleIndicatorColor,
-                            modifier = Modifier.size(20.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    if (ageText != null) {
+                        val ageTextStyle = MaterialTheme.typography.labelSmall.copy(
+                            fontSize = MaterialTheme.typography.labelSmall.fontSize * captionScale,
+                            lineHeight = MaterialTheme.typography.labelSmall.lineHeight * captionScale,
+                            fontWeight = if (isStale) FontWeight.Bold else MaterialTheme.typography.labelSmall.fontWeight
                         )
-                    }
-                }
-                // Doubles as the way into the battery type setting, on every battery-powered
-                // cluster - NiMH needs setting before a reading ever looks low. Kept for a cluster
-                // set to NiMH even with no reading yet, so it can always be switched back.
-                if (batteryPoweredState.value || batteryType == BatteryType.NIMH) {
-                    Spacer(Modifier.width(4.dp))
-                    IconButton(onClick = onBatteryType, modifier = Modifier.size(28.dp)) {
-                        if (showLowBattery) {
+                        Text(
+                            stringResource(R.string.home_age, ageText),
+                            style = ageTextStyle,
+                            color = staleIndicatorColor,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
+                            softWrap = false,
+                            // Measured last, so a long age string truncates rather than squeezing the
+                            // buttons after it out of the row.
+                            modifier = Modifier.weight(1f, fill = false)
+                        )
+                        if (isStale) {
+                            Spacer(Modifier.width(4.dp))
                             Icon(
-                                Icons.Default.BatteryAlert,
-                                contentDescription = stringResource(
-                                    if (batteryType == BatteryType.NIMH) R.string.home_low_battery_nimh_description
-                                    else R.string.home_low_battery_description
-                                ),
-                                tint = AlertBlue,
+                                Icons.Default.Warning,
+                                contentDescription = stringResource(R.string.home_stale_description),
+                                tint = staleIndicatorColor,
                                 modifier = Modifier.size(20.dp)
-                            )
-                        } else {
-                            Icon(
-                                if (batteryType == BatteryType.NIMH) Icons.Default.BatteryChargingFull
-                                else Icons.Default.BatteryFull,
-                                contentDescription = stringResource(R.string.home_battery_type_cluster, name),
-                                modifier = Modifier.size(16.dp)
                             )
                         }
                     }
-                }
-                if (showWeakSignal) {
-                    Spacer(Modifier.width(4.dp))
-                    Icon(
-                        Icons.Default.SignalWifi4Bar,
-                        contentDescription = stringResource(R.string.home_weak_signal_description, WEAK_SIGNAL_LQI),
-                        tint = AlertYellow,
-                        modifier = Modifier.size(20.dp)
-                    )
-                }
-                IconButton(onClick = onDuplicate, modifier = Modifier.size(28.dp)) {
-                    Icon(
-                        Icons.Default.ContentCopy,
-                        contentDescription = stringResource(R.string.home_duplicate_cluster, name),
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-                IconButton(onClick = onRetopic, modifier = Modifier.size(28.dp)) {
-                    Icon(
-                        Icons.Default.SwapHoriz,
-                        contentDescription = stringResource(R.string.home_change_topic_cluster, name),
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-                IconButton(
-                    onClick = {
-                        // Prefills the new panel's cluster/broker/topic with this cluster's own
-                        // values - see AddPanelScreen's own doc on these preset* savedStateHandle
-                        // keys. Set on currentBackStackEntry (this screen's own entry) rather than
-                        // previousBackStackEntry, since we're passing forward to a screen that
-                        // doesn't exist yet - it reads them back via ITS previousBackStackEntry,
-                        // which is this same entry.
-                        val handle = navController.currentBackStackEntry?.savedStateHandle
-                        handle?.set("presetClusterId", panels.first().clusterId)
-                        panels.firstOrNull()?.brokerId?.let { handle?.set("presetBrokerId", it) }
-                        SensorDiscovery.commonTopicPrefix(panels).takeIf { it.isNotBlank() }
-                            ?.let { handle?.set("presetTopic", it) }
-                        navController.navigate("group/$groupId/panel/new")
-                    },
-                    modifier = Modifier.size(28.dp)
-                ) {
-                    Icon(
-                        Icons.Default.Add,
-                        contentDescription = stringResource(R.string.home_add_tile_to, name),
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
-                IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
-                    Icon(
-                        Icons.Default.Delete,
-                        contentDescription = stringResource(R.string.home_delete_cluster, name),
-                        modifier = Modifier.size(16.dp)
-                    )
+                    // Doubles as the way into the battery type setting, on every battery-powered
+                    // cluster - NiMH needs setting before a reading ever looks low. Kept for a cluster
+                    // set to NiMH even with no reading yet, so it can always be switched back.
+                    if (batteryPoweredState.value || batteryType == BatteryType.NIMH) {
+                        Spacer(Modifier.width(4.dp))
+                        IconButton(onClick = onBatteryType, modifier = Modifier.size(28.dp)) {
+                            if (showLowBattery) {
+                                Icon(
+                                    Icons.Default.BatteryAlert,
+                                    contentDescription = stringResource(
+                                        if (batteryType == BatteryType.NIMH) R.string.home_low_battery_nimh_description
+                                        else R.string.home_low_battery_description
+                                    ),
+                                    tint = AlertBlue,
+                                    modifier = Modifier.size(20.dp)
+                                )
+                            } else {
+                                Icon(
+                                    if (batteryType == BatteryType.NIMH) Icons.Default.BatteryChargingFull
+                                    else Icons.Default.BatteryFull,
+                                    contentDescription = stringResource(R.string.home_battery_type_cluster, name),
+                                    modifier = Modifier.size(16.dp)
+                                )
+                            }
+                        }
+                    }
+                    if (showWeakSignal) {
+                        Spacer(Modifier.width(4.dp))
+                        Icon(
+                            Icons.Default.SignalWifi4Bar,
+                            contentDescription = stringResource(R.string.home_weak_signal_description, WEAK_SIGNAL_LQI),
+                            tint = AlertYellow,
+                            modifier = Modifier.size(20.dp)
+                        )
+                    }
+                    IconButton(onClick = onDuplicate, modifier = Modifier.size(28.dp)) {
+                        Icon(
+                            Icons.Default.ContentCopy,
+                            contentDescription = stringResource(R.string.home_duplicate_cluster, name),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    IconButton(onClick = onRetopic, modifier = Modifier.size(28.dp)) {
+                        Icon(
+                            Icons.Default.SwapHoriz,
+                            contentDescription = stringResource(R.string.home_change_topic_cluster, name),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    IconButton(
+                        onClick = {
+                            // Prefills the new panel's cluster/broker/topic with this cluster's own
+                            // values - see AddPanelScreen's own doc on these preset* savedStateHandle
+                            // keys. Set on currentBackStackEntry (this screen's own entry) rather than
+                            // previousBackStackEntry, since we're passing forward to a screen that
+                            // doesn't exist yet - it reads them back via ITS previousBackStackEntry,
+                            // which is this same entry.
+                            val handle = navController.currentBackStackEntry?.savedStateHandle
+                            handle?.set("presetClusterId", panels.first().clusterId)
+                            panels.firstOrNull()?.brokerId?.let { handle?.set("presetBrokerId", it) }
+                            SensorDiscovery.commonTopicPrefix(panels).takeIf { it.isNotBlank() }
+                                ?.let { handle?.set("presetTopic", it) }
+                            navController.navigate("group/$groupId/panel/new")
+                        },
+                        modifier = Modifier.size(28.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Add,
+                            contentDescription = stringResource(R.string.home_add_tile_to, name),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    IconButton(onClick = onDelete, modifier = Modifier.size(28.dp)) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = stringResource(R.string.home_delete_cluster, name),
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
             }
         }

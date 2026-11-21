@@ -1,0 +1,1 @@
+Cluster names now get their own line above the status and action icons, so long names are no longer cut off.
